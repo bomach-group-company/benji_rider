@@ -44,12 +44,12 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kPrimaryColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: 20,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: kPrimaryColor,
         title: Row(
           children: [
             GestureDetector(
@@ -179,7 +179,7 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                                 top: kDefaultPadding * 0.5,
                               ),
                               decoration: ShapeDecoration(
-                                color: Colors.white,
+                                color: kPrimaryColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

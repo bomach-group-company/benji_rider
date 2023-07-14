@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../providers/constants.dart';
+import '../../reusable_widgets/drawer.dart';
 import '../../theme/colors.dart';
 
 class Earning extends StatelessWidget {
@@ -10,6 +11,42 @@ class Earning extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryColor,
+      drawer: const MyDrawer(),
+      appBar: AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        titleSpacing: kDefaultPadding / 2,
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            width: 40,
+            height: 40,
+            decoration: ShapeDecoration(
+              color: const Color(
+                0xFFFEF8F8,
+              ),
+              shape: RoundedRectangleBorder(
+                side: const BorderSide(
+                  width: 0.50,
+                  color: Color(
+                    0xFFFDEDED,
+                  ),
+                ),
+                borderRadius: BorderRadius.circular(
+                  24,
+                ),
+              ),
+            ),
+            child: Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: kAccentColor,
+            ),
+          ),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),

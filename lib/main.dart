@@ -2,7 +2,7 @@ import 'package:benji_rider/providers/constants.dart';
 import 'package:benji_rider/reusable_widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
-import 'app/delivered_history/history.dart';
+import 'theme/colors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,16 +33,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final int _counter = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimaryColor,
       drawer: const MyDrawer(),
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: kPrimaryColor,
         automaticallyImplyLeading: false,
         titleSpacing: kDefaultPadding / 2,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Builder(
           builder: (context) => IconButton(
             splashRadius: 20,
@@ -55,33 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) {
-                return const DeliveredHistory();
-              },
-            ),
-          );
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.link),
-      ),
+      body: const Center(),
     );
   }
 }
