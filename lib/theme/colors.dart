@@ -8,18 +8,18 @@ Color kPrimaryColor = const Color(
 Color kSecondaryColor = HexColor(
   "#0003C4",
 );
-Color kAccentColor = Color(
+Color kAccentColor = const Color(
   0xFFEC2623,
 );
 
-Color kLoadingColor = Color(
+Color kLoadingColor = const Color(
   0xFFFFA927,
 );
 
 const Color kGreyColor1 = Color(
   0xFFA5A5A5,
 );
-Color kGreyColor2 = Color(
+Color kGreyColor2 = const Color(
   0xFF757575,
 );
 const Color kBlackColor = Color(
@@ -52,7 +52,7 @@ const Color kTextBlackColor = Color.fromARGB(
   0,
   0,
 );
-Color kTextGreyColor = Color(
+Color kTextGreyColor = const Color(
   0xFF7E8A97,
 );
 const Color kBlueLinkTextColor = Color(
