@@ -43,9 +43,6 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context);
-    final h = media.size.height;
-    final w = media.size.height;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -84,9 +81,9 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
         ),
       ),
       body: isLoading
-          ? SpinKitThreeInOut(
-              color: kSecondaryColor,
-              size: 20,
+          ? SpinKitChasingDots(
+              color: kAccentColor,
+              size: 30,
             )
           : Column(
               children: [
