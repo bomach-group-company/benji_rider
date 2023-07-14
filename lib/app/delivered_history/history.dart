@@ -52,18 +52,33 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
         backgroundColor: Colors.white,
         title: Row(
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: const ShapeDecoration(
-                color: Color(0xFFF6F6F6),
-                shape: OvalBorder(),
-              ),
-              child: IconButton(
-                splashRadius: 25,
-                color: kAccentColor,
-                onPressed: () {},
-                icon: const Icon(Icons.menu),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Container(
+                width: 40,
+                height: 40,
+                decoration: ShapeDecoration(
+                  color: const Color(
+                    0xFFFEF8F8,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      width: 0.50,
+                      color: Color(
+                        0xFFFDEDED,
+                      ),
+                    ),
+                    borderRadius: BorderRadius.circular(
+                      24,
+                    ),
+                  ),
+                ),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: kAccentColor,
+                ),
               ),
             ),
             const SizedBox(

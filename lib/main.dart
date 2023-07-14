@@ -1,3 +1,5 @@
+import 'package:benji_rider/providers/constants.dart';
+import 'package:benji_rider/reusable_widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'app/delivered_history/history.dart';
@@ -12,10 +14,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Benji Rider',
-      home: DeliveredHistory(),
+      home: MyHomePage(
+        title: 'Benji',
+      ),
     );
   }
 }
@@ -34,9 +38,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MyDrawer(),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: kDefaultPadding / 2,
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: Builder(
+          builder: (context) => IconButton(
+            splashRadius: 20,
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+            icon: Image.asset(
+              "assets/images/icons/drawer-icon.png",
+            ),
+          ),
+        ),
       ),
       body: Center(
         child: Column(
@@ -57,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) {
-                return DeliveredHistory();
+                return const DeliveredHistory();
               },
             ),
           );
