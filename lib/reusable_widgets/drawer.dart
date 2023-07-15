@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../app/delivered_history/history.dart';
 import '../theme/colors.dart';
+import 'list_tile.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({super.key});
@@ -131,10 +132,10 @@ class _MyDrawerState extends State<MyDrawer> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Online',
+                Text(
+                  isOnline ? 'Online' : 'Offline',
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF232323),
                     fontSize: 26.47,
                     fontFamily: 'Sen',
@@ -146,31 +147,24 @@ class _MyDrawerState extends State<MyDrawer> {
                   onPressed: toggleOnline,
                   icon: Icon(
                     isOnline ? Icons.toggle_on : Icons.toggle_off,
+                    color: isOnline ? kAccentColor : const Color(0xFF8D8D8D),
                     size: 35,
                   ),
                 ),
               ],
             ),
             kSizedBox,
-            const ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              leading: Icon(
-                Icons.home_outlined,
-                size: 24,
-              ),
-              title: Text(
-                'Home',
-                style: TextStyle(
-                  color: Color(0xFF333333),
-                  fontSize: 19.86,
-                  fontFamily: 'Sen',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
+            MyListTile(
+              text: 'Home',
+              isOnline: isOnline,
+              icon: Icons.home_outlined,
+              nav: () {},
             ),
-            GestureDetector(
-              onTap: () {
+            MyListTile(
+              text: 'Earnings',
+              isOnline: isOnline,
+              icon: Icons.money,
+              nav: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
@@ -179,27 +173,12 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 );
               },
-              child: const ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                leading: Icon(
-                  Icons.money,
-                  size: 24,
-                ),
-                title: Text(
-                  'Earnings',
-                  style: TextStyle(
-                    color: Color(0xFF333333),
-                    fontSize: 19.86,
-                    fontFamily: 'Sen',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
             ),
-            GestureDetector(
-              onTap: () {
+            MyListTile(
+              text: 'Delivery History',
+              isOnline: isOnline,
+              icon: Icons.location_on_outlined,
+              nav: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
@@ -208,75 +187,24 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                 );
               },
-              child: const ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                leading: Icon(
-                  Icons.location_on_outlined,
-                  size: 24,
-                ),
-                title: Text(
-                  'Delivery History',
-                  style: TextStyle(
-                    color: Color(0xFF333333),
-                    fontSize: 19.86,
-                    fontFamily: 'Sen',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                trailing: Icon(Icons.arrow_forward_ios),
-              ),
             ),
-            const ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              leading: Icon(
-                Icons.question_mark_outlined,
-                size: 24,
-              ),
-              title: Text(
-                'Help & Support',
-                style: TextStyle(
-                  color: Color(0xFF333333),
-                  fontSize: 19.86,
-                  fontFamily: 'Sen',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
+            MyListTile(
+              text: 'Help & Support',
+              isOnline: isOnline,
+              icon: Icons.question_mark_outlined,
+              nav: () {},
             ),
-            const ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              leading: Icon(
-                Icons.settings,
-                size: 24,
-              ),
-              title: Text(
-                'Settings',
-                style: TextStyle(
-                  color: Color(0xFF333333),
-                  fontSize: 19.86,
-                  fontFamily: 'Sen',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
+            MyListTile(
+              text: 'Settings',
+              isOnline: isOnline,
+              icon: Icons.settings,
+              nav: () {},
             ),
-            const ListTile(
-              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-              leading: Icon(
-                Icons.logout,
-                size: 24,
-              ),
-              title: Text(
-                'Logout',
-                style: TextStyle(
-                  color: Color(0xFF333333),
-                  fontSize: 19.86,
-                  fontFamily: 'Sen',
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              trailing: Icon(Icons.arrow_forward_ios),
+            MyListTile(
+              text: 'Logout',
+              isOnline: isOnline,
+              icon: Icons.logout,
+              nav: () {},
             ),
           ],
         ),
