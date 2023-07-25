@@ -1,9 +1,9 @@
 import 'package:benji_rider/app/earning/earning.dart';
-import 'package:benji_rider/providers/constants.dart';
 import 'package:flutter/material.dart';
 
-import '../app/delivered_history/history.dart';
-import '../theme/colors.dart';
+import '../../app/delivered_history/history.dart';
+import '../../theme/colors.dart';
+import '../providers/constants.dart';
 import 'list_tile.dart';
 
 class MyDrawer extends StatefulWidget {

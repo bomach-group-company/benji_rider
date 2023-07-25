@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 
 import 'app/dashboard/dashboard.dart';
+import 'theme/app theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +14,13 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Benji Rider',
-      home: Dashboard(),
+      title: "Benji Rider",
+      themeMode: ThemeMode.system,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      home: const Dashboard(),
     );
   }
 }

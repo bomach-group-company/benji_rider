@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../providers/constants.dart';
+import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
 class DeliveredHistory extends StatefulWidget {
