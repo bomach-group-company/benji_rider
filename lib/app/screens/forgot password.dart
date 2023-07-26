@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -41,14 +43,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     });
 
     // Simulating a delay of 3 seconds
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     //Display snackBar
     myFixedSnackBar(
       context,
       "An OTP code has been sent to your email".toUpperCase(),
       kSecondaryColor,
-      Duration(
+      const Duration(
         seconds: 2,
       ),
     );
@@ -56,7 +58,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     // Navigate to the new page
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => SendOTP(),
+        builder: (ctx) => const SendOTP(),
       ),
     );
 
@@ -73,7 +75,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
-        appBar: MyAppBar(
+        appBar: const MyAppBar(
           title: "",
           elevation: 0.0,
           toolbarHeight: 80,

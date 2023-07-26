@@ -8,7 +8,6 @@ import 'package:get/get_instance/get_instance.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../src/common_widgets/email textformfield.dart';
-import '../../src/common_widgets/my appbar.dart';
 import '../../src/common_widgets/my fixed snackBar.dart';
 import '../../src/common_widgets/my intl phonefield.dart';
 import '../../src/common_widgets/name textformfield.dart';
@@ -95,13 +94,6 @@ class _SignUpState extends State<SignUp> {
       child: Scaffold(
         backgroundColor: kSecondaryColor,
         resizeToAvoidBottomInset: true,
-        appBar: const MyAppBar(
-          title: "",
-          toolbarHeight: kToolbarHeight,
-          backgroundColor: kTransparentColor,
-          elevation: 0.0,
-          actions: [],
-        ),
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: Column(
@@ -426,7 +418,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => const Login(),
                                 ),

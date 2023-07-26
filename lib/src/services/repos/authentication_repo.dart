@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
@@ -42,7 +44,7 @@ class AuthenticationRepo extends GetxController {
       print("FIRBASE AUTH EXCEPTION - ${ex.message}");
       throw ex;
     } catch (_) {
-      final ex = const SignupWithEmailAndPasswordFailure();
+      const ex = SignupWithEmailAndPasswordFailure();
       print("EXCEPTION - ${ex.message}");
       throw ex;
     }

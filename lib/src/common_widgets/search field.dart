@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';
@@ -29,18 +31,18 @@ class SearchField extends StatelessWidget {
       cursorColor: kSecondaryColor,
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(
+        hintStyle: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w400,
           color: Color(
             0x662F2E3C,
           ),
         ),
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           Icons.search_rounded,
           size: 30,
         ),
-        prefixIconColor: Color(
+        prefixIconColor: const Color(
           0x662F2E3C,
         ),
         suffixIcon: IconButton(

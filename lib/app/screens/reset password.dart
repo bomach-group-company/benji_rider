@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -46,21 +48,21 @@ class _ResetPasswordState extends State<ResetPassword> {
     });
 
     // Simulating a delay of 3 seconds
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     //Display snackBar
     myFixedSnackBar(
       context,
       "Password Reset successful",
       kSecondaryColor,
-      Duration(
+      const Duration(
         seconds: 2,
       ),
     );
 
     // Navigate to the new page
     Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => Login()),
+      MaterialPageRoute(builder: (context) => const Login()),
       (route) => false,
     );
 
@@ -84,7 +86,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
-        appBar: MyAppBar(
+        appBar: const MyAppBar(
           title: "",
           elevation: 0.0,
           toolbarHeight: 80,
@@ -164,7 +166,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               onSaved: (value) {
                                 userPasswordEC.text = value;
                               },
-                              suffixIcon: IconButton(
+                              suffixIcon: const IconButton(
                                 onPressed: null,
                                 icon: Icon(null),
                               ),
@@ -187,7 +189,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   context,
                                   "Password matches requirement",
                                   kSuccessColor,
-                                  Duration(
+                                  const Duration(
                                     seconds: 1,
                                   ),
                                 );
@@ -239,7 +241,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               onSaved: (value) {
                                 confirmPasswordEC.text = value;
                               },
-                              suffixIcon: IconButton(
+                              suffixIcon: const IconButton(
                                 onPressed: null,
                                 icon: Icon(null),
                               ),

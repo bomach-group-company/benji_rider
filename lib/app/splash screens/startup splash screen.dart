@@ -19,11 +19,9 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (ctx) => const SignUp(),
-        ),
-      );
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const SignUp()),
+          (route) => false);
     });
     return Scaffold(
       body: ListView(
@@ -50,7 +48,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
                 kSizedBox,
                 const Center(
                   child: Text(
-                    "User App",
+                    "Rider App",
                     style: TextStyle(
                       color: kTextBlackColor,
                     ),

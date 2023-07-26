@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import '../../theme/colors.dart';
@@ -13,7 +15,7 @@ void myFixedSnackBar(
       content: Text(
         text,
         textAlign: TextAlign.start,
-        style: TextStyle(
+        style: const TextStyle(
           fontWeight: FontWeight.w700,
         ),
       ),

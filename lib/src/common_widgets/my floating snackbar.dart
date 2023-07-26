@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import '../providers/constants.dart';
@@ -11,7 +13,7 @@ void mySnackBar(
 ) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Container(
+      content: SizedBox(
         height: 60,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -24,7 +26,7 @@ void mySnackBar(
                   width: 10,
                   decoration: ShapeDecoration(
                     color: kAccentColor,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
                         top: Radius.circular(
                           20.0,
@@ -42,19 +44,19 @@ void mySnackBar(
                   children: [
                     Text(
                       title.toUpperCase(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
                         color: kTextBlackColor,
                       ),
                     ),
                     kHalfSizedBox,
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width / 1.7,
                       child: Text(
                         message.toUpperCase(),
                         // overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.w400,
                           color: kGreyColor1,
@@ -80,7 +82,7 @@ void mySnackBar(
       behavior: SnackBarBehavior.floating,
       backgroundColor: kPrimaryColor,
       elevation: 20.0,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
           top: Radius.circular(20.0),
           bottom: Radius.circular(20.0),

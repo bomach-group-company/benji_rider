@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
@@ -46,14 +48,14 @@ class _SendOTPState extends State<SendOTP> {
     });
 
     // Simulating a delay of 3 seconds
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     //Display snackBar
     myFixedSnackBar(
       context,
       "OTP Verified".toUpperCase(),
       kSecondaryColor,
-      Duration(
+      const Duration(
         seconds: 2,
       ),
     );
@@ -61,7 +63,7 @@ class _SendOTPState extends State<SendOTP> {
     // Navigate to the new page
     Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (ctx) => ResetPassword(),
+        builder: (ctx) => const ResetPassword(),
       ),
     );
 
@@ -77,7 +79,7 @@ class _SendOTPState extends State<SendOTP> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
-        appBar: MyAppBar(
+        appBar: const MyAppBar(
           title: "",
           elevation: 0.0,
           toolbarHeight: 80,
@@ -115,7 +117,7 @@ class _SendOTPState extends State<SendOTP> {
                     scrollDirection: Axis.vertical,
                     physics: const BouncingScrollPhysics(),
                     children: [
-                      Container(
+                      SizedBox(
                         width: media.size.width,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -123,7 +125,7 @@ class _SendOTPState extends State<SendOTP> {
                             Text(
                               'Code'.toUpperCase(),
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(
                                   0xFF31343D,
                                 ),
@@ -135,7 +137,7 @@ class _SendOTPState extends State<SendOTP> {
                               children: [
                                 TextButton(
                                   onPressed: () {},
-                                  child: Text(
+                                  child: const Text(
                                     "Resend",
                                     style: TextStyle(
                                       fontSize: 15,
@@ -145,7 +147,7 @@ class _SendOTPState extends State<SendOTP> {
                                     ),
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   "in",
                                   style: TextStyle(
                                     fontSize: 15,
@@ -153,7 +155,7 @@ class _SendOTPState extends State<SendOTP> {
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   "1:00",
                                   style: TextStyle(
                                     fontSize: 15,
@@ -259,7 +261,7 @@ class _SendOTPState extends State<SendOTP> {
                           ],
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: kDefaultPadding * 2,
                       ),
                       isLoading
