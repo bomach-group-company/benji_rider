@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/reusable_widgets/drawer.dart';
+import '../../src/common_widgets/drawer.dart';
 import '../../theme/colors.dart';
 
 class Earning extends StatelessWidget {
