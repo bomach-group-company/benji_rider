@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../providers/constants.dart';
 import '../../theme/colors.dart';
+import '../providers/constants.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -39,45 +39,22 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             onTap: () {
               Navigator.of(context).pop(context);
             },
-            child: Padding(
-              padding: const EdgeInsets.all(
-                8.0,
-              ),
-              child: SizedBox(
-                width: 48,
-                height: 48,
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 0,
-                      top: 0,
-                      child: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: ShapeDecoration(
-                          color: const Color(
-                            0xFFFEF8F8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              width: 0.50,
-                              color: Color(
-                                0xFFFDEDED,
-                              ),
-                            ),
-                            borderRadius: BorderRadius.circular(
-                              24,
-                            ),
-                          ),
-                        ),
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: kAccentColor,
-                        ),
-                      ),
-                    ),
-                  ],
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: ShapeDecoration(
+                color: const Color(0xFFFEF8F8),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(
+                    width: 0.50,
+                    color: Color(0xFFFDEDED),
+                  ),
+                  borderRadius: BorderRadius.circular(24),
                 ),
+              ),
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: kAccentColor,
               ),
             ),
           ),

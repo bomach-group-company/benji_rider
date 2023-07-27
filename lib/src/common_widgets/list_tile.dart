@@ -22,26 +22,23 @@ class MyListTile extends StatefulWidget {
 class _MyListTileState extends State<MyListTile> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ListTile(
       onTap: widget.nav,
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-        leading: Icon(
-          widget.icon,
-          size: 24,
-          color: widget.isOnline ? kAccentColor : const Color(0xFF8D8D8D),
-        ),
-        title: Text(
-          widget.text,
-          style: const TextStyle(
-            color: Color(0xFF333333),
-            fontSize: 19.86,
-            fontFamily: 'Sen',
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        trailing: const Icon(Icons.arrow_forward_ios),
+      contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+      leading: Icon(
+        widget.icon,
+        size: 24,
+        color: widget.isOnline ? kAccentColor : const Color(0xFF8D8D8D),
       ),
+      title: Text(
+        widget.text,
+        style: const TextStyle(
+          color: Color(0xFF333333),
+          fontSize: 19.86,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      trailing: const Icon(Icons.arrow_forward_ios),
     );
   }
 }
