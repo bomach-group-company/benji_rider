@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/responsive_constants.dart';
+import '../../../theme/responsive_constant.dart';
 
 class MyResponsiveWidthAppbar extends StatelessWidget
     implements PreferredSizeWidget {
@@ -18,8 +18,8 @@ class MyResponsiveWidthAppbar extends StatelessWidget
       child: Center(
         heightFactor: 1,
         child: SizedBox(
-          width: breakPoint(
-              media.width, media.width, media.width - 100, media.width - 200),
+          width: breakPoint(media.width, media.width, media.width - 100,
+              media.width - 200, media.width - 200),
           child: child,
         ),
       ),

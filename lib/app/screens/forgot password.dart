@@ -1,15 +1,15 @@
-// ignore_for_file: file_names, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, file_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../src/providers/constants.dart';
 import '../../src/common_widgets/email textformfield.dart';
-import '../../src/common_widgets/my appbar.dart';
 import '../../src/common_widgets/my fixed snackBar.dart';
 import '../../src/common_widgets/reusable authentication first half.dart';
+import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
-
+import '../../theme/responsive_constant.dart';
 import 'otp.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -75,123 +75,184 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
-        appBar: const MyAppBar(
-          title: "",
-          elevation: 0.0,
-          toolbarHeight: 80,
-          actions: [],
-          backgroundColor: kTransparentColor,
-        ),
         body: SafeArea(
           maintainBottomViewPadding: true,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+          child: LayoutGrid(
+            columnSizes: breakPointDynamic(
+                media.size.width, [1.fr], [1.fr], [1.fr, 1.fr], [1.fr, 1.fr]),
+            rowSizes: [auto, 1.fr],
             children: [
-              const ReusableAuthenticationFirstHalf(
-                title: "Forgot Password",
-                subtitle:
-                    "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
-                decoration: BoxDecoration(),
-                imageContainerHeight: 0,
-              ),
-              kSizedBox,
-              Expanded(
-                child: Container(
-                  width: media.size.width,
-                  padding: const EdgeInsets.only(
-                    top: kDefaultPadding / 2,
-                    left: kDefaultPadding,
-                    right: kDefaultPadding,
-                  ),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  child: ListView(
-                    scrollDirection: Axis.vertical,
-                    physics: const BouncingScrollPhysics(),
+              Column(
+                children: [
+                  Row(
                     children: [
-                      Form(
-                        key: _formKey,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              child: Text(
-                                'Email',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color(
-                                    0xFF31343D,
-                                  ),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                            kHalfSizedBox,
-                            EmailTextFormField(
-                              controller: emailController,
-                              emailFocusNode: emailFocusNode,
-                              textInputAction: TextInputAction.done,
-                              validator: (value) {
-                                RegExp emailPattern = RegExp(
-                                  r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
-                                );
-                                if (value == null || value!.isEmpty) {
-                                  emailFocusNode.requestFocus();
-                                  return "Enter your email address";
-                                } else if (!emailPattern.hasMatch(value)) {
-                                  return "Please enter a valid email address";
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                emailController.text = value;
-                              },
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            isLoading
-                                ? Center(
-                                    child: SpinKitChasingDots(
-                                      color: kAccentColor,
-                                      duration: const Duration(seconds: 2),
-                                    ),
-                                  )
-                                : ElevatedButton(
-                                    onPressed: (() async {
-                                      if (_formKey.currentState!.validate()) {
-                                        loadData();
-                                      }
-                                    }),
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 10,
+                      InkWell(
+                        borderRadius: BorderRadius.circular(24),
+                        onTap: () {
+                          Navigator.of(context).pop(context);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(
+                            8.0,
+                          ),
+                          child: SizedBox(
+                            width: 48,
+                            height: 48,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 48,
+                                    height: 48,
+                                    decoration: ShapeDecoration(
+                                      color: const Color(
+                                        0xFFFEF8F8,
+                                      ),
                                       shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      backgroundColor: kAccentColor,
-                                      fixedSize: Size(media.size.width, 50),
-                                    ),
-                                    child: Text(
-                                      'Send Code'.toUpperCase(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
+                                        side: const BorderSide(
+                                          width: 0.50,
+                                          color: Color(
+                                            0xFFFDEDED,
+                                          ),
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                          24,
+                                        ),
                                       ),
                                     ),
+                                    child: Icon(
+                                      Icons.arrow_back_ios_new_rounded,
+                                      color: kAccentColor,
+                                    ),
                                   ),
-                          ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
+                  Expanded(
+                    child: ReusableAuthenticationFirstHalf(
+                      title: "Forgot Password",
+                      subtitle:
+                          "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
+                      decoration: const ShapeDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                            "assets/images/login/avatar-image.png",
+                          ),
+                          fit: BoxFit.cover,
+                        ),
+                        shape: CircleBorder(),
+                      ),
+                      imageContainerHeight:
+                          deviceType(media.size.width) > 2 ? 200 : 88,
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                height: media.size.height,
+                width: media.size.width,
+                padding: const EdgeInsets.only(
+                  top: kDefaultPadding,
+                  left: kDefaultPadding,
+                  right: kDefaultPadding,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(
+                        breakPoint(media.size.width, 24, 24, 0, 0)),
+                    topRight: Radius.circular(
+                        breakPoint(media.size.width, 24, 24, 0, 0)),
+                  ),
+                ),
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            child: Text(
+                              'Email',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(
+                                  0xFF31343D,
+                                ),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          kHalfSizedBox,
+                          EmailTextFormField(
+                            controller: emailController,
+                            emailFocusNode: emailFocusNode,
+                            textInputAction: TextInputAction.done,
+                            validator: (value) {
+                              RegExp emailPattern = RegExp(
+                                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
+                              );
+                              if (value == null || value!.isEmpty) {
+                                emailFocusNode.requestFocus();
+                                return "Enter your email address";
+                              } else if (!emailPattern.hasMatch(value)) {
+                                return "Please enter a valid email address";
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              emailController.text = value;
+                            },
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          isLoading
+                              ? Center(
+                                  child: SpinKitChasingDots(
+                                    color: kAccentColor,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                )
+                              : ElevatedButton(
+                                  onPressed: (() async {
+                                    if (_formKey.currentState!.validate()) {
+                                      loadData();
+                                    }
+                                  }),
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    backgroundColor: kAccentColor,
+                                    fixedSize: Size(media.size.width, 50),
+                                  ),
+                                  child: Text(
+                                    'Send Code'.toUpperCase(),
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -60,28 +60,31 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                 onTap: () {
                   Navigator.of(context).pop();
                 },
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: ShapeDecoration(
-                    color: const Color(
-                      0xFFFEF8F8,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        width: 0.50,
-                        color: Color(
-                          0xFFFDEDED,
+                child: InkWell(
+                  mouseCursor: SystemMouseCursors.click,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: ShapeDecoration(
+                      color: const Color(
+                        0xFFFEF8F8,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                          width: 0.50,
+                          color: Color(
+                            0xFFFDEDED,
+                          ),
+                        ),
+                        borderRadius: BorderRadius.circular(
+                          24,
                         ),
                       ),
-                      borderRadius: BorderRadius.circular(
-                        24,
-                      ),
                     ),
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: kAccentColor,
+                    child: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: kAccentColor,
+                    ),
                   ),
                 ),
               ),

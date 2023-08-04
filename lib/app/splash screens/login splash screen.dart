@@ -1,8 +1,7 @@
 // ignore_for_file: camel_case_types, file_names
 
+import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
-
-import '../dashboard/dashboard.dart';
 
 class LoginSplashScreen extends StatelessWidget {
   const LoginSplashScreen({super.key});
@@ -10,14 +9,14 @@ class LoginSplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const Dashboard()),
-        (route) => false,
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const Dashboard(),
+        ),
       );
     });
 
     return SafeArea(
-      maintainBottomViewPadding: true,
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Column(

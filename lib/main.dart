@@ -1,8 +1,8 @@
-import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
+import 'app/splash screens/startup splash screen.dart';
 import 'theme/app theme.dart';
 import 'theme/colors.dart';
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const Dashboard(),
+      home: const StartupSplashscreen(),
     );
   }
 }

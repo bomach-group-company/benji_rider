@@ -1,10 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/earning/earning.dart';
+import 'package:benji_rider/app/screens/login.dart';
 import 'package:flutter/material.dart';
 
 import '../../app/delivered_history/history.dart';
 import '../../theme/colors.dart';
-import '../../theme/responsive_constants.dart';
+import '../../theme/responsive_constant.dart';
 import '../providers/constants.dart';
 import 'list_tile.dart';
 
@@ -34,7 +35,7 @@ class _MyDrawerState extends State<MyDrawer> {
           bottomRight: Radius.circular(5.0),
         ),
       ),
-      width: breakPoint(media.width, media.width * 0.8, 400, 400),
+      width: breakPoint(media.width, media.width * 0.8, 400, 400, 400),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: kDefaultPadding,
@@ -195,7 +196,15 @@ class _MyDrawerState extends State<MyDrawer> {
               text: 'Logout',
               isOnline: widget.isOnline,
               icon: Icons.logout,
-              nav: () {},
+              nav: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const Login();
+                    },
+                  ),
+                );
+              },
             ),
           ],
         ),

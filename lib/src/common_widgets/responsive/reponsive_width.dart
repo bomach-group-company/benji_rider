@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/responsive_constants.dart';
+import '../../../theme/responsive_constant.dart';
 
 class MyResponsiveWidth extends StatelessWidget {
   final Widget child;
@@ -13,8 +13,8 @@ class MyResponsiveWidth extends StatelessWidget {
     return Center(
       heightFactor: 1,
       child: SizedBox(
-        width: breakPoint(
-            media.width, media.width, media.width - 100, media.width - 200),
+        width: breakPoint(media.width, media.width, media.width - 100,
+            media.width - 200, media.width - 200),
         child: child,
       ),
     );

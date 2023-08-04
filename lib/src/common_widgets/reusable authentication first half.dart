@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 
-import '../providers/constants.dart';
 import '../../theme/colors.dart';
+import '../providers/constants.dart';
 
 class ReusableAuthenticationFirstHalf extends StatelessWidget {
   final String title;
@@ -21,6 +21,7 @@ class ReusableAuthenticationFirstHalf extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.only(
@@ -28,8 +29,8 @@ class ReusableAuthenticationFirstHalf extends StatelessWidget {
             bottom: kDefaultPadding,
           ),
           child: Container(
-            width: 88,
             height: imageContainerHeight,
+            width: imageContainerHeight,
             decoration: decoration,
           ),
         ),
