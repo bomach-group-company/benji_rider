@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../app/delivered_history/history.dart';
 import '../../theme/colors.dart';
+import '../../theme/responsive_constants.dart';
 import '../providers/constants.dart';
 import 'list_tile.dart';
 
@@ -23,6 +24,7 @@ class MyDrawer extends StatefulWidget {
 class _MyDrawerState extends State<MyDrawer> {
   @override
   Widget build(BuildContext context) {
+    final media = MediaQuery.of(context).size;
     return Drawer(
       backgroundColor: kPrimaryColor,
       elevation: 10.0,
@@ -32,9 +34,12 @@ class _MyDrawerState extends State<MyDrawer> {
           bottomRight: Radius.circular(5.0),
         ),
       ),
-      width: MediaQuery.of(context).size.width * 0.8,
+      width: breakPoint(media.width, media.width * 0.8, 400, 400),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        padding: const EdgeInsets.symmetric(
+          horizontal: kDefaultPadding,
+          vertical: kDefaultPadding / 2,
+        ),
         child: ListView(
           physics: const BouncingScrollPhysics(),
           children: [
