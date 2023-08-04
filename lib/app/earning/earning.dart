@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/reusable_widgets/drawer.dart';
 import '../../theme/colors.dart';
 
 class Earning extends StatelessWidget {
@@ -9,9 +8,10 @@ class Earning extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDateTime = formatDateAndTime(now);
     return Scaffold(
       backgroundColor: kPrimaryColor,
-      drawer: const MyDrawer(),
       appBar: AppBar(
         elevation: 0,
         automaticallyImplyLeading: false,
@@ -125,7 +125,6 @@ class Earning extends StatelessWidget {
                                 style: TextStyle(
                                   color: Color(0xFF333333),
                                   fontSize: 14,
-                                  fontFamily: 'Sen',
                                   fontWeight: FontWeight.w400,
                                   height: 1.40,
                                 ),
@@ -135,25 +134,23 @@ class Earning extends StatelessWidget {
                             Container(
                               margin: const EdgeInsets.only(left: 10),
                               child: const Text(
-                                '#7,000',
+                                'NGN 7,000',
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: Color(0xFFEC2623),
                                   fontSize: 12,
-                                  fontFamily: 'Inter',
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(
+                        SizedBox(
                           child: Text(
-                            '23 Feb 2020 • 1:20PM',
-                            style: TextStyle(
+                            formattedDateTime,
+                            style: const TextStyle(
                               color: Color(0xFF929292),
                               fontSize: 12,
-                              fontFamily: 'Inter',
                               fontWeight: FontWeight.w400,
                             ),
                           ),

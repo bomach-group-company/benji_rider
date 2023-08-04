@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/earning/earning.dart';
 import 'package:flutter/material.dart';
 
@@ -7,21 +8,19 @@ import '../providers/constants.dart';
 import 'list_tile.dart';
 
 class MyDrawer extends StatefulWidget {
-  const MyDrawer({super.key});
+  final bool isOnline;
+  final Function() toggleOnline;
+  const MyDrawer({
+    Key? key,
+    required this.isOnline,
+    required this.toggleOnline,
+  }) : super(key: key);
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  bool isOnline = true;
-
-  void toggleOnline() {
-    setState(() {
-      isOnline = !isOnline;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -35,13 +34,9 @@ class _MyDrawerState extends State<MyDrawer> {
       ),
       width: MediaQuery.of(context).size.width * 0.8,
       child: Padding(
-        padding: const EdgeInsets.only(
-          left: 25.0,
-          top: 25.0,
-          right: 15,
-          bottom: 25.0,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: ListView(
+          physics: const BouncingScrollPhysics(),
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -65,7 +60,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                   ),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.of(context).pop();
                   },
@@ -79,9 +74,7 @@ class _MyDrawerState extends State<MyDrawer> {
                           width: 0.50,
                           color: kAccentColor,
                         ),
-                        borderRadius: BorderRadius.circular(
-                          24,
-                        ),
+                        borderRadius: BorderRadius.circular(24),
                       ),
                     ),
                     child: const Icon(
@@ -98,6 +91,7 @@ class _MyDrawerState extends State<MyDrawer> {
               margin: const EdgeInsets.only(top: kDefaultPadding),
               width: MediaQuery.of(context).size.width * 0.4,
               child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Princewill Okafor',
@@ -105,7 +99,6 @@ class _MyDrawerState extends State<MyDrawer> {
                     style: TextStyle(
                       color: Color(0xFF333333),
                       fontSize: 19.86,
-                      fontFamily: 'Sen',
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -117,9 +110,7 @@ class _MyDrawerState extends State<MyDrawer> {
                     style: TextStyle(
                       color: Color(0xFF929292),
                       fontSize: 15.44,
-                      fontFamily: 'Sen',
                       fontWeight: FontWeight.w400,
-                      // height: 2,
                     ),
                   )
                 ],
@@ -133,21 +124,22 @@ class _MyDrawerState extends State<MyDrawer> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  isOnline ? 'Online' : 'Offline',
+                  widget.isOnline ? 'Online' : 'Offline',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     color: Color(0xFF232323),
                     fontSize: 26.47,
-                    fontFamily: 'Sen',
                     fontWeight: FontWeight.w700,
                   ),
                 ),
                 IconButton(
                   splashRadius: 5,
-                  onPressed: toggleOnline,
+                  onPressed: widget.toggleOnline,
                   icon: Icon(
-                    isOnline ? Icons.toggle_on : Icons.toggle_off,
-                    color: isOnline ? kAccentColor : const Color(0xFF8D8D8D),
+                    widget.isOnline ? Icons.toggle_on : Icons.toggle_off,
+                    color: widget.isOnline
+                        ? kAccentColor
+                        : const Color(0xFF8D8D8D),
                     size: 35,
                   ),
                 ),
@@ -155,14 +147,8 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             kSizedBox,
             MyListTile(
-              text: 'Home',
-              isOnline: isOnline,
-              icon: Icons.home_outlined,
-              nav: () {},
-            ),
-            MyListTile(
               text: 'Earnings',
-              isOnline: isOnline,
+              isOnline: widget.isOnline,
               icon: Icons.money,
               nav: () {
                 Navigator.of(context).push(
@@ -176,7 +162,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'Delivery History',
-              isOnline: isOnline,
+              isOnline: widget.isOnline,
               icon: Icons.location_on_outlined,
               nav: () {
                 Navigator.of(context).push(
@@ -190,19 +176,19 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'Help & Support',
-              isOnline: isOnline,
+              isOnline: widget.isOnline,
               icon: Icons.question_mark_outlined,
               nav: () {},
             ),
             MyListTile(
               text: 'Settings',
-              isOnline: isOnline,
+              isOnline: widget.isOnline,
               icon: Icons.settings,
               nav: () {},
             ),
             MyListTile(
               text: 'Logout',
-              isOnline: isOnline,
+              isOnline: widget.isOnline,
               icon: Icons.logout,
               nav: () {},
             ),
