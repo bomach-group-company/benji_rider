@@ -15,7 +15,7 @@ import '../../src/common_widgets/reusable authentication first half.dart';
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
-import '../splash screens/signup splash screen.dart';
+import '../splash_screens/signup_splash_screen.dart';
 import 'login.dart';
 
 class SignUp extends StatefulWidget {

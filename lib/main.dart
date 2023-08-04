@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'app/splash screens/startup splash screen.dart';
+import 'app/splash_screens/startup_splash_screen.dart';
 import 'theme/app theme.dart';
 import 'theme/colors.dart';
 

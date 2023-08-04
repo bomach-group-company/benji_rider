@@ -45,7 +45,6 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: MyResponsiveWidthAppbar(

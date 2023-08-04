@@ -11,7 +11,7 @@ import '../../src/common_widgets/reusable authentication first half.dart';
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
-import '../splash screens/login splash screen.dart';
+import '../splash_screens/login_splash_screen.dart';
 import 'forgot password.dart';
 import 'signup.dart';
 
