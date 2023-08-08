@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/email textformfield.dart';
@@ -56,10 +57,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
 
     // Navigate to the new page
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const SendOTP(),
-      ),
+    Get.to(
+      const SendOTP(),
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
     );
 
     setState(() {

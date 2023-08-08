@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/route_manager.dart';
 
 import 'app/dashboard/dashboard.dart';
 import 'theme/app theme.dart';
@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      defaultTransition: Transition.rightToLeft,
       debugShowCheckedModeBanner: false,
       title: "Benji Rider",
       color: kPrimaryColor,

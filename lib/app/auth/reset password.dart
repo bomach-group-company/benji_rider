@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/password textformfield.dart';
 import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/providers/constants.dart';
+import '../../src/widget/section/my fixed snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import 'login.dart';
@@ -61,9 +62,13 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
 
     // Navigate to the new page
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const Login()),
-      (route) => false,
+    Get.offAll(
+      const Login(),
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      popGesture: true,
+      transition: Transition.rightToLeft,
     );
 
     setState(() {

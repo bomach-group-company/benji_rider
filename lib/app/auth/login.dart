@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/email textformfield.dart';
@@ -321,10 +322,14 @@ class _LoginState extends State<Login> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const ForgotPassword(),
-                              ),
+                            Get.to(
+                              const ForgotPassword(),
+                              duration: const Duration(milliseconds: 300),
+                              fullscreenDialog: true,
+                              curve: Curves.easeIn,
+                              preventDuplicates: true,
+                              popGesture: true,
+                              transition: Transition.rightToLeft,
                             );
                           },
                           child: Text(
@@ -390,10 +395,14 @@ class _LoginState extends State<Login> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const SignUp(),
-                              ),
+                            Get.to(
+                              const SignUp(),
+                              duration: const Duration(milliseconds: 300),
+                              fullscreenDialog: true,
+                              curve: Curves.easeIn,
+                              preventDuplicates: true,
+                              popGesture: true,
+                              transition: Transition.rightToLeft,
                             );
                           },
                           child: Text(
