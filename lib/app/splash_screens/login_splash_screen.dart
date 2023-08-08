@@ -2,6 +2,7 @@
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 class LoginSplashScreen extends StatelessWidget {
   const LoginSplashScreen({super.key});
@@ -9,10 +10,14 @@ class LoginSplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const Dashboard(),
-        ),
+      Get.off(
+        const Dashboard(),
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
       );
     });
 

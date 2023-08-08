@@ -80,9 +80,13 @@ class _SignUpState extends State<SignUp> {
     );
 
     // Navigate to the new page
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const SignUpSplashScreen()),
-      (route) => false,
+    Get.offAll(
+      const SignUpSplashScreen(),
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      popGesture: true,
+      transition: Transition.rightToLeft,
     );
 
     setState(() {
