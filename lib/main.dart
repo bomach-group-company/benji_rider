@@ -1,8 +1,8 @@
-import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
+import 'app/dashboard/dashboard.dart';
 import 'theme/app theme.dart';
 import 'theme/colors.dart';
 
