@@ -21,6 +21,7 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
     ),
     context: context,
     builder: (BuildContext context) {
+      final media = MediaQuery.of(context).size;
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
@@ -64,30 +65,32 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
                   ],
                 ),
                 kHalfWidthSizedBox,
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '21 Bartus Street, Abuja Nigeria',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 15.97,
-                        fontWeight: FontWeight.w400,
+                const Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '21 Bartus Street, Abuja Nigeria',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 15.97,
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: kDefaultPadding * 2,
-                    ),
-                    Text(
-                      '21 Bartus Street, Abuja Nigeria',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 15.97,
-                        fontWeight: FontWeight.w400,
+                      SizedBox(
+                        height: kDefaultPadding * 2,
                       ),
-                    ),
-                  ],
+                      Text(
+                        '21 Bartus Street, Abuja Nigeria',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 15.97,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -102,8 +105,8 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
                   height: 82.13,
                   decoration: ShapeDecoration(
                     image: const DecorationImage(
-                      image: NetworkImage(
-                        "https://via.placeholder.com/82x82",
+                      image: AssetImage(
+                        'assets/images/food/burgers.png',
                       ),
                       fit: BoxFit.cover,
                     ),
@@ -113,60 +116,62 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
                   ),
                 ),
                 kHalfWidthSizedBox,
-                const Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Rice and Chicken',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 13.69,
-                        fontFamily: 'Sen',
-                        fontWeight: FontWeight.w400,
+                const Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Rice and Chicken',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 13.69,
+                          fontFamily: 'Sen',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    kHalfSizedBox,
-                    Text(
-                      'Food ',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 13.69,
-                        fontFamily: 'Sen',
-                        fontWeight: FontWeight.w400,
+                      kHalfSizedBox,
+                      Text(
+                        'Food ',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 13.69,
+                          fontFamily: 'Sen',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    kHalfSizedBox,
-                    Text(
-                      '3 plates',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 13.69,
-                        fontFamily: 'Sen',
-                        fontWeight: FontWeight.w400,
+                      kHalfSizedBox,
+                      Text(
+                        '3 plates',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 13.69,
+                          fontFamily: 'Sen',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    kHalfSizedBox,
-                    Text(
-                      '40kg',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 13.69,
-                        fontFamily: 'Sen',
-                        fontWeight: FontWeight.w400,
+                      kHalfSizedBox,
+                      Text(
+                        '40kg',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 13.69,
+                          fontFamily: 'Sen',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                    kHalfSizedBox,
-                    Text(
-                      'Item is fragile (glass) so be careful',
-                      style: TextStyle(
-                        color: Color(0xFF454545),
-                        fontSize: 13.69,
-                        fontFamily: 'Sen',
-                        fontWeight: FontWeight.w400,
+                      kHalfSizedBox,
+                      Text(
+                        'Item is fragile (glass) so be careful',
+                        style: TextStyle(
+                          color: Color(0xFF454545),
+                          fontSize: 13.69,
+                          fontFamily: 'Sen',
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 )
               ],
             ),
