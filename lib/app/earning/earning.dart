@@ -3,13 +3,21 @@ import 'package:flutter/material.dart';
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
-class Earning extends StatelessWidget {
+class Earning extends StatefulWidget {
   const Earning({Key? key}) : super(key: key);
+
+  @override
+  State<Earning> createState() => _EarningState();
+}
+
+class _EarningState extends State<Earning> {
+//===================================== ALL VARIABLES =========================================\\
 
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDateTime = formatDateAndTime(now);
+
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(

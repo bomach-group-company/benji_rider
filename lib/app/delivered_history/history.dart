@@ -129,14 +129,11 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                               color:
                                   onDelivered ? kTextWhiteColor : kGreyColor2,
                               fontSize: 14,
-                              fontFamily: 'Sen',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          width: 15,
-                        ),
+                        kWidthSizedBox,
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: onDelivered
@@ -157,7 +154,6 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                               color:
                                   onDelivered ? kGreyColor2 : kTextWhiteColor,
                               fontSize: 14,
-                              fontFamily: 'Sen',
                               fontWeight: FontWeight.w400,
                             ),
                           ),
