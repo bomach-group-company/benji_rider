@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-import '../app/call/call.dart';
+import '../app/call/call_screen.dart';
 import '../src/providers/constants.dart';
 import 'colors.dart';
 

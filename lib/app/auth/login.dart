@@ -13,7 +13,7 @@ import '../../src/widget/section/my fixed snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
-import 'forgot password.dart';
+import 'forgot_password.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {

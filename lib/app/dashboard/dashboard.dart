@@ -106,7 +106,15 @@ class _DashboardState extends State<Dashboard> {
         child: Stack(
           children: [
             isOffline
-                ? const Center()
+                ? Center(
+                    child: Container(
+                    height: 300,
+                    width: 300,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(
+                                "assets/animations/no_internet/no_internet.gif"))),
+                  ))
                 : isLoading
                     ? Center(
                         child: SpinKitChasingDots(
