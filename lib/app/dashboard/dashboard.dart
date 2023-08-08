@@ -1,12 +1,17 @@
 // ignore_for_file: unused_field, prefer_typing_uninitialized_variables
 
-import 'package:benji_rider/src/common_widgets/drawer.dart';
+import 'package:benji_rider/src/widget/section/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/widget/card/online_offline_card.dart';
+import '../../src/widget/card/pickup_and_delivery_card.dart';
 import '../../theme/colors.dart';
+import '../../theme/model.dart';
+import '../delivery/delivery_completed.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -24,11 +29,43 @@ class _DashboardState extends State<Dashboard> {
   bool isOnline = false;
   bool acceptRequest = false;
   bool showDeliveryDialog = false;
+  bool pickedUp = false;
 
   //=================================== CONTROLLERS ======================================================\\
   GoogleMapController? _googleMapController;
 
   //=================================== FUNCTIONS ======================================================\\
+  void deliveryFunc(context) {
+    setState(() {
+      pickedUp = false;
+      acceptRequest = !acceptRequest;
+      showDeliveryDialog = !showDeliveryDialog;
+      Get.to(
+        const DeliverComplete(),
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+    });
+  }
+
+  void pickedUpFunc(context) {
+    setState(() {
+      pickedUp = true;
+      Navigator.of(context).pop();
+    });
+  }
+
+  void acceptRequestFunc(context) {
+    setState(() {
+      acceptRequest = !acceptRequest;
+      showDeliveryDialog = !showDeliveryDialog;
+      Navigator.of(context).pop();
+    });
+  }
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> toggleOnline() async {
@@ -48,12 +85,6 @@ class _DashboardState extends State<Dashboard> {
     await Future.delayed(const Duration(seconds: 5));
     setState(() {
       showDeliveryDialog = true;
-    });
-  }
-
-  void acceptRequestFunc() {
-    setState(() {
-      acceptRequest = !acceptRequest;
     });
   }
 
@@ -137,6 +168,7 @@ class _DashboardState extends State<Dashboard> {
               ),
               child: Column(
                 children: [
+<<<<<<< HEAD
                   isOffline
                       ? Container()
                       : isLoading
@@ -586,64 +618,119 @@ class _DashboardState extends State<Dashboard> {
                                 )
                               : Container(),
                   const Spacer(),
+=======
+>>>>>>> 8136601bb513e8d361675e088fc0e3077a0e8fbc
                   Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(
-                      top: 10,
-                      left: 20,
-                      right: 20,
-                      bottom: 20,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    decoration: ShapeDecoration(
-                      color: kTextWhiteColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              isOnline ? 'Online' : 'Offline',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Color(0xFF3D3D3D),
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
+                    // red delivery request card
+                    child: showDeliveryDialog
+                        ? Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(
+                              top: 10,
+                              left: 20,
+                              right: 20,
+                              bottom: 20,
+                            ),
+                            decoration: ShapeDecoration(
+                              color: kAccentColor.withOpacity(0.6),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
                             ),
-                            IconButton(
-                              splashRadius: 5,
-                              onPressed: toggleOnline,
-                              icon: Icon(
-                                isOnline ? Icons.toggle_on : Icons.toggle_off,
-                                color: isOnline
-                                    ? kAccentColor
-                                    : const Color(0xFF8D8D8D),
-                                size: 35,
-                              ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Delivery Request',
+                                  style: TextStyle(
+                                    color: kTextWhiteColor,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                kSizedBox,
+                                const Text(
+                                  '21 Bartus Street, Enugu. 12km 20mins.',
+                                  style: TextStyle(
+                                    color: Color(0xFFD4D4D4),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: kTextWhiteColor,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        deliveryModel(context, () {
+                                          acceptRequestFunc(context);
+                                        });
+                                      },
+                                      child: Text(
+                                        'Go',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: kAccentColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                        kSizedBox,
-                        Text(
-                          isOnline
-                              ? "Yay! Start receiving delivery requests"
-                              : 'You are currently offline, go online to start receiving delivery request.',
-                          style: const TextStyle(
-                            color: Color(0xFF979797),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
+                          )
+                        : const SizedBox(),
                   ),
+                  const Spacer(),
+                  acceptRequest
+                      ? PickupDeliveryCard(
+                          isDelivery: pickedUp,
+                          pickupFunc: () {
+                            deliveryModel(
+                              context,
+                              () {
+                                acceptRequestFunc(context);
+                              },
+                              isPickup: true,
+                              pickedUpFunc: () {
+                                pickedUpFunc(context);
+                              },
+                            );
+                          },
+                          deliveryFunc: () {
+                            deliveryModel(
+                              context,
+                              () {
+                                acceptRequestFunc(context);
+                              },
+                              isDelivery: true,
+                              deliveryFunc: () {
+                                deliveryFunc(context);
+                              },
+                            );
+                          },
+                        )
+                      : OnlineOfflineCard(
+                          isOnline: isOnline,
+                          toggleOnline: toggleOnline,
+                        ),
                 ],
               ),
             ),
