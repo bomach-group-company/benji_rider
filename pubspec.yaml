@@ -47,8 +47,7 @@ flutter:
     - assets/images/illustration/
     - assets/images/logo/
     - assets/images/vendors/
-    - assets/images/splash screen/
-    - assets/images/onboarding screen/
+    - assets/images/onboarding_screen/
     - assets/images/login/
     - assets/images/home/
     - assets/images/vendors/
@@ -56,7 +55,7 @@ flutter:
     - assets/images/icons/
     - assets/images/rider/
     - assets/images/profile/
-    - assets/animations/splash screen/
+    - assets/animations/splash_screen/
     - assets/animations/successful/
 
   # An image asset can refer to one or more resolution-specific "variants", see

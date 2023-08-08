@@ -11,7 +11,7 @@ import '../../src/widget/form_and_auth/reusable authentication first half.dart';
 import '../../src/widget/section/my fixed snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
-import 'reset password.dart';
+import 'reset_password.dart';
 
 class SendOTP extends StatefulWidget {
   const SendOTP({super.key});
