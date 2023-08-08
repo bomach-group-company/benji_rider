@@ -168,7 +168,6 @@ class _DashboardState extends State<Dashboard> {
               ),
               child: Column(
                 children: [
-<<<<<<< HEAD
                   isOffline
                       ? Container()
                       : isLoading
@@ -410,8 +409,10 @@ class _DashboardState extends State<Dashboard> {
                                                                   2,
                                                             ),
                                                           ),
-                                                          onPressed:
-                                                              acceptRequestFunc,
+                                                          onPressed: () {
+                                                            acceptRequestFunc(
+                                                                context);
+                                                          },
                                                           child: const Text(
                                                             'Accept Request',
                                                             textAlign: TextAlign
@@ -474,8 +475,10 @@ class _DashboardState extends State<Dashboard> {
                                                                   2,
                                                             ),
                                                           ),
-                                                          onPressed:
-                                                              acceptRequestFunc,
+                                                          onPressed: () {
+                                                            acceptRequestFunc(
+                                                                context);
+                                                          },
                                                           child: const Text(
                                                             'Accept Request',
                                                             textAlign: TextAlign
@@ -618,8 +621,6 @@ class _DashboardState extends State<Dashboard> {
                                 )
                               : Container(),
                   const Spacer(),
-=======
->>>>>>> 8136601bb513e8d361675e088fc0e3077a0e8fbc
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
