@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:benji_rider/app/auth/signup.dart';
 import 'package:benji_rider/app/earning/earning.dart';
-import 'package:benji_rider/app/auth/login.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 import '../../../app/delivery/history.dart';
 import '../../../theme/colors.dart';
@@ -157,12 +158,14 @@ class _MyDrawerState extends State<MyDrawer> {
               isOnline: widget.isOnline,
               icon: Icons.money,
               nav: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const Earning();
-                    },
-                  ),
+                Get.to(
+                  const Earning(),
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
                 );
               },
             ),
@@ -171,12 +174,14 @@ class _MyDrawerState extends State<MyDrawer> {
               isOnline: widget.isOnline,
               icon: Icons.location_on_outlined,
               nav: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const DeliveredHistory();
-                    },
-                  ),
+                Get.to(
+                  const DeliveredHistory(),
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
                 );
               },
             ),
@@ -197,12 +202,14 @@ class _MyDrawerState extends State<MyDrawer> {
               isOnline: widget.isOnline,
               icon: Icons.logout,
               nav: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const Login();
-                    },
-                  ),
+                Get.off(
+                  const SignUp(),
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
                 );
               },
             ),

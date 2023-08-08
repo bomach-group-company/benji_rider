@@ -3,11 +3,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/otp textFormField.dart';
 import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/providers/constants.dart';
+import '../../src/widget/section/my fixed snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import 'reset password.dart';
@@ -62,10 +63,14 @@ class _SendOTPState extends State<SendOTP> {
     );
 
     // Navigate to the new page
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const ResetPassword(),
-      ),
+    Get.to(
+      const ResetPassword(),
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
     );
 
     setState(() {

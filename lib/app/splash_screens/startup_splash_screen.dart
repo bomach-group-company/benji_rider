@@ -1,11 +1,12 @@
 // ignore_for_file: camel_case_types, file_names
 
+import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
-import '../auth/signup.dart';
 
 class StartupSplashscreen extends StatefulWidget {
   static String routeName = "Startup Splash Screen";
@@ -19,9 +20,15 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 4), () {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const SignUp()),
-          (route) => false);
+      Get.to(
+        const Dashboard(),
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
     });
     return Scaffold(
       body: ListView(

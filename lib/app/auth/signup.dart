@@ -4,15 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
+import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/email textformfield.dart';
-import '../../src/widget/section/my fixed snackBar.dart';
 import '../../src/widget/form_and_auth/my intl phonefield.dart';
 import '../../src/widget/form_and_auth/name textformfield.dart';
 import '../../src/widget/form_and_auth/password textformfield.dart';
 import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/providers/constants.dart';
+import '../../src/widget/section/my fixed snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/signup_splash_screen.dart';
@@ -79,9 +80,13 @@ class _SignUpState extends State<SignUp> {
     );
 
     // Navigate to the new page
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => const SignUpSplashScreen()),
-      (route) => false,
+    Get.offAll(
+      const SignUpSplashScreen(),
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      popGesture: true,
+      transition: Transition.rightToLeft,
     );
 
     setState(() {
@@ -438,10 +443,14 @@ class _SignUpState extends State<SignUp> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const Login(),
-                              ),
+                            Get.to(
+                              const Login(),
+                              duration: const Duration(milliseconds: 300),
+                              fullscreenDialog: true,
+                              curve: Curves.easeIn,
+                              preventDuplicates: true,
+                              popGesture: true,
+                              transition: Transition.rightToLeft,
                             );
                           },
                           child: Text(

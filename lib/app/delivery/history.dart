@@ -109,11 +109,23 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
               child: Column(
                 children: [
                   MyResponsiveWidth(
-                    child: Padding(
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x0F000000),
+                            blurRadius: 24,
+                            offset: Offset(0, 4),
+                            spreadRadius: 0,
+                          )
+                        ],
+                      ),
                       padding: const EdgeInsets.only(
                         left: kDefaultPadding,
                         right: kDefaultPadding,
-                        bottom: kDefaultPadding,
+                        bottom: kDefaultPadding * 0.6,
                       ),
                       child: Row(
                         children: [
@@ -184,7 +196,7 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                                 margin: const EdgeInsets.only(
                                   left: kDefaultPadding,
                                   right: kDefaultPadding,
-                                  top: kDefaultPadding * 0.5,
+                                  bottom: kDefaultPadding * 0.5,
                                 ),
                                 decoration: ShapeDecoration(
                                   color: kPrimaryColor,
@@ -206,22 +218,19 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                                   children: [
                                     Expanded(
                                       flex: 1,
-                                      child: SizedBox(
-                                        // height: h * 0.17,
-                                        child: Container(
-                                          // width: 110,
-                                          height: 119,
-                                          decoration: const ShapeDecoration(
-                                            image: DecorationImage(
-                                              image: AssetImage(
-                                                  "assets/images/food/burgers.png"),
-                                              fit: BoxFit.cover,
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(10),
-                                                bottomLeft: Radius.circular(10),
-                                              ),
+                                      child: Container(
+                                        // width: 110,
+                                        height: 119,
+                                        decoration: const ShapeDecoration(
+                                          image: DecorationImage(
+                                            image: AssetImage(
+                                                "assets/images/food/burgers.png"),
+                                            fit: BoxFit.cover,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(10),
+                                              bottomLeft: Radius.circular(10),
                                             ),
                                           ),
                                         ),
@@ -360,71 +369,68 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
                                                 const SizedBox(
                                                   width: 10,
                                                 ),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      '21 Bartus Street, Abuja Nigeria',
-                                                      style: TextStyle(
-                                                        color: onDelivered
-                                                            ? const Color(
-                                                                0xFF454545)
-                                                            : const Color(
-                                                                0xFF979797),
-                                                        fontSize: 10,
-                                                        fontFamily: 'Mulish',
-                                                        height: 2,
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                Expanded(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        '21 Bartus Street, Abuja Nigeria',
+                                                        style: TextStyle(
+                                                          color: onDelivered
+                                                              ? const Color(
+                                                                  0xFF454545)
+                                                              : const Color(
+                                                                  0xFF979797),
+                                                          fontSize: 10,
+                                                          fontFamily: 'Mulish',
+                                                          height: 2,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      '3 Edwins Close, Wuse, Abuja',
-                                                      style: TextStyle(
-                                                        color: onDelivered
-                                                            ? const Color(
-                                                                0xFF454545)
-                                                            : const Color(
-                                                                0xFF979797),
-                                                        fontSize: 10,
-                                                        fontFamily: 'Mulish',
-                                                        height: 2,
-                                                        fontWeight:
-                                                            FontWeight.w400,
+                                                      Text(
+                                                        '3 Edwins Close, Wuse, Abuja',
+                                                        style: TextStyle(
+                                                          color: onDelivered
+                                                              ? const Color(
+                                                                  0xFF454545)
+                                                              : const Color(
+                                                                  0xFF979797),
+                                                          fontSize: 10,
+                                                          fontFamily: 'Mulish',
+                                                          height: 2,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
+                                            ),
+                                            const SizedBox(
+                                              width: 22,
                                             ),
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                const SizedBox(
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 22,
-                                                      ),
-                                                      Text(
-                                                        '24-02 2022 12:00PM',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF929292),
-                                                          fontSize: 10,
-                                                          fontFamily:
-                                                              'Overpass',
-                                                          height: 1.5,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                        ),
-                                                      ),
-                                                    ],
+                                                const Expanded(
+                                                  child: Text(
+                                                    '24-02 2022 12:00PM',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF929292),
+                                                      fontSize: 10,
+                                                      fontFamily: 'Overpass',
+                                                      height: 1.5,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                    ),
                                                   ),
                                                 ),
                                                 SizedBox(

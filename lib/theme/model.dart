@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 import '../app/call/call.dart';
 import '../src/providers/constants.dart';
@@ -21,7 +22,6 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
     ),
     context: context,
     builder: (BuildContext context) {
-      final media = MediaQuery.of(context).size;
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
@@ -186,10 +186,14 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
                     title: const Text('Miracle Ages'),
                     trailing: InkWell(
                       onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => const CallPage(),
-                          ),
+                        Get.to(
+                          const CallPage(),
+                          duration: const Duration(milliseconds: 300),
+                          fullscreenDialog: true,
+                          curve: Curves.easeIn,
+                          preventDuplicates: true,
+                          popGesture: true,
+                          transition: Transition.downToUp,
                         );
                       },
                       mouseCursor: SystemMouseCursors.click,

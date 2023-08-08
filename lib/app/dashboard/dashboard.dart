@@ -3,6 +3,7 @@
 import 'package:benji_rider/src/widget/section/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../src/providers/constants.dart';
@@ -39,11 +40,14 @@ class _DashboardState extends State<Dashboard> {
       pickedUp = false;
       acceptRequest = !acceptRequest;
       showDeliveryDialog = !showDeliveryDialog;
-
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const DeliverComplete(),
-        ),
+      Get.to(
+        const DeliverComplete(),
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
       );
     });
   }
