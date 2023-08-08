@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../src/common_widgets/responsive/reponsive_width.dart';
-import '../../src/common_widgets/responsive/responsive_width_appbar.dart';
 import '../../src/providers/constants.dart';
+import '../../src/widget/responsive/reponsive_width.dart';
+import '../../src/widget/responsive/responsive_width_appbar.dart';
 import '../../theme/colors.dart';
 
 class Earning extends StatelessWidget {
@@ -20,35 +20,33 @@ class Earning extends StatelessWidget {
           automaticallyImplyLeading: false,
           titleSpacing: kDefaultPadding / 2,
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: GestureDetector(
+          title: InkWell(
             onTap: () {
               Navigator.of(context).pop();
             },
-            child: InkWell(
-              mouseCursor: SystemMouseCursors.click,
-              child: Container(
-                width: 40,
-                height: 40,
-                decoration: ShapeDecoration(
-                  color: const Color(
-                    0xFFFEF8F8,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(
-                      width: 0.50,
-                      color: Color(
-                        0xFFFDEDED,
-                      ),
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      24,
+            mouseCursor: SystemMouseCursors.click,
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: ShapeDecoration(
+                color: const Color(
+                  0xFFFEF8F8,
+                ),
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(
+                    width: 0.50,
+                    color: Color(
+                      0xFFFDEDED,
                     ),
                   ),
+                  borderRadius: BorderRadius.circular(
+                    24,
+                  ),
                 ),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: kAccentColor,
-                ),
+              ),
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: kAccentColor,
               ),
             ),
           ),

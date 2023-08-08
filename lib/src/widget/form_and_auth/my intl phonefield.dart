@@ -1,50 +1,65 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../../theme/colors.dart';
+import '../../providers/constants.dart';
+import '../../../theme/colors.dart';
 
-class MyTextFormField extends StatelessWidget {
-  final String hintText;
-  final TextInputType textInputType;
+class MyIntlPhoneField extends StatelessWidget {
   final TextEditingController controller;
-  final FormFieldValidator validator;
-  final dynamic onSaved;
+  final String initialCountryCode;
+  final String invalidNumberMessage;
+  final IconPosition dropdownIconPosition;
+  final bool showCountryFlag;
+  final bool showDropdownIcon;
+  final Icon dropdownIcon;
   final TextInputAction textInputAction;
   final FocusNode focusNode;
-
-  const MyTextFormField({
+  final dynamic onSaved;
+  final dynamic validator;
+  const MyIntlPhoneField({
     super.key,
     required this.controller,
-    required this.validator,
-    this.onSaved,
+    required this.initialCountryCode,
+    required this.invalidNumberMessage,
+    required this.dropdownIconPosition,
+    required this.showCountryFlag,
+    required this.showDropdownIcon,
+    required this.dropdownIcon,
     required this.textInputAction,
     required this.focusNode,
-    required this.hintText,
-    required this.textInputType,
+    this.onSaved,
+    this.validator,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      focusNode: focusNode,
+    return IntlPhoneField(
       controller: controller,
+      initialCountryCode: initialCountryCode,
+      invalidNumberMessage: invalidNumberMessage,
+      dropdownIconPosition: dropdownIconPosition,
+      showCountryFlag: showCountryFlag,
+      keyboardType: TextInputType.number,
+      showDropdownIcon: showDropdownIcon,
+      dropdownIcon: dropdownIcon,
+      textInputAction: textInputAction,
+      focusNode: focusNode,
       validator: validator,
       onSaved: onSaved,
-      textInputAction: textInputAction,
-      textAlign: TextAlign.start,
-      cursorColor: kSecondaryColor,
-      autocorrect: true,
-      enableSuggestions: true,
-      keyboardType: textInputType,
-      maxLines: 1,
-      style: TextStyle(
-        color: kSecondaryColor,
-        fontSize: 14,
-        fontWeight: FontWeight.w400,
+      flagsButtonPadding: const EdgeInsets.all(
+        kDefaultPadding / 2,
       ),
+      cursorColor: kSecondaryColor,
+      onChanged: (phone) {
+        print(phone.completeNumber);
+      },
+      onCountryChanged: (country) {
+        print('Country changed to: ' + country.name);
+      },
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: "Enter phone Number",
         errorStyle: const TextStyle(
           color: kErrorColor,
         ),

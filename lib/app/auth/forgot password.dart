@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../src/common_widgets/email textformfield.dart';
-import '../../src/common_widgets/my fixed snackBar.dart';
-import '../../src/common_widgets/reusable authentication first half.dart';
 import '../../src/providers/constants.dart';
+import '../../src/widget/form_and_auth/email textformfield.dart';
+import '../../src/widget/form_and_auth/reusable authentication first half.dart';
+import '../../src/widget/section/my fixed snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import 'otp.dart';

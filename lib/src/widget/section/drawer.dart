@@ -1,12 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/earning/earning.dart';
-import 'package:benji_rider/app/screens/login.dart';
+import 'package:benji_rider/app/auth/login.dart';
 import 'package:flutter/material.dart';
 
-import '../../app/delivered_history/history.dart';
-import '../../theme/colors.dart';
-import '../../theme/responsive_constant.dart';
-import '../providers/constants.dart';
+import '../../../app/delivery/history.dart';
+import '../../../theme/colors.dart';
+import '../../../theme/responsive_constant.dart';
+import '../../providers/constants.dart';
 import 'list_tile.dart';
 
 class MyDrawer extends StatefulWidget {

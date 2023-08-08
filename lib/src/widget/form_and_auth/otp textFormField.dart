@@ -1,65 +1,42 @@
-// ignore_for_file: file_names, avoid_print, prefer_interpolation_to_compose_strings
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:flutter/services.dart';
 
-import '../providers/constants.dart';
-import '../../theme/colors.dart';
+import '../../../theme/colors.dart';
 
-class MyIntlPhoneField extends StatelessWidget {
-  final TextEditingController controller;
-  final String initialCountryCode;
-  final String invalidNumberMessage;
-  final IconPosition dropdownIconPosition;
-  final bool showCountryFlag;
-  final bool showDropdownIcon;
-  final Icon dropdownIcon;
+class MyOTPTextFormField extends StatelessWidget {
   final TextInputAction textInputAction;
-  final FocusNode focusNode;
   final dynamic onSaved;
   final dynamic validator;
-  const MyIntlPhoneField({
+  final dynamic onChanged;
+  const MyOTPTextFormField({
     super.key,
-    required this.controller,
-    required this.initialCountryCode,
-    required this.invalidNumberMessage,
-    required this.dropdownIconPosition,
-    required this.showCountryFlag,
-    required this.showDropdownIcon,
-    required this.dropdownIcon,
     required this.textInputAction,
-    required this.focusNode,
-    this.onSaved,
-    this.validator,
+    required this.onSaved,
+    required this.validator,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
-    return IntlPhoneField(
-      controller: controller,
-      initialCountryCode: initialCountryCode,
-      invalidNumberMessage: invalidNumberMessage,
-      dropdownIconPosition: dropdownIconPosition,
-      showCountryFlag: showCountryFlag,
+    return TextFormField(
       keyboardType: TextInputType.number,
-      showDropdownIcon: showDropdownIcon,
-      dropdownIcon: dropdownIcon,
+      textAlign: TextAlign.center,
       textInputAction: textInputAction,
-      focusNode: focusNode,
-      validator: validator,
       onSaved: onSaved,
-      flagsButtonPadding: const EdgeInsets.all(
-        kDefaultPadding / 2,
-      ),
-      cursorColor: kSecondaryColor,
-      onChanged: (phone) {
-        print(phone.completeNumber);
-      },
-      onCountryChanged: (country) {
-        print('Country changed to: ' + country.name);
-      },
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(1),
+        FilteringTextInputFormatter.digitsOnly,
+      ],
+      onChanged: onChanged,
+      validator: validator,
       decoration: InputDecoration(
-        hintText: "Enter phone Number",
+        hintText: "0",
+        hintStyle: const TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w700,
+        ),
         errorStyle: const TextStyle(
           color: kErrorColor,
         ),

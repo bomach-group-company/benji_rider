@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
+import '../../../theme/colors.dart';
 
 void myFixedSnackBar(
   BuildContext context,

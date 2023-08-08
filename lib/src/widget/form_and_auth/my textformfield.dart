@@ -1,42 +1,50 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-import '../../theme/colors.dart';
+import '../../../theme/colors.dart';
 
-class MyOTPTextFormField extends StatelessWidget {
-  final TextInputAction textInputAction;
+class MyTextFormField extends StatelessWidget {
+  final String hintText;
+  final TextInputType textInputType;
+  final TextEditingController controller;
+  final FormFieldValidator validator;
   final dynamic onSaved;
-  final dynamic validator;
-  final dynamic onChanged;
-  const MyOTPTextFormField({
+  final TextInputAction textInputAction;
+  final FocusNode focusNode;
+
+  const MyTextFormField({
     super.key,
-    required this.textInputAction,
-    required this.onSaved,
+    required this.controller,
     required this.validator,
-    this.onChanged,
+    this.onSaved,
+    required this.textInputAction,
+    required this.focusNode,
+    required this.hintText,
+    required this.textInputType,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: TextInputType.number,
-      textAlign: TextAlign.center,
-      textInputAction: textInputAction,
-      onSaved: onSaved,
-      inputFormatters: [
-        LengthLimitingTextInputFormatter(1),
-        FilteringTextInputFormatter.digitsOnly,
-      ],
-      onChanged: onChanged,
+      focusNode: focusNode,
+      controller: controller,
       validator: validator,
+      onSaved: onSaved,
+      textInputAction: textInputAction,
+      textAlign: TextAlign.start,
+      cursorColor: kSecondaryColor,
+      autocorrect: true,
+      enableSuggestions: true,
+      keyboardType: textInputType,
+      maxLines: 1,
+      style: TextStyle(
+        color: kSecondaryColor,
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+      ),
       decoration: InputDecoration(
-        hintText: "0",
-        hintStyle: const TextStyle(
-          fontSize: 17,
-          fontWeight: FontWeight.w700,
-        ),
+        hintText: hintText,
         errorStyle: const TextStyle(
           color: kErrorColor,
         ),

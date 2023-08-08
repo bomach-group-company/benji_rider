@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 
-import 'app/splash_screens/startup_splash_screen.dart';
+import 'app/dashboard/dashboard.dart';
 import 'theme/app theme.dart';
 import 'theme/colors.dart';
 
@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const StartupSplashscreen(),
+      home: const Dashboard(),
     );
   }
 }

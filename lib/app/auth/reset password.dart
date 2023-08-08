@@ -1,46 +1,45 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
+import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../../src/common_widgets/my fixed snackBar.dart';
-import '../../src/common_widgets/otp textFormField.dart';
-import '../../src/common_widgets/reusable authentication first half.dart';
+import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/password textformfield.dart';
+import '../../src/widget/form_and_auth/reusable authentication first half.dart';
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
-import 'reset password.dart';
+import 'login.dart';
 
-class SendOTP extends StatefulWidget {
-  const SendOTP({super.key});
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({super.key});
 
   @override
-  State<SendOTP> createState() => _SendOTPState();
+  State<ResetPassword> createState() => _ResetPasswordState();
 }
 
-class _SendOTPState extends State<SendOTP> {
+class _ResetPasswordState extends State<ResetPassword> {
   //=========================== ALL VARIABBLES ====================================\\
-
-  //=========================== CONTROLLERS ====================================\\
-
-  TextEditingController pin1EC = TextEditingController();
-  TextEditingController pin2EC = TextEditingController();
-  TextEditingController pin3EC = TextEditingController();
-  TextEditingController pin4EC = TextEditingController();
 
   //=========================== KEYS ====================================\\
 
   final _formKey = GlobalKey<FormState>();
 
+  //=========================== CONTROLLERS ====================================\\
+
+  TextEditingController userPasswordEC = TextEditingController();
+  TextEditingController confirmPasswordEC = TextEditingController();
+
   //=========================== FOCUS NODES ====================================\\
-  FocusNode pin1FN = FocusNode();
-  FocusNode pin2FN = FocusNode();
-  FocusNode pin3FN = FocusNode();
-  FocusNode pin4FN = FocusNode();
+  FocusNode userPasswordFN = FocusNode();
+  FocusNode confirmPasswordFN = FocusNode();
 
   //=========================== BOOL VALUES====================================\\
   bool isLoading = false;
+  bool isPWSuccess = false;
+  var isObscured;
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> loadData() async {
@@ -54,7 +53,7 @@ class _SendOTPState extends State<SendOTP> {
     //Display snackBar
     myFixedSnackBar(
       context,
-      "OTP Verified".toUpperCase(),
+      "Password Reset successful",
       kSecondaryColor,
       const Duration(
         seconds: 2,
@@ -62,15 +61,22 @@ class _SendOTPState extends State<SendOTP> {
     );
 
     // Navigate to the new page
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (ctx) => const ResetPassword(),
-      ),
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const Login()),
+      (route) => false,
     );
 
     setState(() {
       isLoading = false;
     });
+  }
+
+  //=========================== STATES ====================================\\
+
+  @override
+  void initState() {
+    super.initState();
+    isObscured = true;
   }
 
   @override
@@ -142,8 +148,9 @@ class _SendOTPState extends State<SendOTP> {
                   ),
                   Expanded(
                     child: ReusableAuthenticationFirstHalf(
-                      title: "Verification",
-                      subtitle: "We have sent a code to your email",
+                      title: "Reset Password",
+                      subtitle:
+                          "Just enter a new password here and you are good to go!",
                       decoration: const ShapeDecoration(
                         image: DecorationImage(
                           image: AssetImage(
@@ -180,153 +187,131 @@ class _SendOTPState extends State<SendOTP> {
                   scrollDirection: Axis.vertical,
                   physics: const BouncingScrollPhysics(),
                   children: [
-                    SizedBox(
-                      width: media.size.width,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Code'.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Color(
-                                0xFF31343D,
-                              ),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "Resend",
-                                  style: TextStyle(
-                                    fontSize: 15,
-                                    color: kTextBlackColor,
-                                    fontWeight: FontWeight.w600,
-                                    decoration: TextDecoration.underline,
-                                  ),
-                                ),
-                              ),
-                              const Text(
-                                "in",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: kTextBlackColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              const Text(
-                                "1:00",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: kTextBlackColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
                     Form(
                       key: _formKey,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(
-                            height: 90,
-                            width: 68,
-                            child: MyOTPTextFormField(
-                              textInputAction: TextInputAction.next,
-                              onSaved: (pin1) {
-                                pin1EC.text = pin1!;
-                              },
-                              onChanged: (value) {
-                                if (value.length == 1) {
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  pin1FN.requestFocus();
-                                  return "";
-                                }
-                              },
+                          const SizedBox(
+                            child: Text(
+                              'Enter New Password',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(
+                                  0xFF31343D,
+                                ),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 90,
-                            width: 68,
-                            child: MyOTPTextFormField(
-                              textInputAction: TextInputAction.next,
-                              onSaved: (pin2) {
-                                pin2EC.text = pin2!;
-                              },
-                              onChanged: (value) {
-                                if (value.length == 1) {
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  pin2FN.requestFocus();
-                                  return "";
-                                }
-                              },
+                          kHalfSizedBox,
+                          PasswordTextFormField(
+                            controller: userPasswordEC,
+                            passwordFocusNode: userPasswordFN,
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: isObscured,
+                            textInputAction: TextInputAction.next,
+                            validator: (value) {
+                              RegExp passwordPattern = RegExp(
+                                r'^.{8,}$',
+                              );
+                              if (value == null || value!.isEmpty) {
+                                userPasswordFN.requestFocus();
+                                return "Enter your password";
+                              } else if (!passwordPattern.hasMatch(value)) {
+                                userPasswordFN.requestFocus();
+                                return "Password must be at least 8 characters";
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              userPasswordEC.text = value;
+                            },
+                            suffixIcon: const IconButton(
+                              onPressed: null,
+                              icon: Icon(null),
                             ),
                           ),
-                          SizedBox(
-                            height: 90,
-                            width: 70,
-                            child: MyOTPTextFormField(
-                              textInputAction: TextInputAction.next,
-                              onSaved: (pin3) {
-                                pin3EC.text = pin3!;
-                              },
-                              onChanged: (value) {
-                                if (value.length == 1) {
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  pin3FN.requestFocus();
-                                  return "";
-                                }
-                              },
+                          kSizedBox,
+                          kHalfSizedBox,
+                          FlutterPwValidator(
+                            uppercaseCharCount: 1,
+                            lowercaseCharCount: 1,
+                            numericCharCount: 1,
+                            controller: userPasswordEC,
+                            width: 400,
+                            height: 150,
+                            minLength: 8,
+                            onSuccess: () {
+                              setState(() {
+                                isPWSuccess = true;
+                              });
+                              myFixedSnackBar(
+                                context,
+                                "Password matches requirement",
+                                kSuccessColor,
+                                const Duration(
+                                  seconds: 1,
+                                ),
+                              );
+                            },
+                            onFail: () {
+                              setState(() {
+                                isPWSuccess = false;
+                              });
+                            },
+                          ),
+                          kSizedBox,
+                          const SizedBox(
+                            child: Text(
+                              'Confirm Password',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Color(
+                                  0xFF31343D,
+                                ),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                          SizedBox(
-                            height: 90,
-                            width: 68,
-                            child: MyOTPTextFormField(
-                              textInputAction: TextInputAction.done,
-                              onSaved: (pin4) {
-                                pin4EC.text = pin4!;
-                              },
-                              onChanged: (value) {
-                                if (value.length == 1) {
-                                  FocusScope.of(context).nearestScope;
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  pin4FN.requestFocus();
-                                  return "";
-                                }
-                              },
+                          kHalfSizedBox,
+                          PasswordTextFormField(
+                            controller: confirmPasswordEC,
+                            passwordFocusNode: confirmPasswordFN,
+                            keyboardType: TextInputType.visiblePassword,
+                            obscureText: isObscured,
+                            textInputAction: TextInputAction.done,
+                            validator: (value) {
+                              RegExp passwordPattern = RegExp(
+                                r'^.{8,}$',
+                              );
+                              if (value == null || value!.isEmpty) {
+                                confirmPasswordFN.requestFocus();
+                                return "Enter your password";
+                              }
+                              if (value != userPasswordEC.text) {
+                                confirmPasswordFN.requestFocus();
+                                return "Password does not match";
+                              } else if (!passwordPattern.hasMatch(value)) {
+                                confirmPasswordFN.requestFocus();
+                                return "Password must be at least 8 characters";
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              confirmPasswordEC.text = value;
+                            },
+                            suffixIcon: const IconButton(
+                              onPressed: null,
+                              icon: Icon(null),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: kDefaultPadding * 2,
-                    ),
+                    kSizedBox,
                     isLoading
                         ? Center(
                             child: SpinKitChasingDots(
@@ -348,7 +333,7 @@ class _SendOTPState extends State<SendOTP> {
                               fixedSize: Size(media.size.width, 50),
                             ),
                             child: Text(
-                              'Verify'.toUpperCase(),
+                              'Save'.toUpperCase(),
                               textAlign: TextAlign.center,
                               style: const TextStyle(
                                 color: Colors.white,
@@ -357,6 +342,7 @@ class _SendOTPState extends State<SendOTP> {
                               ),
                             ),
                           ),
+                    kSizedBox,
                   ],
                 ),
               ),

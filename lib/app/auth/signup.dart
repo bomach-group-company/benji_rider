@@ -6,12 +6,12 @@ import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../../src/common_widgets/email textformfield.dart';
-import '../../src/common_widgets/my fixed snackBar.dart';
-import '../../src/common_widgets/my intl phonefield.dart';
-import '../../src/common_widgets/name textformfield.dart';
-import '../../src/common_widgets/password textformfield.dart';
-import '../../src/common_widgets/reusable authentication first half.dart';
+import '../../src/widget/form_and_auth/email textformfield.dart';
+import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/my intl phonefield.dart';
+import '../../src/widget/form_and_auth/name textformfield.dart';
+import '../../src/widget/form_and_auth/password textformfield.dart';
+import '../../src/widget/form_and_auth/reusable authentication first half.dart';
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
