@@ -64,6 +64,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     // Navigate to the new page
     Get.offAll(
       () => const Login(),
+      routeName: 'Login',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -105,7 +106,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       InkWell(
                         borderRadius: BorderRadius.circular(24),
                         onTap: () {
-                          Navigator.of(context).pop(context);
+                          Get.back();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(

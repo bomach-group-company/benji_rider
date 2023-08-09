@@ -69,7 +69,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                   child: Container(
                     width: 30,
@@ -160,6 +160,7 @@ class _MyDrawerState extends State<MyDrawer> {
               nav: () {
                 Get.to(
                   () => const Earning(),
+                  routeName: 'Earning',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
@@ -176,6 +177,7 @@ class _MyDrawerState extends State<MyDrawer> {
               nav: () {
                 Get.to(
                   () => const DeliveredHistory(),
+                  routeName: 'DeliveredHistory',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
@@ -204,6 +206,7 @@ class _MyDrawerState extends State<MyDrawer> {
               nav: () {
                 Get.off(
                   () => const Login(),
+                  routeName: 'Login',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,

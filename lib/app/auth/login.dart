@@ -72,6 +72,8 @@ class _LoginState extends State<Login> {
     // Navigate to the new page
     Get.offAll(
       () => const LoginSplashScreen(),
+      routeName: 'LoginSplashScreen',
+      predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -277,6 +279,7 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             Get.to(
                               () => const ForgotPassword(),
+                              routeName: 'ForgotPassword',
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,
@@ -350,6 +353,7 @@ class _LoginState extends State<Login> {
                           onPressed: () {
                             Get.to(
                               () => const SignUp(),
+                              routeName: 'SignUp',
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,

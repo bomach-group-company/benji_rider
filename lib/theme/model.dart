@@ -188,6 +188,7 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
                       onTap: () {
                         Get.to(
                           () => const CallPage(),
+                          routeName: 'CallPage',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,

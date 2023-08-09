@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
@@ -51,7 +52,7 @@ class DeliverComplete extends StatelessWidget {
         backgroundColor: Colors.white,
         title: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Get.back();
           },
           mouseCursor: SystemMouseCursors.click,
           child: Container(

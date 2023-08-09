@@ -59,6 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     // Navigate to the new page
     Get.to(
       () => const SendOTP(),
+      routeName: 'SendOTP',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -94,7 +95,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       InkWell(
                         borderRadius: BorderRadius.circular(24),
                         onTap: () {
-                          Navigator.of(context).pop(context);
+                          Get.back();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(

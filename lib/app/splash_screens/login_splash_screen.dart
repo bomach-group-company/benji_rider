@@ -12,6 +12,7 @@ class LoginSplashScreen extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Get.off(
         () => const Dashboard(),
+        routeName: 'Dashboard',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,

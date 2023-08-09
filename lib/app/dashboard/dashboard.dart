@@ -42,6 +42,7 @@ class _DashboardState extends State<Dashboard> {
       showDeliveryDialog = !showDeliveryDialog;
       Get.to(
         () => const DeliverComplete(),
+        routeName: 'DeliverComplete',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,
@@ -55,7 +56,7 @@ class _DashboardState extends State<Dashboard> {
   void pickedUpFunc(context) {
     setState(() {
       pickedUp = true;
-      Navigator.of(context).pop();
+      Get.back();
     });
   }
 
@@ -63,7 +64,7 @@ class _DashboardState extends State<Dashboard> {
     setState(() {
       acceptRequest = !acceptRequest;
       showDeliveryDialog = !showDeliveryDialog;
-      Navigator.of(context).pop();
+      Get.back();
     });
   }
 

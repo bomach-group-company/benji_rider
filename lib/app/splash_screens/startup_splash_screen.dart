@@ -22,6 +22,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     Future.delayed(const Duration(seconds: 4), () {
       Get.to(
         () => const Dashboard(),
+        routeName: 'Dashboard',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,
