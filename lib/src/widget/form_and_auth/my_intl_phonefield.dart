@@ -1,10 +1,10 @@
-// ignore_for_file: file_names, avoid_print, prefer_interpolation_to_compose_strings
+// ignore_for_file:   avoid_print, prefer_interpolation_to_compose_strings
 
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
-import '../../providers/constants.dart';
 import '../../../theme/colors.dart';
+import '../../providers/constants.dart';
 
 class MyIntlPhoneField extends StatelessWidget {
   final TextEditingController controller;
