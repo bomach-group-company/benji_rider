@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
 
     // Navigate to the new page
     Get.offAll(
-      const SignUpSplashScreen(),
+      () => const SignUpSplashScreen(),
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -444,7 +444,7 @@ class _SignUpState extends State<SignUp> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const Login(),
+                              () => const Login(),
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,

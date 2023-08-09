@@ -58,7 +58,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
     // Navigate to the new page
     Get.to(
-      const SendOTP(),
+      () => const SendOTP(),
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,

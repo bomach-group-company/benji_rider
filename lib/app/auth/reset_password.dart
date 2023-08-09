@@ -63,7 +63,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
     // Navigate to the new page
     Get.offAll(
-      const Login(),
+      () => const Login(),
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,

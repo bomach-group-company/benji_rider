@@ -71,7 +71,7 @@ class _LoginState extends State<Login> {
 
     // Navigate to the new page
     Get.offAll(
-      const LoginSplashScreen(),
+      () => const LoginSplashScreen(),
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -109,57 +109,6 @@ class _LoginState extends State<Login> {
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          Navigator.of(context).pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            8.0,
-                          ),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: ShapeDecoration(
-                                      color: const Color(
-                                        0xFFFEF8F8,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                          width: 0.50,
-                                          color: Color(
-                                            0xFFFDEDED,
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          24,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      color: kAccentColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: ReusableAuthenticationFirstHalf(
                       title: "Log In",
@@ -327,7 +276,7 @@ class _LoginState extends State<Login> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const ForgotPassword(),
+                              () => const ForgotPassword(),
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,
@@ -400,7 +349,7 @@ class _LoginState extends State<Login> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const SignUp(),
+                              () => const SignUp(),
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,

@@ -41,7 +41,7 @@ class _DashboardState extends State<Dashboard> {
       acceptRequest = !acceptRequest;
       showDeliveryDialog = !showDeliveryDialog;
       Get.to(
-        const DeliverComplete(),
+        () => const DeliverComplete(),
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,

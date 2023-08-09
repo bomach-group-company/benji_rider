@@ -64,7 +64,7 @@ class _SendOTPState extends State<SendOTP> {
 
     // Navigate to the new page
     Get.to(
-      const ResetPassword(),
+      () => const ResetPassword(),
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
