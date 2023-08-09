@@ -158,13 +158,16 @@ class _ResetPasswordState extends State<ResetPassword> {
                       subtitle:
                           "Just enter a new password here and you are good to go!",
                       decoration: const ShapeDecoration(
+                        // color: Colors.white,
                         image: DecorationImage(
                           image: AssetImage(
-                            "assets/images/login/avatar-image.png",
+                            "assets/images/logo/benji_red_logo_icon.jpg",
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitHeight,
                         ),
-                        shape: CircleBorder(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
                       ),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,

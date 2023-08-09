@@ -147,13 +147,16 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       subtitle:
                           "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
                       decoration: const ShapeDecoration(
+                        // color: Colors.white,
                         image: DecorationImage(
                           image: AssetImage(
-                            "assets/images/login/avatar-image.png",
+                            "assets/images/logo/benji_red_logo_icon.jpg",
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitHeight,
                         ),
-                        shape: CircleBorder(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
                       ),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,

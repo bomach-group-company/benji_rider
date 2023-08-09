@@ -14,7 +14,6 @@ import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
-import 'signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -116,13 +115,16 @@ class _LoginState extends State<Login> {
                       title: "Log In",
                       subtitle: "Please log in to your existing account",
                       decoration: const ShapeDecoration(
+                        // color: Colors.white,
                         image: DecorationImage(
                           image: AssetImage(
-                            "assets/images/login/avatar-image.png",
+                            "assets/images/logo/benji_red_logo_icon.jpg",
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitHeight,
                         ),
-                        shape: CircleBorder(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
                       ),
                       imageContainerHeight:
                           deviceType(media.width) > 2 ? 200 : 88,
@@ -338,94 +340,6 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                     kHalfSizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Don't have an account? ",
-                          style: TextStyle(
-                            color: Color(
-                              0xFF646982,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Get.to(
-                              () => const SignUp(),
-                              routeName: 'SignUp',
-                              duration: const Duration(milliseconds: 300),
-                              fullscreenDialog: true,
-                              curve: Curves.easeIn,
-                              preventDuplicates: true,
-                              popGesture: true,
-                              transition: Transition.rightToLeft,
-                            );
-                          },
-                          child: Text(
-                            "Sign up",
-                            style: myAccentFontStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                    kHalfSizedBox,
-                    Center(
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Or log in with ",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(
-                                0xFF646982,
-                              ),
-                            ),
-                          ),
-                          kSizedBox,
-                          InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            onTap: () {},
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                                border: Border.all(
-                                  color: kGreyColor1,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          "assets/images/icons/google-signup-icon.png",
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const Text(
-                                    "Google",
-                                    style: TextStyle(
-                                      color: kTextBlackColor,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          kSizedBox,
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
