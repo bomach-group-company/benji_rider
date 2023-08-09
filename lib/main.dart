@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 
 import 'app/dashboard/dashboard.dart';
-import 'theme/app theme.dart';
+import 'theme/app_theme.dart';
 import 'theme/colors.dart';
 
 void main() async {

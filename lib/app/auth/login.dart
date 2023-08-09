@@ -6,14 +6,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/form_and_auth/email textformfield.dart';
-import '../../src/widget/form_and_auth/password textformfield.dart';
-import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/email_textformfield.dart';
+import '../../src/widget/form_and_auth/password_textformfield.dart';
+import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
-import 'forgot password.dart';
+import 'forgot_password.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {

@@ -124,8 +124,8 @@ class DeliverComplete extends StatelessWidget {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                               image: DecorationImage(
-                                image: AssetImage(
-                                    'assets/images/food/burgers.png'),
+                                image:
+                                    AssetImage('assets/images/food/pasta.png'),
                               ),
                             ),
                           ),
