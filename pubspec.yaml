@@ -25,6 +25,7 @@ dependencies:
   firebase_auth: ^4.7.2
   intl: ^0.18.1
   flutter_layout_grid: ^1.0.3
+  fl_chart: ^0.63.0
 
 dev_dependencies:
   flutter_test:
