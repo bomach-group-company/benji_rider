@@ -18,6 +18,7 @@ class _EarningState extends State<Earning> {
   final List<double> barChartList = [
     3,
     5,
+    5,
     8,
     9,
     7,
