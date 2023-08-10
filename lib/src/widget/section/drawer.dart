@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:benji_rider/app/auth/signup.dart';
+import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/earning/earning.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -69,7 +69,7 @@ class _MyDrawerState extends State<MyDrawer> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.of(context).pop();
+                    Get.back();
                   },
                   child: Container(
                     width: 30,
@@ -159,7 +159,8 @@ class _MyDrawerState extends State<MyDrawer> {
               icon: Icons.money,
               nav: () {
                 Get.to(
-                  const Earning(),
+                  () => const Earning(),
+                  routeName: 'Earning',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
@@ -175,7 +176,8 @@ class _MyDrawerState extends State<MyDrawer> {
               icon: Icons.location_on_outlined,
               nav: () {
                 Get.to(
-                  const DeliveredHistory(),
+                  () => const DeliveredHistory(),
+                  routeName: 'DeliveredHistory',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
@@ -203,7 +205,8 @@ class _MyDrawerState extends State<MyDrawer> {
               icon: Icons.logout,
               nav: () {
                 Get.off(
-                  const SignUp(),
+                  () => const Login(),
+                  routeName: 'Login',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,

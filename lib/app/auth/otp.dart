@@ -6,9 +6,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/form_and_auth/otp textFormField.dart';
-import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/otp_textFormField.dart';
+import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import 'reset_password.dart';
@@ -64,7 +64,8 @@ class _SendOTPState extends State<SendOTP> {
 
     // Navigate to the new page
     Get.to(
-      const ResetPassword(),
+      () => const ResetPassword(),
+      routeName: 'ResetPassword',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -99,7 +100,7 @@ class _SendOTPState extends State<SendOTP> {
                       InkWell(
                         borderRadius: BorderRadius.circular(24),
                         onTap: () {
-                          Navigator.of(context).pop(context);
+                          Get.back();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(
@@ -150,13 +151,16 @@ class _SendOTPState extends State<SendOTP> {
                       title: "Verification",
                       subtitle: "We have sent a code to your email",
                       decoration: const ShapeDecoration(
+                        // color: Colors.white,
                         image: DecorationImage(
                           image: AssetImage(
-                            "assets/images/login/avatar-image.png",
+                            "assets/images/logo/benji_red_logo_icon.jpg",
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitHeight,
                         ),
-                        shape: CircleBorder(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
                       ),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,

@@ -187,7 +187,8 @@ Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
                     trailing: InkWell(
                       onTap: () {
                         Get.to(
-                          const CallPage(),
+                          () => const CallPage(),
+                          routeName: 'CallPage',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,

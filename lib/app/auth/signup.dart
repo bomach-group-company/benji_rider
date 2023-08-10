@@ -8,12 +8,12 @@ import 'package:get/route_manager.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/form_and_auth/email textformfield.dart';
-import '../../src/widget/form_and_auth/my intl phonefield.dart';
-import '../../src/widget/form_and_auth/name textformfield.dart';
-import '../../src/widget/form_and_auth/password textformfield.dart';
-import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/email_textformfield.dart';
+import '../../src/widget/form_and_auth/my_intl_phonefield.dart';
+import '../../src/widget/form_and_auth/name_textformfield.dart';
+import '../../src/widget/form_and_auth/password_textformfield.dart';
+import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/signup_splash_screen.dart';
@@ -81,7 +81,9 @@ class _SignUpState extends State<SignUp> {
 
     // Navigate to the new page
     Get.offAll(
-      const SignUpSplashScreen(),
+      () => const SignUpSplashScreen(),
+      routeName: 'SignUpSplashScreen',
+      predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -444,7 +446,8 @@ class _SignUpState extends State<SignUp> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const Login(),
+                              () => const Login(),
+                              routeName: 'Login',
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,

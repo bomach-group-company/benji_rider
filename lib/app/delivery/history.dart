@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/responsive/reponsive_width.dart';
@@ -57,7 +58,7 @@ class _DeliveredHistoryState extends State<DeliveredHistory> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Get.back();
                 },
                 mouseCursor: SystemMouseCursors.click,
                 child: Container(

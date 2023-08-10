@@ -21,7 +21,8 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 4), () {
       Get.to(
-        const Dashboard(),
+        () => const Dashboard(),
+        routeName: 'Dashboard',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,

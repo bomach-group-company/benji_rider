@@ -7,9 +7,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/form_and_auth/password textformfield.dart';
-import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/password_textformfield.dart';
+import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import 'login.dart';
@@ -63,7 +63,8 @@ class _ResetPasswordState extends State<ResetPassword> {
 
     // Navigate to the new page
     Get.offAll(
-      const Login(),
+      () => const Login(),
+      routeName: 'Login',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -105,7 +106,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       InkWell(
                         borderRadius: BorderRadius.circular(24),
                         onTap: () {
-                          Navigator.of(context).pop(context);
+                          Get.back();
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(
@@ -157,13 +158,16 @@ class _ResetPasswordState extends State<ResetPassword> {
                       subtitle:
                           "Just enter a new password here and you are good to go!",
                       decoration: const ShapeDecoration(
+                        // color: Colors.white,
                         image: DecorationImage(
                           image: AssetImage(
-                            "assets/images/login/avatar-image.png",
+                            "assets/images/logo/benji_red_logo_icon.jpg",
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitHeight,
                         ),
-                        shape: CircleBorder(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
                       ),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,

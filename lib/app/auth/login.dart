@@ -6,15 +6,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/form_and_auth/email textformfield.dart';
-import '../../src/widget/form_and_auth/password textformfield.dart';
-import '../../src/widget/form_and_auth/reusable authentication first half.dart';
-import '../../src/widget/section/my fixed snackBar.dart';
+import '../../src/widget/form_and_auth/email_textformfield.dart';
+import '../../src/widget/form_and_auth/password_textformfield.dart';
+import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
-import 'signup.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -71,7 +70,9 @@ class _LoginState extends State<Login> {
 
     // Navigate to the new page
     Get.offAll(
-      const LoginSplashScreen(),
+      () => const LoginSplashScreen(),
+      routeName: 'LoginSplashScreen',
+      predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -109,69 +110,21 @@ class _LoginState extends State<Login> {
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          Navigator.of(context).pop(context);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            8.0,
-                          ),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: ShapeDecoration(
-                                      color: const Color(
-                                        0xFFFEF8F8,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                          width: 0.50,
-                                          color: Color(
-                                            0xFFFDEDED,
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          24,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      color: kAccentColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: ReusableAuthenticationFirstHalf(
                       title: "Log In",
                       subtitle: "Please log in to your existing account",
                       decoration: const ShapeDecoration(
+                        // color: Colors.white,
                         image: DecorationImage(
                           image: AssetImage(
-                            "assets/images/login/avatar-image.png",
+                            "assets/images/logo/benji_red_logo_icon.jpg",
                           ),
-                          fit: BoxFit.cover,
+                          fit: BoxFit.fitHeight,
                         ),
-                        shape: CircleBorder(),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(12))),
                       ),
                       imageContainerHeight:
                           deviceType(media.width) > 2 ? 200 : 88,
@@ -327,7 +280,8 @@ class _LoginState extends State<Login> {
                         TextButton(
                           onPressed: () {
                             Get.to(
-                              const ForgotPassword(),
+                              () => const ForgotPassword(),
+                              routeName: 'ForgotPassword',
                               duration: const Duration(milliseconds: 300),
                               fullscreenDialog: true,
                               curve: Curves.easeIn,
@@ -386,93 +340,6 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                     kHalfSizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Don't have an account? ",
-                          style: TextStyle(
-                            color: Color(
-                              0xFF646982,
-                            ),
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Get.to(
-                              const SignUp(),
-                              duration: const Duration(milliseconds: 300),
-                              fullscreenDialog: true,
-                              curve: Curves.easeIn,
-                              preventDuplicates: true,
-                              popGesture: true,
-                              transition: Transition.rightToLeft,
-                            );
-                          },
-                          child: Text(
-                            "Sign up",
-                            style: myAccentFontStyle,
-                          ),
-                        ),
-                      ],
-                    ),
-                    kHalfSizedBox,
-                    Center(
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Or log in with ",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(
-                                0xFF646982,
-                              ),
-                            ),
-                          ),
-                          kSizedBox,
-                          InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            onTap: () {},
-                            child: Container(
-                              width: MediaQuery.of(context).size.width / 2,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  10,
-                                ),
-                                border: Border.all(
-                                  color: kGreyColor1,
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    height: 50,
-                                    width: 50,
-                                    decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          "assets/images/icons/google-signup-icon.png",
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const Text(
-                                    "Google",
-                                    style: TextStyle(
-                                      color: kTextBlackColor,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          kSizedBox,
-                        ],
-                      ),
-                    ),
                   ],
                 ),
               ),
