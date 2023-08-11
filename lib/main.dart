@@ -1,4 +1,4 @@
-import 'package:benji_rider/app/auth/login.dart';
+import 'package:benji_rider/app/earning/earning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const Login(),
+      home: const Earning(),
     );
   }
 }

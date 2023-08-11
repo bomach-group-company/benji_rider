@@ -15,12 +15,27 @@ class Earning extends StatefulWidget {
 
 class _EarningState extends State<Earning> {
 //===================================== ALL VARIABLES =========================================\\
+  final List<double> barChartList = [
+    3,
+    5,
+    8,
+    9,
+    7,
+    3,
+    5,
+    2,
+    7,
+    8,
+    9,
+    8,
+    4,
+  ];
 
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDateTime = formatDateAndTime(now);
-
+    final media = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(
@@ -72,7 +87,7 @@ class _EarningState extends State<Earning> {
                     horizontal: 0,
                   ),
                   height: MediaQuery.of(context).size.height * 0.6,
-                  width: double.infinity,
+                  // width: double.infinity,
                   margin:
                       const EdgeInsets.symmetric(horizontal: kDefaultPadding),
                   decoration: BoxDecoration(
@@ -139,66 +154,76 @@ class _EarningState extends State<Earning> {
                         ),
                       ),
                       Expanded(
-                        child: BarChart(
-                          BarChartData(
-                            titlesData: FlTitlesData(
-                              leftTitles: AxisTitles(
-                                  sideTitles: SideTitles(
-                                reservedSize: 50,
-                                interval: 5,
-                                showTitles: true,
-                              )),
-                              topTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false)),
-                              bottomTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false)),
-                              rightTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false)),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              vertical: 10,
+                              horizontal: 20,
                             ),
-                            maxY: 25,
-                            minY: 0,
-                            gridData: FlGridData(show: false),
-                            borderData: FlBorderData(
-                                show: false,
-                                border: const Border(
-                                  top: BorderSide.none,
-                                  right: BorderSide.none,
-                                  left: BorderSide(width: 1),
-                                  bottom: BorderSide(width: 1),
-                                )),
-                            groupsSpace: 10,
+                            width: barChartList.length.toDouble() * 25,
+                            child: BarChart(
+                              BarChartData(
+                                titlesData: FlTitlesData(
+                                  leftTitles: AxisTitles(
+                                      sideTitles: SideTitles(
+                                    reservedSize: barChartList
+                                        .reduce((value, element) =>
+                                            value > element ? value : element)
+                                        .toDouble(),
+                                    interval: (barChartList.reduce(
+                                                (value, element) =>
+                                                    value > element
+                                                        ? value
+                                                        : element) ~/
+                                            4)
+                                        .toDouble(),
+                                    showTitles: true,
+                                  )),
+                                  topTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
+                                  bottomTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
+                                  rightTitles: AxisTitles(
+                                      sideTitles:
+                                          SideTitles(showTitles: false)),
+                                ),
+                                // maxY: barChartList
+                                //     .reduce((value, element) =>
+                                //         value > element ? value : element)
+                                //     .toDouble(),
+                                // minY: 0,
+                                gridData: FlGridData(show: false),
+                                borderData: FlBorderData(
+                                    show: false,
+                                    border: const Border(
+                                      top: BorderSide.none,
+                                      right: BorderSide.none,
+                                      left: BorderSide(width: 1),
+                                      bottom: BorderSide(width: 1),
+                                    )),
+                                groupsSpace: 10,
 
-                            // add bars
-                            barGroups: [
-                              BarChartGroupData(x: 1, barRods: [
-                                BarChartRodData(
-                                    toY: 10, width: 15, color: kAccentColor),
-                              ]),
-                              BarChartGroupData(x: 3, barRods: [
-                                BarChartRodData(
-                                    toY: 4, width: 15, color: kAccentColor),
-                              ]),
-                              BarChartGroupData(x: 4, barRods: [
-                                BarChartRodData(
-                                    toY: 2, width: 15, color: kAccentColor),
-                              ]),
-                              BarChartGroupData(x: 5, barRods: [
-                                BarChartRodData(
-                                    toY: 13, width: 15, color: kAccentColor),
-                              ]),
-                              BarChartGroupData(x: 6, barRods: [
-                                BarChartRodData(
-                                    toY: 17, width: 15, color: kAccentColor),
-                              ]),
-                              BarChartGroupData(x: 7, barRods: [
-                                BarChartRodData(
-                                    toY: 19, width: 15, color: kAccentColor),
-                              ]),
-                              BarChartGroupData(x: 8, barRods: [
-                                BarChartRodData(
-                                    toY: 21, width: 15, color: kAccentColor),
-                              ]),
-                            ],
+                                // add bars
+                                barGroups: List.generate(
+                                        barChartList.length, (index) => index)
+                                    .map(
+                                      (index) => BarChartGroupData(
+                                        x: index + 1,
+                                        barRods: [
+                                          BarChartRodData(
+                                              toY: barChartList[index]
+                                                  .toDouble(),
+                                              width: 15,
+                                              color: kAccentColor),
+                                        ],
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
                           ),
                         ),
                       ),
