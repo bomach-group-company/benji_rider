@@ -1,9 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/earning/earning.dart';
+import 'package:benji_rider/app/rider/rider.dart';
+import 'package:benji_rider/app/withdrawal/withdraw.dart';
+import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
+import '../../../app/dashboard/dashboard.dart';
 import '../../../app/delivery/history.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/responsive_constant.dart';
@@ -55,7 +59,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   decoration: ShapeDecoration(
                     image: const DecorationImage(
                       image:
-                          AssetImage("assets/images/profile/avatar-image.jpg"),
+                          AssetImage("assets/images/profile/avatar_image.jpg"),
                       fit: BoxFit.cover,
                     ),
                     shape: OvalBorder(
@@ -154,6 +158,40 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             kSizedBox,
             MyListTile(
+              text: 'Dashboard',
+              isOnline: widget.isOnline,
+              icon: Icons.speed_outlined,
+              nav: () {
+                Get.to(
+                  () => Dashboard(),
+                  routeName: 'Dashboard',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Ride',
+              isOnline: widget.isOnline,
+              icon: Icons.pedal_bike,
+              nav: () {
+                Get.to(
+                  () => const RiderPage(),
+                  routeName: 'RiderPage',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
               text: 'Earnings',
               isOnline: widget.isOnline,
               icon: Icons.money,
@@ -161,6 +199,40 @@ class _MyDrawerState extends State<MyDrawer> {
                 Get.to(
                   () => const Earning(),
                   routeName: 'Earning',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Withdraw',
+              isOnline: widget.isOnline,
+              icon: Icons.payments_outlined,
+              nav: () {
+                Get.to(
+                  () => const WithdrawPage(),
+                  routeName: 'WithdrawPage',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Withdraw History',
+              isOnline: widget.isOnline,
+              icon: Icons.history,
+              nav: () {
+                Get.to(
+                  () => const WithdrawHistoryPage(),
+                  routeName: 'WithdrawHistoryPage',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,

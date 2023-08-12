@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
-import '../../../app/dashboard/dashboard.dart';
+import '../../../app/rider/rider.dart';
 import '../../../app/splash_screens/startup_splash_screen.dart';
 import 'signup_email_password_failure.dart';
 
@@ -26,7 +26,7 @@ class AuthenticationRepo extends GetxController {
   _setInitialScreen(User? user) {
     user == null
         ? Get.offAll(() => const StartupSplashscreen())
-        : Get.offAll(() => const Dashboard());
+        : Get.offAll(() => const RiderPage());
   }
 
   Future<void> createUserWithEmailAndPassword(
@@ -37,7 +37,7 @@ class AuthenticationRepo extends GetxController {
         password: password,
       );
       firebaseUser.value != null
-          ? Get.offAll(() => const Dashboard())
+          ? Get.offAll(() => const RiderPage())
           : Get.offAll(() => const StartupSplashscreen());
     } on FirebaseAuthException catch (e) {
       final ex = SignupWithEmailAndPasswordFailure.code(e.code);
