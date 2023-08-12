@@ -192,6 +192,12 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             MyListTile(
+              text: 'Vendors',
+              isOnline: widget.isOnline,
+              icon: Icons.sell_outlined,
+              nav: () {},
+            ),
+            MyListTile(
               text: 'Earnings',
               isOnline: widget.isOnline,
               icon: Icons.money,
