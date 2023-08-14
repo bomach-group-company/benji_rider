@@ -1,4 +1,4 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'package:benji_rider/app/withdrawal/verify.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -26,6 +26,18 @@ class _WithdrawPageState extends State<WithdrawPage> {
   String dropDownItemValue = "Access Bank";
 
   //================================== FUNCTION ====================================\\
+  void _goToVerify() {
+    Get.to(
+      () => const VerifyWithdrawalPage(),
+      routeName: 'VerifyWithdrawalPage',
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
+    );
+  }
 
   void dropDownOnChanged(String? onChanged) {
     setState(() {
@@ -91,162 +103,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'Select Bank',
-                    style: TextStyle(
-                      color: Color(0xFF575757),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  kHalfSizedBox,
-                  DropdownButtonFormField<String>(
-                    value: dropDownItemValue,
-                    onChanged: dropDownOnChanged,
-                    enableFeedback: true,
-                    focusNode: productType,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    elevation: 20,
-                    validator: (value) {
-                      if (value == null) {
-                        productType.requestFocus();
-                        return "Pick a Product Type";
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.blue.shade50,
-                        ),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.blue.shade50,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
-                        borderSide: BorderSide(
-                          color: Colors.blue.shade50,
-                        ),
-                      ),
-                      errorBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(
-                          10.0,
-                        ),
-                        borderSide: const BorderSide(
-                          color: kErrorBorderColor,
-                          width: 2.0,
-                        ),
-                      ),
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      16,
-                    ),
-                    icon: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                    ),
-                    iconEnabledColor: kAccentColor,
-                    iconDisabledColor: kGreyColor2,
-                    items: [
-                      DropdownMenuItem<String>(
-                        value: "Access Bank",
-                        enabled: true,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/icons/accessbank.png',
-                              height: 45,
-                              width: 45,
-                            ),
-                            Text(
-                              'Access Bank',
-                              style: TextStyle(
-                                color: kTextBlackColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "UBA",
-                        enabled: true,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/icons/accessbank.png',
-                              height: 45,
-                              width: 45,
-                            ),
-                            Text(
-                              'UBA',
-                              style: TextStyle(
-                                color: kTextBlackColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "FCMB",
-                        enabled: true,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/icons/accessbank.png',
-                              height: 45,
-                              width: 45,
-                            ),
-                            Text(
-                              'FCMB',
-                              style: TextStyle(
-                                color: kTextBlackColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem<String>(
-                        value: "First Bank",
-                        enabled: true,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/icons/accessbank.png',
-                              height: 45,
-                              width: 45,
-                            ),
-                            Text(
-                              'First Bank',
-                              style: TextStyle(
-                                color: kTextBlackColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: kDefaultPadding * 2,
-                  ),
+                  kSizedBox,
                   Text(
                     'Amount',
                     style: TextStyle(
@@ -259,13 +116,13 @@ class _WithdrawPageState extends State<WithdrawPage> {
                   MyTextFormField(
                     controller: productNameEC,
                     focusNode: productNameFN,
-                    hintText: "Enter the product name here",
+                    hintText: "Enter the amount here",
                     textInputAction: TextInputAction.next,
                     textInputType: TextInputType.name,
                     validator: (value) {
                       if (value == null || value!.isEmpty) {
                         productNameFN.requestFocus();
-                        return "Enter the product name";
+                        return "Enter the amount";
                       }
                       return null;
                     },
@@ -273,11 +130,9 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       productNameEC.text = value!;
                     },
                   ),
-                  SizedBox(
-                    height: kDefaultPadding * 4,
-                  ),
+                  kSizedBox,
                   MyElevatedButton(
-                    onPressed: () {},
+                    onPressed: _goToVerify,
                     title: "Withdraw",
                   )
                 ],

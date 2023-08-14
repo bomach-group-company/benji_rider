@@ -2,13 +2,14 @@
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/earning/earning.dart';
 import 'package:benji_rider/app/rider/rider.dart';
-import 'package:benji_rider/app/withdrawal/withdraw.dart';
+import 'package:benji_rider/app/withdrawal/add_bank_account.dart';
 import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../app/dashboard/dashboard.dart';
 import '../../../app/delivery/history.dart';
+import '../../../app/withdrawal/select_account.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/responsive_constant.dart';
 import '../../providers/constants.dart';
@@ -220,8 +221,8 @@ class _MyDrawerState extends State<MyDrawer> {
               icon: Icons.payments_outlined,
               nav: () {
                 Get.to(
-                  () => const WithdrawPage(),
-                  routeName: 'WithdrawPage',
+                  () => const SelectAccountPage(),
+                  routeName: 'SelectAccountPage',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
@@ -236,7 +237,7 @@ class _MyDrawerState extends State<MyDrawer> {
               isOnline: widget.isOnline,
               icon: Icons.history,
               nav: () {
-                Get.to(
+                Get.off(
                   () => const WithdrawHistoryPage(),
                   routeName: 'WithdrawHistoryPage',
                   duration: const Duration(milliseconds: 300),
@@ -253,7 +254,7 @@ class _MyDrawerState extends State<MyDrawer> {
               isOnline: widget.isOnline,
               icon: Icons.location_on_outlined,
               nav: () {
-                Get.to(
+                Get.off(
                   () => const DeliveredHistory(),
                   routeName: 'DeliveredHistory',
                   duration: const Duration(milliseconds: 300),

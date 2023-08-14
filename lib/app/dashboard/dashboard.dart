@@ -8,6 +8,7 @@ import 'package:get/route_manager.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_orders_container.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
+import '../../src/widget/card/earning_container.dart';
 import '../../src/widget/section/drawer.dart';
 import '../../theme/colors.dart';
 
@@ -228,6 +229,13 @@ class _DashboardState extends State<Dashboard>
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(kDefaultPadding),
                 children: [
+                  EarningContainer(
+                    onTap: _toSeeAllVendors,
+                    number: 390.525,
+                    typeOf: "Emmanuel",
+                    onlineStatus: "248 Online",
+                  ),
+                  kSizedBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -235,15 +243,15 @@ class _DashboardState extends State<Dashboard>
                         containerColor: kPrimaryColor,
                         typeOfOrderColor: kTextGreyColor,
                         iconColor: kGreyColor1,
-                        numberOfOrders: "30",
-                        typeOfOrders: "Active",
+                        numberOfOrders: "47",
+                        typeOfOrders: "Completed",
                         onTap: _toSeeAllActiveOrders,
                       ),
                       OrdersContainer(
                         containerColor: Colors.red.shade100,
                         typeOfOrderColor: kAccentColor,
                         iconColor: kAccentColor,
-                        numberOfOrders: "20",
+                        numberOfOrders: "3",
                         typeOfOrders: "Pending",
                         onTap: _toSeeAllNewOrders,
                       ),
@@ -257,42 +265,42 @@ class _DashboardState extends State<Dashboard>
                     onlineStatus: "248 Online",
                   ),
                   kSizedBox,
-                  RiderVendorContainer(
-                    onTap: _toSeeAllRiders,
-                    number: "90",
-                    typeOf: "Riders",
-                    onlineStatus: "32 Online",
-                  ),
-                  const SizedBox(height: kDefaultPadding * 2),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(
-                        width: 200,
-                        child: Text(
-                          "New Orders",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ),
-                      TextButton(
-                        onPressed: _toSeeAllNewOrders,
-                        child: SizedBox(
-                          child: Text(
-                            "See All",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: kAccentColor,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  kSizedBox,
+                  // RiderVendorContainer(
+                  //   onTap: _toSeeAllRiders,
+                  //   number: "90",
+                  //   typeOf: "Riders",
+                  //   onlineStatus: "32 Online",
+                  // ),
+                  // const SizedBox(height: kDefaultPadding * 2),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     const SizedBox(
+                  //       width: 200,
+                  //       child: Text(
+                  //         "New Orders",
+                  //         style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.w700,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     TextButton(
+                  //       onPressed: _toSeeAllNewOrders,
+                  //       child: SizedBox(
+                  //         child: Text(
+                  //           "See All",
+                  //           style: TextStyle(
+                  //             fontSize: 16,
+                  //             color: kAccentColor,
+                  //             fontWeight: FontWeight.w400,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // kSizedBox,
                   //   Column(
                   //     children: [
                   //       for (orderID = 1;
