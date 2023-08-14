@@ -1,6 +1,6 @@
 // ignore_for_file: camel_case_types, file_names
 
-import 'package:benji_rider/app/dashboard/dashboard.dart';
+import 'package:benji_rider/app/rider/rider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
@@ -21,8 +21,8 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 4), () {
       Get.to(
-        () => const Dashboard(),
-        routeName: 'Dashboard',
+        () => const RiderPage(),
+        routeName: 'RiderPage',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,

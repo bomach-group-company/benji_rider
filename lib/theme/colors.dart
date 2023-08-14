@@ -25,6 +25,9 @@ Color kGreyColor2 = const Color(
 const Color kBlackColor = Color(
   0xFF000000,
 );
+
+Color kPageSkeletonColor = kBlackColor.withOpacity(0.35);
+
 const Color kDarkGreyColor = Colors.black12;
 
 //Background Colors

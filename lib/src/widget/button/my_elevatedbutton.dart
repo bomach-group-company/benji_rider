@@ -33,8 +33,7 @@ class MyElevatedButton extends StatelessWidget {
         textAlign: TextAlign.center,
         style: TextStyle(
           color: kPrimaryColor,
-          fontSize: 18,
-          fontFamily: "Sen",
+          fontSize: 16,
           fontWeight: FontWeight.w700,
         ),
       ),

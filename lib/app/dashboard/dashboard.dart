@@ -1,162 +1,154 @@
-// ignore_for_file: unused_field, prefer_typing_uninitialized_variables
+// ignore_for_file:  unused_local_variable
 
-import 'package:benji_rider/src/widget/section/drawer.dart';
+import 'package:benji_rider/app/rider/rider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/route_manager.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/card/online_offline_card.dart';
-import '../../src/widget/card/pickup_and_delivery_card.dart';
+import '../../src/widget/card/dashboard_orders_container.dart';
+import '../../src/widget/card/dashboard_rider_vendor_container.dart';
+import '../../src/widget/card/earning_container.dart';
+import '../../src/widget/section/drawer.dart';
 import '../../theme/colors.dart';
-import '../../theme/model.dart';
-import '../delivery/delivery_completed.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  const Dashboard({Key? key}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
 }
 
-class _DashboardState extends State<Dashboard> {
-  //=================================== ALL VARIABLES ======================================================\\
+typedef ModalContentBuilder = Widget Function(BuildContext);
 
-  //=================================== BOOL VALUES ======================================================\\
-  bool isOffline = true;
-  bool isLoading = false;
-  bool isOnline = false;
-  bool acceptRequest = false;
-  bool showDeliveryDialog = false;
-  bool pickedUp = false;
+class _DashboardState extends State<Dashboard>
+    with SingleTickerProviderStateMixin {
+  //===================== Initial State ==========================\\
+  @override
+  void initState() {
+    super.initState();
 
-  //=================================== CONTROLLERS ======================================================\\
-  GoogleMapController? _googleMapController;
-
-  //=================================== FUNCTIONS ======================================================\\
-  void deliveryFunc(context) {
-    setState(() {
-      pickedUp = false;
-      acceptRequest = !acceptRequest;
-      showDeliveryDialog = !showDeliveryDialog;
-      Get.to(
-        () => const DeliverComplete(),
-        routeName: 'DeliverComplete',
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.rightToLeft,
-      );
-    });
-  }
-
-  void pickedUpFunc(context) {
-    setState(() {
-      pickedUp = true;
-      Get.back();
-    });
-  }
-
-  void acceptRequestFunc(context) {
-    setState(() {
-      acceptRequest = !acceptRequest;
-      showDeliveryDialog = !showDeliveryDialog;
-      Get.back();
-    });
-  }
-
-  //=========================== FUNCTIONS ====================================\\
-  Future<void> toggleOnline() async {
-    setState(() {
-      isLoading = true;
-      isOffline = !isOffline;
-      isOnline = !isOnline;
-    });
-
-    // Simulating a delay of 3 seconds
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      isLoading = false;
-    });
-
-    await Future.delayed(const Duration(seconds: 5));
-    setState(() {
-      showDeliveryDialog = true;
-    });
-  }
-
-  final LatLng _latLng = const LatLng(
-    6.456076934514027,
-    7.507987759047121,
-  );
-
-  void _onMapCreated(GoogleMapController controller) {
-    _googleMapController = controller;
+    _loadingScreen = true;
+    Future.delayed(
+      const Duration(seconds: 2),
+      () => setState(
+        () => _loadingScreen = false,
+      ),
+    );
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+//==========================================================================================\\
+
+//=================================== ALL VARIABLES =====================================\\
+  late bool _loadingScreen;
+  bool _isScrollToTopBtnVisible = false;
+  int incrementOrderID = 2 + 2;
+  late int orderID;
+  String orderItem = "Jollof Rice and Chicken";
+  String customerAddress = "21 Odogwu Street, New Haven";
+  int itemQuantity = 2;
+  double price = 2500;
+  double itemPrice = 2500;
+  String orderImage = "chizzy's-food";
+  String customerName = "Mercy Luke";
+
+//============================================== CONTROLLERS =================================================\\
+  final ScrollController _scrollController = ScrollController();
+  late AnimationController _animationController;
+
+//=================================== FUNCTIONS =====================================\\
+
+  double calculateSubtotal() {
+    return itemPrice * itemQuantity;
+  }
+
+//===================== Handle refresh ==========================\\
+
+  Future<void> _handleRefresh() async {
+    setState(() {
+      _loadingScreen = true;
+    });
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {
+      _loadingScreen = false;
+    });
+  }
+
+//============================= Scroll to Top ======================================//
+  void _scrollToTop() {
+    _animationController.reverse();
+    _scrollController.animateTo(0,
+        duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
+  }
+
+  void _scrollListener() {
+    //========= Show action button ========//
+    if (_scrollController.position.pixels >= 200) {
+      _animationController.forward();
+      setState(() => _isScrollToTopBtnVisible = true);
+    }
+    //========= Hide action button ========//
+    else if (_scrollController.position.pixels < 200) {
+      _animationController.reverse();
+      setState(() => _isScrollToTopBtnVisible = true);
+    }
+  }
+
+//=================================== Navigation =====================================\\
+
+  void _toSeeAllRiders() => Get.to(
+        () => RiderPage(),
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        routeName: "All riders",
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.downToUp,
+      );
+
+  void _toSeeAllVendors() {}
+
+  void _toSeeAllNewOrders() {}
+
+  void _toSeeAllActiveOrders() {}
+
+  @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    String formattedDateAndTime = formatDateAndTime(now);
+    double mediaWidth = MediaQuery.of(context).size.width;
+    double mediaHeight = MediaQuery.of(context).size.height;
+    double subtotalPrice = calculateSubtotal();
+
+    //===================== Navigate to Order Details Page ================================\\
+    void toOrderDetailsPage() {}
+
+//====================================================================================\\
+
     return Scaffold(
-      drawer: MyDrawer(isOnline: isOnline, toggleOnline: toggleOnline),
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        child: Stack(
-          children: [
-            isOffline
-                ? Center(
-                    child: Container(
-                    height: 300,
-                    width: 300,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                                "assets/animations/no_internet/no_internet.gif"))),
-                  ))
-                : isLoading
-                    ? Center(
-                        child: SpinKitChasingDots(
-                          color: kAccentColor,
-                        ),
-                      )
-                    : FutureBuilder(
-                        builder: (context, snapshot) => GoogleMap(
-                          mapType: MapType.normal,
-                          buildingsEnabled: true,
-                          compassEnabled: false,
-                          indoorViewEnabled: true,
-                          mapToolbarEnabled: true,
-                          minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                          tiltGesturesEnabled: true,
-                          zoomControlsEnabled: false,
-                          zoomGesturesEnabled: true,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          cameraTargetBounds: CameraTargetBounds.unbounded,
-                          rotateGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          trafficEnabled: true,
-                          initialCameraPosition: CameraPosition(
-                            target: _latLng,
-                            zoom: 20.0,
-                            tilt: 16,
-                          ),
-                          onMapCreated: _onMapCreated,
-                        ),
-                      ),
-            Container(
-              margin: const EdgeInsets.all(30),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: Builder(
-                builder: (context) => IconButton(
+      appBar: AppBar(
+        elevation: 0,
+        titleSpacing: -20,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.transparent,
+        title: Container(
+          margin: const EdgeInsets.all(30),
+          decoration: BoxDecoration(
+            color: kPrimaryColor,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(20),
+            ),
+          ),
+          child: Builder(
+            builder: (context) => Row(
+              children: [
+                IconButton(
                   splashRadius: 20,
                   onPressed: () {
                     Scaffold.of(context).openDrawer();
@@ -166,585 +158,331 @@ class _DashboardState extends State<Dashboard> {
                     color: kAccentColor,
                   ),
                 ),
+                kHalfWidthSizedBox,
+                Text(
+                  "Dashboard",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: kBlackColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      drawer: MyDrawer(
+        isOnline: true,
+        toggleOnline: () {},
+      ),
+      floatingActionButton: Stack(
+        children: <Widget>[
+          if (_isScrollToTopBtnVisible) ...[
+            ScaleTransition(
+              scale: CurvedAnimation(
+                  parent: _animationController,
+                  curve: Curves.fastEaseInToSlowEaseOut),
+              child: FloatingActionButton(
+                onPressed: _scrollToTop,
+                mini: true,
+                backgroundColor: kAccentColor,
+                enableFeedback: true,
+                mouseCursor: SystemMouseCursors.click,
+                tooltip: "Scroll to top",
+                hoverColor: kAccentColor,
+                hoverElevation: 50.0,
+                child: const Icon(Icons.keyboard_arrow_up),
               ),
             ),
-            Container(
-              margin: const EdgeInsets.only(
-                top: 90,
-                bottom: 30,
-                left: 30,
-                right: 30,
-              ),
-              child: Column(
+          ]
+        ],
+      ),
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        child: FutureBuilder(
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              const Center(
+                child: Text("Loading..."),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.none) {
+              const Center(
+                child: Text("Please connect to the internet"),
+              );
+            }
+            // if (snapshot.connectionState == snapshot.requireData) {
+            //   SpinKitDoubleBounce(color: kAccentColor);
+            // }
+            if (snapshot.connectionState == snapshot.error) {
+              const Center(
+                child: Text("Error, Please try again later"),
+              );
+            }
+            return Scrollbar(
+              controller: _scrollController,
+              radius: const Radius.circular(10),
+              scrollbarOrientation: ScrollbarOrientation.right,
+              child: ListView(
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                padding: const EdgeInsets.all(kDefaultPadding),
                 children: [
-                  isOffline
-                      ? Container()
-                      : isLoading
-                          ? Container()
-                          : showDeliveryDialog
-                              ? InkWell(
-                                  borderRadius: BorderRadius.circular(8),
-                                  onTap: () {
-                                    showModalBottomSheet<void>(
-                                      barrierColor:
-                                          kBlackColor.withOpacity(0.7),
-                                      isScrollControlled: true,
-                                      enableDrag: true,
-                                      showDragHandle: true,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(30),
-                                        ),
-                                      ),
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 30),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: <Widget>[
-                                              Row(
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Container(
-                                                        height: 12,
-                                                        width: 12,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(2),
-                                                        decoration:
-                                                            ShapeDecoration(
-                                                          shape: OvalBorder(
-                                                            side: BorderSide(
-                                                              width: 1,
-                                                              color:
-                                                                  kAccentColor,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            color: kAccentColor,
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        8),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        color: kAccentColor,
-                                                        height:
-                                                            kDefaultPadding * 2,
-                                                        width: 1.5,
-                                                      ),
-                                                      Icon(
-                                                        Icons.location_on_sharp,
-                                                        size: 12,
-                                                        color: kAccentColor,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  kHalfWidthSizedBox,
-                                                  const Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        '21 Bartus Street, Abuja Nigeria',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 15.97,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        height:
-                                                            kDefaultPadding * 2,
-                                                      ),
-                                                      Text(
-                                                        '21 Bartus Street, Abuja Nigeria',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 15.97,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                              kSizedBox,
-                                              kSizedBox,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Container(
-                                                    width: 82.13,
-                                                    height: 82.13,
-                                                    decoration: ShapeDecoration(
-                                                      image:
-                                                          const DecorationImage(
-                                                        image: NetworkImage(
-                                                          "https://via.placeholder.com/82x82",
-                                                        ),
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(9.13),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  kHalfWidthSizedBox,
-                                                  const Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        'Rice and Chicken',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 13.69,
-                                                          fontFamily: 'Sen',
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      kHalfSizedBox,
-                                                      Text(
-                                                        'Food ',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 13.69,
-                                                          fontFamily: 'Sen',
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      kHalfSizedBox,
-                                                      Text(
-                                                        '3 plates',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 13.69,
-                                                          fontFamily: 'Sen',
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      kHalfSizedBox,
-                                                      Text(
-                                                        '40kg',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 13.69,
-                                                          fontFamily: 'Sen',
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      kHalfSizedBox,
-                                                      Text(
-                                                        'Item is fragile (glass) so be careful',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0xFF454545),
-                                                          fontSize: 13.69,
-                                                          fontFamily: 'Sen',
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                              kSizedBox,
-                                              kSizedBox,
-                                              const Text(
-                                                'You will be able to contact customer \nonce you accept pick up',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: Color(0xFF979797),
-                                                  fontSize: 13.69,
-                                                  fontFamily: 'Sen',
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                              kSizedBox,
-                                              acceptRequest
-                                                  ? Column(
-                                                      children: [
-                                                        ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                kAccentColor,
-                                                            fixedSize: Size(
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                              kDefaultPadding *
-                                                                  2,
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            acceptRequestFunc(
-                                                                context);
-                                                          },
-                                                          child: const Text(
-                                                            'Accept Request',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 15.53,
-                                                              fontFamily: 'Sen',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        kHalfSizedBox,
-                                                        OutlinedButton(
-                                                          onPressed: () {},
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            fixedSize: Size(
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                              kDefaultPadding *
-                                                                  2,
-                                                            ),
-                                                          ),
-                                                          child: const Text(
-                                                            'Reject',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xFFD41920),
-                                                              fontSize: 15.53,
-                                                              fontFamily: 'Sen',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Column(
-                                                      children: [
-                                                        ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            backgroundColor:
-                                                                kAccentColor,
-                                                            fixedSize: Size(
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                              kDefaultPadding *
-                                                                  2,
-                                                            ),
-                                                          ),
-                                                          onPressed: () {
-                                                            acceptRequestFunc(
-                                                                context);
-                                                          },
-                                                          child: const Text(
-                                                            'Accept Request',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 15.53,
-                                                              fontFamily: 'Sen',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        kHalfSizedBox,
-                                                        OutlinedButton(
-                                                          onPressed: () {},
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            fixedSize: Size(
-                                                              MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width,
-                                                              kDefaultPadding *
-                                                                  2,
-                                                            ),
-                                                          ),
-                                                          child: const Text(
-                                                            'Reject',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0xFFD41920),
-                                                              fontSize: 15.53,
-                                                              fontFamily: 'Sen',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                              kSizedBox
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.only(
-                                      top: 10,
-                                      left: 20,
-                                      right: 20,
-                                      bottom: 20,
-                                    ),
-                                    decoration: ShapeDecoration(
-                                      color: kAccentColor.withOpacity(0.6),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          'Delivery Request',
-                                          style: TextStyle(
-                                            color: kTextWhiteColor,
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w700,
-                                          ),
-                                        ),
-                                        kSizedBox,
-                                        const Text(
-                                          'You have a delivery request!',
-                                          style: TextStyle(
-                                            color: Color(0xFFD4D4D4),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {},
-                                              child: const Text(
-                                                'Reject',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
-                                            ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    kTextWhiteColor,
-                                                shape:
-                                                    const RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(20),
-                                                  ),
-                                                ),
-                                              ),
-                                              onPressed: () {},
-                                              child: Text(
-                                                'Accept',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: kAccentColor,
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              : Container(),
-                  const Spacer(),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    // red delivery request card
-                    child: showDeliveryDialog
-                        ? Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.only(
-                              top: 10,
-                              left: 20,
-                              right: 20,
-                              bottom: 20,
-                            ),
-                            decoration: ShapeDecoration(
-                              color: kAccentColor.withOpacity(0.6),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Delivery Request',
-                                  style: TextStyle(
-                                    color: kTextWhiteColor,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                kSizedBox,
-                                const Text(
-                                  '21 Bartus Street, Enugu. 12km 20mins.',
-                                  style: TextStyle(
-                                    color: Color(0xFFD4D4D4),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: kTextWhiteColor,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(20),
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        deliveryModel(context, () {
-                                          acceptRequestFunc(context);
-                                        });
-                                      },
-                                      child: Text(
-                                        'Go',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: kAccentColor,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
-                          )
-                        : const SizedBox(),
+                  EarningContainer(
+                    onTap: _toSeeAllVendors,
+                    number: 390.525,
+                    typeOf: "Emmanuel",
+                    onlineStatus: "248 Online",
                   ),
-                  const Spacer(),
-                  acceptRequest
-                      ? PickupDeliveryCard(
-                          isDelivery: pickedUp,
-                          pickupFunc: () {
-                            deliveryModel(
-                              context,
-                              () {
-                                acceptRequestFunc(context);
-                              },
-                              isPickup: true,
-                              pickedUpFunc: () {
-                                pickedUpFunc(context);
-                              },
-                            );
-                          },
-                          deliveryFunc: () {
-                            deliveryModel(
-                              context,
-                              () {
-                                acceptRequestFunc(context);
-                              },
-                              isDelivery: true,
-                              deliveryFunc: () {
-                                deliveryFunc(context);
-                              },
-                            );
-                          },
-                        )
-                      : OnlineOfflineCard(
-                          isOnline: isOnline,
-                          toggleOnline: toggleOnline,
-                        ),
+                  kSizedBox,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      OrdersContainer(
+                        containerColor: kPrimaryColor,
+                        typeOfOrderColor: kTextGreyColor,
+                        iconColor: kGreyColor1,
+                        numberOfOrders: "47",
+                        typeOfOrders: "Completed",
+                        onTap: _toSeeAllActiveOrders,
+                      ),
+                      OrdersContainer(
+                        containerColor: Colors.red.shade100,
+                        typeOfOrderColor: kAccentColor,
+                        iconColor: kAccentColor,
+                        numberOfOrders: "3",
+                        typeOfOrders: "Pending",
+                        onTap: _toSeeAllNewOrders,
+                      ),
+                    ],
+                  ),
+                  kSizedBox,
+                  RiderVendorContainer(
+                    onTap: _toSeeAllVendors,
+                    number: "390",
+                    typeOf: "Vendors",
+                    onlineStatus: "248 Online",
+                  ),
+                  kSizedBox,
+                  // RiderVendorContainer(
+                  //   onTap: _toSeeAllRiders,
+                  //   number: "90",
+                  //   typeOf: "Riders",
+                  //   onlineStatus: "32 Online",
+                  // ),
+                  // const SizedBox(height: kDefaultPadding * 2),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     const SizedBox(
+                  //       width: 200,
+                  //       child: Text(
+                  //         "New Orders",
+                  //         style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.w700,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     TextButton(
+                  //       onPressed: _toSeeAllNewOrders,
+                  //       child: SizedBox(
+                  //         child: Text(
+                  //           "See All",
+                  //           style: TextStyle(
+                  //             fontSize: 16,
+                  //             color: kAccentColor,
+                  //             fontWeight: FontWeight.w400,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+                  // kSizedBox,
+                  //   Column(
+                  //     children: [
+                  //       for (orderID = 1;
+                  //           orderID < 30;
+                  //           orderID += incrementOrderID)
+                  //         InkWell(
+                  //           onTap: toOrderDetailsPage,
+                  //           borderRadius: BorderRadius.circular(kDefaultPadding),
+                  //           child: Container(
+                  //             margin: const EdgeInsets.symmetric(
+                  //               vertical: kDefaultPadding / 2,
+                  //             ),
+                  //             padding: const EdgeInsets.only(
+                  //               top: kDefaultPadding / 2,
+                  //               left: kDefaultPadding / 2,
+                  //               right: kDefaultPadding / 2,
+                  //             ),
+                  //             width: mediaWidth / 1.1,
+                  //             height: 150,
+                  //             decoration: ShapeDecoration(
+                  //               color: kPrimaryColor,
+                  //               shape: RoundedRectangleBorder(
+                  //                 borderRadius:
+                  //                     BorderRadius.circular(kDefaultPadding),
+                  //               ),
+                  //               shadows: const [
+                  //                 BoxShadow(
+                  //                   color: Color(0x0F000000),
+                  //                   blurRadius: 24,
+                  //                   offset: Offset(0, 4),
+                  //                   spreadRadius: 4,
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //             child: Row(
+                  //               children: [
+                  //                 Column(
+                  //                   children: [
+                  //                     Container(
+                  //                       width: 60,
+                  //                       height: 60,
+                  //                       decoration: BoxDecoration(
+                  //                         color: kPageSkeletonColor,
+                  //                         borderRadius: BorderRadius.circular(16),
+                  //                         image: DecorationImage(
+                  //                           image: AssetImage(
+                  //                             "assets/images/products/$orderImage.png",
+                  //                           ),
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                     kHalfSizedBox,
+                  //                     Text(
+                  //                       "#00${orderID.toString()}",
+                  //                       style: TextStyle(
+                  //                         color: kTextGreyColor,
+                  //                         fontSize: 13,
+                  //                         fontWeight: FontWeight.w400,
+                  //                       ),
+                  //                     )
+                  //                   ],
+                  //                 ),
+                  //                 kWidthSizedBox,
+                  //                 Column(
+                  //                   crossAxisAlignment: CrossAxisAlignment.start,
+                  //                   children: [
+                  //                     SizedBox(
+                  //                       width: mediaWidth / 1.55,
+                  //                       // color: kAccentColor,
+                  //                       child: Row(
+                  //                         mainAxisAlignment:
+                  //                             MainAxisAlignment.spaceBetween,
+                  //                         children: [
+                  //                           const SizedBox(
+                  //                             child: Text(
+                  //                               "Hot Kitchen",
+                  //                               maxLines: 2,
+                  //                               overflow: TextOverflow.ellipsis,
+                  //                               style: TextStyle(
+                  //                                 fontSize: 12,
+                  //                                 fontWeight: FontWeight.w400,
+                  //                               ),
+                  //                             ),
+                  //                           ),
+                  //                           SizedBox(
+                  //                             child: Text(
+                  //                               formattedDateAndTime,
+                  //                               overflow: TextOverflow.ellipsis,
+                  //                               style: const TextStyle(
+                  //                                 fontSize: 12,
+                  //                                 fontWeight: FontWeight.w400,
+                  //                               ),
+                  //                             ),
+                  //                           )
+                  //                         ],
+                  //                       ),
+                  //                     ),
+                  //                     kHalfSizedBox,
+                  //                     Container(
+                  //                       color: kTransparentColor,
+                  //                       width: 250,
+                  //                       child: Text(
+                  //                         orderItem,
+                  //                         overflow: TextOverflow.ellipsis,
+                  //                         maxLines: 2,
+                  //                         style: const TextStyle(
+                  //                           fontSize: 14,
+                  //                           fontWeight: FontWeight.w700,
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                     kHalfSizedBox,
+                  //                     Container(
+                  //                       width: 200,
+                  //                       color: kTransparentColor,
+                  //                       child: Text.rich(
+                  //                         TextSpan(
+                  //                           children: [
+                  //                             TextSpan(
+                  //                               text: "x $itemQuantity",
+                  //                               style: const TextStyle(
+                  //                                 fontSize: 13,
+                  //                                 fontWeight: FontWeight.w400,
+                  //                               ),
+                  //                             ),
+                  //                             const TextSpan(text: "  "),
+                  //                             TextSpan(
+                  //                               text:
+                  //                                   "₦ ${itemPrice.toStringAsFixed(2)}",
+                  //                               style: const TextStyle(
+                  //                                 fontSize: 15,
+                  //                                 fontFamily: 'sen',
+                  //                                 fontWeight: FontWeight.w400,
+                  //                               ),
+                  //                             )
+                  //                           ],
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                     kHalfSizedBox,
+                  //                     Container(
+                  //                       color: kGreyColor1,
+                  //                       height: 1,
+                  //                       width: mediaWidth / 1.8,
+                  //                     ),
+                  //                     kHalfSizedBox,
+                  //                     SizedBox(
+                  //                       width: mediaWidth / 1.8,
+                  //                       child: Text(
+                  //                         customerName,
+                  //                         overflow: TextOverflow.ellipsis,
+                  //                         maxLines: 1,
+                  //                         style: const TextStyle(
+                  //                           fontSize: 14,
+                  //                           fontWeight: FontWeight.w700,
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                     SizedBox(
+                  //                       width: mediaWidth / 1.8,
+                  //                       child: Text(
+                  //                         customerAddress,
+                  //                         overflow: TextOverflow.ellipsis,
+                  //                         maxLines: 1,
+                  //                         style: const TextStyle(
+                  //                           fontSize: 13,
+                  //                           fontWeight: FontWeight.w400,
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //     ],
+                  //   ),
                 ],
               ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
