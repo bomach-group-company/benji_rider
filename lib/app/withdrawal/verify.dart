@@ -67,7 +67,7 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
     Get.to(
       () => SuccessfulScreen(
         buttonTitle: 'Ok',
-        text: 'Withdraw Successful',
+        text: 'Withdrawal Successful',
         buttonAction: () => Get.to(
           () => Dashboard(),
           routeName: 'Dashboard',
