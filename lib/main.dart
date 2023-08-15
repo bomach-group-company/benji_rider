@@ -1,7 +1,9 @@
+import 'package:benji_rider/app/rider/rider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 
+import 'app/auth/login.dart';
 import 'app/dashboard/dashboard.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
@@ -32,7 +34,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const Dashboard(),
+      home: const RiderPage(),
     );
   }
 }

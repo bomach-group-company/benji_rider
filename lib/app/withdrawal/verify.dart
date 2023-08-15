@@ -64,7 +64,7 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
     );
 
     // Navigate to the new page
-    Get.to(
+    Get.offAll(
       () => SuccessfulScreen(
         buttonTitle: 'Ok',
         text: 'Withdrawal Successful',
@@ -83,7 +83,6 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
-      preventDuplicates: true,
       popGesture: true,
       transition: Transition.rightToLeft,
     );

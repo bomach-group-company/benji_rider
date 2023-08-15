@@ -13,8 +13,18 @@ Future<String?> getAuthToken() async {
   return prefs.getString('auth_token');
 }
 
-Map<String, String> authHeader(authToken) =>
-    {'Authorization': 'Bearer $authToken', 'Content-Type': 'application/json'};
+Future<bool> deleteAuthToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.remove('auth_token');
+}
+
+Future<Map<String, String>> authHeader() async {
+  String? authToken = await getAuthToken();
+  return {
+    'Authorization': 'Bearer $authToken',
+    'Content-Type': 'application/json'
+  };
+}
 
 dynamic isUnauthorized(Map data) {
   if (data.containsKey('detail') && data['detail'] == 'Unauthorized') {
