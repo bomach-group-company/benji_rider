@@ -258,7 +258,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       },
                     ),
                     MyListTile(
-                      text: 'Withdraw History',
+                      text: 'Withdrawal History',
                       isOnline: snapshot.data,
                       icon: Icons.history,
                       nav: () {
