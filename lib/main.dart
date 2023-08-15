@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const RiderPage(),
+      home: const Dashboard(),
     );
   }
 }

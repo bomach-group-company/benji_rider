@@ -15,6 +15,7 @@ Future<String?> getAuthToken() async {
 
 Future<bool> deleteAuthToken() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.remove('isOnline');
   return prefs.remove('auth_token');
 }
 
