@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
+import '../../repo/utils/constants.dart';
+import '../../repo/utils/helpers.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/email_textformfield.dart';
 import '../../src/widget/form_and_auth/password_textformfield.dart';
@@ -14,9 +17,11 @@ import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  final bool logout;
+  const Login({super.key, this.logout = false});
 
   @override
   State<Login> createState() => _LoginState();
@@ -55,40 +60,69 @@ class _LoginState extends State<Login> {
       isLoading = true;
     });
 
-    // Simulating a delay of 3 seconds
-    await Future.delayed(const Duration(seconds: 2));
-
-    //Display snackBar
-    myFixedSnackBar(
-      context,
-      "Login Successful".toUpperCase(),
-      kSuccessColor,
-      const Duration(
-        seconds: 2,
-      ),
-    );
-
-    // Navigate to the new page
-    Get.offAll(
-      () => const LoginSplashScreen(),
-      routeName: 'LoginSplashScreen',
-      predicate: (route) => false,
-      duration: const Duration(milliseconds: 300),
-      fullscreenDialog: true,
-      curve: Curves.easeIn,
-      popGesture: true,
-      transition: Transition.rightToLeft,
-    );
+    await sendPostRequest(emailController.text, passwordController.text);
 
     setState(() {
       isLoading = false;
     });
   }
 
+  //=========================== REQUEST ====================================\\
+
+  Future<void> sendPostRequest(String username, String password) async {
+    final url = Uri.parse('$baseURL/auth/token');
+    final body = {
+      'username': username,
+      'password': password,
+    };
+
+    final response = await http.post(
+      url,
+      body: body,
+    );
+
+    Map data = jsonDecode(response.body);
+
+    if (response.statusCode == 200 && data['token'] != false) {
+      saveAuthToken(data['token']);
+      myFixedSnackBar(
+        context,
+        "Login Successful".toUpperCase(),
+        kSuccessColor,
+        const Duration(
+          seconds: 2,
+        ),
+      );
+
+      Get.offAll(
+        () => const LoginSplashScreen(),
+        routeName: 'LoginSplashScreen',
+        predicate: (route) => false,
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        popGesture: true,
+        transition: Transition.fadeIn,
+      );
+    } else {
+      myFixedSnackBar(
+        context,
+        "Invalid email or password".toUpperCase(),
+        kAccentColor,
+        const Duration(
+          seconds: 2,
+        ),
+      );
+    }
+  }
+
   //=========================== INITIAL STATE ====================================\\
   @override
   void initState() {
     super.initState();
+    if (widget.logout) {
+      deleteAuthToken();
+    }
     isObscured = true;
   }
 

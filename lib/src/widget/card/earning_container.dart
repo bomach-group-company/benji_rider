@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
@@ -26,6 +27,15 @@ class EarningContainer extends StatefulWidget {
 
 class _EarningContainerState extends State<EarningContainer> {
   bool? isVisibleCash;
+
+  void _changeCaseVisibility() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isVisibleCash', !isVisibleCash!);
+
+    setState(() {
+      isVisibleCash = !isVisibleCash!;
+    });
+  }
 
   @override
   void initState() {
@@ -84,11 +94,7 @@ class _EarningContainerState extends State<EarningContainer> {
                 ),
                 kHalfWidthSizedBox,
                 IconButton(
-                  onPressed: () {
-                    setState(() {
-                      isVisibleCash = !isVisibleCash!;
-                    });
-                  },
+                  onPressed: _changeCaseVisibility,
                   icon: Icon(
                       isVisibleCash! ? Icons.visibility : Icons.visibility_off),
                 )

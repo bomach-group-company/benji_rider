@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/online_offline_card.dart';
@@ -24,12 +25,12 @@ class _RiderPageState extends State<RiderPage> {
   //=================================== ALL VARIABLES ======================================================\\
 
   //=================================== BOOL VALUES ======================================================\\
-  bool isOffline = true;
   bool isLoading = false;
-  bool isOnline = false;
+  Future<bool>? isOnline;
   bool acceptRequest = false;
   bool showDeliveryDialog = false;
   bool pickedUp = false;
+  BoolController? controller;
 
   //=================================== CONTROLLERS ======================================================\\
   GoogleMapController? _googleMapController;
@@ -67,12 +68,20 @@ class _RiderPageState extends State<RiderPage> {
     });
   }
 
-  //=========================== FUNCTIONS ====================================\\
+  Future<bool> _getStatus() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isOnline = await prefs.getBool('isOnline');
+    return isOnline ?? false;
+  }
+
+  //=========================== toggleOnline FUNCTION ====================================\\
   Future<void> toggleOnline() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isOnline = prefs.getBool('isOnline') ?? false;
+    await prefs.setBool('isOnline', !isOnline);
+
     setState(() {
       isLoading = true;
-      isOffline = !isOffline;
-      isOnline = !isOnline;
     });
 
     // Simulating a delay of 3 seconds
@@ -98,46 +107,58 @@ class _RiderPageState extends State<RiderPage> {
   }
 
   @override
+  void initState() {
+    controller = BoolController();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(isOnline: isOnline, toggleOnline: toggleOnline),
+      drawer: MyDrawer(controller: controller),
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: Stack(
           children: [
-            isOffline
-                ? const Center()
-                : isLoading
-                    ? Center(
-                        child: SpinKitChasingDots(
-                          color: kAccentColor,
+            FutureBuilder(
+                future: _getStatus(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    if (snapshot.data == false) {
+                      return Center();
+                    } else {
+                      return GoogleMap(
+                        mapType: MapType.normal,
+                        buildingsEnabled: true,
+                        compassEnabled: false,
+                        indoorViewEnabled: true,
+                        mapToolbarEnabled: true,
+                        minMaxZoomPreference: MinMaxZoomPreference.unbounded,
+                        tiltGesturesEnabled: true,
+                        zoomControlsEnabled: false,
+                        zoomGesturesEnabled: true,
+                        myLocationButtonEnabled: true,
+                        myLocationEnabled: true,
+                        cameraTargetBounds: CameraTargetBounds.unbounded,
+                        rotateGesturesEnabled: true,
+                        scrollGesturesEnabled: true,
+                        trafficEnabled: true,
+                        initialCameraPosition: CameraPosition(
+                          target: _latLng,
+                          zoom: 20.0,
+                          tilt: 16,
                         ),
-                      )
-                    : FutureBuilder(
-                        builder: (context, snapshot) => GoogleMap(
-                          mapType: MapType.normal,
-                          buildingsEnabled: true,
-                          compassEnabled: false,
-                          indoorViewEnabled: true,
-                          mapToolbarEnabled: true,
-                          minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                          tiltGesturesEnabled: true,
-                          zoomControlsEnabled: false,
-                          zoomGesturesEnabled: true,
-                          myLocationButtonEnabled: true,
-                          myLocationEnabled: true,
-                          cameraTargetBounds: CameraTargetBounds.unbounded,
-                          rotateGesturesEnabled: true,
-                          scrollGesturesEnabled: true,
-                          trafficEnabled: true,
-                          initialCameraPosition: CameraPosition(
-                            target: _latLng,
-                            zoom: 20.0,
-                            tilt: 16,
-                          ),
-                          onMapCreated: _onMapCreated,
-                        ),
+                        onMapCreated: _onMapCreated,
+                      );
+                    }
+                  } else {
+                    return Center(
+                      child: SpinKitChasingDots(
+                        color: kAccentColor,
                       ),
+                    );
+                  }
+                }),
             Container(
               margin: const EdgeInsets.all(30),
               decoration: BoxDecoration(
@@ -275,10 +296,24 @@ class _RiderPageState extends State<RiderPage> {
                             );
                           },
                         )
-                      : OnlineOfflineCard(
-                          isOnline: isOnline,
-                          toggleOnline: toggleOnline,
-                        ),
+                      : FutureBuilder(
+                          future: _getStatus(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasData) {
+                              return OnlineOfflineCard(
+                                isOnline: snapshot.data,
+                                toggleOnline: toggleOnline,
+                              );
+                            } else {
+                              return Center(
+                                child: SpinKitChasingDots(
+                                  color: kAccentColor,
+                                  duration: const Duration(seconds: 2),
+                                ),
+                              );
+                            }
+                          }),
                 ],
               ),
             ),
