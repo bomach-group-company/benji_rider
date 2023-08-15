@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/responsive/reponsive_width.dart';
 import '../../theme/colors.dart';
 
 class WithdrawHistoryPage extends StatefulWidget {
@@ -17,9 +16,6 @@ class _WithdrawHistoryPageState extends State<WithdrawHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String formattedDateTime = formatDateAndTime(now);
-    final media = MediaQuery.of(context).size;
     return Scaffold(
       // backgroundColor: kPrimaryColor,
       appBar: AppBar(

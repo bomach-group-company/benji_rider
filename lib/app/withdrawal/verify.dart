@@ -1,13 +1,9 @@
 import 'package:benji_rider/app/dashboard/dashboard.dart';
-import 'package:benji_rider/app/withdrawal/select_account.dart';
-import 'package:benji_rider/app/withdrawal/verify.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/button/my_elevatedbutton.dart';
-import '../../src/widget/form_and_auth/my textformfield.dart';
 import '../../src/widget/form_and_auth/otp_textFormField.dart';
 import '../../src/widget/responsive/reponsive_width.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
@@ -94,8 +90,6 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    String formattedDateTime = formatDateAndTime(now);
     final media = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColor,
