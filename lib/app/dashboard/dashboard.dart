@@ -171,25 +171,34 @@ class _DashboardState extends State<Dashboard>
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.all(kDefaultPadding),
                         children: [
-                          FutureBuilder(
-                              future: _getCashVisibility(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                if (snapshot.hasData) {
-                                  return EarningContainer(
-                                    onTap: _toAccountPage,
-                                    number: 390.525,
-                                    typeOf: "Emmanuel",
-                                    onlineStatus: "248 Online",
-                                    isVisibleCash: snapshot.data,
-                                  );
-                                } else {
-                                  return Center(
-                                    child: SpinKitDoubleBounce(
-                                        color: kAccentColor),
-                                  );
-                                }
-                              }),
+                          FutureBuilder<bool>(
+                            future: _getCashVisibility(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (snapshot.requireData) {
+                                return Center(
+                                  child:
+                                      SpinKitChasingDots(color: kAccentColor),
+                                );
+                              }
+                              if (snapshot.hasData) {
+                                return EarningContainer(
+                                  onTap: _toAccountPage,
+                                  number: 390.525,
+                                  typeOf: "Emmanuel",
+                                  onlineStatus: "248 Online",
+                                  isVisibleCash: snapshot.data,
+                                );
+                              }
+                              return EarningContainer(
+                                onTap: _toAccountPage,
+                                number: 390.525,
+                                typeOf: "",
+                                onlineStatus: "",
+                                isVisibleCash: false,
+                              );
+                            },
+                          ),
                           kSizedBox,
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
