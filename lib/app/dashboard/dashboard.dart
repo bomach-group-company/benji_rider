@@ -1,9 +1,9 @@
 // ignore_for_file:  unused_local_variable
 
-import 'package:benji_rider/app/rider/rider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_orders_container.dart';
@@ -27,14 +27,6 @@ class _DashboardState extends State<Dashboard>
   @override
   void initState() {
     super.initState();
-
-    _loadingScreen = true;
-    Future.delayed(
-      const Duration(seconds: 2),
-      () => setState(
-        () => _loadingScreen = false,
-      ),
-    );
   }
 
   @override
@@ -45,7 +37,6 @@ class _DashboardState extends State<Dashboard>
 //==========================================================================================\\
 
 //=================================== ALL VARIABLES =====================================\\
-  late bool _loadingScreen;
   bool _isScrollToTopBtnVisible = false;
   int incrementOrderID = 2 + 2;
   late int orderID;
@@ -67,18 +58,6 @@ class _DashboardState extends State<Dashboard>
     return itemPrice * itemQuantity;
   }
 
-//===================== Handle refresh ==========================\\
-
-  Future<void> _handleRefresh() async {
-    setState(() {
-      _loadingScreen = true;
-    });
-    await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _loadingScreen = false;
-    });
-  }
-
 //============================= Scroll to Top ======================================//
   void _scrollToTop() {
     _animationController.reverse();
@@ -86,31 +65,7 @@ class _DashboardState extends State<Dashboard>
         duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
   }
 
-  void _scrollListener() {
-    //========= Show action button ========//
-    if (_scrollController.position.pixels >= 200) {
-      _animationController.forward();
-      setState(() => _isScrollToTopBtnVisible = true);
-    }
-    //========= Hide action button ========//
-    else if (_scrollController.position.pixels < 200) {
-      _animationController.reverse();
-      setState(() => _isScrollToTopBtnVisible = true);
-    }
-  }
-
 //=================================== Navigation =====================================\\
-
-  void _toSeeAllRiders() => Get.to(
-        () => RiderPage(),
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        routeName: "All riders",
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.downToUp,
-      );
 
   void _toSeeAllVendors() {}
 
@@ -126,8 +81,12 @@ class _DashboardState extends State<Dashboard>
     double mediaHeight = MediaQuery.of(context).size.height;
     double subtotalPrice = calculateSubtotal();
 
-    //===================== Navigate to Order Details Page ================================\\
-    void toOrderDetailsPage() {}
+    //===================== _changeCaseVisibility ================================\\
+    Future<bool> _getCashVisibility() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool? isVisibleCash = await prefs.getBool('isVisibleCash');
+      return isVisibleCash ?? true;
+    }
 
 //====================================================================================\\
 
@@ -172,10 +131,7 @@ class _DashboardState extends State<Dashboard>
           ),
         ),
       ),
-      drawer: MyDrawer(
-        isOnline: true,
-        toggleOnline: () {},
-      ),
+      drawer: MyDrawer(),
       floatingActionButton: Stack(
         children: <Widget>[
           if (_isScrollToTopBtnVisible) ...[
@@ -229,12 +185,26 @@ class _DashboardState extends State<Dashboard>
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.all(kDefaultPadding),
                 children: [
-                  EarningContainer(
-                    onTap: _toSeeAllVendors,
-                    number: 390.525,
-                    typeOf: "Emmanuel",
-                    onlineStatus: "248 Online",
-                  ),
+                  FutureBuilder(
+                      future: _getCashVisibility(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData) {
+                          return EarningContainer(
+                            onTap: _toSeeAllVendors,
+                            number: 390.525,
+                            typeOf: "Emmanuel",
+                            onlineStatus: "248 Online",
+                            isVisibleCash: snapshot.data,
+                          );
+                        } else {
+                          return Center(
+                            child: SpinKitChasingDots(
+                              color: kAccentColor,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      }),
                   kSizedBox,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
