@@ -2,7 +2,6 @@
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/earning/earning.dart';
 import 'package:benji_rider/app/rider/rider.dart';
-
 import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -11,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/dashboard/dashboard.dart';
 import '../../../app/delivery/history.dart';
+import '../../../app/help_n_support/help_n_support.dart';
 import '../../../app/withdrawal/select_account.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/responsive_constant.dart';
@@ -295,7 +295,18 @@ class _MyDrawerState extends State<MyDrawer> {
                       text: 'Help & Support',
                       isOnline: snapshot.data,
                       icon: Icons.question_mark_outlined,
-                      nav: () {},
+                      nav: () {
+                        Get.to(
+                          () => HelpnSupport(),
+                          routeName: 'Help and support',
+                          duration: const Duration(milliseconds: 300),
+                          fullscreenDialog: true,
+                          curve: Curves.easeIn,
+                          preventDuplicates: true,
+                          popGesture: true,
+                          transition: Transition.rightToLeft,
+                        );
+                      },
                     ),
                     MyListTile(
                       text: 'Settings',
