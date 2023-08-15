@@ -26,11 +26,10 @@ class _RiderPageState extends State<RiderPage> {
 
   //=================================== BOOL VALUES ======================================================\\
   bool isLoading = false;
-  Future<bool>? isOnline;
+
   bool acceptRequest = false;
   bool showDeliveryDialog = false;
   bool pickedUp = false;
-  BoolController? controller;
 
   //=================================== CONTROLLERS ======================================================\\
   GoogleMapController? _googleMapController;
@@ -108,14 +107,18 @@ class _RiderPageState extends State<RiderPage> {
 
   @override
   void initState() {
-    controller = BoolController();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MyDrawer(controller: controller),
+      onDrawerChanged: (isOpened) {
+        if (isOpened == false) {
+          setState(() {});
+        }
+      },
+      drawer: MyDrawer(),
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: Stack(

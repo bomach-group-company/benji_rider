@@ -2,8 +2,6 @@
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/earning/earning.dart';
 import 'package:benji_rider/app/rider/rider.dart';
-import 'package:benji_rider/app/withdrawal/add_bank_account.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
 import 'package:flutter/material.dart';
@@ -19,22 +17,8 @@ import '../../../theme/responsive_constant.dart';
 import '../../providers/constants.dart';
 import 'list_tile.dart';
 
-class BoolController extends ChangeNotifier {
-  bool _value = false;
-
-  bool get value => _value;
-
-  set value(bool newValue) {
-    if (_value != newValue) {
-      _value = newValue;
-      notifyListeners();
-    }
-  }
-}
-
 class MyDrawer extends StatefulWidget {
-  final BoolController? controller;
-  const MyDrawer({super.key, this.controller});
+  const MyDrawer({super.key});
 
   @override
   State<MyDrawer> createState() => _MyDrawerState();
@@ -55,9 +39,6 @@ class _MyDrawerState extends State<MyDrawer> {
   Future<void> toggleOnline() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isOnline = prefs.getBool('isOnline') ?? false;
-    if (widget.controller != null) {
-      widget.controller!.value = !isOnline;
-    }
     await prefs.setBool('isOnline', !isOnline);
 
     setState(() {});
@@ -281,7 +262,7 @@ class _MyDrawerState extends State<MyDrawer> {
                       isOnline: snapshot.data,
                       icon: Icons.history,
                       nav: () {
-                        Get.off(
+                        Get.to(
                           () => const WithdrawHistoryPage(),
                           routeName: 'WithdrawHistoryPage',
                           duration: const Duration(milliseconds: 300),
