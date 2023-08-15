@@ -65,7 +65,9 @@ class _DashboardState extends State<Dashboard>
 
 //=================================== Navigation =====================================\\
 
-  void _toSeeAllVendors() {}
+  void _toAccountPage() {}
+
+  void _toRidersPage() {}
 
   void _toSeeAllNewOrders() {}
 
@@ -175,7 +177,7 @@ class _DashboardState extends State<Dashboard>
                                   AsyncSnapshot snapshot) {
                                 if (snapshot.hasData) {
                                   return EarningContainer(
-                                    onTap: _toSeeAllVendors,
+                                    onTap: _toAccountPage,
                                     number: 390.525,
                                     typeOf: "Emmanuel",
                                     onlineStatus: "248 Online",
@@ -212,7 +214,7 @@ class _DashboardState extends State<Dashboard>
                           ),
                           kSizedBox,
                           RiderVendorContainer(
-                            onTap: _toSeeAllVendors,
+                            onTap: _toRidersPage,
                             number: "390",
                             typeOf: "Vendors",
                             onlineStatus: "248 Online",

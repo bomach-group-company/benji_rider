@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../app/withdrawal/select_account.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
 
@@ -43,6 +45,20 @@ class _EarningContainerState extends State<EarningContainer> {
     super.initState();
   }
 
+//======================================================= FUNCTIONS =================================================\\
+
+//======================================================= Navigation=================================================\\
+  //To Select Account
+  void _toSelectAccountPage() => Get.to(
+        () => const SelectAccountPage(),
+        routeName: 'SelectAccountPage',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -100,17 +116,41 @@ class _EarningContainerState extends State<EarningContainer> {
                 )
               ],
             ),
-            Text(
-              isVisibleCash!
-                  ? '₦ ${widget.number.toStringAsFixed(2)}'
-                  : '******',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: kTextBlackColor,
-                fontSize: 20,
-                fontFamily: 'sen',
-                fontWeight: FontWeight.w700,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  isVisibleCash!
+                      ? '₦ ${widget.number.toStringAsFixed(2)}'
+                      : '******',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: kTextBlackColor,
+                    fontSize: 20,
+                    fontFamily: 'sen',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: _toSelectAccountPage,
+                      icon: Icon(
+                        Icons.payment,
+                        color: kAccentColor,
+                      ),
+                    ),
+                    Text(
+                      "Withdraw",
+                      style: TextStyle(
+                        color: kTextBlackColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ],
         ),
