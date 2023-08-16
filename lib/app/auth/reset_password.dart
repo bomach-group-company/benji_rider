@@ -9,6 +9,7 @@ import 'package:get/route_manager.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/password_textformfield.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
@@ -92,6 +93,13 @@ class _ResetPasswordState extends State<ResetPassword> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
+        appBar: MyAppBar(
+          title: "",
+          elevation: 0.0,
+          actions: [],
+          backgroundColor: kTransparentColor,
+          toolbarHeight: kToolbarHeight,
+        ),
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: LayoutGrid(
@@ -101,57 +109,6 @@ class _ResetPasswordState extends State<ResetPassword> {
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            8.0,
-                          ),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: ShapeDecoration(
-                                      color: const Color(
-                                        0xFFFEF8F8,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                          width: 0.50,
-                                          color: Color(
-                                            0xFFFDEDED,
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          24,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      color: kAccentColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: ReusableAuthenticationFirstHalf(
                       title: "Reset Password",
