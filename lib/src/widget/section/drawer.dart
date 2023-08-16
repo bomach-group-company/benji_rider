@@ -183,8 +183,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       icon: Icons.pedal_bike,
                       nav: () {
                         Get.to(
-                          () => const RiderPage(),
-                          routeName: 'RiderPage',
+                          () => const Ride(),
+                          routeName: 'Ride',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,
