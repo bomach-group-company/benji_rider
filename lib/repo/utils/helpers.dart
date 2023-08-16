@@ -11,7 +11,6 @@ Future<void> saveUser(String user, String token) async {
   Map data = jsonDecode(user);
   data['token'] = token;
   await prefs.setString('user', jsonEncode(data));
-  print(prefs.getString('user'));
 }
 
 Future<User?> getUser() async {
@@ -25,7 +24,8 @@ Future<User?> getUser() async {
 
 Future<bool> deleteUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  // prefs.remove('isOnline');
+  prefs.remove('isOnline');
+  prefs.remove('rememberMe');
   return prefs.remove('user');
 }
 

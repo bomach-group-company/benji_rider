@@ -42,7 +42,7 @@ class _LoginState extends State<Login> {
 
   //=========================== BOOL VALUES ====================================\\
   bool isLoading = false;
-  bool isChecked = false;
+  bool isChecked = true;
   var isObscured;
 
   //=========================== STYLE ====================================\\
@@ -61,9 +61,10 @@ class _LoginState extends State<Login> {
       isLoading = true;
     });
 
-    print('${emailController.text} ${passwordController.text}');
-
     await sendPostRequest(emailController.text, passwordController.text);
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('rememberMe', isChecked);
 
     setState(() {
       isLoading = false;
@@ -72,24 +73,23 @@ class _LoginState extends State<Login> {
 
   //=========================== REQUEST ====================================\\
   Future<bool> saveUserAndToken(String token) async {
-    // try {
-    final someUserData = await http.get(Uri.parse('$baseURL/auth/'),
-        headers: await authHeader(token));
-    String userId = jsonDecode(someUserData.body)['id'];
+    try {
+      final someUserData = await http.get(Uri.parse('$baseURL/auth/'),
+          headers: await authHeader(token));
+      int userId = jsonDecode(someUserData.body)['id'];
 
-    final userData = await http.get(
-        Uri.parse('$baseURL/drivers/getDriver/$userId'),
-        headers: await authHeader(token));
+      final userData = await http.get(
+          Uri.parse('$baseURL/drivers/getDriver/$userId'),
+          headers: await authHeader(token));
 
-    await saveUser(userData.body, token);
-    return true;
-    // } catch (e) {
-    //   return false;
-    // }
+      await saveUser(userData.body, token);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   Future<void> sendPostRequest(String username, String password) async {
-    // print('$username $password');
     final url = Uri.parse('$baseURL/auth/token');
     final body = {
       'username': username,
@@ -101,8 +101,8 @@ class _LoginState extends State<Login> {
     dynamic token = jsonDecode(response.body)['token'];
 
     if (response.statusCode == 200 &&
-        token != false &&
-        await saveUserAndToken(token)) {
+        token.toString() != false.toString() &&
+        await saveUserAndToken(token.toString())) {
       myFixedSnackBar(
         context,
         "Login Successful".toUpperCase(),
@@ -359,7 +359,6 @@ class _LoginState extends State<Login> {
                           )
                         : ElevatedButton(
                             onPressed: (() async {
-                              print('clicked the button \n\n');
                               if (_formKey.currentState!.validate()) {
                                 await loadData();
                               }
