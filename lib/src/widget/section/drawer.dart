@@ -256,8 +256,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       isOnline: snapshot.data,
                       icon: Icons.location_on_outlined,
                       nav: () {
-                        Get.off(
-                          () => const DeliveredHistory(),
+                        Get.to(
+                          () => const DeliveryHistory(),
                           routeName: 'DeliveredHistory',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,

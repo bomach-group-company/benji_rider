@@ -7,14 +7,14 @@ import '../../src/widget/responsive/reponsive_width.dart';
 import '../../src/widget/responsive/responsive_width_appbar.dart';
 import '../../theme/colors.dart';
 
-class DeliveredHistory extends StatefulWidget {
-  const DeliveredHistory({super.key});
+class DeliveryHistory extends StatefulWidget {
+  const DeliveryHistory({super.key});
 
   @override
-  State<DeliveredHistory> createState() => _DeliveredHistoryState();
+  State<DeliveryHistory> createState() => _DeliveryHistoryState();
 }
 
-class _DeliveredHistoryState extends State<DeliveredHistory> {
+class _DeliveryHistoryState extends State<DeliveryHistory> {
   bool onDelivered = true;
   bool isLoading = false;
 
