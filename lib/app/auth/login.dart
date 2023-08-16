@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../repo/utils/constants.dart';
@@ -18,7 +19,6 @@ import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
-import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   final bool logout;
@@ -29,6 +29,16 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  //=========================== INITIAL STATE ====================================\\
+  @override
+  void initState() {
+    super.initState();
+    if (widget.logout) {
+      deleteUser();
+    }
+    _isObscured = true;
+  }
+
   //=========================== ALL VARIABBLES ====================================\\
 
   //=========================== CONTROLLERS ====================================\\
@@ -41,9 +51,12 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
 
   //=========================== BOOL VALUES ====================================\\
-  bool isLoading = false;
-  bool isChecked = true;
-  var isObscured;
+  bool _isLoading = false;
+  bool _isChecked = true;
+  bool _validAuthCredentials = false;
+  bool _invalidAuthCredentials = false;
+
+  var _isObscured;
 
   //=========================== STYLE ====================================\\
 
@@ -52,22 +65,22 @@ class _LoginState extends State<Login> {
   );
 
   //=========================== FOCUS NODES ====================================\\
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
+  FocusNode _emailFocusNode = FocusNode();
+  FocusNode _passwordFocusNode = FocusNode();
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     await sendPostRequest(emailController.text, passwordController.text);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('rememberMe', isChecked);
+    await prefs.setBool('rememberMe', _isChecked);
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -103,6 +116,10 @@ class _LoginState extends State<Login> {
     if (response.statusCode == 200 &&
         token.toString() != false.toString() &&
         await saveUserAndToken(token.toString())) {
+      setState(() {
+        _validAuthCredentials = true;
+      });
+
       myFixedSnackBar(
         context,
         "Login Successful".toUpperCase(),
@@ -111,7 +128,7 @@ class _LoginState extends State<Login> {
           seconds: 2,
         ),
       );
-
+      await Future.delayed(Duration(seconds: 3));
       Get.offAll(
         () => const LoginSplashScreen(),
         routeName: 'LoginSplashScreen',
@@ -123,6 +140,10 @@ class _LoginState extends State<Login> {
         transition: Transition.fadeIn,
       );
     } else {
+      setState(() {
+        _invalidAuthCredentials = true;
+      });
+
       myFixedSnackBar(
         context,
         "Invalid email or password".toUpperCase(),
@@ -132,16 +153,6 @@ class _LoginState extends State<Login> {
         ),
       );
     }
-  }
-
-  //=========================== INITIAL STATE ====================================\\
-  @override
-  void initState() {
-    super.initState();
-    if (widget.logout) {
-      deleteUser();
-    }
-    isObscured = true;
   }
 
   @override
@@ -163,24 +174,71 @@ class _LoginState extends State<Login> {
               Column(
                 children: [
                   Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Log In",
-                      subtitle: "Please log in to your existing account",
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Log In",
+                          subtitle: "Please log in to your existing account",
+                          curves: Curves.easeInOut,
+                          duration: Duration(milliseconds: 300),
+                          containerChild: Icon(
+                            Icons.check_circle,
+                            color: kSuccessColor,
+                            size: 100,
+                            fill: 1,
+                            semanticLabel: "login__success_icon",
                           ),
-                          fit: BoxFit.fitHeight,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                      ),
-                      imageContainerHeight:
-                          deviceType(media.width) > 2 ? 200 : 88,
-                    ),
+                          decoration: ShapeDecoration(
+                            color: kPrimaryColor,
+                            shape: OvalBorder(),
+                          ),
+                          imageContainerHeight:
+                              deviceType(media.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        if (_invalidAuthCredentials) {
+                          return ReusableAuthenticationFirstHalf(
+                            title: "Log In",
+                            subtitle: "Please log in to your existing account",
+                            curves: Curves.easeInOut,
+                            duration: Duration(milliseconds: 300),
+                            containerChild: Icon(
+                              Icons.cancel,
+                              color: kAccentColor,
+                              size: 100,
+                              fill: 1,
+                              semanticLabel: "invalid_icon",
+                            ),
+                            decoration: ShapeDecoration(
+                              color: kPrimaryColor,
+                              shape: OvalBorder(),
+                            ),
+                            imageContainerHeight:
+                                deviceType(media.width) > 2 ? 200 : 100,
+                          );
+                        } else {
+                          return ReusableAuthenticationFirstHalf(
+                            title: "Log In",
+                            subtitle: "Please log in to your existing account",
+                            curves: Curves.easeInOut,
+                            duration: Duration(milliseconds: 300),
+                            containerChild: Icon(
+                              Icons.login,
+                              color: kSecondaryColor,
+                              size: 100,
+                              fill: 1,
+                              semanticLabel: "login_icon",
+                            ),
+                            decoration: ShapeDecoration(
+                              color: kPrimaryColor,
+                              shape: OvalBorder(),
+                            ),
+                            imageContainerHeight:
+                                deviceType(media.width) > 2 ? 200 : 120,
+                          );
+                        }
+                      }
+                    }(),
                   ),
                 ],
               ),
@@ -226,14 +284,14 @@ class _LoginState extends State<Login> {
                           kHalfSizedBox,
                           EmailTextFormField(
                             controller: emailController,
-                            emailFocusNode: emailFocusNode,
+                            emailFocusNode: _emailFocusNode,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
                               RegExp emailPattern = RegExp(
                                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
                               );
                               if (value == null || value!.isEmpty) {
-                                emailFocusNode.requestFocus();
+                                _emailFocusNode.requestFocus();
                                 return "Enter your email address";
                               } else if (!emailPattern.hasMatch(value)) {
                                 return "Please enter a valid email address";
@@ -260,16 +318,16 @@ class _LoginState extends State<Login> {
                           kHalfSizedBox,
                           PasswordTextFormField(
                             controller: passwordController,
-                            passwordFocusNode: passwordFocusNode,
+                            passwordFocusNode: _passwordFocusNode,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: isObscured,
+                            obscureText: _isObscured,
                             textInputAction: TextInputAction.done,
                             validator: (value) {
                               RegExp passwordPattern = RegExp(
                                 r'^.{8,}$',
                               );
                               if (value == null || value!.isEmpty) {
-                                passwordFocusNode.requestFocus();
+                                _passwordFocusNode.requestFocus();
                                 return "Enter your password";
                               } else if (!passwordPattern.hasMatch(value)) {
                                 return "Password must be at least 8 characters";
@@ -282,10 +340,10 @@ class _LoginState extends State<Login> {
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
-                                  isObscured = !isObscured;
+                                  _isObscured = !_isObscured;
                                 });
                               },
-                              icon: isObscured
+                              icon: _isObscured
                                   ? const Icon(
                                       Icons.visibility_off_rounded,
                                     )
@@ -306,7 +364,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Checkbox(
-                              value: isChecked,
+                              value: _isChecked,
                               splashRadius: 50,
                               activeColor: kSecondaryColor,
                               shape: RoundedRectangleBorder(
@@ -316,7 +374,7 @@ class _LoginState extends State<Login> {
                               ),
                               onChanged: (newValue) {
                                 setState(() {
-                                  isChecked = newValue!;
+                                  _isChecked = newValue!;
                                 });
                               },
                             ),
@@ -350,7 +408,7 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                     kSizedBox,
-                    isLoading
+                    _isLoading
                         ? Center(
                             child: SpinKitChasingDots(
                               color: kAccentColor,

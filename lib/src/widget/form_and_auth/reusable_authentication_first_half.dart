@@ -10,12 +10,18 @@ class ReusableAuthenticationFirstHalf extends StatelessWidget {
   final String subtitle;
   final Decoration decoration;
   final double imageContainerHeight;
+  final Duration duration;
+  final Curve curves;
+  final Widget containerChild;
   const ReusableAuthenticationFirstHalf({
     super.key,
     required this.title,
     required this.subtitle,
     required this.decoration,
     required this.imageContainerHeight,
+    required this.duration,
+    required this.curves,
+    required this.containerChild,
   });
 
   @override
@@ -28,10 +34,13 @@ class ReusableAuthenticationFirstHalf extends StatelessWidget {
             top: kDefaultPadding / 2,
             bottom: kDefaultPadding,
           ),
-          child: Container(
+          child: AnimatedContainer(
+            duration: duration,
+            curve: curves,
             height: imageContainerHeight,
             width: imageContainerHeight,
             decoration: decoration,
+            child: containerChild,
           ),
         ),
         Container(

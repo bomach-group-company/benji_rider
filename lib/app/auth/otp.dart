@@ -163,18 +163,21 @@ class _SendOTPState extends State<SendOTP> {
                     child: ReusableAuthenticationFirstHalf(
                       title: "Verification",
                       subtitle: "We have sent a code to your email",
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
-                          ),
-                          fit: BoxFit.cover,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
+                      curves: Curves.easeInOut,
+                      duration: Duration(),
+                      containerChild: Icon(
+                        Icons.login,
+                        color: kBlackColor,
                       ),
+                      decoration: const ShapeDecoration(
+                          // color: Colors.white,
+                          image: DecorationImage(
+                            image: AssetImage(
+                              "assets/images/logo/benji_red_logo_icon.jpg",
+                            ),
+                            fit: BoxFit.cover,
+                          ),
+                          shape: OvalBorder()),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,
                     ),
