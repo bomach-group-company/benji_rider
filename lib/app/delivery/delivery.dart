@@ -7,21 +7,43 @@ import '../../src/widget/responsive/reponsive_width.dart';
 import '../../src/widget/responsive/responsive_width_appbar.dart';
 import '../../theme/colors.dart';
 
-class DeliveryHistory extends StatefulWidget {
-  const DeliveryHistory({super.key});
+enum StatusType { deliver, pend, cancel }
+
+class Delivery extends StatefulWidget {
+  final StatusType status;
+  const Delivery({super.key, this.status = StatusType.deliver});
 
   @override
-  State<DeliveryHistory> createState() => _DeliveryHistoryState();
+  State<Delivery> createState() => _DeliveryState();
 }
 
-class _DeliveryHistoryState extends State<DeliveryHistory> {
-  bool onDelivered = true;
+class _DeliveryState extends State<Delivery> {
+  StatusType? status;
   bool isLoading = false;
+
+  @override
+  void initState() {
+    status = widget.status;
+    super.initState();
+  }
 
   void clickDelivered() async {
     setState(() {
       isLoading = true;
-      onDelivered = true;
+      status = StatusType.deliver;
+    });
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void clickPending() async {
+    setState(() {
+      isLoading = true;
+      status = StatusType.pend;
     });
 
     await Future.delayed(const Duration(seconds: 1));
@@ -34,7 +56,7 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
   void clickCancelled() async {
     setState(() {
       isLoading = true;
-      onDelivered = false;
+      status = StatusType.cancel;
     });
 
     await Future.delayed(const Duration(seconds: 1));
@@ -43,6 +65,9 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
       isLoading = false;
     });
   }
+
+  bool checkStatus(StatusType? theStatus, StatusType currentStatus) =>
+      theStatus == currentStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +115,7 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                 width: 35,
               ),
               const Text(
-                'History',
+                'Delivery',
                 style: TextStyle(
                   color: Color(0xFF333333),
                   fontSize: 19,
@@ -132,9 +157,10 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: onDelivered
-                                  ? kAccentColor
-                                  : const Color(0xFFF2F2F2),
+                              backgroundColor:
+                                  checkStatus(status, StatusType.deliver)
+                                      ? kAccentColor
+                                      : const Color(0xFFF2F2F2),
                               padding: const EdgeInsets.all(18),
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
@@ -145,8 +171,9 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                               'Delivered',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color:
-                                    onDelivered ? kTextWhiteColor : kGreyColor2,
+                                color: checkStatus(status, StatusType.deliver)
+                                    ? kTextWhiteColor
+                                    : kGreyColor2,
                                 fontSize: 14,
                                 fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
@@ -158,9 +185,38 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: onDelivered
-                                  ? const Color(0xFFF2F2F2)
-                                  : kAccentColor,
+                              backgroundColor:
+                                  checkStatus(status, StatusType.pend)
+                                      ? kAccentColor
+                                      : const Color(0xFFF2F2F2),
+                              padding: const EdgeInsets.all(18),
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(16))),
+                            ),
+                            onPressed: clickPending,
+                            child: Text(
+                              'Pending',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: checkStatus(status, StatusType.pend)
+                                    ? kTextWhiteColor
+                                    : kGreyColor2,
+                                fontSize: 14,
+                                fontFamily: 'Sen',
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 15,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  checkStatus(status, StatusType.cancel)
+                                      ? kAccentColor
+                                      : const Color(0xFFF2F2F2),
                               padding: const EdgeInsets.all(18),
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
@@ -173,8 +229,9 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                               'Cancelled',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color:
-                                    onDelivered ? kGreyColor2 : kTextWhiteColor,
+                                color: checkStatus(status, StatusType.cancel)
+                                    ? kTextWhiteColor
+                                    : kGreyColor2,
                                 fontSize: 14,
                                 fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
@@ -258,7 +315,8 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                                                 Text(
                                                   'ID 213081',
                                                   style: TextStyle(
-                                                    color: onDelivered
+                                                    color: !checkStatus(status,
+                                                            StatusType.cancel)
                                                         ? const Color(
                                                             0xFF454545)
                                                         : const Color(
@@ -292,16 +350,32 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                                                     width: 54,
                                                     height: 10,
                                                     child: Text(
-                                                      onDelivered
+                                                      checkStatus(
+                                                              status,
+                                                              StatusType
+                                                                  .deliver)
                                                           ? 'Delivered'
-                                                          : 'Cancelled',
+                                                          : checkStatus(
+                                                                  status,
+                                                                  StatusType
+                                                                      .pend)
+                                                              ? 'Pending'
+                                                              : 'Cancelled',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
-                                                        color: onDelivered
+                                                        color: checkStatus(
+                                                                status,
+                                                                StatusType
+                                                                    .deliver)
                                                             ? kAccentColor
-                                                            : const Color(
-                                                                0xFF979797),
+                                                            : checkStatus(
+                                                                    status,
+                                                                    StatusType
+                                                                        .pend)
+                                                                ? kLoadingColor
+                                                                : const Color(
+                                                                    0xFF979797),
                                                         fontSize: 10,
                                                         fontFamily: 'Overpass',
                                                         fontWeight:
@@ -381,7 +455,10 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                                                       Text(
                                                         '21 Bartus Street, Abuja Nigeria',
                                                         style: TextStyle(
-                                                          color: onDelivered
+                                                          color: !checkStatus(
+                                                                  status,
+                                                                  StatusType
+                                                                      .cancel)
                                                               ? const Color(
                                                                   0xFF454545)
                                                               : const Color(
@@ -396,7 +473,10 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                                                       Text(
                                                         '3 Edwins Close, Wuse, Abuja',
                                                         style: TextStyle(
-                                                          color: onDelivered
+                                                          color: !checkStatus(
+                                                                  status,
+                                                                  StatusType
+                                                                      .cancel)
                                                               ? const Color(
                                                                   0xFF454545)
                                                               : const Color(
@@ -438,7 +518,9 @@ class _DeliveryHistoryState extends State<DeliveryHistory> {
                                                   child: Text(
                                                     'NGN 5,000',
                                                     style: TextStyle(
-                                                      color: onDelivered
+                                                      color: !checkStatus(
+                                                              status,
+                                                              StatusType.cancel)
                                                           ? const Color(
                                                               0xFF454545)
                                                           : const Color(
