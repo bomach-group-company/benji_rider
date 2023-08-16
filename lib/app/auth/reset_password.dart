@@ -114,6 +114,12 @@ class _ResetPasswordState extends State<ResetPassword> {
                       title: "Reset Password",
                       subtitle:
                           "Just enter a new password here and you are good to go!",
+                      curves: Curves.easeInOut,
+                      duration: Duration(),
+                      containerChild: Icon(
+                        Icons.login,
+                        color: kBlackColor,
+                      ),
                       decoration: const ShapeDecoration(
                         // color: Colors.white,
                         image: DecorationImage(
@@ -122,9 +128,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                           fit: BoxFit.fitHeight,
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
+                        shape: OvalBorder(),
                       ),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,

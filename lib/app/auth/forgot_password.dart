@@ -103,6 +103,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       title: "Forgot Password",
                       subtitle:
                           "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
+                      curves: Curves.easeInOut,
+                      duration: Duration(),
+                      containerChild: Icon(
+                        Icons.login,
+                        color: kBlackColor,
+                      ),
                       decoration: const ShapeDecoration(
                         // color: Colors.white,
                         image: DecorationImage(
@@ -111,9 +117,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                           fit: BoxFit.fitHeight,
                         ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
+                        shape: OvalBorder(),
                       ),
                       imageContainerHeight:
                           deviceType(media.size.width) > 2 ? 200 : 88,

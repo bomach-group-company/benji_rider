@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, file_names
+// ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -35,7 +35,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   Widget build(BuildContext context) {
     double mediaHeight = MediaQuery.of(context).size.height;
     double mediaWidth = MediaQuery.of(context).size.width;
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(days: 3), () {
       Get.offAll(
         () => const UserSnapshot(),
         duration: const Duration(seconds: 3),
@@ -60,15 +60,15 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: MediaQuery.of(context).size.height / 4,
-                  width: MediaQuery.of(context).size.width / 2,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "assets/images/splash_screen/frame_1.png",
+                  decoration: ShapeDecoration(
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/images/splash_screen/frame_2.jpg",
+                        ),
+                        fit: BoxFit.cover,
                       ),
-                    ),
-                  ),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50))),
                 ),
                 kSizedBox,
                 SpinKitThreeInOut(
