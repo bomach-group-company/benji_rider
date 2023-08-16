@@ -1,8 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
-import 'package:benji_rider/app/earning/earning.dart';
 import 'package:benji_rider/app/ride/ride.dart';
-import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
 import 'package:benji_rider/src/widget/others/future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -10,9 +8,7 @@ import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/dashboard/dashboard.dart';
-import '../../../app/delivery/history.dart';
-import '../../../app/help_n_support/help_n_support.dart';
-import '../../../app/withdrawal/select_account.dart';
+import '../../../app/settings/settings.dart';
 import '../../../repo/utils/helpers.dart';
 import '../../../theme/colors.dart';
 import '../../../theme/responsive_constant.dart';
@@ -201,108 +197,34 @@ class _MyDrawerState extends State<MyDrawer> {
                       nav: () {},
                     ),
                     MyListTile(
-                      text: 'Earnings',
-                      isOnline: snapshot.data,
-                      icon: Icons.money,
-                      nav: () {
-                        Get.to(
-                          () => const Earning(),
-                          routeName: 'Earning',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Withdraw',
-                      isOnline: snapshot.data,
-                      icon: Icons.payments_outlined,
-                      nav: () {
-                        Get.to(
-                          () => const SelectAccountPage(),
-                          routeName: 'SelectAccountPage',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Withdrawal History',
-                      isOnline: snapshot.data,
-                      icon: Icons.history,
-                      nav: () {
-                        Get.to(
-                          () => const WithdrawHistoryPage(),
-                          routeName: 'WithdrawHistoryPage',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Delivery History',
-                      isOnline: snapshot.data,
-                      icon: Icons.location_on_outlined,
-                      nav: () {
-                        Get.to(
-                          () => const DeliveryHistory(),
-                          routeName: 'DeliveredHistory',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Help & Support',
-                      isOnline: snapshot.data,
-                      icon: Icons.question_mark_outlined,
-                      nav: () {
-                        Get.to(
-                          () => HelpnSupport(),
-                          routeName: 'Help and support',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
                       text: 'Settings',
                       isOnline: snapshot.data,
                       icon: Icons.settings,
-                      nav: () {},
+                      nav: () {
+                        Get.to(
+                          () => const SettingsPage(),
+                          routeName: 'SettingsPage',
+                          duration: const Duration(milliseconds: 300),
+                          fullscreenDialog: true,
+                          curve: Curves.easeIn,
+                          preventDuplicates: true,
+                          popGesture: true,
+                          transition: Transition.rightToLeft,
+                        );
+                      },
                     ),
                     MyListTile(
                       text: 'Logout',
                       isOnline: snapshot.data,
                       icon: Icons.logout,
                       nav: () {
-                        Get.off(
+                        Get.offAll(
                           () => const Login(logout: true),
+                          predicate: (route) => false,
                           routeName: 'Login',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,
-                          preventDuplicates: true,
                           popGesture: true,
                           transition: Transition.rightToLeft,
                         );
