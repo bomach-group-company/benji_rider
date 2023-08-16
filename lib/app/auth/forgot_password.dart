@@ -51,7 +51,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     myFixedSnackBar(
       context,
       "An OTP code has been sent to your email".toUpperCase(),
-      kSecondaryColor,
+      kSuccessColor,
       const Duration(
         seconds: 2,
       ),
