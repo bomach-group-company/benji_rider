@@ -1,6 +1,5 @@
 // ignore_for_file: camel_case_types, file_names
 
-import 'package:benji_rider/app/auth/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
