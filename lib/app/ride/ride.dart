@@ -1,6 +1,5 @@
 // ignore_for_file: unused_field, prefer_typing_uninitialized_variables
 
-
 import 'dart:async';
 
 import 'package:benji_rider/src/widget/section/drawer.dart';
@@ -12,37 +11,9 @@ import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-import '../../src/providers/constants.dart';
 import '../../src/widget/card/online_offline_card.dart';
-import '../../src/widget/card/pickup_and_delivery_card.dart';
 import '../../theme/colors.dart';
-import '../../theme/model.dart';
 import '../delivery/deliveries_completed.dart';
-
-class RiderPage extends StatefulWidget {
-  const RiderPage({super.key});
-
-  @override
-  State<RiderPage> createState() => _RiderPageState();
-}
-
-class _RiderPageState extends State<RiderPage> {
-  //=================================== ALL VARIABLES ======================================================\\
-
-  //=================================== BOOL VALUES ======================================================\\
-  bool isLoading = false;
-
-  bool acceptRequest = false;
-  bool showDeliveryDialog = false;
-  bool pickedUp = false;
-
-  //=================================== CONTROLLERS ======================================================\\
-  GoogleMapController? _googleMapController;
-=======
-import '../../src/widget/card/online_offline_card.dart';
-import '../../theme/colors.dart';
-import '../delivery/delivery_completed.dart';
 
 class Ride extends StatefulWidget {
   const Ride({super.key});
@@ -74,11 +45,9 @@ class _RideState extends State<Ride> {
   Completer<GoogleMapController> _googleMapController = Completer();
   GoogleMapController? _newGoogleMapController;
 
-
   //=================================== FUNCTIONS ======================================================\\
   void deliveryFunc(context) {
     setState(() {
-
       _pickedUp = false;
       _acceptRequest = !_acceptRequest;
       _showDeliveryDialog = !_showDeliveryDialog;
@@ -97,7 +66,6 @@ class _RideState extends State<Ride> {
 
   void pickedUpFunc(context) {
     setState(() {
-
       _pickedUp = true;
 
       Navigator.of(context).pop();
@@ -106,7 +74,6 @@ class _RideState extends State<Ride> {
 
   void acceptRequestFunc(context) {
     setState(() {
-
       _acceptRequest = !_acceptRequest;
       _showDeliveryDialog = !_showDeliveryDialog;
       Navigator.of(context).pop();
@@ -119,31 +86,26 @@ class _RideState extends State<Ride> {
     return isOnline ?? false;
   }
 
-
   //=========================== _toggleOnline FUNCTION ====================================\\
 
   Future<void> _toggleOnline() async {
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isOnline = prefs.getBool('isOnline') ?? false;
     await prefs.setBool('isOnline', !isOnline);
 
     setState(() {
       _isLoading = true;
-
     });
 
     // Simulating a delay of 3 seconds
     await Future.delayed(const Duration(seconds: 2));
 
     setState(() {
-
       _isLoading = false;
     });
     await Future.delayed(const Duration(seconds: 3), () {
       setState(() {
         _showDeliveryDialog = true;
-
       });
     });
   }
@@ -232,7 +194,6 @@ class _RideState extends State<Ride> {
         child: Stack(
           children: [
             FutureBuilder(
-
               future: _getStatus(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -431,7 +392,6 @@ class _RideState extends State<Ride> {
                   );
                 }
               },
-
             ),
           ],
         ),
