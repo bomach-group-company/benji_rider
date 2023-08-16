@@ -8,6 +8,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
+import '../user_auth/userAuth.dart';
 
 class StartupSplashscreen extends StatefulWidget {
   const StartupSplashscreen({super.key});
@@ -54,11 +55,11 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     await Future.delayed(Duration(seconds: 4));
 
     Get.offAll(
-      () => const Login(),
+      () => const UserSnapshot(),
       duration: const Duration(seconds: 3),
       fullscreenDialog: true,
       curve: Curves.easeIn,
-      routeName: "Login",
+      routeName: "UserSnapshot",
       predicate: (route) => false,
       popGesture: true,
       transition: Transition.fadeIn,

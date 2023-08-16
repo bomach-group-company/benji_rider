@@ -1,26 +1,41 @@
+import 'dart:convert';
+
 import 'package:benji_rider/app/auth/login.dart';
+import 'package:benji_rider/repo/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Future<void> saveAuthToken(String authToken) async {
+Future<void> saveUser(String user, String token) async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setString('auth_token', authToken);
+  Map data = jsonDecode(user);
+  data['token'] = token;
+  await prefs.setString('user', jsonEncode(data));
 }
 
-Future<String?> getAuthToken() async {
+Future<User?> getUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  return prefs.getString('auth_token');
+  String? user = prefs.getString('user');
+  if (user == null) {
+    return null;
+  }
+  return modelUser(user);
 }
 
-Future<bool> deleteAuthToken() async {
+Future<bool> deleteUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove('isOnline');
-  return prefs.remove('auth_token');
+  prefs.remove('rememberMe');
+  return prefs.remove('user');
 }
 
-Future<Map<String, String>> authHeader() async {
-  String? authToken = await getAuthToken();
+Future<Map<String, String>> authHeader([String? authToken]) async {
+  if (authToken == null) {
+    User? user = await getUser();
+    if (user != null) {
+      authToken = user.token;
+    }
+  }
   return {
     'Authorization': 'Bearer $authToken',
     'Content-Type': 'application/json'
