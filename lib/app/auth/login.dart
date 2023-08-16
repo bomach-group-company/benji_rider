@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../repo/utils/constants.dart';
@@ -18,7 +19,6 @@ import '../../theme/colors.dart';
 import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
-import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   final bool logout;
@@ -41,9 +41,9 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
 
   //=========================== BOOL VALUES ====================================\\
-  bool isLoading = false;
-  bool isChecked = true;
-  var isObscured;
+  bool _isLoading = false;
+  bool _isChecked = true;
+  var _isObscured;
 
   //=========================== STYLE ====================================\\
 
@@ -52,22 +52,22 @@ class _LoginState extends State<Login> {
   );
 
   //=========================== FOCUS NODES ====================================\\
-  FocusNode emailFocusNode = FocusNode();
-  FocusNode passwordFocusNode = FocusNode();
+  FocusNode _emailFocusNode = FocusNode();
+  FocusNode _passwordFocusNode = FocusNode();
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     await sendPostRequest(emailController.text, passwordController.text);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('rememberMe', isChecked);
+    await prefs.setBool('rememberMe', _isChecked);
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
     if (widget.logout) {
       deleteUser();
     }
-    isObscured = true;
+    _isObscured = true;
   }
 
   @override
@@ -226,14 +226,14 @@ class _LoginState extends State<Login> {
                           kHalfSizedBox,
                           EmailTextFormField(
                             controller: emailController,
-                            emailFocusNode: emailFocusNode,
+                            emailFocusNode: _emailFocusNode,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
                               RegExp emailPattern = RegExp(
                                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
                               );
                               if (value == null || value!.isEmpty) {
-                                emailFocusNode.requestFocus();
+                                _emailFocusNode.requestFocus();
                                 return "Enter your email address";
                               } else if (!emailPattern.hasMatch(value)) {
                                 return "Please enter a valid email address";
@@ -260,16 +260,16 @@ class _LoginState extends State<Login> {
                           kHalfSizedBox,
                           PasswordTextFormField(
                             controller: passwordController,
-                            passwordFocusNode: passwordFocusNode,
+                            passwordFocusNode: _passwordFocusNode,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: isObscured,
+                            obscureText: _isObscured,
                             textInputAction: TextInputAction.done,
                             validator: (value) {
                               RegExp passwordPattern = RegExp(
                                 r'^.{8,}$',
                               );
                               if (value == null || value!.isEmpty) {
-                                passwordFocusNode.requestFocus();
+                                _passwordFocusNode.requestFocus();
                                 return "Enter your password";
                               } else if (!passwordPattern.hasMatch(value)) {
                                 return "Password must be at least 8 characters";
@@ -282,10 +282,10 @@ class _LoginState extends State<Login> {
                             suffixIcon: IconButton(
                               onPressed: () {
                                 setState(() {
-                                  isObscured = !isObscured;
+                                  _isObscured = !_isObscured;
                                 });
                               },
-                              icon: isObscured
+                              icon: _isObscured
                                   ? const Icon(
                                       Icons.visibility_off_rounded,
                                     )
@@ -306,7 +306,7 @@ class _LoginState extends State<Login> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Checkbox(
-                              value: isChecked,
+                              value: _isChecked,
                               splashRadius: 50,
                               activeColor: kSecondaryColor,
                               shape: RoundedRectangleBorder(
@@ -316,7 +316,7 @@ class _LoginState extends State<Login> {
                               ),
                               onChanged: (newValue) {
                                 setState(() {
-                                  isChecked = newValue!;
+                                  _isChecked = newValue!;
                                 });
                               },
                             ),
@@ -350,7 +350,7 @@ class _LoginState extends State<Login> {
                       ],
                     ),
                     kSizedBox,
-                    isLoading
+                    _isLoading
                         ? Center(
                             child: SpinKitChasingDots(
                               color: kAccentColor,
