@@ -175,12 +175,6 @@ class _DashboardState extends State<Dashboard>
                             future: _getCashVisibility(),
                             builder:
                                 (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.requireData) {
-                                return Center(
-                                  child:
-                                      SpinKitChasingDots(color: kAccentColor),
-                                );
-                              }
                               if (snapshot.hasData) {
                                 return EarningContainer(
                                   onTap: _toAccountPage,
@@ -190,12 +184,8 @@ class _DashboardState extends State<Dashboard>
                                   isVisibleCash: snapshot.data,
                                 );
                               }
-                              return EarningContainer(
-                                onTap: _toAccountPage,
-                                number: 390.525,
-                                typeOf: "",
-                                onlineStatus: "",
-                                isVisibleCash: false,
+                              return Center(
+                                child: SpinKitChasingDots(color: kAccentColor),
                               );
                             },
                           ),

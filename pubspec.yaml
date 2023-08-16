@@ -16,6 +16,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   google_fonts: ^5.1.0
   google_maps_flutter: ^2.3.1
+  geolocator: ^9.0.2
   hexcolor: ^3.0.1
   flutter_spinkit: ^5.2.0
   get: ^4.6.5
