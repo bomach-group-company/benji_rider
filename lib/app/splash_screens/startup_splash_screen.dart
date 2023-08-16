@@ -35,7 +35,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   Widget build(BuildContext context) {
     double mediaHeight = MediaQuery.of(context).size.height;
     double mediaWidth = MediaQuery.of(context).size.width;
-    Future.delayed(const Duration(days: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Get.offAll(
         () => const UserSnapshot(),
         duration: const Duration(seconds: 3),
@@ -49,6 +49,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     });
 
     return Scaffold(
+      backgroundColor: kPrimaryColor,
       body: ListView(
         padding: const EdgeInsets.all(kDefaultPadding / 2),
         physics: const BouncingScrollPhysics(),
@@ -60,12 +61,12 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
+                  height: MediaQuery.of(context).size.height / 4,
                   decoration: ShapeDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                          "assets/images/splash_screen/frame_2.jpg",
+                          "assets/images/splash_screen/frame_1.png",
                         ),
-                        fit: BoxFit.cover,
                       ),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
