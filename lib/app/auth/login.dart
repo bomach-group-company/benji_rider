@@ -29,6 +29,16 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  //=========================== INITIAL STATE ====================================\\
+  @override
+  void initState() {
+    super.initState();
+    if (widget.logout) {
+      deleteUser();
+    }
+    _isObscured = true;
+  }
+
   //=========================== ALL VARIABBLES ====================================\\
 
   //=========================== CONTROLLERS ====================================\\
@@ -43,6 +53,9 @@ class _LoginState extends State<Login> {
   //=========================== BOOL VALUES ====================================\\
   bool _isLoading = false;
   bool _isChecked = true;
+  bool _validAuthCredentials = false;
+  bool _invalidAuthCredentials = false;
+
   var _isObscured;
 
   //=========================== STYLE ====================================\\
@@ -103,6 +116,10 @@ class _LoginState extends State<Login> {
     if (response.statusCode == 200 &&
         token.toString() != false.toString() &&
         await saveUserAndToken(token.toString())) {
+      setState(() {
+        _validAuthCredentials = true;
+      });
+
       myFixedSnackBar(
         context,
         "Login Successful".toUpperCase(),
@@ -111,7 +128,7 @@ class _LoginState extends State<Login> {
           seconds: 2,
         ),
       );
-
+      await Future.delayed(Duration(seconds: 3));
       Get.offAll(
         () => const LoginSplashScreen(),
         routeName: 'LoginSplashScreen',
@@ -123,6 +140,10 @@ class _LoginState extends State<Login> {
         transition: Transition.fadeIn,
       );
     } else {
+      setState(() {
+        _invalidAuthCredentials = true;
+      });
+
       myFixedSnackBar(
         context,
         "Invalid email or password".toUpperCase(),
@@ -132,16 +153,6 @@ class _LoginState extends State<Login> {
         ),
       );
     }
-  }
-
-  //=========================== INITIAL STATE ====================================\\
-  @override
-  void initState() {
-    super.initState();
-    if (widget.logout) {
-      deleteUser();
-    }
-    _isObscured = true;
   }
 
   @override
@@ -163,24 +174,71 @@ class _LoginState extends State<Login> {
               Column(
                 children: [
                   Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Log In",
-                      subtitle: "Please log in to your existing account",
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Log In",
+                          subtitle: "Please log in to your existing account",
+                          curves: Curves.easeInOut,
+                          duration: Duration(milliseconds: 300),
+                          containerChild: Icon(
+                            Icons.check_circle,
+                            color: kSuccessColor,
+                            size: 100,
+                            fill: 1,
+                            semanticLabel: "login__success_icon",
                           ),
-                          fit: BoxFit.fitHeight,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                      ),
-                      imageContainerHeight:
-                          deviceType(media.width) > 2 ? 200 : 88,
-                    ),
+                          decoration: ShapeDecoration(
+                            color: kPrimaryColor,
+                            shape: OvalBorder(),
+                          ),
+                          imageContainerHeight:
+                              deviceType(media.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        if (_invalidAuthCredentials) {
+                          return ReusableAuthenticationFirstHalf(
+                            title: "Log In",
+                            subtitle: "Please log in to your existing account",
+                            curves: Curves.easeInOut,
+                            duration: Duration(milliseconds: 300),
+                            containerChild: Icon(
+                              Icons.cancel,
+                              color: kAccentColor,
+                              size: 100,
+                              fill: 1,
+                              semanticLabel: "invalid_icon",
+                            ),
+                            decoration: ShapeDecoration(
+                              color: kPrimaryColor,
+                              shape: OvalBorder(),
+                            ),
+                            imageContainerHeight:
+                                deviceType(media.width) > 2 ? 200 : 100,
+                          );
+                        } else {
+                          return ReusableAuthenticationFirstHalf(
+                            title: "Log In",
+                            subtitle: "Please log in to your existing account",
+                            curves: Curves.easeInOut,
+                            duration: Duration(milliseconds: 300),
+                            containerChild: Icon(
+                              Icons.login,
+                              color: kSecondaryColor,
+                              size: 100,
+                              fill: 1,
+                              semanticLabel: "login_icon",
+                            ),
+                            decoration: ShapeDecoration(
+                              color: kPrimaryColor,
+                              shape: OvalBorder(),
+                            ),
+                            imageContainerHeight:
+                                deviceType(media.width) > 2 ? 200 : 120,
+                          );
+                        }
+                      }
+                    }(),
                   ),
                 ],
               ),
