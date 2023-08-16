@@ -35,7 +35,6 @@ class _EarningState extends State<Earning> {
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDateTime = formatDateAndTime(now);
-    final media = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: AppBar(

@@ -12,7 +12,7 @@ import '../../src/widget/card/online_offline_card.dart';
 import '../../src/widget/card/pickup_and_delivery_card.dart';
 import '../../theme/colors.dart';
 import '../../theme/model.dart';
-import '../delivery/delivery_completed.dart';
+import '../delivery/deliveries_completed.dart';
 
 class RiderPage extends StatefulWidget {
   const RiderPage({super.key});

@@ -1,16 +1,9 @@
-import 'package:benji_rider/app/rider/rider.dart';
-import 'package:benji_rider/app/earning/earning.dart';
-import 'package:benji_rider/app/splash_screens/startup_splash_screen.dart';
-import 'package:benji_rider/app/withdrawal/add_bank_account.dart';
+import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 
-import 'app/dashboard/dashboard.dart';
-import 'app/withdrawal/select_account.dart';
-import 'app/withdrawal/verify.dart';
-import 'app/withdrawal/withdraw.dart';
-import 'app/withdrawal/withdraw_history.dart';
+import 'app/delivery/history.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
 
@@ -40,7 +33,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const StartupSplashscreen(),
+      home: const Dashboard(),
     );
   }
 }

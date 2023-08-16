@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/widget/responsive/reponsive_width.dart';
 import '../../theme/colors.dart';
 import 'add_bank_account.dart';
 
@@ -32,7 +31,6 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context).size;
     return Scaffold(
       // backgroundColor: kPrimaryColor,
       appBar: AppBar(
