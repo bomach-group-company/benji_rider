@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../repo/utils/constants.dart';
 import '../../repo/utils/helpers.dart';
@@ -60,6 +61,8 @@ class _LoginState extends State<Login> {
       isLoading = true;
     });
 
+    print('${emailController.text} ${passwordController.text}');
+
     await sendPostRequest(emailController.text, passwordController.text);
 
     setState(() {
@@ -68,23 +71,38 @@ class _LoginState extends State<Login> {
   }
 
   //=========================== REQUEST ====================================\\
+  Future<bool> saveUserAndToken(String token) async {
+    // try {
+    final someUserData = await http.get(Uri.parse('$baseURL/auth/'),
+        headers: await authHeader(token));
+    String userId = jsonDecode(someUserData.body)['id'];
+
+    final userData = await http.get(
+        Uri.parse('$baseURL/drivers/getDriver/$userId'),
+        headers: await authHeader(token));
+
+    await saveUser(userData.body, token);
+    return true;
+    // } catch (e) {
+    //   return false;
+    // }
+  }
 
   Future<void> sendPostRequest(String username, String password) async {
+    // print('$username $password');
     final url = Uri.parse('$baseURL/auth/token');
     final body = {
       'username': username,
       'password': password,
     };
 
-    final response = await http.post(
-      url,
-      body: body,
-    );
+    final response = await http.post(url, body: body);
 
-    Map data = jsonDecode(response.body);
+    dynamic token = jsonDecode(response.body)['token'];
 
-    if (response.statusCode == 200 && data['token'] != false) {
-      saveAuthToken(data['token']);
+    if (response.statusCode == 200 &&
+        token != false &&
+        await saveUserAndToken(token)) {
       myFixedSnackBar(
         context,
         "Login Successful".toUpperCase(),
@@ -121,7 +139,7 @@ class _LoginState extends State<Login> {
   void initState() {
     super.initState();
     if (widget.logout) {
-      deleteAuthToken();
+      deleteUser();
     }
     isObscured = true;
   }
@@ -341,8 +359,9 @@ class _LoginState extends State<Login> {
                           )
                         : ElevatedButton(
                             onPressed: (() async {
+                              print('clicked the button \n\n');
                               if (_formKey.currentState!.validate()) {
-                                loadData();
+                                await loadData();
                               }
                             }),
                             style: ElevatedButton.styleFrom(
