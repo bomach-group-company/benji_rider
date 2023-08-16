@@ -63,7 +63,7 @@ class _OnlineOfflineCardState extends State<OnlineOfflineCard> {
           Text(
             widget.isOnline
                 ? "Yay! Start receiving delivery requests"
-                : 'You are currently offline, go online to start receiving delivery request.',
+                : 'You are currently offline, go online to start receiving delivery requests.',
             style: const TextStyle(
               color: Color(0xFF979797),
               fontSize: 14,

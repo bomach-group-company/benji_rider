@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/earning/earning.dart';
-import 'package:benji_rider/app/rider/rider.dart';
+import 'package:benji_rider/app/ride/ride.dart';
 import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
 import 'package:benji_rider/src/widget/others/future_builder.dart';
 import 'package:flutter/material.dart';
@@ -183,8 +183,8 @@ class _MyDrawerState extends State<MyDrawer> {
                       icon: Icons.pedal_bike,
                       nav: () {
                         Get.to(
-                          () => const RiderPage(),
-                          routeName: 'RiderPage',
+                          () => const Ride(),
+                          routeName: 'Ride',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,

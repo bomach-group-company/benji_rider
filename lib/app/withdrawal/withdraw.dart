@@ -96,43 +96,46 @@ class _WithdrawPageState extends State<WithdrawPage> {
             child: Container(
               padding: EdgeInsets.symmetric(
                   horizontal: kDefaultPadding, vertical: kDefaultPadding * 2),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  kSizedBox,
-                  Text(
-                    'Amount',
-                    style: TextStyle(
-                      color: Color(0xFF575757),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    kSizedBox,
+                    Text(
+                      'Amount',
+                      style: TextStyle(
+                        color: Color(0xFF575757),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  kHalfSizedBox,
-                  MyTextFormField(
-                    controller: productNameEC,
-                    focusNode: productNameFN,
-                    hintText: "Enter the amount here",
-                    textInputAction: TextInputAction.next,
-                    textInputType: TextInputType.name,
-                    validator: (value) {
-                      if (value == null || value!.isEmpty) {
-                        productNameFN.requestFocus();
-                        return "Enter the amount";
-                      }
-                      return null;
-                    },
-                    onSaved: (value) {
-                      productNameEC.text = value!;
-                    },
-                  ),
-                  kSizedBox,
-                  MyElevatedButton(
-                    onPressed: _goToVerify,
-                    title: "Withdraw",
-                  )
-                ],
+                    kHalfSizedBox,
+                    MyTextFormField(
+                      controller: productNameEC,
+                      focusNode: productNameFN,
+                      hintText: "Enter the amount here",
+                      textInputAction: TextInputAction.next,
+                      textInputType: TextInputType.name,
+                      validator: (value) {
+                        if (value == null || value!.isEmpty) {
+                          productNameFN.requestFocus();
+                          return "Enter the amount";
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        productNameEC.text = value!;
+                      },
+                    ),
+                    kSizedBox,
+                    MyElevatedButton(
+                      onPressed: _goToVerify,
+                      title: "Withdraw",
+                    )
+                  ],
+                ),
               ),
             ),
           ),
