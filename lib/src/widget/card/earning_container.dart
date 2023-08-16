@@ -9,14 +9,14 @@ import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
 
 class EarningContainer extends StatefulWidget {
-  final Function() onTap;
+  final Function()? onTap;
   final double number;
   final String typeOf;
   final String onlineStatus;
   final bool isVisibleCash;
   EarningContainer({
     super.key,
-    required this.onTap,
+    this.onTap,
     required this.number,
     required this.typeOf,
     required this.onlineStatus,

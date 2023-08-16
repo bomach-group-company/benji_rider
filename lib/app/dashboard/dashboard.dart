@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/route_manager.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,6 +12,7 @@ import '../../src/widget/card/dashboard_rider_vendor_container.dart';
 import '../../src/widget/card/earning_container.dart';
 import '../../src/widget/section/drawer.dart';
 import '../../theme/colors.dart';
+import '../delivery/delivery.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -65,13 +67,20 @@ class _DashboardState extends State<Dashboard>
 
 //=================================== Navigation =====================================\\
 
-  void _toAccountPage() {}
-
-  void _toRidersPage() {}
-
   void _toSeeAllNewOrders() {}
 
-  void _toSeeAllActiveOrders() {}
+  void _deliveryRoute(StatusType status) {
+    Get.to(
+      () => Delivery(status: status),
+      routeName: 'Delivery',
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +186,6 @@ class _DashboardState extends State<Dashboard>
                                 (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
                                 return EarningContainer(
-                                  onTap: _toAccountPage,
                                   number: 390.525,
                                   typeOf: "Emmanuel",
                                   onlineStatus: "248 Online",
@@ -199,7 +207,7 @@ class _DashboardState extends State<Dashboard>
                                 iconColor: kGreyColor1,
                                 numberOfOrders: "47",
                                 typeOfOrders: "Completed",
-                                onTap: _toSeeAllActiveOrders,
+                                onTap: () => _deliveryRoute(StatusType.deliver),
                               ),
                               OrdersContainer(
                                 containerColor: Colors.red.shade100,
@@ -207,13 +215,13 @@ class _DashboardState extends State<Dashboard>
                                 iconColor: kAccentColor,
                                 numberOfOrders: "3",
                                 typeOfOrders: "Pending",
-                                onTap: _toSeeAllNewOrders,
+                                onTap: () => _deliveryRoute(StatusType.pend),
                               ),
                             ],
                           ),
                           kSizedBox,
                           RiderVendorContainer(
-                            onTap: _toRidersPage,
+                            onTap: () {},
                             number: "390",
                             typeOf: "Vendors",
                             onlineStatus: "248 Online",

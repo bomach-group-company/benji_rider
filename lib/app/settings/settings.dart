@@ -5,7 +5,7 @@ import '../../src/providers/constants.dart';
 import '../../src/widget/section/profile_first_half.dart';
 import '../../theme/colors.dart';
 import '../auth/login.dart';
-import '../delivery/history.dart';
+import '../delivery/delivery.dart';
 import '../earning/earning.dart';
 import '../withdrawal/withdraw_history.dart';
 
@@ -176,8 +176,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     ListTile(
                       onTap: () {
                         Get.to(
-                          () => const DeliveryHistory(),
-                          routeName: 'DeliveredHistory',
+                          () => const Delivery(),
+                          routeName: 'Delivery',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,
@@ -191,7 +191,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: kAccentColor,
                       ),
                       title: const Text(
-                        'Delivery History',
+                        'Delivery',
                         style: TextStyle(
                           color: Color(
                             0xFF333333,
