@@ -408,13 +408,9 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {
-                            if (_validAuthCredentials) {
-                              null;
-                            } else {
-                              _toForgotPasswordPage;
-                            }
-                          }(),
+                          onPressed: _validAuthCredentials
+                              ? null
+                              : _toForgotPasswordPage,
                           child: Text(
                             "Forgot Password",
                             style: _validAuthCredentials
