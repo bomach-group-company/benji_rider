@@ -39,6 +39,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
             onTap: () {
               Navigator.of(context).pop(context);
             },
+            mouseCursor: SystemMouseCursors.click,
             child: Container(
               width: 40,
               height: 40,

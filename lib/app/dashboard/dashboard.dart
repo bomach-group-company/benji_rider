@@ -6,10 +6,12 @@ import 'package:get/route_manager.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../repo/utils/helpers.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_orders_container.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
 import '../../src/widget/card/earning_container.dart';
+import '../../src/widget/others/future_builder.dart';
 import '../../src/widget/section/drawer.dart';
 import '../../theme/colors.dart';
 import '../delivery/delivery.dart';
@@ -47,6 +49,7 @@ class _DashboardState extends State<Dashboard>
 
 //=================================== ALL VARIABLES =====================================\\
   late bool _loadingScreen;
+  double _accountBalance = 1000000.00;
 
 //============================================== CONTROLLERS =================================================\\
   final ScrollController _scrollController = ScrollController();
@@ -67,7 +70,7 @@ class _DashboardState extends State<Dashboard>
 
 //=================================== Navigation =====================================\\
 
-  void _toSeeAllNewOrders() {}
+  // void _toSeeAllNewOrders() {}
 
   void _deliveryRoute(StatusType status) {
     Get.to(
@@ -180,15 +183,19 @@ class _DashboardState extends State<Dashboard>
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.all(kDefaultPadding),
                         children: [
+                          MyFutureBuilder(
+                            future: getUser(),
+                            context: context,
+                            child: welcomeUser,
+                          ),
                           FutureBuilder<bool>(
                             future: _getCashVisibility(),
+                            initialData: true,
                             builder:
                                 (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
                                 return EarningContainer(
-                                  number: 390.525,
-                                  typeOf: "Emmanuel",
-                                  onlineStatus: "248 Online",
+                                  accountBalance: _accountBalance,
                                   isVisibleCash: snapshot.data,
                                 );
                               }
@@ -207,7 +214,8 @@ class _DashboardState extends State<Dashboard>
                                 iconColor: kGreyColor1,
                                 numberOfOrders: "47",
                                 typeOfOrders: "Completed",
-                                onTap: () => _deliveryRoute(StatusType.deliver),
+                                onTap: () =>
+                                    _deliveryRoute(StatusType.delivered),
                               ),
                               OrdersContainer(
                                 containerColor: Colors.red.shade100,
@@ -215,7 +223,7 @@ class _DashboardState extends State<Dashboard>
                                 iconColor: kAccentColor,
                                 numberOfOrders: "3",
                                 typeOfOrders: "Pending",
-                                onTap: () => _deliveryRoute(StatusType.pend),
+                                onTap: () => _deliveryRoute(StatusType.pending),
                               ),
                             ],
                           ),
@@ -233,6 +241,38 @@ class _DashboardState extends State<Dashboard>
             },
           ),
         ),
+      ),
+    );
+  }
+
+  Container welcomeUser(BuildContext context, data) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Hi ${data.username},",
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: kTextBlackColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          kHalfSizedBox,
+          Text(
+            data.email,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: kTextGreyColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          kHalfSizedBox,
+        ],
       ),
     );
   }

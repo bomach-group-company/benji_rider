@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_pw_validator/flutter_pw_validator.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
@@ -39,28 +40,36 @@ class _ResetPasswordState extends State<ResetPassword> {
   FocusNode confirmPasswordFN = FocusNode();
 
   //=========================== BOOL VALUES====================================\\
-  bool isLoading = false;
+  bool _isLoading = false;
+  bool _validAuthCredentials = false;
   bool isPWSuccess = false;
-  var isObscured;
+  var _isObscured;
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
-    // Simulating a delay of 3 seconds
+    // Simulating a delay of 2 seconds
     await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _validAuthCredentials = true;
+    });
 
     //Display snackBar
     myFixedSnackBar(
       context,
       "Password Reset successful",
-      kSecondaryColor,
+      kSuccessColor,
       const Duration(
         seconds: 2,
       ),
     );
+
+    // Simulating a delay of 2 seconds
+    await Future.delayed(const Duration(seconds: 2));
 
     // Navigate to the new page
     Get.offAll(
@@ -74,7 +83,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     );
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -83,7 +92,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   @override
   void initState() {
     super.initState();
-    isObscured = true;
+    _isObscured = true;
   }
 
   @override
@@ -110,29 +119,47 @@ class _ResetPasswordState extends State<ResetPassword> {
               Column(
                 children: [
                   Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Reset Password",
-                      subtitle:
-                          "Just enter a new password here and you are good to go!",
-                      curves: Curves.easeInOut,
-                      duration: Duration(),
-                      containerChild: Icon(
-                        Icons.login,
-                        color: kBlackColor,
-                      ),
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Reset Password",
+                          subtitle:
+                              "Just enter a new password here and you are good to go!",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.solidCircleCheck,
+                              color: kSuccessColor,
+                              size: 80,
+                            ),
                           ),
-                          fit: BoxFit.fitHeight,
-                        ),
-                        shape: OvalBorder(),
-                      ),
-                      imageContainerHeight:
-                          deviceType(media.size.width) > 2 ? 200 : 88,
-                    ),
+                          decoration: ShapeDecoration(
+                              color: kPrimaryColor, shape: OvalBorder()),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Reset Password",
+                          subtitle:
+                              "Just enter a new password here and you are good to go!",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.shieldHalved,
+                              color: kSecondaryColor,
+                              size: 80,
+                            ),
+                          ),
+                          decoration: ShapeDecoration(
+                              color: kPrimaryColor, shape: OvalBorder()),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      }
+                    }(),
                   ),
                 ],
               ),
@@ -180,7 +207,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             controller: userPasswordEC,
                             passwordFocusNode: userPasswordFN,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: isObscured,
+                            obscureText: _isObscured,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
                               RegExp passwordPattern = RegExp(
@@ -251,7 +278,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             controller: confirmPasswordEC,
                             passwordFocusNode: confirmPasswordFN,
                             keyboardType: TextInputType.visiblePassword,
-                            obscureText: isObscured,
+                            obscureText: _isObscured,
                             textInputAction: TextInputAction.done,
                             validator: (value) {
                               RegExp passwordPattern = RegExp(
@@ -259,13 +286,11 @@ class _ResetPasswordState extends State<ResetPassword> {
                               );
                               if (value == null || value!.isEmpty) {
                                 confirmPasswordFN.requestFocus();
-                                return "Enter your password";
+                                return "Confirm your password";
                               }
                               if (value != userPasswordEC.text) {
-                                confirmPasswordFN.requestFocus();
                                 return "Password does not match";
                               } else if (!passwordPattern.hasMatch(value)) {
-                                confirmPasswordFN.requestFocus();
                                 return "Password must be at least 8 characters";
                               }
                               return null;
@@ -282,7 +307,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
                     ),
                     kSizedBox,
-                    isLoading
+                    _isLoading
                         ? Center(
                             child: SpinKitChasingDots(
                               color: kAccentColor,

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,15 +61,19 @@ class _LoginState extends State<Login> {
 
   //=========================== STYLE ====================================\\
 
-  TextStyle myAccentFontStyle = TextStyle(
-    color: kAccentColor,
-  );
-
   //=========================== FOCUS NODES ====================================\\
   FocusNode _emailFocusNode = FocusNode();
   FocusNode _passwordFocusNode = FocusNode();
 
   //=========================== FUNCTIONS ====================================\\
+  void _checkBoxFunction(bool) {
+    (newValue) {
+      setState(() {
+        _isChecked = newValue!;
+      });
+    };
+  }
+
   Future<void> loadData() async {
     setState(() {
       _isLoading = true;
@@ -124,11 +129,12 @@ class _LoginState extends State<Login> {
         context,
         "Login Successful".toUpperCase(),
         kSuccessColor,
-        const Duration(
-          seconds: 2,
-        ),
+        const Duration(seconds: 2),
       );
-      await Future.delayed(Duration(seconds: 3));
+
+      //Simulating a delay
+      await Future.delayed(Duration(seconds: 2));
+
       Get.offAll(
         () => const LoginSplashScreen(),
         routeName: 'LoginSplashScreen',
@@ -148,12 +154,22 @@ class _LoginState extends State<Login> {
         context,
         "Invalid email or password".toUpperCase(),
         kAccentColor,
-        const Duration(
-          seconds: 2,
-        ),
+        const Duration(seconds: 2),
       );
     }
   }
+
+  //=========================== Navigation ====================================\\
+  void _toForgotPasswordPage() => Get.to(
+        () => const ForgotPassword(),
+        routeName: 'ForgotPassword',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -181,19 +197,20 @@ class _LoginState extends State<Login> {
                           subtitle: "Please log in to your existing account",
                           curves: Curves.easeInOut,
                           duration: Duration(milliseconds: 300),
-                          containerChild: Icon(
-                            Icons.check_circle,
-                            color: kSuccessColor,
-                            size: 100,
-                            fill: 1,
-                            semanticLabel: "login__success_icon",
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.unlockKeyhole,
+                              color: kSuccessColor,
+                              size: 80,
+                              semanticLabel: "login__success_icon",
+                            ),
                           ),
                           decoration: ShapeDecoration(
                             color: kPrimaryColor,
                             shape: OvalBorder(),
                           ),
                           imageContainerHeight:
-                              deviceType(media.width) > 2 ? 200 : 100,
+                              deviceType(media.width) > 2 ? 200 : 120,
                         );
                       } else {
                         if (_invalidAuthCredentials) {
@@ -202,19 +219,20 @@ class _LoginState extends State<Login> {
                             subtitle: "Please log in to your existing account",
                             curves: Curves.easeInOut,
                             duration: Duration(milliseconds: 300),
-                            containerChild: Icon(
-                              Icons.cancel,
-                              color: kAccentColor,
-                              size: 100,
-                              fill: 1,
-                              semanticLabel: "invalid_icon",
+                            containerChild: Center(
+                              child: FaIcon(
+                                FontAwesomeIcons.lock,
+                                color: kAccentColor,
+                                size: 80,
+                                semanticLabel: "invalid_icon",
+                              ),
                             ),
                             decoration: ShapeDecoration(
                               color: kPrimaryColor,
                               shape: OvalBorder(),
                             ),
                             imageContainerHeight:
-                                deviceType(media.width) > 2 ? 200 : 100,
+                                deviceType(media.width) > 2 ? 200 : 120,
                           );
                         } else {
                           return ReusableAuthenticationFirstHalf(
@@ -222,12 +240,13 @@ class _LoginState extends State<Login> {
                             subtitle: "Please log in to your existing account",
                             curves: Curves.easeInOut,
                             duration: Duration(milliseconds: 300),
-                            containerChild: Icon(
-                              Icons.login,
-                              color: kSecondaryColor,
-                              size: 100,
-                              fill: 1,
-                              semanticLabel: "login_icon",
+                            containerChild: Center(
+                              child: FaIcon(
+                                FontAwesomeIcons.lock,
+                                color: kSecondaryColor,
+                                size: 80,
+                                semanticLabel: "login_icon",
+                              ),
                             ),
                             decoration: ShapeDecoration(
                               color: kPrimaryColor,
@@ -366,21 +385,24 @@ class _LoginState extends State<Login> {
                             Checkbox(
                               value: _isChecked,
                               splashRadius: 50,
-                              activeColor: kSecondaryColor,
+                              activeColor: _validAuthCredentials
+                                  ? kGreyColor1
+                                  : kSecondaryColor,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(
                                   5,
                                 ),
                               ),
-                              onChanged: (newValue) {
-                                setState(() {
-                                  _isChecked = newValue!;
-                                });
-                              },
+                              onChanged: _validAuthCredentials
+                                  ? null
+                                  : _checkBoxFunction,
                             ),
-                            const Text(
+                            Text(
                               "Remember me ",
                               style: TextStyle(
+                                color: _validAuthCredentials
+                                    ? kGreyColor1
+                                    : kTextBlackColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -389,20 +411,17 @@ class _LoginState extends State<Login> {
                         ),
                         TextButton(
                           onPressed: () {
-                            Get.to(
-                              () => const ForgotPassword(),
-                              routeName: 'ForgotPassword',
-                              duration: const Duration(milliseconds: 300),
-                              fullscreenDialog: true,
-                              curve: Curves.easeIn,
-                              preventDuplicates: true,
-                              popGesture: true,
-                              transition: Transition.rightToLeft,
-                            );
-                          },
+                            if (_validAuthCredentials) {
+                              null;
+                            } else {
+                              _toForgotPasswordPage;
+                            }
+                          }(),
                           child: Text(
                             "Forgot Password",
-                            style: myAccentFontStyle,
+                            style: _validAuthCredentials
+                                ? TextStyle(color: kTextGreyColor)
+                                : TextStyle(color: kAccentColor),
                           ),
                         ),
                       ],
