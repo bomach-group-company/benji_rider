@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/ride/ride.dart';
+import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/src/widget/others/future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -193,7 +194,18 @@ class _MyDrawerState extends State<MyDrawer> {
                       text: 'Vendors',
                       isOnline: snapshot.data,
                       icon: Icons.sell_outlined,
-                      nav: () {},
+                      nav: () {
+                        Get.to(
+                          () => const Vendors(),
+                          routeName: 'Vendors',
+                          duration: const Duration(milliseconds: 300),
+                          fullscreenDialog: true,
+                          curve: Curves.easeIn,
+                          preventDuplicates: true,
+                          popGesture: true,
+                          transition: Transition.rightToLeft,
+                        );
+                      },
                     ),
                     MyListTile(
                       text: 'Settings',

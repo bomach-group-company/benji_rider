@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/section/profile_first_half.dart';
@@ -53,12 +52,12 @@ class _SettingsPageState extends State<SettingsPage> {
       );
   @override
   Widget build(BuildContext context) {
-    //===================== _changeCaseVisibility ================================\\
-    Future<bool> _getCashVisibility() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool? isVisibleCash = await prefs.getBool('isVisibleCash');
-      return isVisibleCash ?? true;
-    }
+    // //===================== _changeCaseVisibility ================================\\
+    // Future<bool> _getCashVisibility() async {
+    //   SharedPreferences prefs = await SharedPreferences.getInstance();
+    //   bool? isVisibleCash = await prefs.getBool('isVisibleCash');
+    //   return isVisibleCash ?? true;
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -81,9 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ProfileFirstHalf(
-              availableBalance: _accountBalance,
-            ),
+            ProfileFirstHalf(availableBalance: _accountBalance),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding,
@@ -194,9 +191,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   shadows: const [
                     BoxShadow(
-                      color: Color(
-                        0x0F000000,
-                      ),
+                      color: Color(0x0F000000),
                       blurRadius: 24,
                       offset: Offset(0, 4),
                       spreadRadius: 0,
