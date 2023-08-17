@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
@@ -24,28 +25,34 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   //=========================== ALL VARIABBLES ====================================\\
 
-  //=========================== CONTROLLERS ====================================\\
-
-  TextEditingController emailController = TextEditingController();
+  //=========================== BOOL VALUES ====================================\\
+  bool _isLoading = false;
+  bool _validAuthCredentials = false;
+  // bool _invalidAuthCredentials = false;
 
   //=========================== KEYS ====================================\\
 
   final _formKey = GlobalKey<FormState>();
 
+  //=========================== CONTROLLERS ====================================\\
+
+  TextEditingController emailController = TextEditingController();
+
   //=========================== FOCUS NODES ====================================\\
   FocusNode emailFocusNode = FocusNode();
-
-  //=========================== BOOL VALUES====================================\\
-  bool isLoading = false;
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     // Simulating a delay of 3 seconds
     await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _validAuthCredentials = true;
+    });
 
     //Display snackBar
     myFixedSnackBar(
@@ -56,6 +63,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         seconds: 2,
       ),
     );
+
+    // Simulating a delay of 2 seconds
+    await Future.delayed(const Duration(seconds: 2));
 
     // Navigate to the new page
     Get.to(
@@ -70,7 +80,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -89,6 +99,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           backgroundColor: kTransparentColor,
           toolbarHeight: kToolbarHeight,
         ),
+        extendBody: true,
+        extendBodyBehindAppBar: true,
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: LayoutGrid(
@@ -99,29 +111,51 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               Column(
                 children: [
                   Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Forgot Password",
-                      subtitle:
-                          "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
-                      curves: Curves.easeInOut,
-                      duration: Duration(),
-                      containerChild: Icon(
-                        Icons.login,
-                        color: kBlackColor,
-                      ),
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Forgot Password",
+                          subtitle:
+                              "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.solidCircleCheck,
+                              color: kSuccessColor,
+                              size: 80,
+                            ),
                           ),
-                          fit: BoxFit.fitHeight,
-                        ),
-                        shape: OvalBorder(),
-                      ),
-                      imageContainerHeight:
-                          deviceType(media.size.width) > 2 ? 200 : 88,
-                    ),
+                          decoration: ShapeDecoration(
+                            color: kPrimaryColor,
+                            shape: OvalBorder(),
+                          ),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Forgot Password",
+                          subtitle:
+                              "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.question,
+                              color: kSecondaryColor,
+                              size: 80,
+                            ),
+                          ),
+                          decoration: ShapeDecoration(
+                            color: kPrimaryColor,
+                            shape: OvalBorder(),
+                          ),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      }
+                    }(),
                   ),
                 ],
               ),
@@ -134,7 +168,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   right: kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(
                         breakPoint(media.size.width, 24, 24, 0, 0)),
@@ -188,7 +222,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           const SizedBox(
                             height: 30,
                           ),
-                          isLoading
+                          _isLoading
                               ? Center(
                                   child: SpinKitChasingDots(
                                     color: kAccentColor,

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
@@ -39,9 +40,11 @@ class _SendOTPState extends State<SendOTP> {
 
   //=========================== ALL VARIABBLES ====================================\\
   late Timer _timer;
-  int _secondsRemaining = 60;
-  //=========================== Bool ====================================\\
+  int _secondsRemaining = 30;
 
+  //=========================== BOOL VALUES ====================================\\
+  bool _isLoading = false;
+  bool _validAuthCredentials = false;
   bool _timerComplete = false;
 
   //=========================== CONTROLLERS ====================================\\
@@ -60,9 +63,6 @@ class _SendOTPState extends State<SendOTP> {
   FocusNode pin2FN = FocusNode();
   FocusNode pin3FN = FocusNode();
   FocusNode pin4FN = FocusNode();
-
-  //=========================== BOOL VALUES====================================\\
-  bool isLoading = false;
 
   //=========================== FUNCTIONS ====================================\\
 
@@ -103,11 +103,15 @@ class _SendOTPState extends State<SendOTP> {
 
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     // Simulating a delay of 3 seconds
     await Future.delayed(const Duration(seconds: 2));
+
+    setState(() {
+      _validAuthCredentials = true;
+    });
 
     //Display snackBar
     myFixedSnackBar(
@@ -118,6 +122,9 @@ class _SendOTPState extends State<SendOTP> {
         seconds: 2,
       ),
     );
+
+    // Simulating a delay of 2 seconds
+    await Future.delayed(const Duration(seconds: 2));
 
     // Navigate to the new page
     Get.to(
@@ -132,7 +139,7 @@ class _SendOTPState extends State<SendOTP> {
     );
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -160,27 +167,45 @@ class _SendOTPState extends State<SendOTP> {
               Column(
                 children: [
                   Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Verification",
-                      subtitle: "We have sent a code to your email",
-                      curves: Curves.easeInOut,
-                      duration: Duration(),
-                      containerChild: Icon(
-                        Icons.login,
-                        color: kBlackColor,
-                      ),
-                      decoration: const ShapeDecoration(
-                          // color: Colors.white,
-                          image: DecorationImage(
-                            image: AssetImage(
-                              "assets/images/logo/benji_red_logo_icon.jpg",
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Verification",
+                          subtitle: "We have sent a code to your email",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.solidCircleCheck,
+                              color: kSuccessColor,
+                              size: 80,
                             ),
-                            fit: BoxFit.cover,
                           ),
-                          shape: OvalBorder()),
-                      imageContainerHeight:
-                          deviceType(media.size.width) > 2 ? 200 : 88,
-                    ),
+                          decoration: ShapeDecoration(
+                              color: kPrimaryColor, shape: OvalBorder()),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Verification",
+                          subtitle: "We have sent a code to your email",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.shieldHalved,
+                              color: kSecondaryColor,
+                              size: 80,
+                            ),
+                          ),
+                          decoration: ShapeDecoration(
+                              color: kPrimaryColor, shape: OvalBorder()),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      }
+                    }(),
                   ),
                 ],
               ),
@@ -253,7 +278,9 @@ class _SendOTPState extends State<SendOTP> {
                                 formatTime(_secondsRemaining),
                                 style: TextStyle(
                                   fontSize: 15,
-                                  color: kTextBlackColor,
+                                  color: _timerComplete
+                                      ? kAccentColor
+                                      : kSuccessColor,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -359,7 +386,7 @@ class _SendOTPState extends State<SendOTP> {
                     const SizedBox(
                       height: kDefaultPadding * 2,
                     ),
-                    isLoading
+                    _isLoading
                         ? Center(
                             child: SpinKitChasingDots(
                               color: kAccentColor,
