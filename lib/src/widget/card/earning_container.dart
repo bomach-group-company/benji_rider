@@ -11,15 +11,11 @@ import '../../providers/constants.dart';
 class EarningContainer extends StatefulWidget {
   final Function()? onTap;
   final double number;
-  final String typeOf;
-  final String onlineStatus;
   final bool isVisibleCash;
   EarningContainer({
     super.key,
     this.onTap,
     required this.number,
-    required this.typeOf,
-    required this.onlineStatus,
     this.isVisibleCash = true,
   });
 
@@ -88,15 +84,6 @@ class _EarningContainerState extends State<EarningContainer> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Hi ${widget.typeOf},',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: kTextBlackColor,
-                fontSize: 15,
-                fontWeight: FontWeight.w800,
-              ),
-            ),
             Row(
               children: [
                 Text(

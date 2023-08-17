@@ -7,30 +7,30 @@ import '../../src/widget/responsive/reponsive_width.dart';
 import '../../src/widget/responsive/responsive_width_appbar.dart';
 import '../../theme/colors.dart';
 
-enum StatusType { deliver, pend, cancel }
+enum StatusType { delivered, pending, cancelled }
 
 class Delivery extends StatefulWidget {
   final StatusType status;
-  const Delivery({super.key, this.status = StatusType.deliver});
+  const Delivery({super.key, this.status = StatusType.delivered});
 
   @override
   State<Delivery> createState() => _DeliveryState();
 }
 
 class _DeliveryState extends State<Delivery> {
-  StatusType? status;
+  StatusType? _status;
   bool isLoading = false;
 
   @override
   void initState() {
-    status = widget.status;
+    _status = widget.status;
     super.initState();
   }
 
   void clickDelivered() async {
     setState(() {
       isLoading = true;
-      status = StatusType.deliver;
+      _status = StatusType.delivered;
     });
 
     await Future.delayed(const Duration(seconds: 1));
@@ -43,7 +43,7 @@ class _DeliveryState extends State<Delivery> {
   void clickPending() async {
     setState(() {
       isLoading = true;
-      status = StatusType.pend;
+      _status = StatusType.pending;
     });
 
     await Future.delayed(const Duration(seconds: 1));
@@ -56,7 +56,7 @@ class _DeliveryState extends State<Delivery> {
   void clickCancelled() async {
     setState(() {
       isLoading = true;
-      status = StatusType.cancel;
+      _status = StatusType.cancelled;
     });
 
     await Future.delayed(const Duration(seconds: 1));
@@ -158,7 +158,7 @@ class _DeliveryState extends State<Delivery> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  checkStatus(status, StatusType.deliver)
+                                  checkStatus(_status, StatusType.delivered)
                                       ? kAccentColor
                                       : const Color(0xFFF2F2F2),
                               padding: const EdgeInsets.all(18),
@@ -171,9 +171,10 @@ class _DeliveryState extends State<Delivery> {
                               'Delivered',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: checkStatus(status, StatusType.deliver)
-                                    ? kTextWhiteColor
-                                    : kGreyColor2,
+                                color:
+                                    checkStatus(_status, StatusType.delivered)
+                                        ? kTextWhiteColor
+                                        : kGreyColor2,
                                 fontSize: 14,
                                 fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
@@ -186,7 +187,7 @@ class _DeliveryState extends State<Delivery> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  checkStatus(status, StatusType.pend)
+                                  checkStatus(_status, StatusType.pending)
                                       ? kAccentColor
                                       : const Color(0xFFF2F2F2),
                               padding: const EdgeInsets.all(18),
@@ -199,7 +200,7 @@ class _DeliveryState extends State<Delivery> {
                               'Pending',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: checkStatus(status, StatusType.pend)
+                                color: checkStatus(_status, StatusType.pending)
                                     ? kTextWhiteColor
                                     : kGreyColor2,
                                 fontSize: 14,
@@ -214,7 +215,7 @@ class _DeliveryState extends State<Delivery> {
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  checkStatus(status, StatusType.cancel)
+                                  checkStatus(_status, StatusType.cancelled)
                                       ? kAccentColor
                                       : const Color(0xFFF2F2F2),
                               padding: const EdgeInsets.all(18),
@@ -229,9 +230,10 @@ class _DeliveryState extends State<Delivery> {
                               'Cancelled',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: checkStatus(status, StatusType.cancel)
-                                    ? kTextWhiteColor
-                                    : kGreyColor2,
+                                color:
+                                    checkStatus(_status, StatusType.cancelled)
+                                        ? kTextWhiteColor
+                                        : kGreyColor2,
                                 fontSize: 14,
                                 fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
@@ -315,8 +317,10 @@ class _DeliveryState extends State<Delivery> {
                                                 Text(
                                                   'ID 213081',
                                                   style: TextStyle(
-                                                    color: !checkStatus(status,
-                                                            StatusType.cancel)
+                                                    color: !checkStatus(
+                                                            _status,
+                                                            StatusType
+                                                                .cancelled)
                                                         ? const Color(
                                                             0xFF454545)
                                                         : const Color(
@@ -351,28 +355,28 @@ class _DeliveryState extends State<Delivery> {
                                                     height: 10,
                                                     child: Text(
                                                       checkStatus(
-                                                              status,
+                                                              _status,
                                                               StatusType
-                                                                  .deliver)
+                                                                  .delivered)
                                                           ? 'Delivered'
                                                           : checkStatus(
-                                                                  status,
+                                                                  _status,
                                                                   StatusType
-                                                                      .pend)
+                                                                      .pending)
                                                               ? 'Pending'
                                                               : 'Cancelled',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: TextStyle(
                                                         color: checkStatus(
-                                                                status,
+                                                                _status,
                                                                 StatusType
-                                                                    .deliver)
+                                                                    .delivered)
                                                             ? kAccentColor
                                                             : checkStatus(
-                                                                    status,
+                                                                    _status,
                                                                     StatusType
-                                                                        .pend)
+                                                                        .pending)
                                                                 ? kLoadingColor
                                                                 : const Color(
                                                                     0xFF979797),
@@ -456,9 +460,9 @@ class _DeliveryState extends State<Delivery> {
                                                         '21 Bartus Street, Abuja Nigeria',
                                                         style: TextStyle(
                                                           color: !checkStatus(
-                                                                  status,
+                                                                  _status,
                                                                   StatusType
-                                                                      .cancel)
+                                                                      .cancelled)
                                                               ? const Color(
                                                                   0xFF454545)
                                                               : const Color(
@@ -474,9 +478,9 @@ class _DeliveryState extends State<Delivery> {
                                                         '3 Edwins Close, Wuse, Abuja',
                                                         style: TextStyle(
                                                           color: !checkStatus(
-                                                                  status,
+                                                                  _status,
                                                                   StatusType
-                                                                      .cancel)
+                                                                      .cancelled)
                                                               ? const Color(
                                                                   0xFF454545)
                                                               : const Color(
@@ -519,8 +523,9 @@ class _DeliveryState extends State<Delivery> {
                                                     'NGN 5,000',
                                                     style: TextStyle(
                                                       color: !checkStatus(
-                                                              status,
-                                                              StatusType.cancel)
+                                                              _status,
+                                                              StatusType
+                                                                  .cancelled)
                                                           ? const Color(
                                                               0xFF454545)
                                                           : const Color(
