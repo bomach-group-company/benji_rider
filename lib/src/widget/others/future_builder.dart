@@ -6,12 +6,11 @@ import '../../../theme/colors.dart';
 class MyFutureBuilder extends StatelessWidget {
   final dynamic future;
   final Function child;
-  final BuildContext context;
-  const MyFutureBuilder(
-      {super.key,
-      required this.future,
-      required this.child,
-      required this.context});
+  const MyFutureBuilder({
+    super.key,
+    required this.future,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class MyFutureBuilder extends StatelessWidget {
       future: future,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          return child(context, snapshot.data);
+          return child(snapshot.data);
         }
         return Center(
           child: SpinKitChasingDots(color: kAccentColor),

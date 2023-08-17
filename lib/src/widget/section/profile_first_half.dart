@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/src/widget/others/future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
@@ -11,12 +12,10 @@ import '../../providers/constants.dart';
 
 class ProfileFirstHalf extends StatefulWidget {
   final double availableBalance;
-  final bool isVisibleCash;
 
   const ProfileFirstHalf({
     super.key,
     required this.availableBalance,
-    required this.isVisibleCash,
   });
 
   @override
@@ -28,21 +27,25 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
 
   @override
   void initState() {
-    _isVisibleCash = widget.isVisibleCash;
     super.initState();
   }
 
 //======================================================= ALL VARIABLES ================================================\\
-  bool? _isVisibleCash;
 
 //======================================================= FUNCTIONS =================================================\\
-  void _changeCaseVisibility() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('_isVisibleCash', !_isVisibleCash!);
 
-    setState(() {
-      _isVisibleCash = !_isVisibleCash!;
-    });
+  Future<bool> _getStatusCash() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isVisibleCash = await prefs.getBool('isVisibleCash');
+    return isVisibleCash ?? true;
+  }
+
+  Future<void> toggleVisibleCash() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isVisibleCash = prefs.getBool('isVisibleCash') ?? true;
+    await prefs.setBool('isVisibleCash', !isVisibleCash);
+
+    setState(() {});
   }
 
   String formattedText(double value) {
@@ -65,102 +68,107 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
           ),
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+      child: MyFutureBuilder(
+        future: _getStatusCash(),
+        child: profileHead,
+      ),
+    );
+  }
+
+  Column profileHead(data) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Available Balance',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            IconButton(
+              onPressed: toggleVisibleCash,
+              icon: Icon(
+                data ? Icons.visibility : Icons.visibility_off,
+                color: kPrimaryColor,
+              ),
+            ),
+          ],
+        ),
+        kSizedBox,
+        Text.rich(
+          TextSpan(
             children: [
-              Text(
-                'Available Balance',
-                textAlign: TextAlign.center,
+              TextSpan(
+                text: "₦",
                 style: TextStyle(
                   color: kPrimaryColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
+                  fontSize: 20,
+                  fontFamily: 'sen',
+                  fontWeight: FontWeight.w700,
                 ),
               ),
-              IconButton(
-                onPressed: _changeCaseVisibility,
-                icon: Icon(
-                  _isVisibleCash! ? Icons.visibility : Icons.visibility_off,
+              TextSpan(
+                text: data ? formattedText(widget.availableBalance) : '******',
+                style: TextStyle(
                   color: kPrimaryColor,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ],
           ),
-          kSizedBox,
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: "₦",
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 20,
-                    fontFamily: 'sen',
-                    fontWeight: FontWeight.w700,
-                  ),
+        ),
+        kSizedBox,
+        InkWell(
+          onTap: () {
+            Get.to(
+              () => SelectAccountPage(),
+              routeName: 'SelectAccountPage',
+              duration: const Duration(milliseconds: 300),
+              fullscreenDialog: true,
+              curve: Curves.easeIn,
+              preventDuplicates: true,
+              popGesture: true,
+              transition: Transition.rightToLeft,
+            );
+          },
+          child: Container(
+            width: 100,
+            height: 37,
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  width: 0.50,
+                  color: kPrimaryColor,
                 ),
-                TextSpan(
-                  text: _isVisibleCash!
-                      ? formattedText(widget.availableBalance)
-                      : '******',
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          kSizedBox,
-          InkWell(
-            onTap: () {
-              Get.to(
-                () => SelectAccountPage(),
-                routeName: 'SelectAccountPage',
-                duration: const Duration(milliseconds: 300),
-                fullscreenDialog: true,
-                curve: Curves.easeIn,
-                preventDuplicates: true,
-                popGesture: true,
-                transition: Transition.rightToLeft,
-              );
-            },
-            child: Container(
-              width: 100,
-              height: 37,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    width: 0.50,
-                    color: kPrimaryColor,
-                  ),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  ),
+                borderRadius: BorderRadius.circular(
+                  10,
                 ),
               ),
-              child: Center(
-                child: Text(
-                  'Withdraw',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
+            ),
+            child: Center(
+              child: Text(
+                'Withdraw',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: kPrimaryColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
           ),
-          const SizedBox(
-            height: kDefaultPadding * 2,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: kDefaultPadding * 2,
+        ),
+      ],
     );
   }
 }

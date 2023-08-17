@@ -25,6 +25,7 @@ Future<User?> getUser() async {
 Future<bool> deleteUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove('isOnline');
+  prefs.remove('isVisibleCash');
   prefs.remove('rememberMe');
   return prefs.remove('user');
 }
