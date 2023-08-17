@@ -123,7 +123,6 @@ class _MyDrawerState extends State<MyDrawer> {
                     ),
                     MyFutureBuilder(
                       future: getUser(),
-                      context: context,
                       child: headDrawer,
                     ),
                     kSizedBox,

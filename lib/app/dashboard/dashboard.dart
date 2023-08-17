@@ -4,14 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../repo/utils/helpers.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_orders_container.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
 import '../../src/widget/card/earning_container.dart';
-import '../../src/widget/others/future_builder.dart';
 import '../../src/widget/section/drawer.dart';
 import '../../theme/colors.dart';
 import '../delivery/delivery.dart';
@@ -92,13 +89,6 @@ class _DashboardState extends State<Dashboard>
     double mediaWidth = MediaQuery.of(context).size.width;
     double mediaHeight = MediaQuery.of(context).size.height;
 
-    //===================== _changeCaseVisibility ================================\\
-    Future<bool> _getCashVisibility() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool? isVisibleCash = await prefs.getBool('isVisibleCash');
-      return isVisibleCash ?? true;
-    }
-
 //====================================================================================\\
 
     return LiquidPullToRefresh(
@@ -110,6 +100,11 @@ class _DashboardState extends State<Dashboard>
       animSpeedFactor: 2,
       showChildOpacityTransition: false,
       child: Scaffold(
+        onDrawerChanged: (isOpened) {
+          if (isOpened == false) {
+            setState(() {});
+          }
+        },
         appBar: AppBar(
           elevation: 0,
           titleSpacing: -20,
@@ -183,26 +178,8 @@ class _DashboardState extends State<Dashboard>
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.all(kDefaultPadding),
                         children: [
-                          MyFutureBuilder(
-                            future: getUser(),
-                            context: context,
-                            child: welcomeUser,
-                          ),
-                          FutureBuilder<bool>(
-                            future: _getCashVisibility(),
-                            initialData: true,
-                            builder:
-                                (BuildContext context, AsyncSnapshot snapshot) {
-                              if (snapshot.hasData) {
-                                return EarningContainer(
-                                  accountBalance: _accountBalance,
-                                  isVisibleCash: snapshot.data,
-                                );
-                              }
-                              return Center(
-                                child: SpinKitChasingDots(color: kAccentColor),
-                              );
-                            },
+                          EarningContainer(
+                            accountBalance: _accountBalance,
                           ),
                           kSizedBox,
                           Row(
@@ -241,38 +218,6 @@ class _DashboardState extends State<Dashboard>
             },
           ),
         ),
-      ),
-    );
-  }
-
-  Container welcomeUser(BuildContext context, data) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: kDefaultPadding / 2),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Hi ${data.username},",
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: kTextBlackColor,
-              fontSize: 15,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          kHalfSizedBox,
-          Text(
-            data.email,
-            softWrap: true,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              color: kTextGreyColor,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          kHalfSizedBox,
-        ],
       ),
     );
   }

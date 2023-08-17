@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,22 +23,10 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    _loadingScreen = true;
-    Future.delayed(
-      const Duration(milliseconds: 1000),
-      () => setState(
-        () => _loadingScreen = false,
-      ),
-    );
   }
 
   //==================================================  ALL VARIABLES ======================================================\\
   double _accountBalance = 1000000.00;
-
-  //==================================================  BOOL ======================================================\\
-  late bool _loadingScreen;
-
-  //==================================================  FUNCTIONS ======================================================\\
 
   //==================================================  Navigation ======================================================\\
 
@@ -94,25 +81,9 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            _loadingScreen
-                ? Padding(
-                    padding: const EdgeInsets.all(kDefaultPadding),
-                    child: SpinKitChasingDots(color: kAccentColor))
-                : FutureBuilder<bool>(
-                    future: _getCashVisibility(),
-                    initialData: true,
-                    builder: (BuildContext context, AsyncSnapshot snapshot) {
-                      if (snapshot.hasData) {
-                        return ProfileFirstHalf(
-                          availableBalance: _accountBalance,
-                          isVisibleCash: snapshot.data,
-                        );
-                      }
-                      return Center(
-                        child: SpinKitChasingDots(color: kPrimaryColor),
-                      );
-                    },
-                  ),
+            ProfileFirstHalf(
+              availableBalance: _accountBalance,
+            ),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding,
