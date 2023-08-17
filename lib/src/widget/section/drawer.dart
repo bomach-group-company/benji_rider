@@ -237,7 +237,7 @@ class _MyDrawerState extends State<MyDrawer> {
     );
   }
 
-  Container headDrawer(BuildContext context, data) {
+  Container headDrawer(data) {
     return Container(
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.only(top: kDefaultPadding),

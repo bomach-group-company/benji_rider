@@ -66,12 +66,10 @@ class _LoginState extends State<Login> {
   FocusNode _passwordFocusNode = FocusNode();
 
   //=========================== FUNCTIONS ====================================\\
-  void _checkBoxFunction(bool) {
-    (newValue) {
-      setState(() {
-        _isChecked = newValue!;
-      });
-    };
+  void _checkBoxFunction(newVal) {
+    setState(() {
+      _isChecked = newVal!;
+    });
   }
 
   Future<void> loadData() async {

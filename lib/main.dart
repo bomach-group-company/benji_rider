@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 
-import 'app/dashboard/dashboard.dart';
 import 'app/splash_screens/startup_splash_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';

@@ -102,7 +102,7 @@ class _EarningContainerState extends State<EarningContainer> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Hi ${data['user'] != null ? data['user'].username : 'username'},",
+          "Hi ${data['user'].username},",
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             color: kTextBlackColor,
@@ -112,7 +112,7 @@ class _EarningContainerState extends State<EarningContainer> {
         ),
         kHalfSizedBox,
         Text(
-          data['user'] != null ? data['user'].email : 'email',
+          data['user'].email,
           softWrap: true,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
