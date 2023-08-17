@@ -1,6 +1,6 @@
+import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/responsive/reponsive_width.dart';
@@ -74,56 +74,12 @@ class _DeliveryState extends State<Delivery> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: MyResponsiveWidthAppbar(
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          titleSpacing: 20,
-          elevation: 0,
+        child: MyAppBar(
+          title: "Delivery",
+          elevation: 0.0,
+          actions: [],
           backgroundColor: kPrimaryColor,
-          title: Row(
-            children: [
-              InkWell(
-                onTap: () {
-                  Get.back();
-                },
-                mouseCursor: SystemMouseCursors.click,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: ShapeDecoration(
-                    color: const Color(
-                      0xFFFEF8F8,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        width: 0.50,
-                        color: Color(
-                          0xFFFDEDED,
-                        ),
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        24,
-                      ),
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: kAccentColor,
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 35,
-              ),
-              const Text(
-                'Delivery',
-                style: TextStyle(
-                  color: Color(0xFF333333),
-                  fontSize: 19,
-                  fontWeight: FontWeight.w700,
-                ),
-              )
-            ],
-          ),
+          toolbarHeight: kToolbarHeight,
         ),
       ),
       body: isLoading
@@ -136,9 +92,8 @@ class _DeliveryState extends State<Delivery> {
                 children: [
                   MyResponsiveWidth(
                     child: Container(
-                      margin: const EdgeInsets.only(bottom: 15),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
+                      decoration: BoxDecoration(
+                        color: kPrimaryColor,
                         boxShadow: [
                           BoxShadow(
                             color: Color(0x0F000000),
@@ -161,7 +116,6 @@ class _DeliveryState extends State<Delivery> {
                                   checkStatus(_status, StatusType.delivered)
                                       ? kAccentColor
                                       : const Color(0xFFF2F2F2),
-                              padding: const EdgeInsets.all(18),
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(16))),
@@ -176,7 +130,6 @@ class _DeliveryState extends State<Delivery> {
                                         ? kTextWhiteColor
                                         : kGreyColor2,
                                 fontSize: 14,
-                                fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -190,7 +143,6 @@ class _DeliveryState extends State<Delivery> {
                                   checkStatus(_status, StatusType.pending)
                                       ? kAccentColor
                                       : const Color(0xFFF2F2F2),
-                              padding: const EdgeInsets.all(18),
                               shape: const RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(16))),
@@ -204,7 +156,6 @@ class _DeliveryState extends State<Delivery> {
                                     ? kTextWhiteColor
                                     : kGreyColor2,
                                 fontSize: 14,
-                                fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -217,8 +168,7 @@ class _DeliveryState extends State<Delivery> {
                               backgroundColor:
                                   checkStatus(_status, StatusType.cancelled)
                                       ? kAccentColor
-                                      : const Color(0xFFF2F2F2),
-                              padding: const EdgeInsets.all(18),
+                                      : kDefaultCategoryBackgroundColor,
                               shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(16),
@@ -235,7 +185,6 @@ class _DeliveryState extends State<Delivery> {
                                         ? kTextWhiteColor
                                         : kGreyColor2,
                                 fontSize: 14,
-                                fontFamily: 'Sen',
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
@@ -245,19 +194,17 @@ class _DeliveryState extends State<Delivery> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
                       physics: const BouncingScrollPhysics(),
                       itemCount: 6,
+                      padding: const EdgeInsets.all(kDefaultPadding),
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: kDefaultPadding / 2),
                       itemBuilder: (BuildContext context, int index) {
                         return MyResponsiveWidth(
                           child: Column(
                             children: [
                               Container(
-                                margin: const EdgeInsets.only(
-                                  left: kDefaultPadding,
-                                  right: kDefaultPadding,
-                                  bottom: kDefaultPadding * 0.5,
-                                ),
                                 decoration: ShapeDecoration(
                                   color: kPrimaryColor,
                                   shape: RoundedRectangleBorder(

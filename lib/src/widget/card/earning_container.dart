@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/withdrawal/select_account.dart';
@@ -10,12 +11,12 @@ import '../../providers/constants.dart';
 
 class EarningContainer extends StatefulWidget {
   final Function()? onTap;
-  final double number;
+  final double accountBalance;
   final bool isVisibleCash;
   EarningContainer({
     super.key,
     this.onTap,
-    required this.number,
+    required this.accountBalance,
     this.isVisibleCash = true,
   });
 
@@ -24,24 +25,31 @@ class EarningContainer extends StatefulWidget {
 }
 
 class _EarningContainerState extends State<EarningContainer> {
-  bool? isVisibleCash;
-
-  void _changeCaseVisibility() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isVisibleCash', !isVisibleCash!);
-
-    setState(() {
-      isVisibleCash = !isVisibleCash!;
-    });
-  }
+  //======================================================= INITIAL STATE ================================================\\
 
   @override
   void initState() {
-    isVisibleCash = widget.isVisibleCash;
+    _isVisibleCash = widget.isVisibleCash;
     super.initState();
   }
 
+//======================================================= ALL VARIABLES ================================================\\
+  bool? _isVisibleCash;
+
 //======================================================= FUNCTIONS =================================================\\
+  void _changeCaseVisibility() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('_isVisibleCash', !_isVisibleCash!);
+
+    setState(() {
+      _isVisibleCash = !_isVisibleCash!;
+    });
+  }
+
+  String formattedText(double value) {
+    final numberFormat = NumberFormat('#,##0.00');
+    return numberFormat.format(value);
+  }
 
 //======================================================= Navigation=================================================\\
   //To Select Account
@@ -99,23 +107,40 @@ class _EarningContainerState extends State<EarningContainer> {
                 IconButton(
                   onPressed: _changeCaseVisibility,
                   icon: Icon(
-                      isVisibleCash! ? Icons.visibility : Icons.visibility_off),
-                )
+                    _isVisibleCash! ? Icons.visibility : Icons.visibility_off,
+                    color:
+                        _isVisibleCash! ? kDefaultIconDarkColor : kAccentColor,
+                  ),
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  isVisibleCash!
-                      ? '₦ ${widget.number.toStringAsFixed(2)}'
-                      : '******',
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: kTextBlackColor,
-                    fontSize: 20,
-                    fontFamily: 'sen',
-                    fontWeight: FontWeight.w700,
+                Text.rich(
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "₦",
+                        style: const TextStyle(
+                          color: kTextBlackColor,
+                          fontSize: 20,
+                          fontFamily: 'sen',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      TextSpan(
+                        text: _isVisibleCash!
+                            ? formattedText(widget.accountBalance)
+                            : '******',
+                        style: const TextStyle(
+                          color: kTextBlackColor,
+                          fontSize: 20,
+                          fontFamily: 'sen',
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Row(

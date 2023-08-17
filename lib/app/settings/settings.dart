@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/section/profile_first_half.dart';
@@ -8,6 +10,7 @@ import '../auth/login.dart';
 import '../delivery/delivery.dart';
 import '../earning/earning.dart';
 import '../withdrawal/withdraw_history.dart';
+import 'help_n_support.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -17,19 +20,68 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  //==================================================  INITIAL STATE ======================================================\\
+  @override
+  void initState() {
+    super.initState();
+    _loadingScreen = true;
+    Future.delayed(
+      const Duration(milliseconds: 1000),
+      () => setState(
+        () => _loadingScreen = false,
+      ),
+    );
+  }
+
+  //==================================================  ALL VARIABLES ======================================================\\
+  double _accountBalance = 1000000.00;
+
+  //==================================================  BOOL ======================================================\\
+  late bool _loadingScreen;
+
+  //==================================================  FUNCTIONS ======================================================\\
+
+  //==================================================  Navigation ======================================================\\
+
+  void _toHelpAndSupportPage() => Get.to(
+        () => HelpNSupport(),
+        routeName: 'HelpNSupport',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+
+  void _toDeliveryPage() => Get.to(
+        () => const Delivery(),
+        routeName: 'Delivery',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
   @override
   Widget build(BuildContext context) {
+    //===================== _changeCaseVisibility ================================\\
+    Future<bool> _getCashVisibility() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      bool? isVisibleCash = await prefs.getBool('isVisibleCash');
+      return isVisibleCash ?? true;
+    }
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kAccentColor,
-        title: const Padding(
-          padding: EdgeInsets.only(
-            left: kDefaultPadding,
-          ),
+        title: Padding(
+          padding: EdgeInsets.only(left: kDefaultPadding),
           child: Text(
             'Settings',
             style: TextStyle(
-              color: Colors.white,
+              color: kPrimaryColor,
               fontSize: 20,
               fontWeight: FontWeight.w700,
             ),
@@ -42,9 +94,25 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            const ProfileFirstHalf(
-              availableBalance: "100,000.00",
-            ),
+            _loadingScreen
+                ? Padding(
+                    padding: const EdgeInsets.all(kDefaultPadding),
+                    child: SpinKitChasingDots(color: kAccentColor))
+                : FutureBuilder<bool>(
+                    future: _getCashVisibility(),
+                    initialData: true,
+                    builder: (BuildContext context, AsyncSnapshot snapshot) {
+                      if (snapshot.hasData) {
+                        return ProfileFirstHalf(
+                          availableBalance: _accountBalance,
+                          isVisibleCash: snapshot.data,
+                        );
+                      }
+                      return Center(
+                        child: SpinKitChasingDots(color: kPrimaryColor),
+                      );
+                    },
+                  ),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding,
@@ -59,20 +127,13 @@ class _SettingsPageState extends State<SettingsPage> {
                 decoration: ShapeDecoration(
                   color: kPrimaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      15,
-                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   shadows: const [
                     BoxShadow(
-                      color: Color(
-                        0x0F000000,
-                      ),
+                      color: Color(0x0F000000),
                       blurRadius: 24,
-                      offset: Offset(
-                        0,
-                        4,
-                      ),
+                      offset: Offset(0, 4),
                       spreadRadius: 0,
                     ),
                   ],
@@ -174,18 +235,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 child: Column(
                   children: [
                     ListTile(
-                      onTap: () {
-                        Get.to(
-                          () => const Delivery(),
-                          routeName: 'Delivery',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
+                      onTap: _toDeliveryPage,
                       leading: Icon(
                         Icons.receipt_long_outlined,
                         color: kAccentColor,
@@ -193,9 +243,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: const Text(
                         'Delivery',
                         style: TextStyle(
-                          color: Color(
-                            0xFF333333,
-                          ),
+                          color: Color(0xFF333333),
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                         ),
@@ -205,7 +253,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     ListTile(
-                      onTap: () {},
+                      onTap: _toHelpAndSupportPage,
                       leading: Icon(
                         Icons.question_mark_outlined,
                         color: kAccentColor,

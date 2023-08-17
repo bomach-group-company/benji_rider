@@ -49,6 +49,7 @@ class _DashboardState extends State<Dashboard>
 
 //=================================== ALL VARIABLES =====================================\\
   late bool _loadingScreen;
+  double _accountBalance = 1000000.00;
 
 //============================================== CONTROLLERS =================================================\\
   final ScrollController _scrollController = ScrollController();
@@ -194,7 +195,7 @@ class _DashboardState extends State<Dashboard>
                                 (BuildContext context, AsyncSnapshot snapshot) {
                               if (snapshot.hasData) {
                                 return EarningContainer(
-                                  number: 390.525,
+                                  accountBalance: _accountBalance,
                                   isVisibleCash: snapshot.data,
                                 );
                               }
