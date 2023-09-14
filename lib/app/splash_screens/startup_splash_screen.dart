@@ -74,7 +74,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
                 kSizedBox,
                 SpinKitThreeInOut(
                   color: kSecondaryColor,
-                  size: 20,
+                  size: 20
                 ),
                 kSizedBox,
                 Text(

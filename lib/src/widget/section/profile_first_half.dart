@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:benji_rider/src/widget/others/future_builder.dart';
+import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
