@@ -9,15 +9,15 @@ import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../repo/utils/constants.dart';
+import '../../repo/utils/base_url.dart';
 import '../../repo/utils/helpers.dart';
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/email_textformfield.dart';
 import '../../src/widget/form_and_auth/password_textformfield.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../theme/responsive_constant.dart';
 import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
 
@@ -82,9 +82,9 @@ class _LoginState extends State<Login> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('rememberMe', _isChecked);
 
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   _isLoading = false;
+    // });
   }
 
   //=========================== REQUEST ====================================\\
@@ -408,13 +408,9 @@ class _LoginState extends State<Login> {
                           ],
                         ),
                         TextButton(
-                          onPressed: () {
-                            if (_validAuthCredentials) {
-                              null;
-                            } else {
-                              _toForgotPasswordPage;
-                            }
-                          }(),
+                          onPressed: _validAuthCredentials
+                              ? null
+                              : _toForgotPasswordPage,
                           child: Text(
                             "Forgot Password",
                             style: _validAuthCredentials

@@ -1,5 +1,6 @@
 // ignore_for_file:  unused_local_variable
 
+import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
@@ -69,18 +70,27 @@ class _DashboardState extends State<Dashboard>
 
   // void _toSeeAllNewOrders() {}
 
-  void _deliveryRoute(StatusType status) {
-    Get.to(
-      () => Delivery(status: status),
-      routeName: 'Delivery',
-      duration: const Duration(milliseconds: 300),
-      fullscreenDialog: true,
-      curve: Curves.easeIn,
-      preventDuplicates: true,
-      popGesture: true,
-      transition: Transition.rightToLeft,
-    );
-  }
+  void _toSeeAllVendors() => Get.to(
+        () => Vendors(),
+        routeName: 'Delivery',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+
+  void _deliveryRoute(StatusType status) => Get.to(
+        () => Delivery(status: status),
+        routeName: 'Delivery',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -149,6 +159,7 @@ class _DashboardState extends State<Dashboard>
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: FutureBuilder(
+            future: null,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 const Center(
@@ -206,7 +217,7 @@ class _DashboardState extends State<Dashboard>
                           ),
                           kSizedBox,
                           RiderVendorContainer(
-                            onTap: () {},
+                            onTap: _toSeeAllVendors,
                             number: "390",
                             typeOf: "Vendors",
                             onlineStatus: "248 Online",

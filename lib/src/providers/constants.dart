@@ -6,20 +6,12 @@ import '../../theme/colors.dart';
 
 const kDefaultPadding = 20.0;
 
-const kSizedBox = SizedBox(
-  height: kDefaultPadding,
-);
-const kWidthSizedBox = SizedBox(
-  width: kDefaultPadding,
-);
+const kSizedBox = SizedBox(height: kDefaultPadding);
+const kWidthSizedBox = SizedBox(width: kDefaultPadding);
 
-const kHalfSizedBox = SizedBox(
-  height: kDefaultPadding / 2,
-);
+const kHalfSizedBox = SizedBox(height: kDefaultPadding / 2);
 
-const kHalfWidthSizedBox = SizedBox(
-  width: kDefaultPadding / 2,
-);
+const kHalfWidthSizedBox = SizedBox(width: kDefaultPadding / 2);
 
 //Default BLue Link Heading
 var defaultLinkTextStyle = const TextStyle(

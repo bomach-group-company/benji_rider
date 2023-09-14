@@ -1,17 +1,17 @@
 import 'dart:convert';
 
-import 'package:benji_rider/repo/model/percentage_model.dart';
-import 'package:benji_rider/repo/model/user_model.dart';
+import 'package:benji_rider/repo/models/percentage_model.dart';
+import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/constants.dart';
+import '../utils/base_url.dart';
 import 'driver_model.dart';
 import 'order_details_model.dart';
 
 class Order {
   final String id;
-  final OrderDetails orderId;
+  final OrderDetailsModel orderId;
   final Driver driverId;
   final double amount;
   final Percentage percentageId;
@@ -29,7 +29,7 @@ class Order {
   factory Order.fromJson(Map<String, dynamic> json) {
     return Order(
       id: json['id'],
-      orderId: OrderDetails.fromJson(json['order_id']),
+      orderId: OrderDetailsModel.fromJson(json['order_id']),
       driverId: Driver.fromJson(json['driver_id']),
       amount: json['amount'].toDouble(),
       percentageId: Percentage.fromJson(json['percentage_id']),

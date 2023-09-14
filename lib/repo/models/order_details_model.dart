@@ -1,16 +1,16 @@
 import 'client_model.dart';
 import 'product_model.dart';
 
-class OrderDetails {
+class OrderDetailsModel {
   final String id;
   final String deliveryAddress;
   final String status;
   final int quantity;
   final String created;
   final Client clientId;
-  final Product productId;
+  final ProductModel productId;
 
-  OrderDetails({
+  OrderDetailsModel({
     required this.id,
     required this.deliveryAddress,
     required this.status,
@@ -20,15 +20,15 @@ class OrderDetails {
     required this.productId,
   });
 
-  factory OrderDetails.fromJson(Map<String, dynamic> json) {
-    return OrderDetails(
+  factory OrderDetailsModel.fromJson(Map<String, dynamic> json) {
+    return OrderDetailsModel(
       id: json['id'],
       deliveryAddress: json['delivery_address'],
       status: json['status'],
       quantity: json['quantity'],
       created: json['created'],
       clientId: Client.fromJson(json['client_id']),
-      productId: Product.fromJson(json['product_id']),
+      productId: ProductModel.fromJson(json['product_id']),
     );
   }
 }

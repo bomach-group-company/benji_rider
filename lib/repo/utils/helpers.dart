@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:benji_rider/app/auth/login.dart';
-import 'package:benji_rider/repo/model/user_model.dart';
+import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';

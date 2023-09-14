@@ -3,7 +3,7 @@ import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../repo/model/user_model.dart';
+import '../../repo/models/user_model.dart';
 import '../../repo/utils/helpers.dart';
 
 class UserSnapshot extends StatelessWidget {
