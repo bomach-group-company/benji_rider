@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-import '../app/call/call_screen.dart';
-import '../src/providers/constants.dart';
-import 'colors.dart';
+import '../../../app/call/call_screen.dart';
+import '../../providers/constants.dart';
+import '../../../theme/colors.dart';
 
 Future<void> deliveryModel(BuildContext context, Function() acceptRequestFunc,
     {Function()? pickedUpFunc,
