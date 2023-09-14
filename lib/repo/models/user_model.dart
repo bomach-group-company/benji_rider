@@ -1,31 +1,35 @@
 import 'dart:convert';
 
 class User {
-  final int id;
-  final String email;
-  final String password;
-  final String phone;
-  final bool isActiveCustomUserverified;
-  final String username;
-  final String created;
-  final String firstName;
-  final String lastName;
-  final String gender;
-  final String address;
-  final String token;
+  final int? id;
+  final String? email;
+  final String? code;
+  final String? phone;
+  final String? username;
+  final String? firstName;
+  final String? lastName;
+  final String? gender;
+  final String? address;
+  final String? image;
+  final double? balance;
+  final String? chassisNumber;
+  final String? plateNumber;
+  final String? token;
 
   const User({
     required this.id,
     required this.email,
-    required this.password,
+    required this.code,
     required this.phone,
-    required this.isActiveCustomUserverified,
     required this.username,
-    required this.created,
     required this.firstName,
     required this.lastName,
     required this.gender,
     required this.address,
+    required this.image,
+    required this.balance,
+    required this.chassisNumber,
+    required this.plateNumber,
     required this.token,
   });
 
@@ -33,15 +37,17 @@ class User {
     return User(
       id: json['id'],
       email: json['email'],
-      password: json['password'],
+      code: json['code'],
       phone: json['phone'],
-      isActiveCustomUserverified: json['is_activeCustomUserverified'],
       username: json['username'],
-      created: json['created'],
       firstName: json['first_name'],
       lastName: json['last_name'],
       gender: json['gender'],
       address: json['address'],
+      image: json['image'],
+      balance: json['balance'],
+      chassisNumber: json['chassis_number'],
+      plateNumber: json['plate_number'],
       token: json['token'],
     );
   }
