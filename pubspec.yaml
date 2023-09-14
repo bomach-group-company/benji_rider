@@ -29,8 +29,16 @@ dependencies:
   intl: ^0.18.1
   fl_chart: ^0.63.0
   shared_preferences: ^2.2.0
-  video_player: ^2.7.0
   liquid_pull_to_refresh: ^3.0.1
+  lottie:
+  flutter_layout_grid:
+  flutter_carousel_widget:
+  flutter_polyline_points: ^2.0.0
+  autoscale_tabbarview: ^1.0.2
+  share_plus: ^7.1.0
+  screenshot: ^2.1.0
+  path_provider: ^2.1.1
+  pdf: ^3.10.4
 
 dev_dependencies:
   flutter_test:
@@ -76,8 +84,6 @@ flutter:
     - assets/icons/
     - assets/images/rider/
     - assets/images/profile/
-    - assets/animations/splash_screen/
-    - assets/animations/successful/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

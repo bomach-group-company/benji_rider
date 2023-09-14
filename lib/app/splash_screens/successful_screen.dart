@@ -33,20 +33,20 @@ class SuccessfulScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
             children: [
-              Center(
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.4,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(
-                        "assets/animations/splash_screen/successful.gif",
-                      ),
-                    ),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
+              // Center(
+              //   child: Container(
+              //     width: MediaQuery.of(context).size.width,
+              //     height: MediaQuery.of(context).size.height * 0.4,
+              //     decoration: const BoxDecoration(
+              //       image: DecorationImage(
+              //         image: AssetImage(
+              //           "assets/animations/splash_screen/successful.gif",
+              //         ),
+              //       ),
+              //       shape: BoxShape.circle,
+              //     ),
+              //   ),
+              // ),
               const SizedBox(
                 height: kDefaultPadding * 2,
               ),

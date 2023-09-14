@@ -9,12 +9,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/otp_textFormField.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../src/providers/responsive_constant.dart';
 import 'reset_password.dart';
 
 class SendOTP extends StatefulWidget {
@@ -171,7 +171,8 @@ class _SendOTPState extends State<SendOTP> {
                       if (_validAuthCredentials) {
                         return ReusableAuthenticationFirstHalf(
                           title: "Verification",
-                          subtitle: "We have sent a code to your email",
+                          subtitle:
+                              "Please enter the code we sent to your email",
                           curves: Curves.easeInOut,
                           duration: Duration(),
                           containerChild: Center(
@@ -189,7 +190,8 @@ class _SendOTPState extends State<SendOTP> {
                       } else {
                         return ReusableAuthenticationFirstHalf(
                           title: "Verification",
-                          subtitle: "We have sent a code to your email",
+                          subtitle:
+                              "Please enter the code we sent to your email",
                           curves: Curves.easeInOut,
                           duration: Duration(),
                           containerChild: Center(
@@ -218,7 +220,7 @@ class _SendOTPState extends State<SendOTP> {
                   right: kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(
                         breakPoint(media.size.width, 24, 24, 0, 0)),
@@ -302,7 +304,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (pin1) {
-                                pin1EC.text = pin1!;
+                                pin1EC.text = pin1;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -323,7 +325,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (pin2) {
-                                pin2EC.text = pin2!;
+                                pin2EC.text = pin2;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -344,7 +346,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (pin3) {
-                                pin3EC.text = pin3!;
+                                pin3EC.text = pin3;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -365,7 +367,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.done,
                               onSaved: (pin4) {
-                                pin4EC.text = pin4!;
+                                pin4EC.text = pin4;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -409,8 +411,8 @@ class _SendOTPState extends State<SendOTP> {
                             child: Text(
                               'Verify'.toUpperCase(),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: kPrimaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
