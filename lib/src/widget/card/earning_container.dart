@@ -180,12 +180,15 @@ class _EarningContainerState extends State<EarningContainer> {
                     color: kAccentColor,
                   ),
                 ),
-                Text(
-                  "Withdraw",
-                  style: TextStyle(
-                    color: kTextBlackColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                InkWell(
+                  onTap: _toSelectAccountPage,
+                  child: Text(
+                    "Withdraw",
+                    style: TextStyle(
+                      color: kTextBlackColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ],
