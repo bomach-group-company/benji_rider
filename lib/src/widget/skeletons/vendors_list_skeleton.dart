@@ -43,9 +43,9 @@ class VendorsListSkeleton extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    PageSkeleton(height: 15, width: 60),
+                    PageSkeleton(height: 15, width: 50),
                     kHalfWidthSizedBox,
-                    PageSkeleton(height: 15, width: 60),
+                    PageSkeleton(height: 15, width: 50),
                   ],
                 ),
               ),

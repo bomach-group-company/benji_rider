@@ -97,7 +97,6 @@ class _LoginState extends State<Login> {
       final userData = await http.get(
           Uri.parse('$baseURL/drivers/getRiderDetails/$userId'),
           headers: await authHeader(token));
-      print(userData.body);
       await saveUser(userData.body, token);
       return true;
     } catch (e) {
@@ -111,7 +110,6 @@ class _LoginState extends State<Login> {
       'username': username,
       'password': password,
     };
-    print(body);
 
     final response = await http.post(url, body: body);
 
