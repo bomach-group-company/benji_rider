@@ -49,7 +49,7 @@ class PasswordTextFormField extends StatelessWidget {
       maxLengthEnforcement: MaxLengthEnforcement.enforced,
       style: TextStyle(
         color: kSecondaryColor,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
       decoration: InputDecoration(

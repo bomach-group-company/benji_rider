@@ -44,8 +44,8 @@ class _LoginState extends State<Login> {
 
   //=========================== CONTROLLERS ====================================\\
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   //=========================== KEYS ====================================\\
 
@@ -77,14 +77,14 @@ class _LoginState extends State<Login> {
       _isLoading = true;
     });
 
-    await sendPostRequest(emailController.text, passwordController.text);
+    await sendPostRequest(_emailController.text, _passwordController.text);
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('rememberMe', _isChecked);
 
-    // setState(() {
-    //   _isLoading = false;
-    // });
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   //=========================== REQUEST ====================================\\
@@ -95,9 +95,9 @@ class _LoginState extends State<Login> {
       int userId = jsonDecode(someUserData.body)['id'];
 
       final userData = await http.get(
-          Uri.parse('$baseURL/drivers/getDriver/$userId'),
+          Uri.parse('$baseURL/drivers/getRiderDetails/$userId'),
           headers: await authHeader(token));
-
+      print(userData.body);
       await saveUser(userData.body, token);
       return true;
     } catch (e) {
@@ -111,6 +111,7 @@ class _LoginState extends State<Login> {
       'username': username,
       'password': password,
     };
+    print(body);
 
     final response = await http.post(url, body: body);
 
@@ -243,7 +244,7 @@ class _LoginState extends State<Login> {
                                 FontAwesomeIcons.lock,
                                 color: kSecondaryColor,
                                 size: 80,
-                                semanticLabel: "login_icon",
+                                semanticLabel: "lock_icon",
                               ),
                             ),
                             decoration: ShapeDecoration(
@@ -263,18 +264,18 @@ class _LoginState extends State<Login> {
                 height: media.height,
                 width: media.width,
                 padding: const EdgeInsets.only(
-                  top: kDefaultPadding,
+                  top: kDefaultPadding / 2,
                   left: kDefaultPadding,
                   right: kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     topLeft:
                         Radius.circular(breakPoint(media.width, 24, 24, 0, 0)),
                     topRight:
                         Radius.circular(breakPoint(media.width, 24, 24, 0, 0)),
                   ),
-                  color: kPrimaryColor,
                 ),
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
@@ -290,9 +291,7 @@ class _LoginState extends State<Login> {
                               'Email',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(
-                                  0xFF31343D,
-                                ),
+                                color: kTextBlackColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -300,7 +299,7 @@ class _LoginState extends State<Login> {
                           ),
                           kHalfSizedBox,
                           EmailTextFormField(
-                            controller: emailController,
+                            controller: _emailController,
                             emailFocusNode: _emailFocusNode,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
@@ -316,7 +315,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                             onSaved: (value) {
-                              emailController.text = value;
+                              _emailController.text = value;
                             },
                           ),
                           kSizedBox,
@@ -324,9 +323,7 @@ class _LoginState extends State<Login> {
                             child: Text(
                               'Password',
                               style: TextStyle(
-                                color: Color(
-                                  0xFF31343D,
-                                ),
+                                color: kTextBlackColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -334,11 +331,11 @@ class _LoginState extends State<Login> {
                           ),
                           kHalfSizedBox,
                           PasswordTextFormField(
-                            controller: passwordController,
+                            controller: _passwordController,
                             passwordFocusNode: _passwordFocusNode,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: _isObscured,
-                            textInputAction: TextInputAction.done,
+                            textInputAction: TextInputAction.go,
                             validator: (value) {
                               RegExp passwordPattern = RegExp(
                                 r'^.{8,}$',
@@ -352,7 +349,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                             onSaved: (value) {
-                              passwordController.text = value;
+                              _passwordController.text = value;
                             },
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -361,108 +358,99 @@ class _LoginState extends State<Login> {
                                 });
                               },
                               icon: _isObscured
-                                  ? const Icon(
-                                      Icons.visibility_off_rounded,
-                                    )
+                                  ? const Icon(Icons.visibility_off_rounded)
                                   : Icon(
                                       Icons.visibility,
                                       color: kSecondaryColor,
                                     ),
                             ),
                           ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Checkbox(
+                                    value: _isChecked,
+                                    splashRadius: 50,
+                                    activeColor: _validAuthCredentials
+                                        ? kGreyColor1
+                                        : kSecondaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        5,
+                                      ),
+                                    ),
+                                    onChanged: _validAuthCredentials
+                                        ? null
+                                        : _checkBoxFunction,
+                                  ),
+                                  Text(
+                                    "Remember me ",
+                                    style: TextStyle(
+                                      color: _validAuthCredentials
+                                          ? kGreyColor1
+                                          : kTextBlackColor,
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              TextButton(
+                                onPressed: _validAuthCredentials
+                                    ? null
+                                    : _toForgotPasswordPage,
+                                child: Text(
+                                  "Forgot Password",
+                                  style: _validAuthCredentials
+                                      ? TextStyle(color: kTextGreyColor)
+                                      : TextStyle(color: kAccentColor),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: kDefaultPadding * 2),
+                          _isLoading
+                              ? Center(
+                                  child: SpinKitChasingDots(
+                                    color: kAccentColor,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                )
+                              : ElevatedButton(
+                                  onPressed: (() async {
+                                    if (_formKey.currentState!.validate()) {
+                                      await loadData();
+                                    }
+                                  }),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kAccentColor,
+                                    maximumSize: Size(
+                                        MediaQuery.of(context).size.width, 62),
+                                    minimumSize: Size(
+                                        MediaQuery.of(context).size.width, 60),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    elevation: 10,
+                                    shadowColor: kDarkGreyColor,
+                                  ),
+                                  child: Text(
+                                    "Log in".toUpperCase(),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: kPrimaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ),
+                          kHalfSizedBox,
                         ],
                       ),
                     ),
-                    kHalfSizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Checkbox(
-                              value: _isChecked,
-                              splashRadius: 50,
-                              activeColor: _validAuthCredentials
-                                  ? kGreyColor1
-                                  : kSecondaryColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  5,
-                                ),
-                              ),
-                              onChanged: _validAuthCredentials
-                                  ? null
-                                  : _checkBoxFunction,
-                            ),
-                            Text(
-                              "Remember me ",
-                              style: TextStyle(
-                                color: _validAuthCredentials
-                                    ? kGreyColor1
-                                    : kTextBlackColor,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                        TextButton(
-                          onPressed: _validAuthCredentials
-                              ? null
-                              : _toForgotPasswordPage,
-                          child: Text(
-                            "Forgot Password",
-                            style: _validAuthCredentials
-                                ? TextStyle(color: kTextGreyColor)
-                                : TextStyle(color: kAccentColor),
-                          ),
-                        ),
-                      ],
-                    ),
-                    kSizedBox,
-                    _isLoading
-                        ? Center(
-                            child: SpinKitChasingDots(
-                              color: kAccentColor,
-                              duration: const Duration(seconds: 2),
-                            ),
-                          )
-                        : ElevatedButton(
-                            onPressed: (() async {
-                              if (_formKey.currentState!.validate()) {
-                                await loadData();
-                              }
-                            }),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: kAccentColor,
-                              maximumSize: Size(
-                                MediaQuery.of(context).size.width,
-                                62,
-                              ),
-                              minimumSize: Size(
-                                MediaQuery.of(context).size.width,
-                                60,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                  16,
-                                ),
-                              ),
-                              elevation: 10,
-                              shadowColor: kDarkGreyColor,
-                            ),
-                            child: Text(
-                              "Log in".toUpperCase(),
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: kPrimaryColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                    kHalfSizedBox,
                   ],
                 ),
               ),

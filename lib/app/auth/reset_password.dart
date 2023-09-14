@@ -8,12 +8,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/password_textformfield.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../src/providers/responsive_constant.dart';
 import 'login.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -32,12 +32,12 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   //=========================== CONTROLLERS ====================================\\
 
-  TextEditingController userPasswordEC = TextEditingController();
-  TextEditingController confirmPasswordEC = TextEditingController();
+  TextEditingController _userPasswordEC = TextEditingController();
+  TextEditingController _confirmPasswordEC = TextEditingController();
 
   //=========================== FOCUS NODES ====================================\\
-  FocusNode userPasswordFN = FocusNode();
-  FocusNode confirmPasswordFN = FocusNode();
+  FocusNode _userPasswordFN = FocusNode();
+  FocusNode _confirmPasswordFN = FocusNode();
 
   //=========================== BOOL VALUES====================================\\
   bool _isLoading = false;
@@ -148,7 +148,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           duration: Duration(),
                           containerChild: Center(
                             child: FaIcon(
-                              FontAwesomeIcons.shieldHalved,
+                              FontAwesomeIcons.rotateLeft,
                               color: kSecondaryColor,
                               size: 80,
                             ),
@@ -172,7 +172,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   right: kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(
                         breakPoint(media.size.width, 24, 24, 0, 0)),
@@ -194,9 +194,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               'Enter New Password',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(
-                                  0xFF31343D,
-                                ),
+                                color: kTextBlackColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -204,8 +202,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                           kHalfSizedBox,
                           PasswordTextFormField(
-                            controller: userPasswordEC,
-                            passwordFocusNode: userPasswordFN,
+                            controller: _userPasswordEC,
+                            passwordFocusNode: _userPasswordFN,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: _isObscured,
                             textInputAction: TextInputAction.next,
@@ -214,16 +212,16 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 r'^.{8,}$',
                               );
                               if (value == null || value!.isEmpty) {
-                                userPasswordFN.requestFocus();
+                                _userPasswordFN.requestFocus();
                                 return "Enter your password";
                               } else if (!passwordPattern.hasMatch(value)) {
-                                userPasswordFN.requestFocus();
+                                _userPasswordFN.requestFocus();
                                 return "Password must be at least 8 characters";
                               }
                               return null;
                             },
                             onSaved: (value) {
-                              userPasswordEC.text = value;
+                              _userPasswordEC.text = value;
                             },
                             suffixIcon: const IconButton(
                               onPressed: null,
@@ -236,7 +234,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             uppercaseCharCount: 1,
                             lowercaseCharCount: 1,
                             numericCharCount: 1,
-                            controller: userPasswordEC,
+                            controller: _userPasswordEC,
                             width: 400,
                             height: 150,
                             minLength: 8,
@@ -265,9 +263,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               'Confirm Password',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                color: Color(
-                                  0xFF31343D,
-                                ),
+                                color: kTextBlackColor,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -275,8 +271,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                           kHalfSizedBox,
                           PasswordTextFormField(
-                            controller: confirmPasswordEC,
-                            passwordFocusNode: confirmPasswordFN,
+                            controller: _confirmPasswordEC,
+                            passwordFocusNode: _confirmPasswordFN,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: _isObscured,
                             textInputAction: TextInputAction.done,
@@ -285,10 +281,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 r'^.{8,}$',
                               );
                               if (value == null || value!.isEmpty) {
-                                confirmPasswordFN.requestFocus();
+                                _confirmPasswordFN.requestFocus();
                                 return "Confirm your password";
                               }
-                              if (value != userPasswordEC.text) {
+                              if (value != _userPasswordEC.text) {
                                 return "Password does not match";
                               } else if (!passwordPattern.hasMatch(value)) {
                                 return "Password must be at least 8 characters";
@@ -296,7 +292,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               return null;
                             },
                             onSaved: (value) {
-                              confirmPasswordEC.text = value;
+                              _confirmPasswordEC.text = value;
                             },
                             suffixIcon: const IconButton(
                               onPressed: null,
@@ -330,8 +326,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                             child: Text(
                               'Save'.toUpperCase(),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: kPrimaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),
