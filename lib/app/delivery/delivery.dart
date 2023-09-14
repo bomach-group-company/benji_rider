@@ -108,88 +108,93 @@ class _DeliveryState extends State<Delivery> {
                         right: kDefaultPadding,
                         bottom: kDefaultPadding * 0.6,
                       ),
-                      child: Row(
-                        children: [
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  checkStatus(_status, StatusType.delivered)
-                                      ? kAccentColor
-                                      : const Color(0xFFF2F2F2),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16))),
-                            ),
-                            onPressed: clickDelivered,
-                            child: Text(
-                              'Delivered',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color:
+                      child: SingleChildScrollView(
+                        physics: BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
                                     checkStatus(_status, StatusType.delivered)
-                                        ? kTextWhiteColor
-                                        : kGreyColor2,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                                        ? kAccentColor
+                                        : const Color(0xFFF2F2F2),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(16))),
                               ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  checkStatus(_status, StatusType.pending)
-                                      ? kAccentColor
-                                      : const Color(0xFFF2F2F2),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16))),
-                            ),
-                            onPressed: clickPending,
-                            child: Text(
-                              'Pending',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: checkStatus(_status, StatusType.pending)
-                                    ? kTextWhiteColor
-                                    : kGreyColor2,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  checkStatus(_status, StatusType.cancelled)
-                                      ? kAccentColor
-                                      : kDefaultCategoryBackgroundColor,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(16),
+                              onPressed: clickDelivered,
+                              child: Text(
+                                'Delivered',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color:
+                                      checkStatus(_status, StatusType.delivered)
+                                          ? kTextWhiteColor
+                                          : kGreyColor2,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            onPressed: clickCancelled,
-                            child: Text(
-                              'Cancelled',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color:
-                                    checkStatus(_status, StatusType.cancelled)
-                                        ? kTextWhiteColor
-                                        : kGreyColor2,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    checkStatus(_status, StatusType.pending)
+                                        ? kAccentColor
+                                        : const Color(0xFFF2F2F2),
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(16))),
+                              ),
+                              onPressed: clickPending,
+                              child: Text(
+                                'Pending',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color:
+                                      checkStatus(_status, StatusType.pending)
+                                          ? kTextWhiteColor
+                                          : kGreyColor2,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    checkStatus(_status, StatusType.cancelled)
+                                        ? kAccentColor
+                                        : kDefaultCategoryBackgroundColor,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(16),
+                                  ),
+                                ),
+                              ),
+                              onPressed: clickCancelled,
+                              child: Text(
+                                'Cancelled',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color:
+                                      checkStatus(_status, StatusType.cancelled)
+                                          ? kTextWhiteColor
+                                          : kGreyColor2,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -281,7 +286,7 @@ class _DeliveryState extends State<Delivery> {
                                                   // width: 68,
                                                   // height: 24,
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       horizontal: 7,
                                                       vertical: 5),
                                                   decoration: ShapeDecoration(
