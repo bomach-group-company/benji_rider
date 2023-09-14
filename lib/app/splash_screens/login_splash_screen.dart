@@ -1,47 +1,60 @@
 // ignore_for_file: camel_case_types, file_names
 
+import 'dart:async';
+
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/route_manager.dart'
+;
+import 'package:lottie/lottie.dart';
 
-class LoginSplashScreen extends StatelessWidget {
+import '../../theme/colors.dart';
+
+
+class LoginSplashScreen extends StatefulWidget {
   const LoginSplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
-      Get.off(
-        () => const Dashboard(),
-        routeName: 'Dashboard',
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.fadeIn,
-      );
-    });
+  State<LoginSplashScreen> createState() => _LoginSplashScreenState();
+}
 
+class _LoginSplashScreenState extends State<LoginSplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(
+      Duration(seconds: 2),
+      () {
+        Get.off(
+          () => const Dashboard(),
+          routeName: 'Dashboard',
+          duration: const Duration(milliseconds: 300),
+          fullscreenDialog: true,
+          curve: Curves.easeIn,
+          preventDuplicates: true,
+          popGesture: true,
+          transition: Transition.fadeIn,
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
+      maintainBottomViewPadding: true,
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: kPrimaryColor,
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             const Spacer(),
             Center(
-              child: Container(
-                width: 400,
-                height: 500,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage(
-                      "assets/animations/splash_screen/successful.gif",
-                    ),
-                  ),
-                  shape: BoxShape.circle,
-                ),
+              child: Lottie.asset(
+                "assets/animations/login/frame_1.json",
+                height: 300,
+                fit: BoxFit.cover,
               ),
             ),
             const Spacer(),

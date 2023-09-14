@@ -7,12 +7,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/email_textformfield.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../src/providers/responsive_constant.dart';
 import 'otp.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -114,9 +114,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     child: () {
                       if (_validAuthCredentials) {
                         return ReusableAuthenticationFirstHalf(
-                          title: "Forgot Password",
+                          title: "Forgot your password?",
                           subtitle:
-                              "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
+                              "Simply enter your email below and we will send you a code via which you need to reset your password",
                           curves: Curves.easeInOut,
                           duration: Duration(),
                           containerChild: Center(
@@ -135,9 +135,9 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         );
                       } else {
                         return ReusableAuthenticationFirstHalf(
-                          title: "Forgot Password",
+                          title: "Forgot your password?",
                           subtitle:
-                              "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
+                              "Simply enter your email below and we will send you a code via which you need to reset your password",
                           curves: Curves.easeInOut,
                           duration: Duration(),
                           containerChild: Center(
@@ -246,8 +246,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                   child: Text(
                                     'Send Code'.toUpperCase(),
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: kPrimaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                     ),
