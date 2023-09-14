@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/responsive_constant.dart';
+import '../../providers/responsive_constant.dart';
 
 class MyResponsiveWidth extends StatelessWidget {
   final Widget child;

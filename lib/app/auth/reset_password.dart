@@ -13,7 +13,7 @@ import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../theme/responsive_constant.dart';
+import '../../src/providers/responsive_constant.dart';
 import 'login.dart';
 
 class ResetPassword extends StatefulWidget {
