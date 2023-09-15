@@ -4,6 +4,7 @@ import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:benji_rider/repo/utils/base_url.dart';
 import 'package:benji_rider/src/widget/section/my_floating_snackbar.dart';
+import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
@@ -87,6 +88,7 @@ checkAuth(context) async {
   if (isAuth == null) {
     mySnackBar(
       context,
+      kAccentColor,
       "No Internet!",
       "Please Connect to the internet",
       Duration(seconds: 3),
@@ -95,6 +97,7 @@ checkAuth(context) async {
   if (haveUser == null || isAuth == false) {
     mySnackBar(
       context,
+      kAccentColor,
       "Login to continue!",
       "Please login to continue",
       Duration(seconds: 2),

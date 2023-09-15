@@ -1,10 +1,12 @@
+import 'package:benji_rider/src/widget/section/my_appbar.dart';
+import 'package:benji_rider/src/widget/section/my_floating_snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/my textformfield.dart';
-import '../../src/widget/responsive/reponsive_width.dart';
 import '../../theme/colors.dart';
 
 class AddBankAccountPage extends StatefulWidget {
@@ -17,12 +19,13 @@ class AddBankAccountPage extends StatefulWidget {
 class _AddBankAccountPageState extends State<AddBankAccountPage> {
 //===================================== ALL VARIABLES =========================================\\
   FocusNode productType = FocusNode();
-  FocusNode productNameFN = FocusNode();
-  TextEditingController productNameEC = TextEditingController();
+  FocusNode _accountNumberFN = FocusNode();
+  TextEditingController _accountNumberEC = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   String dropDownItemValue = "Access Bank";
+  bool _savingAccount = false;
 
   //================================== FUNCTION ====================================\\
 
@@ -32,58 +35,49 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
     });
   }
 
+  Future<void> _saveAccount() async {
+    setState(() {
+      _savingAccount = true;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
+    mySnackBar(
+      context,
+      kSuccessColor,
+      "Success",
+      "You account has been saved successfully",
+      Duration(milliseconds: 500),
+    );
+
+    await Future.delayed(Duration(milliseconds: 800));
+
+    setState(() {
+      _savingAccount = false;
+    });
+    Get.back();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      appBar: AppBar(
-        elevation: 0,
-        titleSpacing: -20,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        title: Container(
-          margin: const EdgeInsets.all(30),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
-          ),
-          child: Builder(
-            builder: (context) => Row(
-              children: [
-                IconButton(
-                  splashRadius: 20,
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: kAccentColor,
-                  ),
-                ),
-                kHalfWidthSizedBox,
-                Text(
-                  "Add Bank Account",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: kBlackColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
+    return GestureDetector(
+      onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
+      child: Scaffold(
+        backgroundColor: kPrimaryColor,
+        appBar: MyAppBar(
+          title: "Add bank account",
+          elevation: 0,
+          actions: [],
+          backgroundColor: kPrimaryColor,
+          toolbarHeight: kToolbarHeight,
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: MyResponsiveWidth(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: kDefaultPadding, vertical: kDefaultPadding * 2),
-              child: Form(
+        body: SafeArea(
+          maintainBottomViewPadding: true,
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(kDefaultPadding),
+            children: [
+              Form(
                 key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -92,11 +86,9 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                     Text(
                       'Bank Details',
                       style: TextStyle(
-                        color: Color(0xFF131514),
+                        color: kTextBlackColor,
                         fontSize: 22,
-                        fontFamily: 'Work Sans',
                         fontWeight: FontWeight.w600,
-                        height: 1.45,
                       ),
                     ),
                     kSizedBox,
@@ -104,7 +96,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                     Text(
                       'Bank Name',
                       style: TextStyle(
-                        color: Color(0xFF575757),
+                        color: kTextGreyColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
@@ -120,48 +112,32 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                       validator: (value) {
                         if (value == null) {
                           productType.requestFocus();
-                          return "Pick a Product Type";
+                          return "Pick a  bank";
                         }
                         return null;
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            10.0,
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.blue.shade50,
-                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: Colors.blue.shade50),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            10.0,
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.blue.shade50,
-                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: Colors.blue.shade50),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            10.0,
-                          ),
-                          borderSide: BorderSide(
-                            color: Colors.blue.shade50,
-                          ),
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide(color: Colors.blue.shade50),
                         ),
                         errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(
-                            10.0,
-                          ),
+                          borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(
                             color: kErrorBorderColor,
                             width: 2.0,
                           ),
                         ),
                       ),
-                      borderRadius: BorderRadius.circular(
-                        16,
-                      ),
+                      borderRadius: BorderRadius.circular(16),
                       icon: const Icon(
                         Icons.keyboard_arrow_down_rounded,
                       ),
@@ -260,51 +236,59 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                     Text(
                       'Account Number',
                       style: TextStyle(
-                        color: Color(0xFF575757),
+                        color: kTextGreyColor,
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     kHalfSizedBox,
                     MyTextFormField(
-                      controller: productNameEC,
-                      focusNode: productNameFN,
+                      controller: _accountNumberEC,
+                      focusNode: _accountNumberFN,
                       hintText: "Enter the account number here",
                       textInputAction: TextInputAction.next,
-                      textInputType: TextInputType.name,
+                      textInputType: TextInputType.number,
                       validator: (value) {
+                        RegExp _accountNumberPattern = RegExp(r"^\d{10}$");
                         if (value == null || value!.isEmpty) {
-                          productNameFN.requestFocus();
+                          _accountNumberFN.requestFocus();
                           return "Enter the account number";
+                        } else if (!_accountNumberPattern.hasMatch(value)) {
+                          _accountNumberFN.requestFocus();
+                          return "Number must be 10 characters";
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        productNameEC.text = value!;
+                        _accountNumberEC.text = value!;
                       },
                     ),
                     kSizedBox,
                     Text(
                       'Blessing Mesoma',
                       style: TextStyle(
-                        color: Color(0xFFEC2623),
+                        color: kAccentColor,
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     SizedBox(
-                      height: kDefaultPadding * 4,
+                      height: kDefaultPadding * 2,
                     ),
-                    MyElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      title: "Save Account",
-                    )
+                    _savingAccount
+                        ? SpinKitChasingDots(color: kAccentColor)
+                        : MyElevatedButton(
+                            onPressed: (() async {
+                              if (_formKey.currentState!.validate()) {
+                                await _saveAccount();
+                              }
+                            }),
+                            title: "Save Account",
+                          )
                   ],
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

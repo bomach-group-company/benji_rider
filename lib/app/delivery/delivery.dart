@@ -482,7 +482,7 @@ class _DeliveryState extends State<Delivery> {
                                                   ),
                                                   SizedBox(
                                                     child: Text(
-                                                      'NGN 5,000',
+                                                      '\u20A60A6 5,000',
                                                       style: TextStyle(
                                                         color: !checkStatus(
                                                                 _status,
@@ -493,7 +493,7 @@ class _DeliveryState extends State<Delivery> {
                                                             : const Color(
                                                                 0xFF979797),
                                                         fontSize: 10,
-                                                        fontFamily: 'Overpass',
+                                                        fontFamily: 'sen',
                                                         height: 1.5,
                                                         fontWeight:
                                                             FontWeight.w600,
