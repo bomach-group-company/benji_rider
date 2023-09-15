@@ -47,94 +47,97 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimaryColor,
-      appBar: AppBar(
-        elevation: 0,
-        titleSpacing: -20,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        title: Container(
-          margin: const EdgeInsets.all(30),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
+    return GestureDetector(
+      onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
+      child: Scaffold(
+        backgroundColor: kPrimaryColor,
+        appBar: AppBar(
+          elevation: 0,
+          titleSpacing: -20,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.transparent,
+          title: Container(
+            margin: const EdgeInsets.all(30),
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
             ),
-          ),
-          child: Builder(
-            builder: (context) => Row(
-              children: [
-                IconButton(
-                  splashRadius: 20,
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: kAccentColor,
+            child: Builder(
+              builder: (context) => Row(
+                children: [
+                  IconButton(
+                    splashRadius: 20,
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: kAccentColor,
+                    ),
                   ),
-                ),
-                kHalfWidthSizedBox,
-                Text(
-                  "Withdraw",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: kBlackColor,
+                  kHalfWidthSizedBox,
+                  Text(
+                    "Withdraw",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: kBlackColor,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: MyResponsiveWidth(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                  horizontal: kDefaultPadding, vertical: kDefaultPadding * 2),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    kSizedBox,
-                    Text(
-                      'Amount',
-                      style: TextStyle(
-                        color: Color(0xFF575757),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: MyResponsiveWidth(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: kDefaultPadding, vertical: kDefaultPadding * 2),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      kSizedBox,
+                      Text(
+                        'Amount',
+                        style: TextStyle(
+                          color: Color(0xFF575757),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
                       ),
-                    ),
-                    kHalfSizedBox,
-                    MyTextFormField(
-                      controller: productNameEC,
-                      focusNode: productNameFN,
-                      hintText: "Enter the amount here",
-                      textInputAction: TextInputAction.next,
-                      textInputType: TextInputType.name,
-                      validator: (value) {
-                        if (value == null || value!.isEmpty) {
-                          productNameFN.requestFocus();
-                          return "Enter the amount";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        productNameEC.text = value!;
-                      },
-                    ),
-                    kSizedBox,
-                    MyElevatedButton(
-                      onPressed: _goToVerify,
-                      title: "Withdraw",
-                    )
-                  ],
+                      kHalfSizedBox,
+                      MyTextFormField(
+                        controller: productNameEC,
+                        focusNode: productNameFN,
+                        hintText: "Enter the amount here",
+                        textInputAction: TextInputAction.go,
+                        textInputType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value!.isEmpty) {
+                            productNameFN.requestFocus();
+                            return "Enter the amount";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          productNameEC.text = value!;
+                        },
+                      ),
+                      kSizedBox,
+                      MyElevatedButton(
+                        onPressed: _goToVerify,
+                        title: "Withdraw",
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
