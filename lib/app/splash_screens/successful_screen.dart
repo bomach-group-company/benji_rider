@@ -1,6 +1,7 @@
 // ignore_for_file: camel_case_types, file_names
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
@@ -33,20 +34,13 @@ class SuccessfulScreen extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             scrollDirection: Axis.vertical,
             children: [
-              // Center(
-              //   child: Container(
-              //     width: MediaQuery.of(context).size.width,
-              //     height: MediaQuery.of(context).size.height * 0.4,
-              //     decoration: const BoxDecoration(
-              //       image: DecorationImage(
-              //         image: AssetImage(
-              //           "assets/animations/splash_screen/successful.gif",
-              //         ),
-              //       ),
-              //       shape: BoxShape.circle,
-              //     ),
-              //   ),
-              // ),
+              Lottie.asset(
+                "assets/animations/payment/frame_1.json",
+                alignment: Alignment.center,
+                fit: BoxFit.contain,
+                height: media.height / 2,
+                width: media.width / 2,
+              ),
               const SizedBox(
                 height: kDefaultPadding * 2,
               ),
@@ -55,19 +49,15 @@ class SuccessfulScreen extends StatelessWidget {
                 child: Text(
                   text,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Color(
-                      0xFF676565,
-                    ),
+                  style: TextStyle(
+                    color: kTextGreyColor,
                     fontSize: 18,
                     fontWeight: FontWeight.w400,
                     letterSpacing: -0.36,
                   ),
                 ),
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.3,
-              ),
+              SizedBox(height: kDefaultPadding * 2),
               ElevatedButton(
                 onPressed: buttonAction,
                 style: ElevatedButton.styleFrom(

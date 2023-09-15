@@ -21,6 +21,8 @@ class _DeliveryState extends State<Delivery> {
   StatusType? _status;
   bool isLoading = false;
 
+  final _scrollController = ScrollController();
+
   @override
   void initState() {
     _status = widget.status;
@@ -199,280 +201,79 @@ class _DeliveryState extends State<Delivery> {
                     ),
                   ),
                   Expanded(
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: 6,
-                      padding: const EdgeInsets.all(kDefaultPadding),
-                      separatorBuilder: (context, index) =>
-                          SizedBox(height: kDefaultPadding / 2),
-                      itemBuilder: (BuildContext context, int index) {
-                        return MyResponsiveWidth(
-                          child: Column(
-                            children: [
-                              Container(
-                                decoration: ShapeDecoration(
-                                  color: kPrimaryColor,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                    child: Scrollbar(
+                      controller: _scrollController,
+                      child: ListView.separated(
+                        controller: _scrollController,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: 6,
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        separatorBuilder: (context, index) =>
+                            SizedBox(height: kDefaultPadding / 2),
+                        itemBuilder: (BuildContext context, int index) {
+                          return MyResponsiveWidth(
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: ShapeDecoration(
+                                    color: kPrimaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    shadows: const [
+                                      BoxShadow(
+                                        color: Color(0x0F000000),
+                                        blurRadius: 24,
+                                        offset: Offset(0, 4),
+                                        spreadRadius: 0,
+                                      )
+                                    ],
                                   ),
-                                  shadows: const [
-                                    BoxShadow(
-                                      color: Color(0x0F000000),
-                                      blurRadius: 24,
-                                      offset: Offset(0, 4),
-                                      spreadRadius: 0,
-                                    )
-                                  ],
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        // width: 110,
-                                        height: 119,
-                                        decoration: const ShapeDecoration(
-                                          image: DecorationImage(
-                                            image: AssetImage(
-                                                "assets/images/food/burgers.png"),
-                                            fit: BoxFit.cover,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(10),
-                                              bottomLeft: Radius.circular(10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          // width: 110,
+                                          height: 119,
+                                          decoration: const ShapeDecoration(
+                                            image: DecorationImage(
+                                              image: AssetImage(
+                                                  "assets/images/food/burgers.png"),
+                                              fit: BoxFit.cover,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(10),
+                                                bottomLeft: Radius.circular(10),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Expanded(
-                                      flex: 2,
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 7,
-                                          horizontal: 12,
-                                        ),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  'ID 213081',
-                                                  style: TextStyle(
-                                                    color: !checkStatus(
-                                                            _status,
-                                                            StatusType
-                                                                .cancelled)
-                                                        ? const Color(
-                                                            0xFF454545)
-                                                        : const Color(
-                                                            0xFF979797),
-                                                    fontSize: 12,
-                                                    fontFamily: 'Sen',
-                                                    fontWeight: FontWeight.w700,
-                                                  ),
-                                                ),
-                                                Container(
-                                                  // width: 68,
-                                                  // height: 24,
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 7,
-                                                      vertical: 5),
-                                                  decoration: ShapeDecoration(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      side: const BorderSide(
-                                                        width: 0.50,
-                                                        color:
-                                                            Color(0xFFC8C8C8),
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              5),
-                                                    ),
-                                                  ),
-                                                  child: SizedBox(
-                                                    width: 54,
-                                                    height: 10,
-                                                    child: Text(
-                                                      checkStatus(
-                                                              _status,
-                                                              StatusType
-                                                                  .delivered)
-                                                          ? 'Delivered'
-                                                          : checkStatus(
-                                                                  _status,
-                                                                  StatusType
-                                                                      .pending)
-                                                              ? 'Pending'
-                                                              : 'Cancelled',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        color: checkStatus(
-                                                                _status,
-                                                                StatusType
-                                                                    .delivered)
-                                                            ? kAccentColor
-                                                            : checkStatus(
-                                                                    _status,
-                                                                    StatusType
-                                                                        .pending)
-                                                                ? kLoadingColor
-                                                                : const Color(
-                                                                    0xFF979797),
-                                                        fontSize: 10,
-                                                        fontFamily: 'Overpass',
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            const Text(
-                                              'Food',
-                                              style: TextStyle(
-                                                color: Color(0xFF333333),
-                                                fontSize: 12,
-                                                fontFamily: 'Mulish',
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    Container(
-                                                      height: 12,
-                                                      width: 12,
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              2),
-                                                      decoration:
-                                                          ShapeDecoration(
-                                                        shape: OvalBorder(
-                                                          side: BorderSide(
-                                                            width: 1,
-                                                            color: kAccentColor,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: kAccentColor,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(8),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
-                                                      color: kAccentColor,
-                                                      height: 10,
-                                                      width: 1.5,
-                                                    ),
-                                                    Icon(
-                                                      Icons.location_on_sharp,
-                                                      size: 12,
-                                                      color: kAccentColor,
-                                                    ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        '21 Bartus Street, Abuja Nigeria',
-                                                        style: TextStyle(
-                                                          color: !checkStatus(
-                                                                  _status,
-                                                                  StatusType
-                                                                      .cancelled)
-                                                              ? const Color(
-                                                                  0xFF454545)
-                                                              : const Color(
-                                                                  0xFF979797),
-                                                          fontSize: 10,
-                                                          fontFamily: 'Mulish',
-                                                          height: 2,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        '3 Edwins Close, Wuse, Abuja',
-                                                        style: TextStyle(
-                                                          color: !checkStatus(
-                                                                  _status,
-                                                                  StatusType
-                                                                      .cancelled)
-                                                              ? const Color(
-                                                                  0xFF454545)
-                                                              : const Color(
-                                                                  0xFF979797),
-                                                          fontSize: 10,
-                                                          fontFamily: 'Mulish',
-                                                          height: 2,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(
-                                              width: 22,
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                const Expanded(
-                                                  child: Text(
-                                                    '24-02 2022 12:00PM',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF929292),
-                                                      fontSize: 10,
-                                                      fontFamily: 'Overpass',
-                                                      height: 1.5,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  child: Text(
-                                                    'NGN 5,000',
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 7,
+                                            horizontal: 12,
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'ID 213081',
                                                     style: TextStyle(
                                                       color: !checkStatus(
                                                               _status,
@@ -482,27 +283,237 @@ class _DeliveryState extends State<Delivery> {
                                                               0xFF454545)
                                                           : const Color(
                                                               0xFF979797),
-                                                      fontSize: 10,
-                                                      fontFamily: 'Overpass',
-                                                      height: 1.5,
+                                                      fontSize: 12,
+                                                      fontFamily: 'Sen',
                                                       fontWeight:
-                                                          FontWeight.w600,
+                                                          FontWeight.w700,
                                                     ),
                                                   ),
+                                                  Container(
+                                                    // width: 68,
+                                                    // height: 24,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 7,
+                                                        vertical: 5),
+                                                    decoration: ShapeDecoration(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        side: const BorderSide(
+                                                          width: 0.50,
+                                                          color:
+                                                              Color(0xFFC8C8C8),
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5),
+                                                      ),
+                                                    ),
+                                                    child: SizedBox(
+                                                      width: 54,
+                                                      height: 10,
+                                                      child: Text(
+                                                        checkStatus(
+                                                                _status,
+                                                                StatusType
+                                                                    .delivered)
+                                                            ? 'Delivered'
+                                                            : checkStatus(
+                                                                    _status,
+                                                                    StatusType
+                                                                        .pending)
+                                                                ? 'Pending'
+                                                                : 'Cancelled',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: checkStatus(
+                                                                  _status,
+                                                                  StatusType
+                                                                      .delivered)
+                                                              ? kAccentColor
+                                                              : checkStatus(
+                                                                      _status,
+                                                                      StatusType
+                                                                          .pending)
+                                                                  ? kLoadingColor
+                                                                  : const Color(
+                                                                      0xFF979797),
+                                                          fontSize: 10,
+                                                          fontFamily:
+                                                              'Overpass',
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Text(
+                                                'Food',
+                                                style: TextStyle(
+                                                  color: kTextGreyColor,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
                                                 ),
-                                              ],
-                                            ),
-                                          ],
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Container(
+                                                        height: 12,
+                                                        width: 12,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(2),
+                                                        decoration:
+                                                            ShapeDecoration(
+                                                          shape: OvalBorder(
+                                                            side: BorderSide(
+                                                              width: 1,
+                                                              color:
+                                                                  kAccentColor,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        child: Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: kAccentColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        color: kAccentColor,
+                                                        height: 10,
+                                                        width: 1.5,
+                                                      ),
+                                                      Icon(
+                                                        Icons.location_on_sharp,
+                                                        size: 12,
+                                                        color: kAccentColor,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          '21 Bartus Street, Abuja Nigeria',
+                                                          style: TextStyle(
+                                                            color: !checkStatus(
+                                                                    _status,
+                                                                    StatusType
+                                                                        .cancelled)
+                                                                ? const Color(
+                                                                    0xFF454545)
+                                                                : const Color(
+                                                                    0xFF979797),
+                                                            fontSize: 10,
+                                                            height: 2,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                        ),
+                                                        Text(
+                                                          '3 Edwins Close, Wuse, Abuja',
+                                                          style: TextStyle(
+                                                            color: !checkStatus(
+                                                                    _status,
+                                                                    StatusType
+                                                                        .cancelled)
+                                                                ? const Color(
+                                                                    0xFF454545)
+                                                                : const Color(
+                                                                    0xFF979797),
+                                                            fontSize: 10,
+                                                            height: 2,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                width: 22,
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  const Expanded(
+                                                    child: Text(
+                                                      '24-02 2022 12:00PM',
+                                                      style: TextStyle(
+                                                        color:
+                                                            Color(0xFF929292),
+                                                        fontSize: 10,
+                                                        fontFamily: 'Overpass',
+                                                        height: 1.5,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    child: Text(
+                                                      '\u20A60A6 5,000',
+                                                      style: TextStyle(
+                                                        color: !checkStatus(
+                                                                _status,
+                                                                StatusType
+                                                                    .cancelled)
+                                                            ? const Color(
+                                                                0xFF454545)
+                                                            : const Color(
+                                                                0xFF979797),
+                                                        fontSize: 10,
+                                                        fontFamily: 'sen',
+                                                        height: 1.5,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ],

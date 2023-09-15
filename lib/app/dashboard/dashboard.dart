@@ -158,76 +158,52 @@ class _DashboardState extends State<Dashboard>
         drawer: MyDrawer(),
         body: SafeArea(
           maintainBottomViewPadding: true,
-          child: FutureBuilder(
-            future: null,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                const Center(
-                  child: Text("Loading..."),
-                );
-              }
-              if (snapshot.connectionState == ConnectionState.none) {
-                const Center(
-                  child: Text("Please connect to the internet"),
-                );
-              }
-              // if (snapshot.connectionState == snapshot.requireData) {
-              //   SpinKitDoubleBounce(color: kAccentColor);
-              // }
-              if (snapshot.connectionState == snapshot.error) {
-                const Center(
-                  child: Text("Error, Please try again later"),
-                );
-              }
-              return _loadingScreen
-                  ? SpinKitDoubleBounce(color: kAccentColor)
-                  : Scrollbar(
-                      controller: _scrollController,
-                      radius: const Radius.circular(10),
-                      scrollbarOrientation: ScrollbarOrientation.right,
-                      child: ListView(
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.all(kDefaultPadding),
+          child: _loadingScreen
+              ? SpinKitDoubleBounce(color: kAccentColor)
+              : Scrollbar(
+                  controller: _scrollController,
+                  radius: const Radius.circular(10),
+                  scrollbarOrientation: ScrollbarOrientation.right,
+                  child: ListView(
+                    physics: const BouncingScrollPhysics(),
+                    padding: const EdgeInsets.all(kDefaultPadding),
+                    children: [
+                      EarningContainer(
+                        accountBalance: _accountBalance,
+                      ),
+                      kSizedBox,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          EarningContainer(
-                            accountBalance: _accountBalance,
+                          OrdersContainer(
+                            containerColor: kPrimaryColor,
+                            typeOfOrderColor: kTextGreyColor,
+                            iconColor: kGreyColor1,
+                            numberOfOrders: "47",
+                            typeOfOrders: "Completed",
+                            onTap: () => _deliveryRoute(StatusType.delivered),
                           ),
-                          kSizedBox,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              OrdersContainer(
-                                containerColor: kPrimaryColor,
-                                typeOfOrderColor: kTextGreyColor,
-                                iconColor: kGreyColor1,
-                                numberOfOrders: "47",
-                                typeOfOrders: "Completed",
-                                onTap: () =>
-                                    _deliveryRoute(StatusType.delivered),
-                              ),
-                              OrdersContainer(
-                                containerColor: Colors.red.shade100,
-                                typeOfOrderColor: kAccentColor,
-                                iconColor: kAccentColor,
-                                numberOfOrders: "3",
-                                typeOfOrders: "Pending",
-                                onTap: () => _deliveryRoute(StatusType.pending),
-                              ),
-                            ],
+                          OrdersContainer(
+                            containerColor: Colors.red.shade100,
+                            typeOfOrderColor: kAccentColor,
+                            iconColor: kAccentColor,
+                            numberOfOrders: "3",
+                            typeOfOrders: "Pending",
+                            onTap: () => _deliveryRoute(StatusType.pending),
                           ),
-                          kSizedBox,
-                          RiderVendorContainer(
-                            onTap: _toSeeAllVendors,
-                            number: "390",
-                            typeOf: "Vendors",
-                            onlineStatus: "248 Online",
-                          ),
-                          kSizedBox,
                         ],
                       ),
-                    );
-            },
-          ),
+                      kSizedBox,
+                      RiderVendorContainer(
+                        onTap: _toSeeAllVendors,
+                        number: "390",
+                        typeOf: "Vendors",
+                        onlineStatus: "248 Online",
+                      ),
+                      kSizedBox,
+                    ],
+                  ),
+                ),
         ),
       ),
     );
