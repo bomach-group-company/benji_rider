@@ -6,7 +6,6 @@ import 'package:get/route_manager.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/my textformfield.dart';
-import '../../src/widget/responsive/reponsive_width.dart';
 import '../../theme/colors.dart';
 
 class WithdrawPage extends StatefulWidget {
@@ -27,8 +26,8 @@ class _WithdrawPageState extends State<WithdrawPage> {
   String dropDownItemValue = "Access Bank";
 
   //================================== FUNCTION ====================================\\
-  void _goToVerify() {
-    Get.to(
+  Future<void> _goToVerify() async {
+    return Get.to(
       () => const VerifyWithdrawalPage(),
       routeName: 'VerifyWithdrawalPage',
       duration: const Duration(milliseconds: 300),
@@ -60,10 +59,11 @@ class _WithdrawPageState extends State<WithdrawPage> {
           toolbarHeight: kToolbarHeight,
         ),
         body: SafeArea(
-          child: SingleChildScrollView(
+          maintainBottomViewPadding: true,
+          child: ListView(
             physics: const BouncingScrollPhysics(),
-            child: MyResponsiveWidth(
-              child: Container(
+            children: [
+              Container(
                 padding: EdgeInsets.symmetric(
                     horizontal: kDefaultPadding, vertical: kDefaultPadding * 2),
                 child: Form(
@@ -76,7 +76,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       Text(
                         'Amount',
                         style: TextStyle(
-                          color: Color(0xFF575757),
+                          color: kTextBlackColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                         ),
@@ -101,14 +101,18 @@ class _WithdrawPageState extends State<WithdrawPage> {
                       ),
                       kSizedBox,
                       MyElevatedButton(
-                        onPressed: _goToVerify,
+                        onPressed: (() async {
+                          if (_formKey.currentState!.validate()) {
+                            await _goToVerify();
+                          }
+                        }),
                         title: "Withdraw",
                       )
                     ],
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

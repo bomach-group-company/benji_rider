@@ -83,7 +83,7 @@ class _SendOTPState extends State<SendOTP> {
   }
 
   //================= Resend OTP ======================\\
-  void _resendOTP() {
+  void _resendOTP() async {
     // Implement your resend OTP logic here
     // For example, you could restart the timer and reset the `_timerComplete` state.
     setState(() {
