@@ -1,5 +1,7 @@
 import 'package:benji_rider/app/withdrawal/withdraw.dart';
+import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
@@ -29,67 +31,43 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
     );
   }
 
+  _addNewAccount() => Get.to(
+        () => AddBankAccountPage(),
+        routeName: 'AddBankAccountPage',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: kPrimaryColor,
-      appBar: AppBar(
+      appBar: MyAppBar(
+        title: "Select Account",
         elevation: 0,
-        titleSpacing: -20,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        title: Container(
-          margin: const EdgeInsets.all(30),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(20),
-            ),
-          ),
-          child: Builder(
-            builder: (context) => Row(
-              children: [
-                IconButton(
-                  splashRadius: 20,
-                  onPressed: () {
-                    Get.back();
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_rounded,
-                    color: kAccentColor,
-                  ),
-                ),
-                kHalfWidthSizedBox,
-                Text(
-                  "Select Account",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: kBlackColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        actions: [],
+        backgroundColor: kPrimaryColor,
+        toolbarHeight: kToolbarHeight,
       ),
       body: SafeArea(
         child: Column(
           children: [
-            ListView.builder(
+            ListView.separated(
               physics: const BouncingScrollPhysics(),
               shrinkWrap: true,
+              padding: const EdgeInsets.all(kDefaultPadding),
+              separatorBuilder: (context, index) => kSizedBox,
               itemCount: 3,
               itemBuilder: (BuildContext context, int index) {
                 return InkWell(
                   onTap: _goToWithdraw,
                   child: Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: kDefaultPadding,
-                      vertical: kDefaultPadding / 2,
-                    ),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: kPrimaryColor,
                       boxShadow: [
                         BoxShadow(
                           blurRadius: 2,
@@ -125,8 +103,8 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                               onPressed: () {
                                 _showBottomSheet(context);
                               },
-                              icon: Icon(
-                                Icons.more_horiz,
+                              icon: FaIcon(
+                                FontAwesomeIcons.ellipsis,
                                 color: kAccentColor,
                               ),
                             )
@@ -136,7 +114,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                         Text(
                           'Blessing George....09876',
                           style: TextStyle(
-                            color: Color(0xFF131514),
+                            color: kTextBlackColor,
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
                           ),
@@ -154,18 +132,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                   style: OutlinedButton.styleFrom(
                       backgroundColor: Color(0xFFFEF8F8),
                       minimumSize: Size(double.infinity, 60)),
-                  onPressed: () {
-                    Get.to(
-                      () => AddBankAccountPage(),
-                      routeName: 'AddBankAccountPage',
-                      duration: const Duration(milliseconds: 300),
-                      fullscreenDialog: true,
-                      curve: Curves.easeIn,
-                      preventDuplicates: true,
-                      popGesture: true,
-                      transition: Transition.rightToLeft,
-                    );
-                  },
+                  onPressed: _addNewAccount,
                   child: Text(
                     'Add a new Account',
                     textAlign: TextAlign.center,
@@ -198,33 +165,33 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                   top: Radius.circular(10),
                 ),
               ),
-              padding: EdgeInsets.only(left: 100, right: 100, bottom: 25),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    mouseCursor: SystemMouseCursors.click,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.delete_forever,
-                          color: kTextGreyColor,
+              padding: EdgeInsets.all(kDefaultPadding),
+              child: InkWell(
+                onTap: () {},
+                mouseCursor: SystemMouseCursors.click,
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.solidTrashCan,
+                        color: kAccentColor,
+                        size: 18,
+                      ),
+                      kWidthSizedBox,
+                      Text(
+                        'Delete account',
+                        style: TextStyle(
+                          color: kTextBlackColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
                         ),
-                        kWidthSizedBox,
-                        Text(
-                          'Delete account',
-                          style: TextStyle(
-                            color: Color(0xFF131514),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  kSizedBox,
-                  Divider(),
-                ],
+                ),
               )),
         );
       },

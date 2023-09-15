@@ -1,4 +1,5 @@
 import 'package:benji_rider/app/withdrawal/verify.dart';
+import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -51,45 +52,12 @@ class _WithdrawPageState extends State<WithdrawPage> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kPrimaryColor,
-        appBar: AppBar(
+        appBar: MyAppBar(
+          title: "Withdraw",
           elevation: 0,
-          titleSpacing: -20,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.transparent,
-          title: Container(
-            margin: const EdgeInsets.all(30),
-            decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
-            ),
-            child: Builder(
-              builder: (context) => Row(
-                children: [
-                  IconButton(
-                    splashRadius: 20,
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(
-                      Icons.arrow_back_ios_new_rounded,
-                      color: kAccentColor,
-                    ),
-                  ),
-                  kHalfWidthSizedBox,
-                  Text(
-                    "Withdraw",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                      color: kBlackColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          actions: [],
+          backgroundColor: kPrimaryColor,
+          toolbarHeight: kToolbarHeight,
         ),
         body: SafeArea(
           child: SingleChildScrollView(

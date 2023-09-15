@@ -7,6 +7,7 @@ import '../../providers/constants.dart';
 
 void mySnackBar(
   BuildContext context,
+  Color color,
   String title,
   String message,
   Duration duration,
@@ -25,15 +26,11 @@ void mySnackBar(
                   height: 60,
                   width: 10,
                   decoration: ShapeDecoration(
-                    color: kAccentColor,
+                    color: color,
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(
-                          20.0,
-                        ),
-                        bottom: Radius.circular(
-                          20.0,
-                        ),
+                        top: Radius.circular(20.0),
+                        bottom: Radius.circular(20.0),
                       ),
                     ),
                   ),
