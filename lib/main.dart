@@ -1,14 +1,14 @@
-import 'package:benji_rider/app/earning/earning.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/route_manager.dart';
 
+import 'app/splash_screens/startup_splash_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    const SystemUiOverlayStyle(statusBarColor: kTransparentColor),
   );
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const Earning(),
+      home: const StartupSplashscreen(),
     );
   }
 }

@@ -6,20 +6,12 @@ import '../../theme/colors.dart';
 
 const kDefaultPadding = 20.0;
 
-const kSizedBox = SizedBox(
-  height: kDefaultPadding,
-);
-const kWidthSizedBox = SizedBox(
-  width: kDefaultPadding,
-);
+const kSizedBox = SizedBox(height: kDefaultPadding);
+const kWidthSizedBox = SizedBox(width: kDefaultPadding);
 
-const kHalfSizedBox = SizedBox(
-  height: kDefaultPadding / 2,
-);
+const kHalfSizedBox = SizedBox(height: kDefaultPadding / 2);
 
-const kHalfWidthSizedBox = SizedBox(
-  width: kDefaultPadding / 2,
-);
+const kHalfWidthSizedBox = SizedBox(width: kDefaultPadding / 2);
 
 //Default BLue Link Heading
 var defaultLinkTextStyle = const TextStyle(
@@ -55,4 +47,10 @@ String formatDateAndTime(DateTime dateTime) {
   String formattedDateTime = '$formattedDate • $formattedTime';
 
   return formattedDateTime;
+}
+
+//===================== Number format ==========================\\
+String formattedText(double value) {
+  final numberFormat = NumberFormat('#,##0');
+  return numberFormat.format(value);
 }

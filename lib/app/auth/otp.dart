@@ -1,16 +1,20 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/otp_textFormField.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../theme/responsive_constant.dart';
 import 'reset_password.dart';
 
 class SendOTP extends StatefulWidget {
@@ -21,7 +25,27 @@ class SendOTP extends StatefulWidget {
 }
 
 class _SendOTPState extends State<SendOTP> {
+  //=========================== INITIAL STATE ====================================\\
+  @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   //=========================== ALL VARIABBLES ====================================\\
+  late Timer _timer;
+  int _secondsRemaining = 30;
+
+  //=========================== BOOL VALUES ====================================\\
+  bool _isLoading = false;
+  bool _validAuthCredentials = false;
+  bool _timerComplete = false;
 
   //=========================== CONTROLLERS ====================================\\
 
@@ -40,27 +64,67 @@ class _SendOTPState extends State<SendOTP> {
   FocusNode pin3FN = FocusNode();
   FocusNode pin4FN = FocusNode();
 
-  //=========================== BOOL VALUES====================================\\
-  bool isLoading = false;
-
   //=========================== FUNCTIONS ====================================\\
+
+  //================= Start Timer ======================\\
+  void startTimer() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (_secondsRemaining > 0) {
+        setState(() {
+          _secondsRemaining--;
+        });
+      } else {
+        setState(() {
+          _timerComplete = true;
+        });
+        _timer.cancel();
+      }
+    });
+  }
+
+  //================= Resend OTP ======================\\
+  void _resendOTP() {
+    // Implement your resend OTP logic here
+    // For example, you could restart the timer and reset the `_timerComplete` state.
+    setState(() {
+      _secondsRemaining = 60;
+      _timerComplete = false;
+      startTimer();
+    });
+  }
+
+  String formatTime(int seconds) {
+    int _minutes = seconds ~/ 60;
+    int _remainingSeconds = seconds % 60;
+    String _minutesStr = _minutes.toString().padLeft(2, '0');
+    String _secondsStr = _remainingSeconds.toString().padLeft(2, '0');
+    return '$_minutesStr:$_secondsStr';
+  }
+
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     // Simulating a delay of 3 seconds
     await Future.delayed(const Duration(seconds: 2));
 
+    setState(() {
+      _validAuthCredentials = true;
+    });
+
     //Display snackBar
     myFixedSnackBar(
       context,
       "OTP Verified".toUpperCase(),
-      kSecondaryColor,
+      kSuccessColor,
       const Duration(
         seconds: 2,
       ),
     );
+
+    // Simulating a delay of 2 seconds
+    await Future.delayed(const Duration(seconds: 2));
 
     // Navigate to the new page
     Get.to(
@@ -75,7 +139,7 @@ class _SendOTPState extends State<SendOTP> {
     );
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -86,6 +150,13 @@ class _SendOTPState extends State<SendOTP> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
+        appBar: MyAppBar(
+          title: "",
+          elevation: 0.0,
+          actions: [],
+          backgroundColor: kTransparentColor,
+          toolbarHeight: kToolbarHeight,
+        ),
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: LayoutGrid(
@@ -95,76 +166,48 @@ class _SendOTPState extends State<SendOTP> {
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            8.0,
-                          ),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: ShapeDecoration(
-                                      color: const Color(
-                                        0xFFFEF8F8,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                          width: 0.50,
-                                          color: Color(
-                                            0xFFFDEDED,
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          24,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      color: kAccentColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                  Expanded(
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Verification",
+                          subtitle:
+                              "Please enter the code we sent to your email",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.solidCircleCheck,
+                              color: kSuccessColor,
+                              size: 80,
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Verification",
-                      subtitle: "We have sent a code to your email",
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
+                          decoration: ShapeDecoration(
+                              color: kPrimaryColor, shape: OvalBorder()),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Verification",
+                          subtitle:
+                              "Please enter the code we sent to your email",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.shieldHalved,
+                              color: kSecondaryColor,
+                              size: 80,
+                            ),
                           ),
-                          fit: BoxFit.fitHeight,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                      ),
-                      imageContainerHeight:
-                          deviceType(media.size.width) > 2 ? 200 : 88,
-                    ),
+                          decoration: ShapeDecoration(
+                              color: kPrimaryColor, shape: OvalBorder()),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      }
+                    }(),
                   ),
                 ],
               ),
@@ -177,7 +220,7 @@ class _SendOTPState extends State<SendOTP> {
                   right: kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(
                         breakPoint(media.size.width, 24, 24, 0, 0)),
@@ -194,44 +237,52 @@ class _SendOTPState extends State<SendOTP> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'Code'.toUpperCase(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Color(
-                                0xFF31343D,
-                              ),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
+                          AnimatedDefaultTextStyle(
+                            child: Text('Code'.toUpperCase()),
+                            duration: Duration(milliseconds: 300),
+                            style: TextStyle(
+                              color: _timerComplete
+                                  ? kAccentColor
+                                  : kTextGreyColor,
+                              fontSize: 15,
+                              fontWeight: _timerComplete
+                                  ? FontWeight.w700
+                                  : FontWeight.w400,
                             ),
                           ),
                           Row(
                             children: [
                               TextButton(
-                                onPressed: () {},
-                                child: const Text(
-                                  "Resend",
+                                onPressed: _timerComplete ? _resendOTP : null,
+                                child: AnimatedDefaultTextStyle(
+                                  child: Text("Resend"),
                                   style: TextStyle(
                                     fontSize: 15,
-                                    color: kTextBlackColor,
+                                    color: _timerComplete
+                                        ? kAccentColor
+                                        : kTextGreyColor,
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,
                                   ),
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.easeIn,
                                 ),
                               ),
                               const Text(
-                                "in",
+                                "in ",
                                 style: TextStyle(
                                   fontSize: 15,
                                   color: kTextBlackColor,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
-                              const Text(
-                                "1:00",
+                              Text(
+                                formatTime(_secondsRemaining),
                                 style: TextStyle(
                                   fontSize: 15,
-                                  color: kTextBlackColor,
+                                  color: _timerComplete
+                                      ? kAccentColor
+                                      : kSuccessColor,
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
@@ -240,6 +291,7 @@ class _SendOTPState extends State<SendOTP> {
                         ],
                       ),
                     ),
+                    kSizedBox,
                     Form(
                       key: _formKey,
                       child: Row(
@@ -252,7 +304,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (pin1) {
-                                pin1EC.text = pin1!;
+                                pin1EC.text = pin1;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -273,7 +325,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (pin2) {
-                                pin2EC.text = pin2!;
+                                pin2EC.text = pin2;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -294,7 +346,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.next,
                               onSaved: (pin3) {
-                                pin3EC.text = pin3!;
+                                pin3EC.text = pin3;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -315,7 +367,7 @@ class _SendOTPState extends State<SendOTP> {
                             child: MyOTPTextFormField(
                               textInputAction: TextInputAction.done,
                               onSaved: (pin4) {
-                                pin4EC.text = pin4!;
+                                pin4EC.text = pin4;
                               },
                               onChanged: (value) {
                                 if (value.length == 1) {
@@ -336,7 +388,7 @@ class _SendOTPState extends State<SendOTP> {
                     const SizedBox(
                       height: kDefaultPadding * 2,
                     ),
-                    isLoading
+                    _isLoading
                         ? Center(
                             child: SpinKitChasingDots(
                               color: kAccentColor,
@@ -359,8 +411,8 @@ class _SendOTPState extends State<SendOTP> {
                             child: Text(
                               'Verify'.toUpperCase(),
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: kPrimaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                               ),

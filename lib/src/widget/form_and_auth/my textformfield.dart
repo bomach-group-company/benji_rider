@@ -37,61 +37,37 @@ class MyTextFormField extends StatelessWidget {
       autocorrect: true,
       enableSuggestions: true,
       keyboardType: textInputType,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       maxLines: 1,
       style: TextStyle(
         color: kSecondaryColor,
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
       decoration: InputDecoration(
         hintText: hintText,
-        errorStyle: const TextStyle(
-          color: kErrorColor,
-        ),
         filled: true,
-        fillColor: Colors.blue.shade50,
-        focusColor: Colors.blue.shade50,
+        fillColor: const Color(0xFFF6F6F7),
+        focusColor: const Color(0xFFF6F6F7),
+        hintStyle: const TextStyle(
+          color: Color(0xFF979797),
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
+        errorStyle: const TextStyle(color: kErrorColor),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-          borderSide: BorderSide(
-            color: Colors.blue.shade50,
-          ),
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blue.shade50),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
+          borderRadius: BorderRadius.circular(10.0),
           borderSide: BorderSide(
             color: Colors.blue.shade50,
           ),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-          borderSide: BorderSide(
-            color: Colors.blue.shade50,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-          borderSide: const BorderSide(
-            color: kErrorBorderColor,
-            width: 2.0,
-          ),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(
-            10.0,
-          ),
-          borderSide: const BorderSide(
-            color: kErrorBorderColor,
-            width: 2.0,
-          ),
+          borderRadius: BorderRadius.circular(10.0),
+          borderSide: BorderSide(color: Colors.blue.shade50),
         ),
       ),
     );

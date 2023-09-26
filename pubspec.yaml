@@ -14,24 +14,37 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  font_awesome_flutter: ^10.5.0
   google_fonts: ^5.1.0
   google_maps_flutter: ^2.3.1
+  geolocator: ^9.0.2
   hexcolor: ^3.0.1
   flutter_spinkit: ^5.2.0
+  shimmer: ^3.0.0-nullsafety.0
   get: ^4.6.5
   flutter_pw_validator: ^1.6.0
   intl_phone_field: ^3.2.0
   firebase_core: ^2.15.0
   firebase_auth: ^4.7.2
   intl: ^0.18.1
-  flutter_layout_grid: ^1.0.3
   fl_chart: ^0.63.0
+  shared_preferences: ^2.2.0
+  liquid_pull_to_refresh: ^3.0.1
+  lottie:
+  flutter_layout_grid:
+  flutter_carousel_widget:
+  flutter_polyline_points: ^2.0.0
+  autoscale_tabbarview: ^1.0.2
+  share_plus: ^7.1.0
+  screenshot: ^2.1.0
+  path_provider: ^2.1.1
+  pdf: ^3.10.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_native_splash: ^2.3.1
+  flutter_native_splash: ^2.3.2
   flutter_launcher_icons: ^0.13.1
 
 flutter_native_splash:
@@ -68,11 +81,11 @@ flutter:
     - assets/images/home/
     - assets/images/vendors/
     - assets/images/food/
-    - assets/images/icons/
+    - assets/icons/
     - assets/images/rider/
     - assets/images/profile/
-    - assets/animations/splash_screen/
-    - assets/animations/successful/
+    - assets/animations/login/
+    - assets/animations/payment/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

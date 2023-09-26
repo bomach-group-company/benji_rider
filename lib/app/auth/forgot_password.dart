@@ -3,14 +3,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/email_textformfield.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
+import '../../src/widget/section/my_appbar.dart';
 import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../../theme/responsive_constant.dart';
 import 'otp.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -23,38 +25,47 @@ class ForgotPassword extends StatefulWidget {
 class _ForgotPasswordState extends State<ForgotPassword> {
   //=========================== ALL VARIABBLES ====================================\\
 
-  //=========================== CONTROLLERS ====================================\\
-
-  TextEditingController emailController = TextEditingController();
+  //=========================== BOOL VALUES ====================================\\
+  bool _isLoading = false;
+  bool _validAuthCredentials = false;
+  // bool _invalidAuthCredentials = false;
 
   //=========================== KEYS ====================================\\
 
   final _formKey = GlobalKey<FormState>();
 
+  //=========================== CONTROLLERS ====================================\\
+
+  TextEditingController emailController = TextEditingController();
+
   //=========================== FOCUS NODES ====================================\\
   FocusNode emailFocusNode = FocusNode();
-
-  //=========================== BOOL VALUES====================================\\
-  bool isLoading = false;
 
   //=========================== FUNCTIONS ====================================\\
   Future<void> loadData() async {
     setState(() {
-      isLoading = true;
+      _isLoading = true;
     });
 
     // Simulating a delay of 3 seconds
     await Future.delayed(const Duration(seconds: 2));
 
+    setState(() {
+      _validAuthCredentials = true;
+    });
+
     //Display snackBar
     myFixedSnackBar(
       context,
       "An OTP code has been sent to your email".toUpperCase(),
-      kSecondaryColor,
+      kSuccessColor,
       const Duration(
         seconds: 2,
       ),
     );
+
+    // Simulating a delay of 2 seconds
+    await Future.delayed(const Duration(seconds: 2));
 
     // Navigate to the new page
     Get.to(
@@ -69,7 +80,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     );
 
     setState(() {
-      isLoading = false;
+      _isLoading = false;
     });
   }
 
@@ -81,6 +92,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
+        appBar: MyAppBar(
+          title: "",
+          elevation: 0.0,
+          actions: [],
+          backgroundColor: kTransparentColor,
+          toolbarHeight: kToolbarHeight,
+        ),
+        extendBody: true,
+        extendBodyBehindAppBar: true,
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: LayoutGrid(
@@ -90,77 +110,52 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             children: [
               Column(
                 children: [
-                  Row(
-                    children: [
-                      InkWell(
-                        borderRadius: BorderRadius.circular(24),
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(
-                            8.0,
-                          ),
-                          child: SizedBox(
-                            width: 48,
-                            height: 48,
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 48,
-                                    height: 48,
-                                    decoration: ShapeDecoration(
-                                      color: const Color(
-                                        0xFFFEF8F8,
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        side: const BorderSide(
-                                          width: 0.50,
-                                          color: Color(
-                                            0xFFFDEDED,
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                          24,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Icon(
-                                      Icons.arrow_back_ios_new_rounded,
-                                      color: kAccentColor,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                  Expanded(
+                    child: () {
+                      if (_validAuthCredentials) {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Forgot your password?",
+                          subtitle:
+                              "Simply enter your email below and we will send you a code via which you need to reset your password",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.solidCircleCheck,
+                              color: kSuccessColor,
+                              size: 80,
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Expanded(
-                    child: ReusableAuthenticationFirstHalf(
-                      title: "Forgot Password",
-                      subtitle:
-                          "Forgot your password? Enter your email below and we will send you a code via which you need to recover your password",
-                      decoration: const ShapeDecoration(
-                        // color: Colors.white,
-                        image: DecorationImage(
-                          image: AssetImage(
-                            "assets/images/logo/benji_red_logo_icon.jpg",
+                          decoration: ShapeDecoration(
+                            color: kPrimaryColor,
+                            shape: OvalBorder(),
                           ),
-                          fit: BoxFit.fitHeight,
-                        ),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(12))),
-                      ),
-                      imageContainerHeight:
-                          deviceType(media.size.width) > 2 ? 200 : 88,
-                    ),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      } else {
+                        return ReusableAuthenticationFirstHalf(
+                          title: "Forgot your password?",
+                          subtitle:
+                              "Simply enter your email below and we will send you a code via which you need to reset your password",
+                          curves: Curves.easeInOut,
+                          duration: Duration(),
+                          containerChild: Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.question,
+                              color: kSecondaryColor,
+                              size: 80,
+                            ),
+                          ),
+                          decoration: ShapeDecoration(
+                            color: kPrimaryColor,
+                            shape: OvalBorder(),
+                          ),
+                          imageContainerHeight:
+                              deviceType(media.size.width) > 2 ? 200 : 100,
+                        );
+                      }
+                    }(),
                   ),
                 ],
               ),
@@ -173,7 +168,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   right: kDefaultPadding,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: kPrimaryColor,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(
                         breakPoint(media.size.width, 24, 24, 0, 0)),
@@ -227,7 +222,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           const SizedBox(
                             height: 30,
                           ),
-                          isLoading
+                          _isLoading
                               ? Center(
                                   child: SpinKitChasingDots(
                                     color: kAccentColor,
@@ -251,8 +246,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                   child: Text(
                                     'Send Code'.toUpperCase(),
                                     textAlign: TextAlign.center,
-                                    style: const TextStyle(
-                                      color: Colors.white,
+                                    style: TextStyle(
+                                      color: kPrimaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                     ),
