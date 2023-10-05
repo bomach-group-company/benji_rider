@@ -97,6 +97,9 @@ class _LoginState extends State<Login> {
       final userData = await http.get(
           Uri.parse('$baseURL/drivers/getRiderDetails/$userId'),
           headers: await authHeader(token));
+      if (jsonDecode(userData.body)['detail'] != null) {
+        return false;
+      }
       await saveUser(userData.body, token);
       return true;
     } catch (e) {

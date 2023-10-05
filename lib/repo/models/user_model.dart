@@ -14,6 +14,7 @@ class User {
   final double? balance;
   final String? chassisNumber;
   final String? plateNumber;
+  final int? tripCount;
   final String? token;
 
   const User({
@@ -30,6 +31,7 @@ class User {
     required this.balance,
     required this.chassisNumber,
     required this.plateNumber,
+    required this.tripCount,
     required this.token,
   });
 
@@ -48,6 +50,7 @@ class User {
       balance: json['balance'],
       chassisNumber: json['chassis_number'],
       plateNumber: json['plate_number'],
+      tripCount: json['tripCount'],
       token: json['token'],
     );
   }
