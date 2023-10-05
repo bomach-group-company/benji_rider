@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
@@ -224,9 +223,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           ),
                           _isLoading
                               ? Center(
-                                  child: SpinKitChasingDots(
+                                  child: CircularProgressIndicator(
                                     color: kAccentColor,
-                                    duration: const Duration(seconds: 2),
                                   ),
                                 )
                               : ElevatedButton(

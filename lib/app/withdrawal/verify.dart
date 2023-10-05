@@ -1,6 +1,5 @@
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
@@ -329,9 +328,8 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
                   ),
                   isLoading
                       ? Center(
-                          child: SpinKitChasingDots(
+                          child: CircularProgressIndicator(
                             color: kAccentColor,
-                            duration: const Duration(seconds: 2),
                           ),
                         )
                       : ElevatedButton(
