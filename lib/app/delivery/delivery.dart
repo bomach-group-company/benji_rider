@@ -1,6 +1,5 @@
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/responsive/reponsive_width.dart';
@@ -85,9 +84,8 @@ class _DeliveryState extends State<Delivery> {
         ),
       ),
       body: isLoading
-          ? SpinKitChasingDots(
+          ? CircularProgressIndicator(
               color: kAccentColor,
-              size: 30,
             )
           : SafeArea(
               child: Column(
@@ -482,7 +480,7 @@ class _DeliveryState extends State<Delivery> {
                                                   ),
                                                   SizedBox(
                                                     child: Text(
-                                                      '\u20A60A6 5,000',
+                                                      '\u20A6 65,000',
                                                       style: TextStyle(
                                                         color: !checkStatus(
                                                                 _status,

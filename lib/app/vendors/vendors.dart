@@ -10,7 +10,6 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/providers/custom_show_search.dart';
-import '../../src/widget/skeletons/all_vendors_page_skeleton.dart';
 import '../../theme/colors.dart';
 
 class Vendors extends StatefulWidget {
@@ -160,7 +159,11 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: _data == null
-              ? AllVendorsPageSkeleton()
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: kAccentColor,
+                  ),
+                )
               : Scrollbar(
                   controller: _scrollController,
                   radius: const Radius.circular(10),

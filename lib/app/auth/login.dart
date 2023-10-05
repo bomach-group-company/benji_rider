@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
@@ -97,6 +96,9 @@ class _LoginState extends State<Login> {
       final userData = await http.get(
           Uri.parse('$baseURL/drivers/getRiderDetails/$userId'),
           headers: await authHeader(token));
+      if (jsonDecode(userData.body)['detail'] != null) {
+        return false;
+      }
       await saveUser(userData.body, token);
       return true;
     } catch (e) {
@@ -412,9 +414,8 @@ class _LoginState extends State<Login> {
                           SizedBox(height: kDefaultPadding * 2),
                           _isLoading
                               ? Center(
-                                  child: SpinKitChasingDots(
+                                  child: CircularProgressIndicator(
                                     color: kAccentColor,
-                                    duration: const Duration(seconds: 2),
                                   ),
                                 )
                               : ElevatedButton(

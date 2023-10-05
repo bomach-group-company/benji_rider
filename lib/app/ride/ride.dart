@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:benji_rider/src/widget/section/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -222,7 +221,7 @@ class _RideState extends State<Ride> {
                   }
                 } else {
                   return Center(
-                    child: SpinKitChasingDots(
+                    child: CircularProgressIndicator(
                       color: kAccentColor,
                     ),
                   );
@@ -384,9 +383,8 @@ class _RideState extends State<Ride> {
                   );
                 } else {
                   return Center(
-                    child: SpinKitChasingDots(
+                    child: CircularProgressIndicator(
                       color: kAccentColor,
-                      duration: const Duration(seconds: 2),
                     ),
                   );
                 }

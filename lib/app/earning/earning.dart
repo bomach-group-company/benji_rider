@@ -221,7 +221,7 @@ class _EarningState extends State<Earning> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
-                              width: mediaWidth / 2,
+                              width: mediaWidth - 150,
                               child: Text(
                                 '21 Bartus Street, Abuja Nigeria',
                                 overflow: TextOverflow.ellipsis,
@@ -235,7 +235,6 @@ class _EarningState extends State<Earning> {
                               ),
                             ),
                             Container(
-                              width: mediaWidth - 300,
                               child: Text(
                                 '\u20A6 ${formattedText(7000)}',
                                 overflow: TextOverflow.ellipsis,

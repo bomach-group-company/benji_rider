@@ -4,7 +4,6 @@ import 'package:benji_rider/app/ride/ride.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,8 +11,8 @@ import '../../../app/dashboard/dashboard.dart';
 import '../../../app/settings/settings.dart';
 import '../../../repo/utils/helpers.dart';
 import '../../../theme/colors.dart';
-import '../../providers/responsive_constant.dart';
 import '../../providers/constants.dart';
+import '../../providers/responsive_constant.dart';
 import 'list_tile.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -61,7 +60,7 @@ class _MyDrawerState extends State<MyDrawer> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
               return Center(
-                child: SpinKitChasingDots(
+                child: CircularProgressIndicator(
                   color: kAccentColor,
                 ),
               );
