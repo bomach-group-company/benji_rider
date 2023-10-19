@@ -84,8 +84,10 @@ class _DeliveryState extends State<Delivery> {
         ),
       ),
       body: isLoading
-          ? CircularProgressIndicator(
-              color: kAccentColor,
+          ? Center(
+              child: CircularProgressIndicator(
+                color: kAccentColor,
+              ),
             )
           : SafeArea(
               child: Column(

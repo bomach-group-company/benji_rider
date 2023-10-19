@@ -63,7 +63,6 @@ class _WithdrawHistoryPageState extends State<WithdrawHistoryPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: mediaWidth / 3,
                           child: Text(
                             '\u20A6 20,000',
                             overflow: TextOverflow.ellipsis,
@@ -76,7 +75,7 @@ class _WithdrawHistoryPageState extends State<WithdrawHistoryPage> {
                           ),
                         ),
                         SizedBox(
-                          width: mediaWidth - 200,
+                          width: mediaWidth - 150,
                           child: Text(
                             formattedDateTime,
                             overflow: TextOverflow.ellipsis,
