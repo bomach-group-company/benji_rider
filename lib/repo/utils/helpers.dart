@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/repo/models/user_model.dart';
-import 'package:benji_rider/repo/utils/base_url.dart';
+import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/src/widget/section/my_floating_snackbar.dart';
 import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
