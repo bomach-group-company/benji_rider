@@ -8,7 +8,7 @@ import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../repo/utils/base_url.dart';
+import '../../repo/utils/constants.dart';
 import '../../repo/utils/helpers.dart';
 import '../../src/providers/constants.dart';
 import '../../src/providers/responsive_constant.dart';

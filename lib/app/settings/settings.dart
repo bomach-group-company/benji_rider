@@ -6,8 +6,6 @@ import '../../src/widget/section/profile_first_half.dart';
 import '../../theme/colors.dart';
 import '../auth/login.dart';
 import '../delivery/delivery.dart';
-import '../earning/earning.dart';
-import '../withdrawal/withdraw_history.dart';
 import 'help_n_support.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -81,101 +79,102 @@ class _SettingsPageState extends State<SettingsPage> {
           scrollDirection: Axis.vertical,
           children: [
             ProfileFirstHalf(availableBalance: _accountBalance),
+            // Padding(
+            //   padding: const EdgeInsets.only(
+            //     top: kDefaultPadding,
+            //     left: kDefaultPadding,
+            //     right: kDefaultPadding,
+            //     bottom: kDefaultPadding / 1.5,
+            //   ),
+            //   child: Container(
+            //     padding: const EdgeInsets.all(
+            //       kDefaultPadding / 2,
+            //     ),
+            //     decoration: ShapeDecoration(
+            //       color: kPrimaryColor,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: BorderRadius.circular(15),
+            //       ),
+            //       shadows: const [
+            //         BoxShadow(
+            //           color: Color(0x0F000000),
+            //           blurRadius: 24,
+            //           offset: Offset(0, 4),
+            //           spreadRadius: 0,
+            //         ),
+            //       ],
+            //     ),
+            //     child: Column(
+            //       children: [
+            //         ListTile(
+            //           onTap: () {
+            //             Get.to(
+            //               () => const Earning(),
+            //               routeName: 'Earning',
+            //               duration: const Duration(milliseconds: 300),
+            //               fullscreenDialog: true,
+            //               curve: Curves.easeIn,
+            //               preventDuplicates: true,
+            //               popGesture: true,
+            //               transition: Transition.rightToLeft,
+            //             );
+            //           },
+            //           leading: Icon(
+            //             Icons.money,
+            //             color: kAccentColor,
+            //           ),
+            //           title: const Text(
+            //             'Earning',
+            //             style: TextStyle(
+            //               color: Color(
+            //                 0xFF333333,
+            //               ),
+            //               fontSize: 15,
+            //               fontWeight: FontWeight.w400,
+            //             ),
+            //           ),
+            //           trailing: const Icon(
+            //             Icons.arrow_forward_ios_rounded,
+            //           ),
+            //         ),
+            //         ListTile(
+            //           onTap: () {
+            //             Get.to(
+            //               () => const WithdrawHistoryPage(),
+            //               routeName: 'WithdrawHistoryPage',
+            //               duration: const Duration(milliseconds: 300),
+            //               fullscreenDialog: true,
+            //               curve: Curves.easeIn,
+            //               preventDuplicates: true,
+            //               popGesture: true,
+            //               transition: Transition.rightToLeft,
+            //             );
+            //           },
+            //           leading: Icon(
+            //             Icons.history,
+            //             color: kAccentColor,
+            //           ),
+            //           title: const Text(
+            //             'Withdrawal History',
+            //             style: TextStyle(
+            //               color: Color(
+            //                 0xFF333333,
+            //               ),
+            //               fontSize: 15,
+            //               fontWeight: FontWeight.w400,
+            //             ),
+            //           ),
+            //           trailing: const Icon(
+            //             Icons.arrow_forward_ios_rounded,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Padding(
               padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: kDefaultPadding / 1.5,
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(
-                  kDefaultPadding / 2,
-                ),
-                decoration: ShapeDecoration(
-                  color: kPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  shadows: const [
-                    BoxShadow(
-                      color: Color(0x0F000000),
-                      blurRadius: 24,
-                      offset: Offset(0, 4),
-                      spreadRadius: 0,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    ListTile(
-                      onTap: () {
-                        Get.to(
-                          () => const Earning(),
-                          routeName: 'Earning',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                      leading: Icon(
-                        Icons.money,
-                        color: kAccentColor,
-                      ),
-                      title: const Text(
-                        'Earning',
-                        style: TextStyle(
-                          color: Color(
-                            0xFF333333,
-                          ),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () {
-                        Get.to(
-                          () => const WithdrawHistoryPage(),
-                          routeName: 'WithdrawHistoryPage',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                      leading: Icon(
-                        Icons.history,
-                        color: kAccentColor,
-                      ),
-                      title: const Text(
-                        'Withdrawal History',
-                        style: TextStyle(
-                          color: Color(
-                            0xFF333333,
-                          ),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
+                top: kDefaultPadding / 1.5,
                 left: kDefaultPadding,
                 right: kDefaultPadding,
                 bottom: kDefaultPadding / 1.5,

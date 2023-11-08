@@ -9,7 +9,6 @@ import 'package:intl/intl.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../src/providers/constants.dart';
-import '../../src/providers/custom_show_search.dart';
 import '../../theme/colors.dart';
 
 class Vendors extends StatefulWidget {
@@ -60,6 +59,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
 
   Future<void> _getData() async {
     List<VendorModel> data = await getVendors();
+    print('vendor data $data');
     setState(() {
       _data = data;
     });
@@ -107,8 +107,6 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
 //=============================== See more ========================================\\
   void _seeMoreOnlineVendors() {}
 
-  void _showSearchField() =>
-      showSearch(context: context, delegate: CustomSearchDelegate());
   @override
   Widget build(BuildContext context) {
     //============================ MediaQuery Size ===============================\\
@@ -129,17 +127,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
           elevation: 0.0,
           backgroundColor: kPrimaryColor,
           toolbarHeight: kToolbarHeight,
-          actions: [
-            IconButton(
-              onPressed: _showSearchField,
-              tooltip: "Search for a vendor",
-              icon: Icon(
-                Icons.search_rounded,
-                color: kAccentColor,
-                size: 24,
-              ),
-            ),
-          ],
+          actions: [],
         ),
         floatingActionButton: _isScrollToTopBtnVisible
             ? FloatingActionButton(
@@ -223,7 +211,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                     SizedBox(
                                       width: mediaWidth - 200,
                                       child: Text(
-                                        _data![index].shopName!,
+                                        _data![index].shopName,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: const TextStyle(
@@ -315,31 +303,31 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
   }
 }
 
-      // Row(
-                                                  //   children: [
-                                                  //     Container(
-                                                  //       width: 3.90,
-                                                  //       height: 3.90,
-                                                  //       decoration:
-                                                  //           ShapeDecoration(
-                                                  //         color:
-                                                  //             _vendorActiveColor,
-                                                  //         shape:
-                                                  //             const OvalBorder(),
-                                                  //       ),
-                                                  //     ),
-                                                  //     const SizedBox(
-                                                  //         width: 5.0),
-                                                  //     Text(
-                                                  //       _vendorActive,
-                                                  //       textAlign:
-                                                  //           TextAlign.center,
-                                                  //       style: const TextStyle(
-                                                  //         color: kSuccessColor,
-                                                  //         fontSize: 14,
-                                                  //         fontWeight:
-                                                  //             FontWeight.w400,
-                                                  //       ),
-                                                  //     ),
-                                                  //   ],
-                                                  // ),
+// Row(
+//   children: [
+//     Container(
+//       width: 3.90,
+//       height: 3.90,
+//       decoration:
+//           ShapeDecoration(
+//         color:
+//             _vendorActiveColor,
+//         shape:
+//             const OvalBorder(),
+//       ),
+//     ),
+//     const SizedBox(
+//         width: 5.0),
+//     Text(
+//       _vendorActive,
+//       textAlign:
+//           TextAlign.center,
+//       style: const TextStyle(
+//         color: kSuccessColor,
+//         fontSize: 14,
+//         fontWeight:
+//             FontWeight.w400,
+//       ),
+//     ),
+//   ],
+// ),

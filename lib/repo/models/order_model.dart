@@ -5,7 +5,7 @@ import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:http/http.dart' as http;
 
-import '../utils/base_url.dart';
+import '../utils/constants.dart';
 import 'driver_model.dart';
 import 'order_details_model.dart';
 

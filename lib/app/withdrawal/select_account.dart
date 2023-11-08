@@ -54,7 +54,8 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
         toolbarHeight: kToolbarHeight,
       ),
       body: SafeArea(
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: [
             ListView.separated(
               physics: const BouncingScrollPhysics(),
