@@ -1,10 +1,9 @@
 // ignore_for_file:  unused_local_variable
 
 import 'package:benji_rider/app/vendors/vendors.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../src/providers/constants.dart';
@@ -175,10 +174,12 @@ class _DashboardState extends State<Dashboard>
                   ],
                 ),
                 kSizedBox,
-                RiderVendorContainer(
-                  onTap: _toSeeAllVendors,
-                  number: "390",
-                  typeOf: "Vendors",
+                GetBuilder<VendorController>(
+                  builder: (controller) => RiderVendorContainer(
+                    onTap: _toSeeAllVendors,
+                    number: controller.total.value.toString(),
+                    typeOf: "Vendors",
+                  ),
                 ),
                 kSizedBox,
               ],
