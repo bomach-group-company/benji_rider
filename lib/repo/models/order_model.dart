@@ -26,14 +26,16 @@ class Order {
     required this.status,
   });
 
-  factory Order.fromJson(Map<String, dynamic> json) {
+  factory Order.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
+
     return Order(
-      id: json['id'],
+      id: json['id'] ?? '0',
       orderId: OrderDetailsModel.fromJson(json['order_id']),
       driverId: Driver.fromJson(json['driver_id']),
-      amount: json['amount'].toDouble(),
+      amount: (json['amount'] ?? 0.0) as double,
       percentageId: Percentage.fromJson(json['percentage_id']),
-      status: json['status'],
+      status: json['status'] ?? 0,
     );
   }
 }

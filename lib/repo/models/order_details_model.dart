@@ -1,3 +1,5 @@
+import 'package:benji_rider/repo/utils/constants.dart';
+
 import 'client_model.dart';
 import 'product_model.dart';
 
@@ -20,13 +22,14 @@ class OrderDetailsModel {
     required this.productId,
   });
 
-  factory OrderDetailsModel.fromJson(Map<String, dynamic> json) {
+  factory OrderDetailsModel.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
     return OrderDetailsModel(
-      id: json['id'],
-      deliveryAddress: json['delivery_address'],
-      status: json['status'],
-      quantity: json['quantity'],
-      created: json['created'],
+      id: json['id'] ?? '0',
+      deliveryAddress: json['delivery_address'] ?? notAvailable,
+      status: json['status'] ?? 'PEND',
+      quantity: json['quantity'] ?? 0,
+      created: json['created'] ?? notAvailable,
       clientId: Client.fromJson(json['client_id']),
       productId: ProductModel.fromJson(json['product_id']),
     );
