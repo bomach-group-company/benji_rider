@@ -29,7 +29,6 @@ class _DashboardState extends State<Dashboard>
   @override
   void initState() {
     super.initState();
-    VendorController.instance.getVendorList();
   }
 
   @override
@@ -94,11 +93,6 @@ class _DashboardState extends State<Dashboard>
       animSpeedFactor: 2,
       showChildOpacityTransition: false,
       child: Scaffold(
-        onDrawerChanged: (isOpened) {
-          if (isOpened == false) {
-            setState(() {});
-          }
-        },
         appBar: AppBar(
           elevation: 0,
           titleSpacing: -20,

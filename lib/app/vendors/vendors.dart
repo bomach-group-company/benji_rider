@@ -84,9 +84,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
 
 //===================== Handle refresh ==========================\\
 
-  Future<void> _handleRefresh() async {
-    setState(() {});
-  }
+  Future<void> _handleRefresh() async {}
 
 //=============================== See more ========================================\\
   void _seeMoreOnlineVendors() {}
