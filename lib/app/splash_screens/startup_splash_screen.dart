@@ -1,17 +1,28 @@
 // ignore_for_file: file_names
 
-import 'dart:async';
-
+import 'package:benji_rider/repo/controller/auth_controller.dart';
+import 'package:benji_rider/repo/controller/form_controller.dart';
+import 'package:benji_rider/repo/controller/latlng_detail_controller.dart';
+import 'package:benji_rider/repo/controller/login_controller.dart';
+import 'package:benji_rider/repo/controller/notification_controller.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
-import '../user_auth/userAuth.dart';
 
 class StartupSplashscreen extends StatefulWidget {
-  const StartupSplashscreen({super.key});
+  StartupSplashscreen({super.key});
+  final user = Get.put(UserController());
+  final login = Get.put(LoginController());
+  final order = Get.put(OrderController());
+  final form = Get.put(FormController());
+  final latLngDetail = Get.put(LatLngDetailController());
+  final notify = Get.put(NotificationController());
+  final auth = Get.put(AuthController());
 
   @override
   State<StartupSplashscreen> createState() => _StartupSplashscreenState();
@@ -23,22 +34,6 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   @override
   void initState() {
     super.initState();
-
-    Timer(
-      Duration(seconds: 3),
-      () {
-        Get.offAll(
-          () => const UserSnapshot(),
-          duration: const Duration(seconds: 3),
-          fullscreenDialog: true,
-          curve: Curves.easeIn,
-          routeName: "UserSnapshot",
-          predicate: (route) => false,
-          popGesture: true,
-          transition: Transition.fadeIn,
-        );
-      },
-    );
   }
 
   @override
@@ -54,46 +49,51 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     double mediaHeight = MediaQuery.of(context).size.height;
     double mediaWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: ListView(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.all(kDefaultPadding),
-        children: [
-          SizedBox(
-            height: mediaHeight,
-            width: mediaWidth,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  height: mediaHeight / 4,
-                  width: mediaWidth / 2,
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      image:
-                          AssetImage("assets/images/splash_screen/frame_1.png"),
+    return GetBuilder<AuthController>(
+      init: AuthController(),
+      builder: (controller) {
+        return Scaffold(
+          body: ListView(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(kDefaultPadding),
+            children: [
+              SizedBox(
+                height: mediaHeight,
+                width: mediaWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: mediaHeight / 4,
+                      width: mediaWidth / 2,
+                      decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage(
+                              "assets/images/splash_screen/frame_1.png"),
+                        ),
+                      ),
                     ),
-                  ),
+                    kSizedBox,
+                    Text(
+                      'Rider App',
+                      style: TextStyle(
+                        color: kTextBlackColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    kSizedBox,
+                    SpinKitThreeInOut(
+                      color: kSecondaryColor,
+                      size: 20,
+                    ),
+                  ],
                 ),
-                kSizedBox,
-                Text(
-                  'Rider App',
-                  style: TextStyle(
-                    color: kTextBlackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                kSizedBox,
-                SpinKitThreeInOut(
-                  color: kSecondaryColor,
-                  size: 20,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

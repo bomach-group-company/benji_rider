@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:benji_rider/app/auth/login.dart';
+import 'package:benji_rider/app/delivery/delivery.dart';
 import 'package:benji_rider/main.dart';
 import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:benji_rider/repo/utils/constants.dart';
@@ -73,9 +74,7 @@ checkUserAuth() async {
   User? haveUser = await getUser();
   if (haveUser == null) {
     return Get.offAll(
-      () => Login(
-        logout: true,
-      ),
+      () => Login(),
       routeName: 'Login',
       predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
@@ -108,9 +107,7 @@ checkAuth(context) async {
       Duration(seconds: 2),
     );
     return Get.offAll(
-      () => Login(
-        logout: true,
-      ),
+      () => Login(),
       routeName: 'Login',
       predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
@@ -122,13 +119,10 @@ checkAuth(context) async {
   }
 }
 
-Future<Map<String, String>> authHeader(
-    [String? authToken, String? contentType]) async {
+Map<String, String> authHeader([String? authToken, String? contentType]) {
   if (authToken == null) {
-    User? user = await getUser();
-    if (user != null) {
-      authToken = user.token;
-    }
+    User? user = getUserSync();
+    authToken = user.token;
   }
 
   Map<String, String> res = {
@@ -142,7 +136,7 @@ Future<Map<String, String>> authHeader(
   return res;
 }
 
-Future<bool?> isAuthorized() async {
+Future<bool> isAuthorized() async {
   try {
     final response = await http.get(
       Uri.parse('$baseURL/auth/'),
@@ -157,6 +151,19 @@ Future<bool?> isAuthorized() async {
     }
     return false;
   } catch (e) {
-    return null;
+    return false;
   }
+}
+
+String statusTypeConverter(StatusType statusType) {
+  if (statusType == StatusType.delivered) {
+    return "COMP";
+  }
+  if (statusType == StatusType.pending) {
+    return "PEND";
+  }
+  if (statusType == StatusType.cancelled) {
+    return "CANC";
+  }
+  return "COMP";
 }
