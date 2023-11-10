@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:benji_rider/app/auth/login.dart';
+import 'package:benji_rider/main.dart';
 import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/src/widget/section/my_floating_snackbar.dart';
@@ -8,17 +9,22 @@ import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> saveUser(String user, String token) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   Map data = jsonDecode(user);
   data['token'] = token;
   await prefs.setString('user', jsonEncode(data));
 }
 
+User getUserSync() {
+  String? user = prefs.getString('user');
+  if (user == null) {
+    return User.fromJson(null);
+  }
+  return modelUser(user);
+}
+
 Future<User?> getUser() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   String? user = prefs.getString('user');
   if (user == null) {
     return null;
@@ -27,7 +33,6 @@ Future<User?> getUser() async {
 }
 
 Future<bool> deleteUser() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
   prefs.remove('isOnline');
   prefs.remove('isVisibleCash');
   prefs.remove('rememberMe');

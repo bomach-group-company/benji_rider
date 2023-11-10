@@ -1,21 +1,23 @@
 import 'dart:convert';
 
+import 'package:benji_rider/repo/utils/constants.dart';
+
 class User {
-  final int? id;
-  final String? email;
-  final String? code;
-  final String? phone;
-  final String? username;
-  final String? firstName;
-  final String? lastName;
-  final String? gender;
-  final String? address;
-  final String? image;
-  final double? balance;
-  final String? chassisNumber;
-  final String? plateNumber;
-  final int? tripCount;
-  final String? token;
+  final int id;
+  final String email;
+  final String code;
+  final String phone;
+  final String username;
+  final String firstName;
+  final String lastName;
+  final String gender;
+  final String address;
+  final String image;
+  final double balance;
+  final String chassisNumber;
+  final String plateNumber;
+  final int tripCount;
+  final String token;
 
   const User({
     required this.id,
@@ -35,23 +37,24 @@ class User {
     required this.token,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
     return User(
-      id: json['id'],
-      email: json['email'],
-      code: json['code'],
-      phone: json['phone'],
-      username: json['username'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      gender: json['gender'],
-      address: json['address'],
-      image: json['image'],
-      balance: json['balance'],
-      chassisNumber: json['chassis_number'],
-      plateNumber: json['plate_number'],
-      tripCount: json['tripCount'],
-      token: json['token'],
+      id: json['id'] ?? 0,
+      email: json['email'] ?? notAvailable,
+      code: json['code'] ?? notAvailable,
+      phone: json['phone'] ?? notAvailable,
+      username: json['username'] ?? notAvailable,
+      firstName: json['first_name'] ?? notAvailable,
+      lastName: json['last_name'] ?? notAvailable,
+      gender: json['gender'] ?? notAvailable,
+      address: json['address'] ?? notAvailable,
+      image: json['image'] ?? notAvailable,
+      balance: json['balance'] ?? 0.0,
+      chassisNumber: json['chassis_number'] ?? notAvailable,
+      plateNumber: json['plate_number'] ?? notAvailable,
+      tripCount: json['tripCount'] ?? 0,
+      token: json['token'] ?? notAvailable,
     );
   }
 }

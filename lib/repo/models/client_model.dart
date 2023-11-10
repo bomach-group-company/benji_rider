@@ -1,3 +1,5 @@
+import 'package:benji_rider/repo/utils/constants.dart';
+
 class Client {
   final int id;
   final String username;
@@ -13,13 +15,15 @@ class Client {
     required this.image,
   });
 
-  factory Client.fromJson(Map<String, dynamic> json) {
+  factory Client.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
+
     return Client(
-      id: json['id'],
-      username: json['username'],
-      email: json['email'],
-      phone: json['phone'],
-      image: json['image'],
+      id: json['id'] ?? 0,
+      username: json['username'] ?? notAvailable,
+      email: json['email'] ?? notAvailable,
+      phone: json['phone'] ?? notAvailable,
+      image: json['image'] ?? '',
     );
   }
 }

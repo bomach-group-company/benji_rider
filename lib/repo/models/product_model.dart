@@ -1,3 +1,5 @@
+import 'package:benji_rider/repo/utils/constants.dart';
+
 import 'sub_category_model.dart';
 import 'vendor_model.dart';
 
@@ -28,17 +30,18 @@ class ProductModel {
     required this.subCategoryId,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) {
+  factory ProductModel.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
     return ProductModel(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      price: json['price'].toDouble(),
-      quantityAvailable: json['quantity_available'],
-      productImage: json['product_image'],
-      isAvailable: json['is_available'],
-      isTrending: json['is_trending'],
-      isRecommended: json['is_recommended'],
+      id: json['id'] ?? notAvailable,
+      name: json['name'] ?? notAvailable,
+      description: json['description'] ?? notAvailable,
+      price: json['price']?.toDouble() ?? 0.0,
+      quantityAvailable: json['quantity_available'] ?? 0,
+      productImage: json['product_image'] ?? '',
+      isAvailable: json['is_available'] ?? false,
+      isTrending: json['is_trending'] ?? false,
+      isRecommended: json['is_recommended'] ?? false,
       vendorId: VendorModel.fromJson(json['vendor_id']),
       subCategoryId: SubCategory.fromJson(json['sub_category_id']),
     );

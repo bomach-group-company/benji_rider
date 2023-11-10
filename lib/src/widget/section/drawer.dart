@@ -2,6 +2,7 @@
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/ride/ride.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
+import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -81,11 +82,6 @@ class _MyDrawerState extends State<MyDrawer> {
                           width: 106.67,
                           height: 107.68,
                           decoration: ShapeDecoration(
-                            image: const DecorationImage(
-                              image: AssetImage(
-                                  "assets/images/profile/avatar_image.jpg"),
-                              fit: BoxFit.cover,
-                            ),
                             shape: OvalBorder(
                               side: BorderSide(
                                 width: 1.65,
@@ -94,6 +90,7 @@ class _MyDrawerState extends State<MyDrawer> {
                               ),
                             ),
                           ),
+                          child: MyImage(url: getUserSync().image),
                         ),
                         InkWell(
                           onTap: () {

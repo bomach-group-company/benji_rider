@@ -5,6 +5,9 @@ import 'package:get/route_manager.dart';
 import 'app/splash_screens/startup_splash_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+late SharedPreferences prefs;
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -15,6 +18,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations(
     [DeviceOrientation.portraitUp],
   );
+  prefs = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 

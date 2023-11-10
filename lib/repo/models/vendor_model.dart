@@ -50,7 +50,6 @@ class VendorModel {
   });
 
   factory VendorModel.fromJson(Map<String, dynamic>? json) {
-    print(json);
     json ??= {};
     return VendorModel(
       id: json["id"] ?? 0,

@@ -2,6 +2,7 @@
 
 import 'package:benji_rider/repo/models/vendor_model.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
+import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -193,16 +194,12 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                   height: 130,
                                   decoration: ShapeDecoration(
                                     color: kPageSkeletonColor,
-                                    image: DecorationImage(
-                                      image: AssetImage(
-                                        "assets/images/vendors/$_vendorsImage.png",
-                                      ),
-                                      fit: BoxFit.fill,
-                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16),
                                     ),
                                   ),
+                                  child:
+                                      MyImage(url: _data![index].profileLogo),
                                 ),
                                 kHalfWidthSizedBox,
                                 Column(
@@ -242,7 +239,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                         SizedBox(
                                           width: mediaWidth - 200,
                                           child: Text(
-                                            "${_data![index].address ?? 'Not Available'}",
+                                            "${_data![index].address}",
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 3,
                                             style: TextStyle(
@@ -255,30 +252,6 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                       ],
                                     ),
                                     kHalfSizedBox,
-                                    Row(
-                                      children: [
-                                        FaIcon(
-                                          FontAwesomeIcons.boxOpen,
-                                          size: 15,
-                                          color: kAccentColor,
-                                        ),
-                                        SizedBox(width: 5),
-                                        SizedBox(
-                                          width: mediaWidth - 200,
-                                          child: Text(
-                                            "${formattedText(_totalNumberOfOrders)} orders",
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 1,
-                                            style: TextStyle(
-                                              color: kTextBlackColor,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w700,
-                                              letterSpacing: -0.24,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ],
                                 ),
                               ],
