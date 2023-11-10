@@ -199,7 +199,6 @@ class _DashboardState extends State<Dashboard>
                         onTap: _toSeeAllVendors,
                         number: "390",
                         typeOf: "Vendors",
-                        onlineStatus: "248 Online",
                       ),
                       kSizedBox,
                     ],

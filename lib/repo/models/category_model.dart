@@ -1,3 +1,5 @@
+import 'package:benji_rider/repo/utils/constants.dart';
+
 class Category {
   final String id;
   final String name;
@@ -11,12 +13,13 @@ class Category {
     required this.isActive,
   });
 
-  factory Category.fromJson(Map<String, dynamic> json) {
+  factory Category.fromJson(Map<String, dynamic>? json) {
+    json ??= {};
     return Category(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      isActive: json['is_active'],
+      id: json['id'] ?? notAvailable,
+      name: json['name'] ?? notAvailable,
+      description: json['description'] ?? notAvailable,
+      isActive: json['is_active'] ?? false,
     );
   }
 }

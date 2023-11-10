@@ -16,10 +16,10 @@ Future<void> saveUser(String user, String token) async {
   await prefs.setString('user', jsonEncode(data));
 }
 
-User? getUserSync() {
+User getUserSync() {
   String? user = prefs.getString('user');
   if (user == null) {
-    return null;
+    return User.fromJson(null);
   }
   return modelUser(user);
 }

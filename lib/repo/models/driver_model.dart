@@ -1,3 +1,5 @@
+import 'package:benji_rider/repo/utils/constants.dart';
+
 class Driver {
   final String id;
   final String firstName;
@@ -11,9 +13,9 @@ class Driver {
 
   factory Driver.fromJson(Map<String, dynamic> json) {
     return Driver(
-      id: json['id'],
-      firstName: json['first_name'],
-      lastName: json['last_name'],
+      id: json['id'] ?? '0',
+      firstName: json['first_name'] ?? notAvailable,
+      lastName: json['last_name'] ?? notAvailable,
     );
   }
 }

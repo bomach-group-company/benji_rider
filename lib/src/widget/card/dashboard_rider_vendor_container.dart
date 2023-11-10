@@ -9,13 +9,11 @@ class RiderVendorContainer extends StatelessWidget {
   final Function() onTap;
   final String number;
   final String typeOf;
-  final String onlineStatus;
   const RiderVendorContainer({
     super.key,
     required this.onTap,
     required this.number,
     required this.typeOf,
-    required this.onlineStatus,
   });
 
   @override
@@ -82,18 +80,6 @@ class RiderVendorContainer extends StatelessWidget {
                         fontSize: 52.32,
                         fontWeight: FontWeight.w700,
                       ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    onlineStatus,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: kAccentColor,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
