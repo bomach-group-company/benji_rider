@@ -1,9 +1,9 @@
 // ignore_for_file:  unused_local_variable
 
 import 'package:benji_rider/app/vendors/vendors.dart';
-import 'package:benji_rider/repo/utils/helpers.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
+import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -30,13 +30,7 @@ class _DashboardState extends State<Dashboard>
   @override
   void initState() {
     super.initState();
-    _loadingScreen = true;
-    Future.delayed(
-      const Duration(milliseconds: 1000),
-      () => setState(
-        () => _loadingScreen = false,
-      ),
-    );
+    VendorController.instance.getVendorList();
   }
 
   @override
@@ -47,8 +41,6 @@ class _DashboardState extends State<Dashboard>
 //==========================================================================================\\
 
 //=================================== ALL VARIABLES =====================================\\
-  late bool _loadingScreen;
-  double _accountBalance = 1000000.00;
 
 //============================================== CONTROLLERS =================================================\\
   final ScrollController _scrollController = ScrollController();
@@ -57,15 +49,7 @@ class _DashboardState extends State<Dashboard>
 
 //===================== Handle refresh ==========================\\
 
-  Future<void> _handleRefresh() async {
-    setState(() {
-      _loadingScreen = true;
-    });
-    await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      _loadingScreen = false;
-    });
-  }
+  Future<void> _handleRefresh() async {}
 
 //=================================== Navigation =====================================\\
 
@@ -159,51 +143,47 @@ class _DashboardState extends State<Dashboard>
         drawer: MyDrawer(),
         body: SafeArea(
           maintainBottomViewPadding: true,
-          child: _loadingScreen
-              ? SpinKitDoubleBounce(color: kAccentColor)
-              : Scrollbar(
-                  controller: _scrollController,
-                  radius: const Radius.circular(10),
-                  scrollbarOrientation: ScrollbarOrientation.right,
-                  child: ListView(
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.all(kDefaultPadding),
-                    children: [
-                      EarningContainer(
-                        accountBalance: getUserSync()?.balance ?? 0,
-                      ),
-                      kSizedBox,
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          OrdersContainer(
-                            containerColor: kPrimaryColor,
-                            typeOfOrderColor: kTextGreyColor,
-                            iconColor: kGreyColor1,
-                            numberOfOrders: "47",
-                            typeOfOrders: "Completed",
-                            onTap: () => _deliveryRoute(StatusType.delivered),
-                          ),
-                          OrdersContainer(
-                            containerColor: Colors.red.shade100,
-                            typeOfOrderColor: kAccentColor,
-                            iconColor: kAccentColor,
-                            numberOfOrders: "3",
-                            typeOfOrders: "Pending",
-                            onTap: () => _deliveryRoute(StatusType.pending),
-                          ),
-                        ],
-                      ),
-                      kSizedBox,
-                      RiderVendorContainer(
-                        onTap: _toSeeAllVendors,
-                        number: "390",
-                        typeOf: "Vendors",
-                      ),
-                      kSizedBox,
-                    ],
-                  ),
+          child: Scrollbar(
+            controller: _scrollController,
+            radius: const Radius.circular(10),
+            scrollbarOrientation: ScrollbarOrientation.right,
+            child: ListView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.all(kDefaultPadding),
+              children: [
+                EarningContainer(),
+                kSizedBox,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    OrdersContainer(
+                      containerColor: kPrimaryColor,
+                      typeOfOrderColor: kTextGreyColor,
+                      iconColor: kGreyColor1,
+                      numberOfOrders: "47",
+                      typeOfOrders: "Completed",
+                      onTap: () => _deliveryRoute(StatusType.delivered),
+                    ),
+                    OrdersContainer(
+                      containerColor: Colors.red.shade100,
+                      typeOfOrderColor: kAccentColor,
+                      iconColor: kAccentColor,
+                      numberOfOrders: "3",
+                      typeOfOrders: "Pending",
+                      onTap: () => _deliveryRoute(StatusType.pending),
+                    ),
+                  ],
                 ),
+                kSizedBox,
+                RiderVendorContainer(
+                  onTap: _toSeeAllVendors,
+                  number: "390",
+                  typeOf: "Vendors",
+                ),
+                kSizedBox,
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,21 +1,19 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/main.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/withdrawal/select_account.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
 
 class ProfileFirstHalf extends StatefulWidget {
-  final double availableBalance;
-
   const ProfileFirstHalf({
     super.key,
-    required this.availableBalance,
   });
 
   @override
@@ -35,13 +33,11 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
 //======================================================= FUNCTIONS =================================================\\
 
   Future<bool> _getStatusCash() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isVisibleCash = await prefs.getBool('isVisibleCash');
     return isVisibleCash ?? true;
   }
 
   Future<void> toggleVisibleCash() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isVisibleCash = prefs.getBool('isVisibleCash') ?? true;
     await prefs.setBool('isVisibleCash', !isVisibleCash);
 
@@ -101,27 +97,32 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
           ],
         ),
         kSizedBox,
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: "₦",
-                style: TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: 20,
-                  fontFamily: 'sen',
-                  fontWeight: FontWeight.w700,
+        GetBuilder<UserController>(
+          init: UserController(),
+          builder: (controller) => Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "₦",
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 20,
+                    fontFamily: 'sen',
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-              TextSpan(
-                text: data ? formattedText(widget.availableBalance) : '******',
-                style: TextStyle(
-                  color: kPrimaryColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
+                TextSpan(
+                  text: data
+                      ? formattedText(controller.user.value.balance)
+                      : '******',
+                  style: TextStyle(
+                    color: kPrimaryColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         kSizedBox,

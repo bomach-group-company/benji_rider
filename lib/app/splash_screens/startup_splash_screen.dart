@@ -7,6 +7,7 @@ import 'package:benji_rider/repo/controller/login_controller.dart';
 import 'package:benji_rider/repo/controller/notification_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
+import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -23,6 +24,7 @@ class StartupSplashscreen extends StatefulWidget {
   final latLngDetail = Get.put(LatLngDetailController());
   final notify = Get.put(NotificationController());
   final auth = Get.put(AuthController());
+  final vendor = Get.put(VendorController());
 
   @override
   State<StartupSplashscreen> createState() => _StartupSplashscreenState();
