@@ -1,4 +1,5 @@
 import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
+import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -79,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ProfileFirstHalf(availableBalance: _accountBalance),
+            ProfileFirstHalf(availableBalance: getUserSync()?.balance ?? 0),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding / 1.5,

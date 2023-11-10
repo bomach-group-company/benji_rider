@@ -1,6 +1,7 @@
 // ignore_for_file:  unused_local_variable
 
 import 'package:benji_rider/app/vendors/vendors.dart';
+import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/route_manager.dart';
@@ -169,7 +170,7 @@ class _DashboardState extends State<Dashboard>
                     padding: const EdgeInsets.all(kDefaultPadding),
                     children: [
                       EarningContainer(
-                        accountBalance: _accountBalance,
+                        accountBalance: getUserSync()?.balance ?? 0,
                       ),
                       kSizedBox,
                       Row(
