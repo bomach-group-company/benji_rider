@@ -18,6 +18,7 @@ class Api {
   static const user = "/auth/";
   static const changePassword = "/auth/changeNewPassword/";
   static const notification = "/vendors/";
+  static const createSupport = "/drivers/CreateSupport";
 
 //Vendor
   static const getSpecificRider = "/drivers/getRiderDetails/";
