@@ -53,7 +53,7 @@ class _HelpNSupportState extends State<HelpNSupport> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       appBar: MyAppBar(
-        title: "Help and supportoo",
+        title: "Help and support",
         elevation: 10.0,
         actions: [],
         backgroundColor: kPrimaryColor,
