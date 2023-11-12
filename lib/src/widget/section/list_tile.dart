@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 
 class MyListTile extends StatefulWidget {
   final String text;
-  final bool isOnline;
   final IconData icon;
   final Function() nav;
 
   const MyListTile({
     super.key,
     required this.text,
-    required this.isOnline,
     required this.icon,
     required this.nav,
   });
@@ -28,7 +26,7 @@ class _MyListTileState extends State<MyListTile> {
       leading: Icon(
         widget.icon,
         size: 24,
-        color: widget.isOnline ? kAccentColor : const Color(0xFF8D8D8D),
+        color: kAccentColor,
       ),
       title: Text(
         widget.text,

@@ -1,5 +1,6 @@
 import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
-import 'package:benji_rider/repo/utils/helpers.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -80,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ProfileFirstHalf(availableBalance: getUserSync()?.balance ?? 0),
+            ProfileFirstHalf(),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding / 1.5,
@@ -211,8 +212,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 child: ListTile(
                   onTap: () {
+                    UserController.instance.deleteUser();
+                    OrderController.instance.deleteCachedOrders();
                     Get.offAll(
-                      () => const Login(logout: true),
+                      () => const Login(),
                       predicate: (route) => false,
                       routeName: 'Login',
                       duration: const Duration(milliseconds: 300),

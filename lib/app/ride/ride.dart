@@ -1,13 +1,18 @@
 // ignore_for_file: unused_field, prefer_typing_uninitialized_variables
 
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:benji_rider/repo/controller/user_controller.dart';
+import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/src/widget/section/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../src/widget/card/online_offline_card.dart';
 import '../../theme/colors.dart';
@@ -22,10 +27,52 @@ class Ride extends StatefulWidget {
 
 class _RideState extends State<Ride> {
   //=================================== INITIAL STATE ======================================================\\
+  late WebSocketChannel channel;
 
   @override
   void initState() {
+    final wsUrl = Uri.parse('${websocketBaseUrl}/updateRiderCoordinates/');
+    channel = WebSocketChannel.connect(wsUrl);
+    taskToBeDone();
+    Timer _timer = Timer.periodic(Duration(minutes: 1), (timer) {
+      taskToBeDone();
+    });
+
+    channel.stream.listen((message) {
+      print('message $message');
+    });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    channel.sink.close(status.goingAway);
+    super.dispose();
+  }
+
+  taskToBeDone() async {
+    String latitude = '';
+    String longitude = '';
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      latitude = position.latitude.toString();
+      longitude = position.longitude.toString();
+    } catch (e) {
+      latitude = '';
+      longitude = '';
+      print('in catch');
+    }
+    print({
+      'rider_id': UserController.instance.user.value.id,
+      'latitude': latitude,
+      'longitude': longitude
+    });
+    channel.sink.add(jsonEncode({
+      'rider_id': UserController.instance.user.value.id,
+      'latitude': latitude,
+      'longitude': longitude
+    }));
   }
 
   //=================================== ALL VARIABLES ======================================================\\

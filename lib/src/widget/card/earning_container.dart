@@ -1,11 +1,12 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/main.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/withdrawal/select_account.dart';
 import '../../../repo/models/user_model.dart';
@@ -13,10 +14,8 @@ import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
 
 class EarningContainer extends StatefulWidget {
-  final double accountBalance;
   EarningContainer({
     super.key,
-    required this.accountBalance,
   });
 
   @override
@@ -35,15 +34,13 @@ class _EarningContainerState extends State<EarningContainer> {
 
 //======================================================= FUNCTIONS =================================================\\
   Future<Map> _getData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isVisibleCash = await prefs.getBool('isVisibleCash');
+    bool? isVisibleCash = prefs.getBool('isVisibleCash');
 
     User? user = await getUser();
     return {'status': isVisibleCash ?? true, 'user': user};
   }
 
   Future<void> toggleVisibleCash() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isVisibleCash = prefs.getBool('isVisibleCash') ?? true;
     await prefs.setBool('isVisibleCash', !isVisibleCash);
 
@@ -145,30 +142,33 @@ class _EarningContainerState extends State<EarningContainer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: "₦",
-                    style: const TextStyle(
-                      color: kTextBlackColor,
-                      fontSize: 20,
-                      fontFamily: 'sen',
-                      fontWeight: FontWeight.w700,
+            GetBuilder<UserController>(
+              init: UserController(),
+              builder: (controller) => Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "₦",
+                      style: const TextStyle(
+                        color: kTextBlackColor,
+                        fontSize: 20,
+                        fontFamily: 'sen',
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    text: data['status']
-                        ? formattedText(widget.accountBalance)
-                        : '******',
-                    style: const TextStyle(
-                      color: kTextBlackColor,
-                      fontSize: 20,
-                      fontFamily: 'sen',
-                      fontWeight: FontWeight.w700,
+                    TextSpan(
+                      text: data['status']
+                          ? formattedText(controller.user.value.balance)
+                          : '******',
+                      style: const TextStyle(
+                        color: kTextBlackColor,
+                        fontSize: 20,
+                        fontFamily: 'sen',
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Row(

@@ -1,11 +1,13 @@
+import 'package:benji_rider/repo/controller/api_url.dart';
+import 'package:benji_rider/repo/controller/form_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 
 import '../../../src/providers/constants.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/message_textformfield.dart';
 import '../../src/widget/section/my_appbar.dart';
-import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 
 class HelpNSupport extends StatefulWidget {
@@ -17,8 +19,6 @@ class HelpNSupport extends StatefulWidget {
 
 class _HelpNSupportState extends State<HelpNSupport> {
   //============================================ ALL VARIABLES ===========================================\\
-  bool _submittingRequest = false;
-
   //============================================ CONTROLLERS ===========================================\\
   TextEditingController _messageEC = TextEditingController();
 
@@ -31,29 +31,19 @@ class _HelpNSupportState extends State<HelpNSupport> {
   //============================================ FUNCTIONS ===========================================\\
   //========================== Save data ==================================\\
   Future<void> _submitRequest() async {
-    setState(() {
-      _submittingRequest = true;
-    });
+    Map data = {
+      "user_id": UserController.instance.user.value.id,
+      "message": _messageEC.text,
+    };
 
-    // Simulating a delay of 3 seconds
-    await Future.delayed(const Duration(seconds: 1));
+    print(data);
+    print(Api.baseUrl + Api.createSupport);
 
-    //Display snackBar
-    myFixedSnackBar(
-      context,
-      "Your request has been submitted successfully".toUpperCase(),
-      kSuccessColor,
-      const Duration(seconds: 3),
-    );
-
-    Future.delayed(const Duration(seconds: 1), () {
-      // Navigate to the new page
-      Navigator.of(context).pop(context);
-
-      setState(() {
-        _submittingRequest = false;
-      });
-    });
+    await FormController.instance
+        .postAuth(Api.baseUrl + Api.createSupport, data, 'createSupport');
+    if (FormController.instance.status.value.toString().startsWith('2')) {
+      Get.close(1);
+    }
   }
 
   @override
@@ -63,106 +53,83 @@ class _HelpNSupportState extends State<HelpNSupport> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       appBar: MyAppBar(
-        title: "Help & Support",
-        elevation: 0.0,
+        title: "Help and support",
+        elevation: 10.0,
         actions: [],
         backgroundColor: kPrimaryColor,
         toolbarHeight: kToolbarHeight,
       ),
-      bottomNavigationBar: _submittingRequest
-          ? Center(
-              child: SpinKitDoubleBounce(
-                color: kAccentColor,
-              ),
-            )
-          : Container(
-              color: kPrimaryColor,
-              padding: const EdgeInsets.only(
-                top: kDefaultPadding,
-                left: kDefaultPadding,
-                right: kDefaultPadding,
-                bottom: kDefaultPadding,
-              ),
-              child: MyElevatedButton(
-                onPressed: (() async {
-                  if (_formKey.currentState!.validate()) {
-                    _submitRequest();
-                  }
-                }),
-                title: "Submit",
+      bottomNavigationBar: Container(
+        color: kPrimaryColor,
+        padding: const EdgeInsets.only(
+          top: kDefaultPadding,
+          left: kDefaultPadding,
+          right: kDefaultPadding,
+          bottom: kDefaultPadding,
+        ),
+        child: GetBuilder<FormController>(
+          id: 'createSupport',
+          builder: (controller) => MyElevatedButton(
+            isLoading: controller.isLoad.value,
+            onPressed: (() async {
+              if (_formKey.currentState!.validate()) {
+                _submitRequest();
+              }
+            }),
+            title: "Submit",
+          ),
+        ),
+      ),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(kDefaultPadding),
+          physics: const BouncingScrollPhysics(),
+          children: [
+            SizedBox(
+              width: 292,
+              child: Text(
+                'We will like to hear from you',
+                style: TextStyle(
+                  color: kTextBlackColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
-      body: SafeArea(
-        child: FutureBuilder(
-          future: null,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              Center(child: SpinKitDoubleBounce(color: kAccentColor));
-            }
-            if (snapshot.connectionState == ConnectionState.none) {
-              const Center(
-                child: Text("Please connect to the internet"),
-              );
-            }
-            // if (snapshot.connectionState == snapshot.requireData) {
-            //   SpinKitDoubleBounce(color: kAccentColor);
-            // }
-            if (snapshot.connectionState == snapshot.error) {
-              const Center(
-                child: Text("Error, Please try again later"),
-              );
-            }
-            return ListView(
-              padding: const EdgeInsets.all(kDefaultPadding),
-              physics: const BouncingScrollPhysics(),
-              children: [
-                SizedBox(
-                  width: 292,
-                  child: Text(
-                    'We will like to hear from you',
-                    style: TextStyle(
-                      color: kTextBlackColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+            kHalfSizedBox,
+            SizedBox(
+              width: 332,
+              child: Text(
+                '',
+                style: TextStyle(
+                  color: kTextGreyColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
                 ),
-                kHalfSizedBox,
-                SizedBox(
-                  width: 332,
-                  child: Text(
-                    'How may we help you?',
-                    style: TextStyle(
-                      color: kTextGreyColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
+              ),
+            ),
+            SizedBox(height: kDefaultPadding * 2),
+            Form(
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MyMessageTextFormField(
+                    controller: _messageEC,
+                    validator: (value) {
+                      return null;
+                    },
+                    textInputAction: TextInputAction.done,
+                    focusNode: _messageFN,
+                    hintText: "Enter your message here",
+                    maxLines: 10,
+                    keyboardType: TextInputType.text,
+                    maxLength: 6000,
                   ),
-                ),
-                SizedBox(height: kDefaultPadding * 2),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MyMessageTextFormField(
-                        controller: _messageEC,
-                        validator: (value) {
-                          return null;
-                        },
-                        textInputAction: TextInputAction.done,
-                        focusNode: _messageFN,
-                        hintText: "Enter your message here",
-                        maxLines: 10,
-                        keyboardType: TextInputType.text,
-                        maxLength: 6000,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            );
-          },
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

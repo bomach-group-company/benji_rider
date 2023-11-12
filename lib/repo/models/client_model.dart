@@ -26,4 +26,11 @@ class Client {
       image: json['image'] ?? '',
     );
   }
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "email": email,
+        "username": username,
+        "phone": phone,
+        "image": image,
+      };
 }
