@@ -1,6 +1,9 @@
 // ignore_for_file:  unused_local_variable
 
+import 'dart:async';
+
 import 'package:benji_rider/app/vendors/vendors.dart';
+import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -26,13 +29,22 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
+
   @override
   void initState() {
+    // tasks
+    TasksController.instance.getTasksSocket();
+
+    // coordinates
+    TasksController.instance.getCoordinatesSocket();
+
     super.initState();
   }
 
   @override
   void dispose() {
+    TasksController.instance.closeTaskSocket();
+
     super.dispose();
   }
 

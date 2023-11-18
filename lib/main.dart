@@ -4,6 +4,7 @@ import 'package:benji_rider/repo/controller/latlng_detail_controller.dart';
 import 'package:benji_rider/repo/controller/login_controller.dart';
 import 'package:benji_rider/repo/controller/notification_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
@@ -28,14 +29,15 @@ void main() async {
   );
   prefs = await SharedPreferences.getInstance();
 
-  final user = Get.put(UserController());
-  final login = Get.put(LoginController());
-  final order = Get.put(OrderController());
-  final form = Get.put(FormController());
-  final latLngDetail = Get.put(LatLngDetailController());
-  final notify = Get.put(NotificationController());
-  final auth = Get.put(AuthController());
-  final vendor = Get.put(VendorController());
+  Get.put(UserController());
+  Get.put(LoginController());
+  Get.put(OrderController());
+  Get.put(FormController());
+  Get.put(LatLngDetailController());
+  Get.put(NotificationController());
+  Get.put(AuthController());
+  Get.put(VendorController());
+  Get.put(TasksController());
 
   runApp(const MyApp());
 }
