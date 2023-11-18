@@ -1,20 +1,16 @@
 // ignore_for_file: unused_field, prefer_typing_uninitialized_variables
 
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/utils/constants.dart';
+import 'package:benji_rider/repo/controller/tasks_controller.dart';
+import 'package:benji_rider/src/providers/constants.dart';
 import 'package:benji_rider/src/widget/section/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:web_socket_channel/status.dart' as status;
-import 'package:web_socket_channel/web_socket_channel.dart';
 
-import '../../src/widget/card/online_offline_card.dart';
 import '../../theme/colors.dart';
 import '../delivery/deliveries_completed.dart';
 
@@ -27,54 +23,8 @@ class Ride extends StatefulWidget {
 
 class _RideState extends State<Ride> {
   //=================================== INITIAL STATE ======================================================\\
-  late WebSocketChannel channel;
 
-  @override
-  void initState() {
-    final wsUrl = Uri.parse('${websocketBaseUrl}/updateRiderCoordinates/');
-    channel = WebSocketChannel.connect(wsUrl);
-    taskToBeDone();
-    Timer _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      taskToBeDone();
-    });
-
-    channel.stream.listen((message) {
-      print('message $message');
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    channel.sink.close(status.goingAway);
-    super.dispose();
-  }
-
-  taskToBeDone() async {
-    String latitude = '';
-    String longitude = '';
-    try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      latitude = position.latitude.toString();
-      longitude = position.longitude.toString();
-    } catch (e) {
-      latitude = '';
-      longitude = '';
-      print('in catch');
-    }
-    print({
-      'rider_id': UserController.instance.user.value.id,
-      'latitude': latitude,
-      'longitude': longitude
-    });
-    channel.sink.add(jsonEncode({
-      'rider_id': UserController.instance.user.value.id,
-      'latitude': latitude,
-      'longitude': longitude
-    }));
-  }
-
+  deliveryModel() {}
   //=================================== ALL VARIABLES ======================================================\\
   Position? _currentPosition;
   var _geoLocator = Geolocator();
@@ -129,30 +79,6 @@ class _RideState extends State<Ride> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool? isOnline = await prefs.getBool('isOnline');
     return isOnline ?? false;
-  }
-
-  //=========================== _toggleOnline FUNCTION ====================================\\
-
-  Future<void> _toggleOnline() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isOnline = prefs.getBool('isOnline') ?? false;
-    await prefs.setBool('isOnline', !isOnline);
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Simulating a delay of 3 seconds
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      _isLoading = false;
-    });
-    await Future.delayed(const Duration(seconds: 3), () {
-      setState(() {
-        _showDeliveryDialog = true;
-      });
-    });
   }
 
   //=========================== Google Maps ====================================\\
@@ -307,81 +233,136 @@ class _RideState extends State<Ride> {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 //Red delivery request card
-                child:
-
-                    // _showDeliveryDialog
-                    //     ? Container(
-                    //         width: double.infinity,
-                    //         padding: const EdgeInsets.only(
-                    //           top: 10,
-                    //           left: 20,
-                    //           right: 20,
-                    //           bottom: 20,
-                    //         ),
-                    //         decoration: ShapeDecoration(
-                    //           color: kAccentColor.withOpacity(0.6),
-                    //           shape: RoundedRectangleBorder(
-                    //             borderRadius: BorderRadius.circular(8),
-                    //           ),
-                    //         ),
-                    //         child: Column(
-                    //           mainAxisAlignment: MainAxisAlignment.start,
-                    //           crossAxisAlignment: CrossAxisAlignment.start,
-                    //           children: [
-                    //             const Text(
-                    //               'Delivery Request',
-                    //               style: TextStyle(
-                    //                 color: kTextWhiteColor,
-                    //                 fontSize: 24,
-                    //                 fontWeight: FontWeight.w700,
-                    //               ),
-                    //             ),
-                    //             kSizedBox,
-                    //             const Text(
-                    //               '21 Bartus Street, Enugu. 12km 20mins.',
-                    //               style: TextStyle(
-                    //                 color: Color(0xFFD4D4D4),
-                    //                 fontSize: 14,
-                    //                 fontWeight: FontWeight.w400,
-                    //               ),
-                    //             ),
-                    //             const SizedBox(
-                    //               height: 10,
-                    //             ),
-                    //             Row(
-                    //               mainAxisAlignment: MainAxisAlignment.end,
-                    //               children: [
-                    //                 ElevatedButton(
-                    //                   style: ElevatedButton.styleFrom(
-                    //                     backgroundColor: kTextWhiteColor,
-                    //                     shape: const RoundedRectangleBorder(
-                    //                       borderRadius: BorderRadius.all(
-                    //                         Radius.circular(20),
-                    //                       ),
-                    //                     ),
-                    //                   ),
-                    //                   onPressed: () {
-                    //                     deliveryModel(context, () {
-                    //                       acceptRequestFunc(context);
-                    //                     });
-                    //                   },
-                    //                   child: Text(
-                    //                     'Go',
-                    //                     textAlign: TextAlign.center,
-                    //                     style: TextStyle(
-                    //                       color: kAccentColor,
-                    //                       fontSize: 14,
-                    //                       fontWeight: FontWeight.w400,
-                    //                     ),
-                    //                   ),
-                    //                 )
-                    //               ],
-                    //             )
-                    //           ],
-                    //         ),
-                    //       )
-                    // :
-                    const SizedBox(),
+                child: GetBuilder<TasksController>(builder: (controller) {
+                  if (controller.tasks.isEmpty) {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                      ),
+                      decoration: ShapeDecoration(
+                        color: kAccentColor.withOpacity(0.9),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'No Delivery Requests',
+                            style: TextStyle(
+                              color: kTextWhiteColor,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          kSizedBox,
+                          const Text(
+                            'You have No Delivery Requests For Now',
+                            style: TextStyle(
+                              color: kTextWhiteColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return ListView.separated(
+                      separatorBuilder: (context, index) => kSizedBox,
+                      shrinkWrap: true,
+                      itemCount: controller.tasks.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            left: 20,
+                            right: 20,
+                            bottom: 20,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: kAccentColor.withOpacity(0.9),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Delivery Request',
+                                style: TextStyle(
+                                  color: kTextWhiteColor,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              kSizedBox,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: kTextWhiteColor,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      controller.rejectTask(
+                                          controller.tasks[index].id);
+                                    },
+                                    child: Text(
+                                      'Reject',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: kTextWhiteColor,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      controller.acceptTask(
+                                          controller.tasks[index].id);
+                                    },
+                                    child: Text(
+                                      'Accept',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      });
+                }),
               ),
             ),
             // _acceptRequest
@@ -413,30 +394,31 @@ class _RideState extends State<Ride> {
             //         },
             //       )
             //     :
-            FutureBuilder(
-              future: _getStatus(),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.hasData) {
-                  return AnimatedPositioned(
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOut,
-                    bottom: 10,
-                    right: snapshot.data ? 10 : 0,
-                    left: snapshot.data ? 10 : 0,
-                    child: OnlineOfflineCard(
-                      isOnline: snapshot.data,
-                      toggleOnline: _toggleOnline,
-                    ),
-                  );
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: kAccentColor,
-                    ),
-                  );
-                }
-              },
-            ),
+
+            // FutureBuilder(
+            //   future: _getStatus(),
+            //   builder: (BuildContext context, AsyncSnapshot snapshot) {
+            //     if (snapshot.hasData) {
+            //       return AnimatedPositioned(
+            //         duration: Duration(milliseconds: 300),
+            //         curve: Curves.easeInOut,
+            //         bottom: 10,
+            //         right: snapshot.data ? 10 : 0,
+            //         left: snapshot.data ? 10 : 0,
+            //         child: OnlineOfflineCard(
+            //           isOnline: snapshot.data,
+            //           toggleOnline: _toggleOnline,
+            //         ),
+            //       );
+            //     } else {
+            //       return Center(
+            //         child: CircularProgressIndicator(
+            //           color: kAccentColor,
+            //         ),
+            //       );
+            //     }
+            //   },
+            // ),
           ],
         ),
       ),

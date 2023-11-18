@@ -1,10 +1,19 @@
 // ignore_for_file:  unused_local_variable
 
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:benji_rider/app/vendors/vendors.dart';
+import 'package:benji_rider/repo/controller/tasks_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
+import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:web_socket_channel/status.dart' as status;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_orders_container.dart';
@@ -26,14 +35,73 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
+  late WebSocketChannel channel;
+  late WebSocketChannel channelTask;
+
   @override
   void initState() {
+    // tasks
+    final wsUrlTask = Uri.parse('${websocketBaseUrl}/getridertask/');
+    channelTask = WebSocketChannel.connect(wsUrlTask);
+    channelTask.sink.add(jsonEncode({
+      'rider_id': UserController.instance.user.value.id,
+    }));
+
+    Timer.periodic(Duration(minutes: 1), (timer) {
+      channelTask.sink.add(jsonEncode({
+        'rider_id': UserController.instance.user.value.id,
+      }));
+    });
+
+    channelTask.stream.listen((message) {
+      TasksController.instance.setTasks(jsonDecode(message)['message'] as List);
+      print('tasks $message');
+    });
+
+    // coordinates
+    final wsUrl = Uri.parse('${websocketBaseUrl}/updateRiderCoordinates/');
+    channel = WebSocketChannel.connect(wsUrl);
+    taskToBeDone();
+    Timer.periodic(Duration(minutes: 1), (timer) {
+      taskToBeDone();
+    });
+
+    channel.stream.listen((message) {
+      print('message $message');
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    channel.sink.close(status.goingAway);
+    channelTask.sink.close(status.goingAway);
     super.dispose();
+  }
+
+  taskToBeDone() async {
+    String latitude = '';
+    String longitude = '';
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      latitude = position.latitude.toString();
+      longitude = position.longitude.toString();
+    } catch (e) {
+      latitude = '';
+      longitude = '';
+      print('in catch');
+    }
+    print({
+      'rider_id': UserController.instance.user.value.id,
+      'latitude': latitude,
+      'longitude': longitude
+    });
+    channel.sink.add(jsonEncode({
+      'rider_id': UserController.instance.user.value.id,
+      'latitude': latitude,
+      'longitude': longitude
+    }));
   }
 
 //==========================================================================================\\
