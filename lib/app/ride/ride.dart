@@ -266,8 +266,8 @@ class _RideState extends State<Ride> {
                             'You have No Delivery Requests For Now',
                             style: TextStyle(
                               color: kTextWhiteColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
@@ -275,93 +275,105 @@ class _RideState extends State<Ride> {
                     );
                   }
                   return ListView.separated(
-                      separatorBuilder: (context, index) => kSizedBox,
-                      shrinkWrap: true,
-                      itemCount: controller.tasks.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            left: 20,
-                            right: 20,
-                            bottom: 20,
+                    separatorBuilder: (context, index) => kSizedBox,
+                    shrinkWrap: true,
+                    itemCount: controller.tasks.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          left: 20,
+                          right: 20,
+                          bottom: 20,
+                        ),
+                        decoration: ShapeDecoration(
+                          color: kAccentColor.withOpacity(0.9),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          decoration: ShapeDecoration(
-                            color: kAccentColor.withOpacity(0.9),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Delivery Request',
-                                style: TextStyle(
-                                  color: kTextWhiteColor,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              controller.isAccepted(controller.tasks[index])
+                                  ? 'Request Accepted'
+                                  : 'Delivery Request',
+                              style: TextStyle(
+                                color: kTextWhiteColor,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
                               ),
-                              kSizedBox,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: kTextWhiteColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
+                            ),
+                            kSizedBox,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                controller.isAccepted(controller.tasks[index])
+                                    ? SizedBox()
+                                    : ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: kTextWhiteColor,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(20),
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          controller.rejectTask(
+                                              controller.tasks[index].id);
+                                        },
+                                        child: Text(
+                                          'Reject',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: kAccentColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    onPressed: () {
-                                      controller.rejectTask(
-                                          controller.tasks[index].id);
-                                    },
-                                    child: Text(
-                                      'Reject',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: kAccentColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: kTextWhiteColor,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
                                       ),
                                     ),
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: kTextWhiteColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
-                                        ),
-                                      ),
-                                    ),
-                                    onPressed: () {
+                                  onPressed: () {
+                                    if (controller
+                                        .isAccepted(controller.tasks[index])) {
+                                      // direct to directions page
+                                    } else {
                                       controller.acceptTask(
                                           controller.tasks[index].id);
-                                    },
-                                    child: Text(
-                                      'Accept',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: kAccentColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                    }
+                                  },
+                                  child: Text(
+                                    controller
+                                            .isAccepted(controller.tasks[index])
+                                        ? 'Direction'
+                                        : 'Accept',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: kAccentColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      });
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 }),
               ),
             ),
