@@ -1,6 +1,7 @@
 // ignore_for_file: unrelated_type_equality_checks
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:benji_rider/repo/controller/api_url.dart';
@@ -87,9 +88,10 @@ class LoginController extends GetxController {
         );
         return;
       }
+    } on SocketException {
+      ApiProcessorController.errorSnack("Please connect to the internet");
     } catch (e) {
-      ApiProcessorController.errorSnack(
-          "Invalid email or password. Try again oo-");
+      ApiProcessorController.errorSnack("Invalid email or password. Try again");
       isLoad.value = false;
       update();
     }
