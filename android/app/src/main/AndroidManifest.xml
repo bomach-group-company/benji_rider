@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.benji.rider">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -6,10 +6,27 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission  android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission  android:name="android.permission.INTERNET"  />
+    <uses-permission  android:name="android.permission.RECORD_AUDIO"  />
+    <uses-permission  android:name="android.permission.CAMERA"  />
+    <uses-permission  android:name="android.permission.MODIFY_AUDIO_SETTINGS"  />
+    <uses-permission  android:name="android.permission.ACCESS_NETWORK_STATE"  />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.android.permission.USE_EXACT_ALARM"/>
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- The Agora SDK requires Bluetooth permissions in case users are using Bluetooth devices.-->
+    <uses-permission  android:name="android.permission.BLUETOOTH"  />
     <queries>
         <!-- If your app opens https URLs -->
         <intent>

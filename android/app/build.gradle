@@ -26,7 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace "com.benji.benji_rider"
+    namespace "com.benji.rider"
     compileSdk 34
     ndkVersion '25.2.9519653'
 
@@ -45,14 +45,13 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.benji.benji_rider"
+        applicationId "com.benji.rider"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion 20
+        minSdkVersion 21
         targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        applicationIdSuffix 'Benji_Rider'
         multiDexEnabled true
     }
 
@@ -62,7 +61,6 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
             multiDexEnabled true
-            applicationIdSuffix 'benji_rider'
         }
     }
     buildToolsVersion '34.0.0'

@@ -1,4 +1,4 @@
-package com.benji.benji_rider
+package com.benji.rider
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -40,7 +40,7 @@ class LoginController extends GetxController {
       }
 
       var jsonData = jsonDecode(response?.body ?? '');
-      print(jsonData);
+      debugPrint(jsonData);
       if (jsonData["token"] == false) {
         ApiProcessorController.errorSnack(
             "Invalid email or password. Try again");
@@ -60,7 +60,7 @@ class LoginController extends GetxController {
         http.Response? responseUserData = await HandleData.getApi(
             '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser?.body ?? '{}')['id']}/',
             jsonData["token"]);
-        print(responseUserData?.statusCode);
+        debugPrint("${responseUserData?.statusCode}");
 
         if (responseUserData?.statusCode != 200) {
           ApiProcessorController.errorSnack(
@@ -69,7 +69,7 @@ class LoginController extends GetxController {
           update();
           return;
         }
-        print('almost');
+        debugPrint('almost');
 
         UserController.instance
             .saveUser(responseUserData?.body ?? '', jsonData["token"]);

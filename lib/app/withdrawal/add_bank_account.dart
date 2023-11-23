@@ -1,5 +1,4 @@
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
-import 'package:benji_rider/src/widget/section/my_floating_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
@@ -41,13 +40,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
 
     await Future.delayed(const Duration(seconds: 2));
 
-    mySnackBar(
-      context,
-      kSuccessColor,
-      "Success",
-      "You account has been saved successfully",
-      const Duration(milliseconds: 500),
-    );
+    // mySnackBar(
+    //   context,
+    //   kSuccessColor,
+    //   "Success",
+    //   "You account has been saved successfully",
+    //   const Duration(milliseconds: 500),
+    // );
 
     await Future.delayed(const Duration(milliseconds: 800));
 

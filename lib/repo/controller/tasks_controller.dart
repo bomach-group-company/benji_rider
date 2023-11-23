@@ -5,6 +5,7 @@ import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/tasks.dart';
 import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -32,13 +33,13 @@ class TasksController extends GetxController {
   }
 
   Future acceptTask(id) async {
-    print(id);
+    debugPrint(id);
     final response = await http.put(
       Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
       headers: authHeader(),
     );
-    print(response.body);
-    print(response.statusCode);
+    debugPrint(response.body);
+    debugPrint("${response.statusCode}");
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
@@ -50,13 +51,13 @@ class TasksController extends GetxController {
   }
 
   Future rejectTask(id) async {
-    print(id);
+    debugPrint(id);
     final response = await http.put(
       Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
       headers: authHeader(),
     );
-    print(response.body);
-    print(response.statusCode);
+    debugPrint(response.body);
+    debugPrint("${response.statusCode}");
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
@@ -82,7 +83,7 @@ class TasksController extends GetxController {
 
     channelTask.stream.listen((message) {
       setTasks(jsonDecode(message)['message'] as List);
-      print('tasks $message');
+      debugPrint('tasks $message');
     });
   }
 
@@ -95,7 +96,7 @@ class TasksController extends GetxController {
     });
 
     channel.stream.listen((message) {
-      print('message $message');
+      debugPrint('message $message');
     });
   }
 
@@ -115,13 +116,13 @@ class TasksController extends GetxController {
     } catch (e) {
       latitude = '';
       longitude = '';
-      print('in catch');
+      debugPrint('in catch');
     }
-    print({
+    debugPrint("${{
       'rider_id': UserController.instance.user.value.id,
       'latitude': latitude,
       'longitude': longitude
-    });
+    }}");
     channel.sink.add(jsonEncode({
       'rider_id': UserController.instance.user.value.id,
       'latitude': latitude,
