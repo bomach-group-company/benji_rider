@@ -2,11 +2,12 @@
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/ride/ride.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../app/dashboard/dashboard.dart';
 import '../../../app/settings/settings.dart';
@@ -24,23 +25,9 @@ class MyDrawer extends StatefulWidget {
 }
 
 class _MyDrawerState extends State<MyDrawer> {
-  Future<bool> _getStatus() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isOnline = await prefs.getBool('isOnline');
-    return isOnline ?? false;
-  }
-
   @override
   void initState() {
     super.initState();
-  }
-
-  Future<void> toggleOnline() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isOnline = prefs.getBool('isOnline') ?? false;
-    await prefs.setBool('isOnline', !isOnline);
-
-    setState(() {});
   }
 
   @override
@@ -56,192 +43,150 @@ class _MyDrawerState extends State<MyDrawer> {
         ),
       ),
       width: breakPoint(media.width, media.width * 0.8, 400, 400, 400),
-      child: FutureBuilder(
-          future: _getStatus(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: kAccentColor,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: kDefaultPadding,
+          vertical: kDefaultPadding / 2,
+        ),
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 106.67,
+                  height: 107.68,
+                  decoration: ShapeDecoration(
+                    shape: OvalBorder(
+                      side: BorderSide(
+                        width: 1.65,
+                        strokeAlign: BorderSide.strokeAlignCenter,
+                        color: kPrimaryColor,
+                      ),
+                    ),
+                  ),
+                  child: MyImage(url: UserController.instance.user.value.image),
                 ),
-              );
-            } else {
-              return Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: kDefaultPadding,
-                  vertical: kDefaultPadding / 2,
+                InkWell(
+                  onTap: () {
+                    Get.back();
+                  },
+                  child: Container(
+                    width: 30,
+                    height: 30,
+                    decoration: ShapeDecoration(
+                      color: kAccentColor,
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                          width: 0.50,
+                          color: kAccentColor,
+                        ),
+                        borderRadius: BorderRadius.circular(24),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: kTextWhiteColor,
+                      size: 20,
+                    ),
+                  ),
                 ),
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 106.67,
-                          height: 107.68,
-                          decoration: ShapeDecoration(
-                            shape: OvalBorder(
-                              side: BorderSide(
-                                width: 1.65,
-                                strokeAlign: BorderSide.strokeAlignCenter,
-                                color: kPrimaryColor,
-                              ),
-                            ),
-                          ),
-                          child: MyImage(url: getUserSync().image),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: Container(
-                            width: 30,
-                            height: 30,
-                            decoration: ShapeDecoration(
-                              color: kAccentColor,
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                  width: 0.50,
-                                  color: kAccentColor,
-                                ),
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                            ),
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_rounded,
-                              color: kTextWhiteColor,
-                              size: 20,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    MyFutureBuilder(
-                      future: getUser(),
-                      child: headDrawer,
-                    ),
-                    kSizedBox,
-                    kSizedBox,
-                    kSizedBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          snapshot.data ? 'Online' : 'Offline',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Color(0xFF232323),
-                            fontSize: 26.47,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        IconButton(
-                          splashRadius: 5,
-                          onPressed: toggleOnline,
-                          icon: Icon(
-                            snapshot.data ? Icons.toggle_on : Icons.toggle_off,
-                            color: snapshot.data
-                                ? kAccentColor
-                                : const Color(0xFF8D8D8D),
-                            size: 35,
-                          ),
-                        ),
-                      ],
-                    ),
-                    kSizedBox,
-                    MyListTile(
-                      text: 'Dashboard',
-                      isOnline: snapshot.data,
-                      icon: Icons.speed_outlined,
-                      nav: () {
-                        Get.to(
-                          () => Dashboard(),
-                          routeName: 'Dashboard',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Ride',
-                      isOnline: snapshot.data,
-                      icon: Icons.pedal_bike,
-                      nav: () {
-                        Get.to(
-                          () => const Ride(),
-                          routeName: 'Ride',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Vendors',
-                      isOnline: snapshot.data,
-                      icon: Icons.sell_outlined,
-                      nav: () {
-                        Get.to(
-                          () => const Vendors(),
-                          routeName: 'Vendors',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Settings',
-                      isOnline: snapshot.data,
-                      icon: Icons.settings,
-                      nav: () {
-                        Get.to(
-                          () => const SettingsPage(),
-                          routeName: 'SettingsPage',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: true,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                    MyListTile(
-                      text: 'Logout',
-                      isOnline: snapshot.data,
-                      icon: Icons.logout,
-                      nav: () {
-                        Get.offAll(
-                          () => const Login(logout: true),
-                          predicate: (route) => false,
-                          routeName: 'Login',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              );
-            }
-          }),
+              ],
+            ),
+            MyFutureBuilder(
+              future: getUser(),
+              child: headDrawer,
+            ),
+            kSizedBox,
+            kSizedBox,
+            kSizedBox,
+            MyListTile(
+              text: 'Dashboard',
+              icon: Icons.speed_outlined,
+              nav: () {
+                Get.to(
+                  () => Dashboard(),
+                  routeName: 'Dashboard',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Ride',
+              icon: Icons.pedal_bike,
+              nav: () {
+                Get.to(
+                  () => const Ride(),
+                  routeName: 'Ride',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Vendors',
+              icon: Icons.sell_outlined,
+              nav: () {
+                Get.to(
+                  () => const Vendors(),
+                  routeName: 'Vendors',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Settings',
+              icon: Icons.settings,
+              nav: () {
+                Get.to(
+                  () => const SettingsPage(),
+                  routeName: 'SettingsPage',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: true,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'Logout',
+              icon: Icons.logout,
+              nav: () {
+                UserController.instance.deleteUser();
+                OrderController.instance.deleteCachedOrders();
+                Get.offAll(
+                  () => const Login(),
+                  predicate: (route) => false,
+                  routeName: 'Login',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 

@@ -1,28 +1,23 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
-import 'dart:convert';
 
+import 'package:benji_rider/repo/controller/login_controller.dart';
+import 'package:benji_rider/repo/controller/login_model.dart';
+import 'package:benji_rider/src/providers/responsive_constant.dart';
+import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
+import 'package:benji_rider/src/widget/form_and_auth/email_textformfield.dart';
+import 'package:benji_rider/src/widget/form_and_auth/password_textformfield.dart';
+import 'package:benji_rider/src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/route_manager.dart';
-import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 
-import '../../repo/utils/constants.dart';
-import '../../repo/utils/helpers.dart';
 import '../../src/providers/constants.dart';
-import '../../src/providers/responsive_constant.dart';
-import '../../src/widget/form_and_auth/email_textformfield.dart';
-import '../../src/widget/form_and_auth/password_textformfield.dart';
-import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
-import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
-import '../splash_screens/login_splash_screen.dart';
 import 'forgot_password.dart';
 
 class Login extends StatefulWidget {
-  final bool logout;
-  const Login({super.key, this.logout = false});
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -33,9 +28,6 @@ class _LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
-    if (widget.logout) {
-      deleteUser();
-    }
     _isObscured = true;
   }
 
@@ -43,128 +35,38 @@ class _LoginState extends State<Login> {
 
   //=========================== CONTROLLERS ====================================\\
 
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   //=========================== KEYS ====================================\\
 
   final _formKey = GlobalKey<FormState>();
 
   //=========================== BOOL VALUES ====================================\\
-  bool _isLoading = false;
-  bool _isChecked = true;
-  bool _validAuthCredentials = false;
-  bool _invalidAuthCredentials = false;
+
+  bool isLoading = false;
 
   var _isObscured;
 
   //=========================== STYLE ====================================\\
 
+  TextStyle myAccentFontStyle = TextStyle(
+    color: kAccentColor,
+  );
+
   //=========================== FOCUS NODES ====================================\\
-  FocusNode _emailFocusNode = FocusNode();
-  FocusNode _passwordFocusNode = FocusNode();
+  FocusNode emailFocusNode = FocusNode();
+  FocusNode passwordFocusNode = FocusNode();
 
   //=========================== FUNCTIONS ====================================\\
-  void _checkBoxFunction(newVal) {
-    setState(() {
-      _isChecked = newVal!;
-    });
-  }
 
-  Future<void> loadData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    await sendPostRequest(_emailController.text, _passwordController.text);
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('rememberMe', _isChecked);
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
-  //=========================== REQUEST ====================================\\
-  Future<bool> saveUserAndToken(String token) async {
-    try {
-      final someUserData = await http.get(Uri.parse('$baseURL/auth/'),
-          headers: await authHeader(token));
-      int userId = jsonDecode(someUserData.body)['id'];
-
-      final userData = await http.get(
-          Uri.parse('$baseURL/drivers/getRiderDetails/$userId'),
-          headers: await authHeader(token));
-      if (jsonDecode(userData.body)['detail'] != null) {
-        return false;
-      }
-      await saveUser(userData.body, token);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  Future<void> sendPostRequest(String username, String password) async {
-    final url = Uri.parse('$baseURL/auth/token');
-    final body = {
-      'username': username,
-      'password': password,
-    };
-
-    final response = await http.post(url, body: body);
-
-    dynamic token = jsonDecode(response.body)['token'];
-
-    if (response.statusCode == 200 &&
-        token.toString() != false.toString() &&
-        await saveUserAndToken(token.toString())) {
-      setState(() {
-        _validAuthCredentials = true;
-      });
-
-      myFixedSnackBar(
-        context,
-        "Login Successful".toUpperCase(),
-        kSuccessColor,
-        const Duration(seconds: 2),
-      );
-
-      //Simulating a delay
-      await Future.delayed(Duration(seconds: 2));
-
-      Get.offAll(
-        () => const LoginSplashScreen(),
-        routeName: 'LoginSplashScreen',
-        predicate: (route) => false,
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        popGesture: true,
-        transition: Transition.fadeIn,
-      );
-    } else {
-      setState(() {
-        _invalidAuthCredentials = true;
-      });
-
-      myFixedSnackBar(
-        context,
-        "Invalid email or password".toUpperCase(),
-        kAccentColor,
-        const Duration(seconds: 2),
-      );
-    }
-  }
-
-  //=========================== Navigation ====================================\\
-  void _toForgotPasswordPage() => Get.to(
+  //Navigate to forgotPassword
+  void toForgotPasswordPage() => Get.to(
         () => const ForgotPassword(),
-        routeName: 'ForgotPassword',
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 500),
         fullscreenDialog: true,
         curve: Curves.easeIn,
+        routeName: "Forgot Password",
         preventDuplicates: true,
         popGesture: true,
         transition: Transition.rightToLeft,
@@ -172,8 +74,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context).size;
-
+    var media = MediaQuery.of(context).size;
     return GestureDetector(
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
@@ -183,86 +84,49 @@ class _LoginState extends State<Login> {
           maintainBottomViewPadding: true,
           child: LayoutGrid(
             columnSizes: breakPointDynamic(
-                media.width, [1.fr], [1.fr], [1.fr, 1.fr], [1.fr, 1.fr]),
-            rowSizes: [auto, 1.fr],
+              media.width,
+              [1.fr],
+              [1.fr],
+              [1.fr, 1.fr],
+              [1.fr, 1.fr],
+            ),
+            rowSizes: breakPointDynamic(
+              media.width,
+              [auto, 1.fr],
+              [auto, 1.fr],
+              [1.fr],
+              [1.fr],
+            ),
             children: [
               Column(
                 children: [
                   Expanded(
-                    child: () {
-                      if (_validAuthCredentials) {
-                        return ReusableAuthenticationFirstHalf(
-                          title: "Log In",
-                          subtitle: "Please log in to your existing account",
-                          curves: Curves.easeInOut,
-                          duration: Duration(milliseconds: 300),
-                          containerChild: Center(
-                            child: FaIcon(
-                              FontAwesomeIcons.unlockKeyhole,
-                              color: kSuccessColor,
-                              size: 80,
-                              semanticLabel: "login__success_icon",
-                            ),
-                          ),
-                          decoration: ShapeDecoration(
-                            color: kPrimaryColor,
-                            shape: OvalBorder(),
-                          ),
-                          imageContainerHeight:
-                              deviceType(media.width) > 2 ? 200 : 120,
-                        );
-                      } else {
-                        if (_invalidAuthCredentials) {
-                          return ReusableAuthenticationFirstHalf(
-                            title: "Log In",
-                            subtitle: "Please log in to your existing account",
-                            curves: Curves.easeInOut,
-                            duration: Duration(milliseconds: 300),
-                            containerChild: Center(
-                              child: FaIcon(
-                                FontAwesomeIcons.lock,
-                                color: kAccentColor,
-                                size: 80,
-                                semanticLabel: "invalid_icon",
-                              ),
-                            ),
-                            decoration: ShapeDecoration(
-                              color: kPrimaryColor,
-                              shape: OvalBorder(),
-                            ),
-                            imageContainerHeight:
-                                deviceType(media.width) > 2 ? 200 : 120,
-                          );
-                        } else {
-                          return ReusableAuthenticationFirstHalf(
-                            title: "Log In",
-                            subtitle: "Please log in to your existing account",
-                            curves: Curves.easeInOut,
-                            duration: Duration(milliseconds: 300),
-                            containerChild: Center(
-                              child: FaIcon(
-                                FontAwesomeIcons.lock,
-                                color: kSecondaryColor,
-                                size: 80,
-                                semanticLabel: "lock_icon",
-                              ),
-                            ),
-                            decoration: ShapeDecoration(
-                              color: kPrimaryColor,
-                              shape: OvalBorder(),
-                            ),
-                            imageContainerHeight:
-                                deviceType(media.width) > 2 ? 200 : 120,
-                          );
-                        }
-                      }
-                    }(),
+                    child: ReusableAuthenticationFirstHalf(
+                      title: "Log In",
+                      subtitle: "Please log in to your existing account",
+                      curves: Curves.easeInOut,
+                      duration: const Duration(milliseconds: 300),
+                      containerChild: Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.lock,
+                          color: kSecondaryColor,
+                          size: 80,
+                          semanticLabel: "lock_icon",
+                        ),
+                      ),
+                      decoration: ShapeDecoration(
+                        color: kPrimaryColor,
+                        shape: const OvalBorder(),
+                      ),
+                      imageContainerHeight:
+                          deviceType(media.width) > 2 ? 200 : 120,
+                    ),
                   ),
                 ],
               ),
               Container(
-                height: media.height,
                 width: media.width,
+                height: media.height,
                 padding: const EdgeInsets.only(
                   top: kDefaultPadding / 2,
                   left: kDefaultPadding,
@@ -299,15 +163,15 @@ class _LoginState extends State<Login> {
                           ),
                           kHalfSizedBox,
                           EmailTextFormField(
-                            controller: _emailController,
-                            emailFocusNode: _emailFocusNode,
+                            controller: emailController,
+                            emailFocusNode: emailFocusNode,
                             textInputAction: TextInputAction.next,
                             validator: (value) {
                               RegExp emailPattern = RegExp(
                                 r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$',
                               );
                               if (value == null || value!.isEmpty) {
-                                _emailFocusNode.requestFocus();
+                                emailFocusNode.requestFocus();
                                 return "Enter your email address";
                               } else if (!emailPattern.hasMatch(value)) {
                                 return "Please enter a valid email address";
@@ -315,7 +179,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                             onSaved: (value) {
-                              _emailController.text = value;
+                              emailController.text = value;
                             },
                           ),
                           kSizedBox,
@@ -331,17 +195,17 @@ class _LoginState extends State<Login> {
                           ),
                           kHalfSizedBox,
                           PasswordTextFormField(
-                            controller: _passwordController,
-                            passwordFocusNode: _passwordFocusNode,
+                            controller: passwordController,
+                            passwordFocusNode: passwordFocusNode,
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: _isObscured,
-                            textInputAction: TextInputAction.go,
+                            textInputAction: TextInputAction.done,
                             validator: (value) {
                               RegExp passwordPattern = RegExp(
                                 r'^.{8,}$',
                               );
                               if (value == null || value!.isEmpty) {
-                                _passwordFocusNode.requestFocus();
+                                passwordFocusNode.requestFocus();
                                 return "Enter your password";
                               } else if (!passwordPattern.hasMatch(value)) {
                                 return "Password must be at least 8 characters";
@@ -349,7 +213,7 @@ class _LoginState extends State<Login> {
                               return null;
                             },
                             onSaved: (value) {
-                              _passwordController.text = value;
+                              passwordController.text = value;
                             },
                             suffixIcon: IconButton(
                               onPressed: () {
@@ -358,98 +222,47 @@ class _LoginState extends State<Login> {
                                 });
                               },
                               icon: _isObscured
-                                  ? const Icon(Icons.visibility_off_rounded)
+                                  ? const Icon(
+                                      Icons.visibility_off_rounded,
+                                    )
                                   : Icon(
                                       Icons.visibility,
                                       color: kSecondaryColor,
                                     ),
                             ),
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Checkbox(
-                                    value: _isChecked,
-                                    splashRadius: 50,
-                                    activeColor: _validAuthCredentials
-                                        ? kGreyColor1
-                                        : kSecondaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        5,
-                                      ),
-                                    ),
-                                    onChanged: _validAuthCredentials
-                                        ? null
-                                        : _checkBoxFunction,
-                                  ),
-                                  Text(
-                                    "Remember me ",
-                                    style: TextStyle(
-                                      color: _validAuthCredentials
-                                          ? kGreyColor1
-                                          : kTextBlackColor,
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              TextButton(
-                                onPressed: _validAuthCredentials
-                                    ? null
-                                    : _toForgotPasswordPage,
-                                child: Text(
-                                  "Forgot Password",
-                                  style: _validAuthCredentials
-                                      ? TextStyle(color: kTextGreyColor)
-                                      : TextStyle(color: kAccentColor),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: kDefaultPadding * 2),
-                          _isLoading
-                              ? Center(
-                                  child: CircularProgressIndicator(
-                                    color: kAccentColor,
-                                  ),
-                                )
-                              : ElevatedButton(
-                                  onPressed: (() async {
-                                    if (_formKey.currentState!.validate()) {
-                                      await loadData();
-                                    }
-                                  }),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: kAccentColor,
-                                    maximumSize: Size(
-                                        MediaQuery.of(context).size.width, 62),
-                                    minimumSize: Size(
-                                        MediaQuery.of(context).size.width, 60),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    elevation: 10,
-                                    shadowColor: kDarkGreyColor,
-                                  ),
-                                  child: Text(
-                                    "Log in".toUpperCase(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: kPrimaryColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ),
-                          kHalfSizedBox,
                         ],
                       ),
                     ),
+                    kHalfSizedBox,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        TextButton(
+                          onPressed: toForgotPasswordPage,
+                          child: Text(
+                            "Forgot Password",
+                            style: myAccentFontStyle,
+                          ),
+                        ),
+                      ],
+                    ),
+                    kSizedBox,
+                    GetBuilder<LoginController>(builder: (controller) {
+                      return MyElevatedButton(
+                        title: "LOG IN",
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            SendLogin data = SendLogin(
+                                password: passwordController.text,
+                                username: emailController.text);
+                            await controller.login(data);
+                          }
+                        },
+                        isLoading: controller.isLoad.value,
+                      );
+                    }),
+                    kHalfSizedBox,
                   ],
                 ),
               ),
