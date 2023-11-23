@@ -58,10 +58,7 @@ class LoginController extends GetxController {
         }
 
         http.Response? responseUserData = await HandleData.getApi(
-            Api.baseUrl +
-                Api.getSpecificRider +
-                jsonDecode(responseUser?.body ?? '{}')['id'].toString() +
-                '/',
+            '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser?.body ?? '{}')['id']}/',
             jsonData["token"]);
         print(responseUserData?.statusCode);
 

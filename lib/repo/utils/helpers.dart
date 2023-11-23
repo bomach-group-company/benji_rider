@@ -56,7 +56,7 @@ Future<bool> deleteUser() async {
 dynamic isUnauthorized(Map data) {
   if (data.containsKey('detail') && data['detail'] == 'Unauthorized') {
     return Get.offAll(
-      () => Login(),
+      () => const Login(),
       routeName: 'Login',
       predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
@@ -74,7 +74,7 @@ checkUserAuth() async {
   User? haveUser = await getUser();
   if (haveUser == null) {
     return Get.offAll(
-      () => Login(),
+      () => const Login(),
       routeName: 'Login',
       predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
@@ -95,10 +95,10 @@ checkAuth(context) async {
       kAccentColor,
       "Login to continue!",
       "Please login to continue",
-      Duration(seconds: 2),
+      const Duration(seconds: 2),
     );
     return Get.offAll(
-      () => Login(),
+      () => const Login(),
       routeName: 'Login',
       predicate: (route) => false,
       duration: const Duration(milliseconds: 300),
@@ -131,7 +131,7 @@ Future<bool> isAuthorized() async {
   try {
     final response = await http.get(
       Uri.parse('$baseURL/auth/'),
-      headers: await authHeader(),
+      headers: authHeader(),
     );
     if (response.statusCode == 200) {
       dynamic data = jsonDecode(response.body);

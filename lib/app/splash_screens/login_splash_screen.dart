@@ -23,7 +23,7 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
   void initState() {
     super.initState();
     Timer(
-      Duration(seconds: 2),
+      const Duration(seconds: 2),
       () {
         Get.off(
           () => const Dashboard(),

@@ -57,7 +57,7 @@ class SuccessfulScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: kDefaultPadding * 2),
+              const SizedBox(height: kDefaultPadding * 2),
               ElevatedButton(
                 onPressed: buttonAction,
                 style: ElevatedButton.styleFrom(

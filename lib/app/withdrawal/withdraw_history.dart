@@ -5,7 +5,7 @@ import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
 class WithdrawHistoryPage extends StatefulWidget {
-  const WithdrawHistoryPage({Key? key}) : super(key: key);
+  const WithdrawHistoryPage({super.key});
 
   @override
   State<WithdrawHistoryPage> createState() => _WithdrawHistoryPageState();
@@ -26,7 +26,7 @@ class _WithdrawHistoryPageState extends State<WithdrawHistoryPage> {
       appBar: MyAppBar(
         title: "Withdrawal History",
         elevation: 0,
-        actions: [],
+        actions: const [],
         backgroundColor: kPrimaryColor,
         toolbarHeight: kToolbarHeight,
       ),
@@ -90,7 +90,7 @@ class _WithdrawHistoryPageState extends State<WithdrawHistoryPage> {
                       ],
                     ),
                     kSizedBox,
-                    Text(
+                    const Text(
                       'Access Bank ...9876',
                       style: TextStyle(
                         color: kTextBlackColor,

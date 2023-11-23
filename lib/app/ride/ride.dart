@@ -27,17 +27,17 @@ class _RideState extends State<Ride> {
   deliveryModel() {}
   //=================================== ALL VARIABLES ======================================================\\
   Position? _currentPosition;
-  var _geoLocator = Geolocator();
+  final _geoLocator = Geolocator();
 
   //=================================== BOOL VALUES ======================================================\\
-  bool _isLoading = false;
+  final bool _isLoading = false;
 
   bool _acceptRequest = false;
   bool _showDeliveryDialog = false;
   bool _pickedUp = false;
 
   //=================================== CONTROLLERS ======================================================\\
-  Completer<GoogleMapController> _googleMapController = Completer();
+  final Completer<GoogleMapController> _googleMapController = Completer();
   GoogleMapController? _newGoogleMapController;
 
   //=================================== FUNCTIONS ======================================================\\
@@ -77,7 +77,7 @@ class _RideState extends State<Ride> {
 
   Future<bool> _getStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool? isOnline = await prefs.getBool('isOnline');
+    bool? isOnline = prefs.getBool('isOnline');
     return isOnline ?? false;
   }
 
@@ -120,22 +120,22 @@ class _RideState extends State<Ride> {
       );
     }
 
-    Position _position = await Geolocator.getCurrentPosition(
+    Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     // _currentPosition = _position;
 
-    LatLng _latLngPosition = LatLng(_position.latitude, _position.longitude);
-    CameraPosition _cameraPosition =
-        new CameraPosition(target: _latLngPosition, zoom: 14);
+    LatLng latLngPosition = LatLng(position.latitude, position.longitude);
+    CameraPosition cameraPosition =
+        CameraPosition(target: latLngPosition, zoom: 14);
     _newGoogleMapController!
-        .animateCamera(CameraUpdate.newCameraPosition(_cameraPosition));
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await _position;
+    return position;
   }
 
-  static final CameraPosition _kGooglePlex = CameraPosition(
+  static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(
       6.455898890177413,
       7.507847720077416,
@@ -159,7 +159,7 @@ class _RideState extends State<Ride> {
           setState(() {});
         }
       },
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: Stack(
@@ -169,11 +169,11 @@ class _RideState extends State<Ride> {
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   if (snapshot.data == false) {
-                    return Center();
+                    return const Center();
                   } else {
                     return GoogleMap(
                       mapType: MapType.normal,
-                      padding: EdgeInsets.only(bottom: 125),
+                      padding: const EdgeInsets.only(bottom: 125),
                       buildingsEnabled: true,
                       compassEnabled: true,
                       indoorViewEnabled: true,
@@ -249,11 +249,11 @@ class _RideState extends State<Ride> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'No Delivery Requests',
                             style: TextStyle(
                               color: kTextWhiteColor,
@@ -262,7 +262,7 @@ class _RideState extends State<Ride> {
                             ),
                           ),
                           kSizedBox,
-                          const Text(
+                          Text(
                             'You have No Delivery Requests For Now',
                             style: TextStyle(
                               color: kTextWhiteColor,
@@ -301,7 +301,7 @@ class _RideState extends State<Ride> {
                               controller.isAccepted(controller.tasks[index])
                                   ? 'Request Accepted'
                                   : 'Delivery Request',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: kTextWhiteColor,
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
@@ -312,7 +312,7 @@ class _RideState extends State<Ride> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 controller.isAccepted(controller.tasks[index])
-                                    ? SizedBox()
+                                    ? const SizedBox()
                                     : ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: kTextWhiteColor,

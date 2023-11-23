@@ -6,7 +6,7 @@ import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
 class Earning extends StatefulWidget {
-  const Earning({Key? key}) : super(key: key);
+  const Earning({super.key});
 
   @override
   State<Earning> createState() => _EarningState();
@@ -28,7 +28,7 @@ class _EarningState extends State<Earning> {
       appBar: MyAppBar(
         title: "",
         elevation: 0,
-        actions: [],
+        actions: const [],
         backgroundColor: kPrimaryColor,
         toolbarHeight: kToolbarHeight,
       ),
@@ -42,7 +42,7 @@ class _EarningState extends State<Earning> {
             children: [
               const SizedBox(height: kDefaultPadding * 0.5),
               Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 30,
                   horizontal: 0,
                 ),
@@ -65,7 +65,7 @@ class _EarningState extends State<Earning> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,7 +112,7 @@ class _EarningState extends State<Earning> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             vertical: 10,
                             horizontal: 20,
                           ),
@@ -135,15 +135,15 @@ class _EarningState extends State<Earning> {
                                       .toDouble(),
                                   showTitles: true,
                                 )),
-                                topTitles: AxisTitles(
+                                topTitles: const AxisTitles(
                                     sideTitles: SideTitles(showTitles: false)),
-                                bottomTitles: AxisTitles(
+                                bottomTitles: const AxisTitles(
                                     sideTitles: SideTitles(showTitles: false)),
-                                rightTitles: AxisTitles(
+                                rightTitles: const AxisTitles(
                                     sideTitles: SideTitles(showTitles: false)),
                               ),
 
-                              gridData: FlGridData(show: false),
+                              gridData: const FlGridData(show: false),
                               borderData: FlBorderData(
                                   show: false,
                                   border: const Border(
@@ -220,9 +220,9 @@ class _EarningState extends State<Earning> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
+                            SizedBox(
                               width: mediaWidth - 150,
-                              child: Text(
+                              child: const Text(
                                 '21 Bartus Street, Abuja Nigeria',
                                 overflow: TextOverflow.ellipsis,
 

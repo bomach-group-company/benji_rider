@@ -14,7 +14,7 @@ import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
 
 class EarningContainer extends StatefulWidget {
-  EarningContainer({
+  const EarningContainer({
     super.key,
   });
 
@@ -120,10 +120,10 @@ class _EarningContainerState extends State<EarningContainer> {
         ),
         Row(
           children: [
-            Text(
+            const Text(
               'Available Balance',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: kTextBlackColor,
                 fontSize: 13,
                 fontWeight: FontWeight.w500,
@@ -147,9 +147,9 @@ class _EarningContainerState extends State<EarningContainer> {
               builder: (controller) => Text.rich(
                 TextSpan(
                   children: [
-                    TextSpan(
+                    const TextSpan(
                       text: "₦",
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: kTextBlackColor,
                         fontSize: 20,
                         fontFamily: 'sen',
@@ -182,7 +182,7 @@ class _EarningContainerState extends State<EarningContainer> {
                 ),
                 InkWell(
                   onTap: _toSelectAccountPage,
-                  child: Text(
+                  child: const Text(
                     "Withdraw",
                     style: TextStyle(
                       color: kTextBlackColor,

@@ -94,7 +94,7 @@ class VendorModel {
 Future<VendorModel> getVendorById(id) async {
   final response = await http.get(
     Uri.parse('$baseURL/vendors/getVendor/$id'),
-    headers: await authHeader(),
+    headers: authHeader(),
   );
 
   if (response.statusCode == 200) {
@@ -107,7 +107,7 @@ Future<VendorModel> getVendorById(id) async {
 Future<List<VendorModel>> getVendors({start = 1, end = 10}) async {
   final response = await http.get(
     Uri.parse('$baseURL/vendors/getAllVendor?start=$start&end=$end'),
-    headers: await authHeader(),
+    headers: authHeader(),
   );
   if (response.statusCode == 200) {
     return (jsonDecode(response.body)['items'] as List)

@@ -156,7 +156,7 @@ class _DashboardState extends State<Dashboard>
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.all(kDefaultPadding),
               children: [
-                EarningContainer(),
+                const EarningContainer(),
                 kSizedBox,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

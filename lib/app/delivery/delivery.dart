@@ -78,7 +78,7 @@ class _DeliveryState extends State<Delivery> {
         child: MyAppBar(
           title: "Delivery",
           elevation: 0.0,
-          actions: [],
+          actions: const [],
           backgroundColor: kPrimaryColor,
           toolbarHeight: kToolbarHeight,
         ),
@@ -96,7 +96,7 @@ class _DeliveryState extends State<Delivery> {
                     child: Container(
                       decoration: BoxDecoration(
                         color: kPrimaryColor,
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             color: Color(0x0F000000),
                             blurRadius: 24,
@@ -111,7 +111,7 @@ class _DeliveryState extends State<Delivery> {
                         bottom: kDefaultPadding * 0.6,
                       ),
                       child: SingleChildScrollView(
-                        physics: BouncingScrollPhysics(),
+                        physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: [
@@ -209,7 +209,7 @@ class _DeliveryState extends State<Delivery> {
                         itemCount: 6,
                         padding: const EdgeInsets.all(kDefaultPadding),
                         separatorBuilder: (context, index) =>
-                            SizedBox(height: kDefaultPadding / 2),
+                            const SizedBox(height: kDefaultPadding / 2),
                         itemBuilder: (BuildContext context, int index) {
                           return MyResponsiveWidth(
                             child: Column(

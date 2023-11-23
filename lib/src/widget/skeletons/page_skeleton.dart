@@ -6,10 +6,10 @@ import '../../providers/constants.dart';
 
 class PageSkeleton extends StatelessWidget {
   const PageSkeleton({
-    Key? key,
+    super.key,
     required this.height,
     required this.width,
-  }) : super(key: key);
+  });
   final double height, width;
   @override
   Widget build(BuildContext context) {
