@@ -5,7 +5,6 @@ import 'package:get/route_manager.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/form_and_auth/otp_textFormField.dart';
 import '../../src/widget/responsive/reponsive_width.dart';
-import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import '../splash_screens/successful_screen.dart';
 
@@ -49,14 +48,14 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
     await Future.delayed(const Duration(seconds: 2));
 
     //Display snackBar
-    myFixedSnackBar(
-      context,
-      "OTP Verified".toUpperCase(),
-      kSecondaryColor,
-      const Duration(
-        seconds: 2,
-      ),
-    );
+    // myFixedSnackBar(
+    //   context,
+    //   "OTP Verified".toUpperCase(),
+    //   kSecondaryColor,
+    //   const Duration(
+    //     seconds: 2,
+    //   ),
+    // );
 
     // Navigate to the new page
     Get.offAll(

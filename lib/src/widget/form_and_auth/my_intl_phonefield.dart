@@ -53,10 +53,10 @@ class MyIntlPhoneField extends StatelessWidget {
       ),
       cursorColor: kSecondaryColor,
       onChanged: (phone) {
-        print(phone.completeNumber);
+        debugPrint(phone.completeNumber);
       },
       onCountryChanged: (country) {
-        print('Country changed to: ' + country.name);
+        debugPrint('Country changed to: ' + country.name);
       },
       decoration: InputDecoration(
         hintText: "Enter phone Number",

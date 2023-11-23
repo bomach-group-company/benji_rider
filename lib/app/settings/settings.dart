@@ -26,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   //==================================================  ALL VARIABLES ======================================================\\
-  final double _accountBalance = 1000000.00;
+  final double accountBalance = 1000000.00;
 
   //==================================================  Navigation ======================================================\\
 

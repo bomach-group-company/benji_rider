@@ -65,7 +65,8 @@ class _EarningState extends State<Earning> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 20),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -234,17 +235,15 @@ class _EarningState extends State<Earning> {
                                 softWrap: true, // Enable text wrapping
                               ),
                             ),
-                            Container(
-                              child: Text(
-                                '\u20A6 ${formattedText(7000)}',
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.right,
-                                style: TextStyle(
-                                  color: kAccentColor,
-                                  fontSize: 12,
-                                  fontFamily: 'sen',
-                                  fontWeight: FontWeight.w400,
-                                ),
+                            Text(
+                              '\u20A6 ${formattedText(7000)}',
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: kAccentColor,
+                                fontSize: 12,
+                                fontFamily: 'sen',
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                           ],
