@@ -4,11 +4,11 @@ import 'dart:async';
 
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
-import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
+import '../../repo/controller/vendor_controller.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_orders_container.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
@@ -18,7 +18,7 @@ import '../../theme/colors.dart';
 import '../delivery/delivery.dart';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({Key? key}) : super(key: key);
+  const Dashboard({super.key});
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -66,7 +66,7 @@ class _DashboardState extends State<Dashboard>
   // void _toSeeAllNewOrders() {}
 
   void _toSeeAllVendors() => Get.to(
-        () => Vendors(),
+        () => const Vendors(),
         routeName: 'Delivery',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
@@ -132,7 +132,7 @@ class _DashboardState extends State<Dashboard>
                     ),
                   ),
                   kHalfWidthSizedBox,
-                  Text(
+                  const Text(
                     "Dashboard",
                     style: TextStyle(
                       fontSize: 20,
@@ -145,7 +145,7 @@ class _DashboardState extends State<Dashboard>
             ),
           ),
         ),
-        drawer: MyDrawer(),
+        drawer: const MyDrawer(),
         body: SafeArea(
           maintainBottomViewPadding: true,
           child: Scrollbar(

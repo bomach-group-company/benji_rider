@@ -26,12 +26,12 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   //==================================================  ALL VARIABLES ======================================================\\
-  double _accountBalance = 1000000.00;
+  final double _accountBalance = 1000000.00;
 
   //==================================================  Navigation ======================================================\\
 
   void _toHelpAndSupportPage() => Get.to(
-        () => HelpNSupport(),
+        () => const HelpNSupport(),
         routeName: 'HelpNSupport',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
@@ -64,7 +64,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar(
         backgroundColor: kAccentColor,
         title: Padding(
-          padding: EdgeInsets.only(left: kDefaultPadding),
+          padding: const EdgeInsets.only(left: kDefaultPadding),
           child: Text(
             'Settings',
             style: TextStyle(
@@ -81,7 +81,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ProfileFirstHalf(),
+            const ProfileFirstHalf(),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding / 1.5,

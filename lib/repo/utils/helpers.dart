@@ -89,15 +89,6 @@ checkUserAuth() async {
 checkAuth(context) async {
   User? haveUser = await getUser();
   bool? isAuth = await isAuthorized();
-  if (isAuth == null) {
-    mySnackBar(
-      context,
-      kAccentColor,
-      "No Internet!",
-      "Please Connect to the internet",
-      Duration(seconds: 3),
-    );
-  }
   if (haveUser == null || isAuth == false) {
     mySnackBar(
       context,

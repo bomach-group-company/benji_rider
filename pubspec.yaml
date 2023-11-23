@@ -49,18 +49,32 @@ dev_dependencies:
 
   flutter_native_splash: ^2.3.2
   flutter_launcher_icons: ^0.13.1
+  flutter_lints:
 
 flutter_native_splash:
-  image: assets/images/splash_screen/frame_1.png
+  image: assets/images/logo/benji_full_logo.png
   color: "#f9f9f9"
-  image_dark: assets/images/splash_screen/frame_1.png
+  image_dark: assets/images/logo/benji_full_logo.png
   color_dark: "#000000"
 
 flutter_launcher_icons:
   android: "launcher_icon"
   remove_alpha_ios: true
   ios: true
-  image_path: "assets/images/logo/benji_red_logo_icon.jpg"
+  image_path: "assets/icons/app_icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
+    background_color: "#FFFFFF"
+    theme_color: "#FFFFFF"
+  windows:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
+    icon_size: 48 # min:48, max:256, default: 48
+  macos:
+    generate: true
+    image_path: "assets/icons/app_icon.png"
 
   # flutter_icons:
   #   android: "launcher_icon"
