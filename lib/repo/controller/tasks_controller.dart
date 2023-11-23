@@ -35,7 +35,7 @@ class TasksController extends GetxController {
     print(id);
     final response = await http.put(
       Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
-      headers: await authHeader(),
+      headers: authHeader(),
     );
     print(response.body);
     print(response.statusCode);
@@ -53,7 +53,7 @@ class TasksController extends GetxController {
     print(id);
     final response = await http.put(
       Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
-      headers: await authHeader(),
+      headers: authHeader(),
     );
     print(response.body);
     print(response.statusCode);
@@ -68,13 +68,13 @@ class TasksController extends GetxController {
   }
 
   getTasksSocket() {
-    final wsUrlTask = Uri.parse('${websocketBaseUrl}/getridertask/');
+    final wsUrlTask = Uri.parse('$websocketBaseUrl/getridertask/');
     channelTask = WebSocketChannel.connect(wsUrlTask);
     channelTask.sink.add(jsonEncode({
       'rider_id': UserController.instance.user.value.id,
     }));
 
-    Timer.periodic(Duration(minutes: 1), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
       }));
@@ -87,10 +87,10 @@ class TasksController extends GetxController {
   }
 
   getCoordinatesSocket() {
-    final wsUrl = Uri.parse('${websocketBaseUrl}/updateRiderCoordinates/');
+    final wsUrl = Uri.parse('$websocketBaseUrl/updateRiderCoordinates/');
     channel = WebSocketChannel.connect(wsUrl);
     taskToBeDone();
-    Timer.periodic(Duration(minutes: 1), (timer) {
+    Timer.periodic(const Duration(minutes: 1), (timer) {
       taskToBeDone();
     });
 

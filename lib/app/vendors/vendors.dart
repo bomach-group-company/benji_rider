@@ -48,7 +48,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
   Future<void> _scrollToTop() async {
     await _scrollController.animateTo(
       0.0,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
     setState(() {
@@ -109,7 +109,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
           elevation: 0.0,
           backgroundColor: kPrimaryColor,
           toolbarHeight: kToolbarHeight,
-          actions: [],
+          actions: const [],
         ),
         floatingActionButton: _isScrollToTopBtnVisible
             ? FloatingActionButton(
@@ -123,7 +123,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                 hoverElevation: 50.0,
                 child: const Icon(Icons.keyboard_arrow_up),
               )
-            : SizedBox(),
+            : const SizedBox(),
         extendBody: true,
         extendBodyBehindAppBar: true,
         body: GetBuilder<VendorController>(
@@ -216,7 +216,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                                 onTap: _viewVendor,
                                                 child: Container(
                                                   margin:
-                                                      EdgeInsets.only(top: 1),
+                                                      const EdgeInsets.only(top: 1),
                                                   child: FaIcon(
                                                     FontAwesomeIcons
                                                         .locationDot,
@@ -225,15 +225,15 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(width: 5),
+                                              const SizedBox(width: 5),
                                               SizedBox(
                                                 width: mediaWidth - 200,
                                                 child: Text(
-                                                  "${controller.vendors[index].address}",
+                                                  controller.vendors[index].address,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   maxLines: 3,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     color: kTextBlackColor,
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,

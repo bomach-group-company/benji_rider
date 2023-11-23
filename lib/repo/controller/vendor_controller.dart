@@ -29,7 +29,7 @@ class VendorController extends GetxController {
   Future<List<VendorModel>> getVendors({start = 1, end = 10}) async {
     final response = await http.get(
       Uri.parse('$baseURL/vendors/getAllVendor?start=$start&end=$end'),
-      headers: await authHeader(),
+      headers: authHeader(),
     );
     if (response.statusCode == 200) {
       total.value = jsonDecode(response.body)['total'];

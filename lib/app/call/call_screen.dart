@@ -7,7 +7,7 @@ import '../../src/widget/responsive/responsive_width_appbar.dart';
 import '../../theme/colors.dart';
 
 class CallPage extends StatelessWidget {
-  const CallPage({Key? key}) : super(key: key);
+  const CallPage({super.key});
 
   @override
   Widget build(BuildContext context) {

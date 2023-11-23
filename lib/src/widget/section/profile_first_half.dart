@@ -33,7 +33,7 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
 //======================================================= FUNCTIONS =================================================\\
 
   Future<bool> _getStatusCash() async {
-    bool? isVisibleCash = await prefs.getBool('isVisibleCash');
+    bool? isVisibleCash = prefs.getBool('isVisibleCash');
     return isVisibleCash ?? true;
   }
 
@@ -52,7 +52,7 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       curve: Curves.easeIn,
       padding: const EdgeInsets.only(top: kDefaultPadding),
       decoration: ShapeDecoration(
@@ -129,7 +129,7 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
         InkWell(
           onTap: () {
             Get.to(
-              () => SelectAccountPage(),
+              () => const SelectAccountPage(),
               routeName: 'SelectAccountPage',
               duration: const Duration(milliseconds: 300),
               fullscreenDialog: true,

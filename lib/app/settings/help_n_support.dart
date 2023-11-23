@@ -20,13 +20,13 @@ class HelpNSupport extends StatefulWidget {
 class _HelpNSupportState extends State<HelpNSupport> {
   //============================================ ALL VARIABLES ===========================================\\
   //============================================ CONTROLLERS ===========================================\\
-  TextEditingController _messageEC = TextEditingController();
+  final TextEditingController _messageEC = TextEditingController();
 
   //============================================ FOCUS NODES ===========================================\\
-  FocusNode _messageFN = FocusNode();
+  final FocusNode _messageFN = FocusNode();
 
   //============================================ KEYS ===========================================\\
-  GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   //============================================ FUNCTIONS ===========================================\\
   //========================== Save data ==================================\\
@@ -55,7 +55,7 @@ class _HelpNSupportState extends State<HelpNSupport> {
       appBar: MyAppBar(
         title: "Help and support",
         elevation: 10.0,
-        actions: [],
+        actions: const [],
         backgroundColor: kPrimaryColor,
         toolbarHeight: kToolbarHeight,
       ),
@@ -85,7 +85,7 @@ class _HelpNSupportState extends State<HelpNSupport> {
           padding: const EdgeInsets.all(kDefaultPadding),
           physics: const BouncingScrollPhysics(),
           children: [
-            SizedBox(
+            const SizedBox(
               width: 292,
               child: Text(
                 'We will like to hear from you',
@@ -108,7 +108,7 @@ class _HelpNSupportState extends State<HelpNSupport> {
                 ),
               ),
             ),
-            SizedBox(height: kDefaultPadding * 2),
+            const SizedBox(height: kDefaultPadding * 2),
             Form(
               key: _formKey,
               child: Column(

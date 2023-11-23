@@ -25,7 +25,7 @@ class FormController extends GetxController {
     update([tag]);
     final response = await http.get(
       Uri.parse(url),
-      headers: await authHeader(),
+      headers: authHeader(),
     );
     status.value = response.statusCode;
     update([tag]);

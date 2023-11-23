@@ -107,7 +107,7 @@ class _MyDrawerState extends State<MyDrawer> {
               icon: Icons.speed_outlined,
               nav: () {
                 Get.to(
-                  () => Dashboard(),
+                  () => const Dashboard(),
                   routeName: 'Dashboard',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
@@ -201,7 +201,7 @@ class _MyDrawerState extends State<MyDrawer> {
           Text(
             data.username,
             softWrap: true,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xFF333333),
               fontSize: 19.86,
               fontWeight: FontWeight.w700,
@@ -212,7 +212,7 @@ class _MyDrawerState extends State<MyDrawer> {
             data.email,
             softWrap: true,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xFF929292),
               fontSize: 15.44,
               fontWeight: FontWeight.w400,

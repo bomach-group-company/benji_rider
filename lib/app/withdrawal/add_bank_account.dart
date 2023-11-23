@@ -9,7 +9,7 @@ import '../../src/widget/form_and_auth/my textformfield.dart';
 import '../../theme/colors.dart';
 
 class AddBankAccountPage extends StatefulWidget {
-  const AddBankAccountPage({Key? key}) : super(key: key);
+  const AddBankAccountPage({super.key});
 
   @override
   State<AddBankAccountPage> createState() => _AddBankAccountPageState();
@@ -18,8 +18,8 @@ class AddBankAccountPage extends StatefulWidget {
 class _AddBankAccountPageState extends State<AddBankAccountPage> {
 //===================================== ALL VARIABLES =========================================\\
   FocusNode productType = FocusNode();
-  FocusNode _accountNumberFN = FocusNode();
-  TextEditingController _accountNumberEC = TextEditingController();
+  final FocusNode _accountNumberFN = FocusNode();
+  final TextEditingController _accountNumberEC = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -39,17 +39,17 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       _savingAccount = true;
     });
 
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     mySnackBar(
       context,
       kSuccessColor,
       "Success",
       "You account has been saved successfully",
-      Duration(milliseconds: 500),
+      const Duration(milliseconds: 500),
     );
 
-    await Future.delayed(Duration(milliseconds: 800));
+    await Future.delayed(const Duration(milliseconds: 800));
 
     setState(() {
       _savingAccount = false;
@@ -66,7 +66,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
         appBar: MyAppBar(
           title: "Add bank account",
           elevation: 0,
-          actions: [],
+          actions: const [],
           backgroundColor: kPrimaryColor,
           toolbarHeight: kToolbarHeight,
         ),
@@ -82,7 +82,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Bank Details',
                       style: TextStyle(
                         color: kTextBlackColor,
@@ -153,7 +153,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                                 height: 45,
                                 width: 45,
                               ),
-                              Text(
+                              const Text(
                                 'Access Bank',
                                 style: TextStyle(
                                   color: kTextBlackColor,
@@ -174,7 +174,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                                 height: 45,
                                 width: 45,
                               ),
-                              Text(
+                              const Text(
                                 'UBA',
                                 style: TextStyle(
                                   color: kTextBlackColor,
@@ -195,7 +195,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                                 height: 45,
                                 width: 45,
                               ),
-                              Text(
+                              const Text(
                                 'FCMB',
                                 style: TextStyle(
                                   color: kTextBlackColor,
@@ -216,7 +216,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                                 height: 45,
                                 width: 45,
                               ),
-                              Text(
+                              const Text(
                                 'First Bank',
                                 style: TextStyle(
                                   color: kTextBlackColor,
@@ -229,7 +229,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                         ),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kDefaultPadding * 2,
                     ),
                     Text(
@@ -248,11 +248,11 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                       textInputAction: TextInputAction.next,
                       textInputType: TextInputType.number,
                       validator: (value) {
-                        RegExp _accountNumberPattern = RegExp(r"^\d{10}$");
+                        RegExp accountNumberPattern = RegExp(r"^\d{10}$");
                         if (value == null || value!.isEmpty) {
                           _accountNumberFN.requestFocus();
                           return "Enter the account number";
-                        } else if (!_accountNumberPattern.hasMatch(value)) {
+                        } else if (!accountNumberPattern.hasMatch(value)) {
                           _accountNumberFN.requestFocus();
                           return "Number must be 10 characters";
                         }
@@ -271,7 +271,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: kDefaultPadding * 2,
                     ),
                     _savingAccount

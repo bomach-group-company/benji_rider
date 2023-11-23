@@ -10,7 +10,7 @@ import '../../theme/colors.dart';
 import '../splash_screens/successful_screen.dart';
 
 class VerifyWithdrawalPage extends StatefulWidget {
-  const VerifyWithdrawalPage({Key? key}) : super(key: key);
+  const VerifyWithdrawalPage({super.key});
 
   @override
   State<VerifyWithdrawalPage> createState() => _VerifyWithdrawalPageState();
@@ -64,7 +64,7 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
         buttonTitle: 'Ok',
         text: 'Withdrawal Successful',
         buttonAction: () => Get.to(
-          () => Dashboard(),
+          () => const Dashboard(),
           routeName: 'Dashboard',
           duration: const Duration(milliseconds: 300),
           fullscreenDialog: true,
@@ -119,7 +119,7 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
                   ),
                 ),
                 kHalfWidthSizedBox,
-                Text(
+                const Text(
                   "Verify Withdrawal",
                   style: TextStyle(
                     fontSize: 20,
@@ -137,15 +137,15 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
           physics: const BouncingScrollPhysics(),
           child: MyResponsiveWidth(
             child: Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                   horizontal: kDefaultPadding, vertical: kDefaultPadding * 2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: const Column(
                       children: [
                         Opacity(
                           opacity: 0.90,
@@ -185,7 +185,7 @@ class _VerifyWithdrawalPageState extends State<VerifyWithdrawalPage> {
                     ),
                   ),
                   kSizedBox,
-                  Row(
+                  const Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

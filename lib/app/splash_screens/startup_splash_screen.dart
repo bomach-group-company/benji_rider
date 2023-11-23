@@ -11,7 +11,7 @@ import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
 class StartupSplashscreen extends StatefulWidget {
-  StartupSplashscreen({super.key});
+  const StartupSplashscreen({super.key});
 
   @override
   State<StartupSplashscreen> createState() => _StartupSplashscreenState();
@@ -65,7 +65,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
                       ),
                     ),
                     kSizedBox,
-                    Text(
+                    const Text(
                       'Rider App',
                       style: TextStyle(
                         color: kTextBlackColor,

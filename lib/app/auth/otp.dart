@@ -67,7 +67,7 @@ class _SendOTPState extends State<SendOTP> {
 
   //================= Start Timer ======================\\
   void startTimer() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_secondsRemaining > 0) {
         setState(() {
           _secondsRemaining--;
@@ -93,11 +93,11 @@ class _SendOTPState extends State<SendOTP> {
   }
 
   String formatTime(int seconds) {
-    int _minutes = seconds ~/ 60;
-    int _remainingSeconds = seconds % 60;
-    String _minutesStr = _minutes.toString().padLeft(2, '0');
-    String _secondsStr = _remainingSeconds.toString().padLeft(2, '0');
-    return '$_minutesStr:$_secondsStr';
+    int minutes = seconds ~/ 60;
+    int remainingSeconds = seconds % 60;
+    String minutesStr = minutes.toString().padLeft(2, '0');
+    String secondsStr = remainingSeconds.toString().padLeft(2, '0');
+    return '$minutesStr:$secondsStr';
   }
 
   Future<void> loadData() async {
@@ -149,7 +149,7 @@ class _SendOTPState extends State<SendOTP> {
       onTap: (() => FocusManager.instance.primaryFocus?.unfocus()),
       child: Scaffold(
         backgroundColor: kSecondaryColor,
-        appBar: MyAppBar(
+        appBar: const MyAppBar(
           title: "",
           elevation: 0.0,
           actions: [],
@@ -173,8 +173,8 @@ class _SendOTPState extends State<SendOTP> {
                           subtitle:
                               "Please enter the code we sent to your email",
                           curves: Curves.easeInOut,
-                          duration: Duration(),
-                          containerChild: Center(
+                          duration: const Duration(),
+                          containerChild: const Center(
                             child: FaIcon(
                               FontAwesomeIcons.solidCircleCheck,
                               color: kSuccessColor,
@@ -182,7 +182,7 @@ class _SendOTPState extends State<SendOTP> {
                             ),
                           ),
                           decoration: ShapeDecoration(
-                              color: kPrimaryColor, shape: OvalBorder()),
+                              color: kPrimaryColor, shape: const OvalBorder()),
                           imageContainerHeight:
                               deviceType(media.size.width) > 2 ? 200 : 100,
                         );
@@ -192,7 +192,7 @@ class _SendOTPState extends State<SendOTP> {
                           subtitle:
                               "Please enter the code we sent to your email",
                           curves: Curves.easeInOut,
-                          duration: Duration(),
+                          duration: const Duration(),
                           containerChild: Center(
                             child: FaIcon(
                               FontAwesomeIcons.shieldHalved,
@@ -201,7 +201,7 @@ class _SendOTPState extends State<SendOTP> {
                             ),
                           ),
                           decoration: ShapeDecoration(
-                              color: kPrimaryColor, shape: OvalBorder()),
+                              color: kPrimaryColor, shape: const OvalBorder()),
                           imageContainerHeight:
                               deviceType(media.size.width) > 2 ? 200 : 100,
                         );
@@ -237,8 +237,7 @@ class _SendOTPState extends State<SendOTP> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           AnimatedDefaultTextStyle(
-                            child: Text('Code'.toUpperCase()),
-                            duration: Duration(milliseconds: 300),
+                            duration: const Duration(milliseconds: 300),
                             style: TextStyle(
                               color: _timerComplete
                                   ? kAccentColor
@@ -248,13 +247,13 @@ class _SendOTPState extends State<SendOTP> {
                                   ? FontWeight.w700
                                   : FontWeight.w400,
                             ),
+                            child: Text('Code'.toUpperCase()),
                           ),
                           Row(
                             children: [
                               TextButton(
                                 onPressed: _timerComplete ? _resendOTP : null,
                                 child: AnimatedDefaultTextStyle(
-                                  child: Text("Resend"),
                                   style: TextStyle(
                                     fontSize: 15,
                                     color: _timerComplete
@@ -263,8 +262,9 @@ class _SendOTPState extends State<SendOTP> {
                                     fontWeight: FontWeight.w600,
                                     decoration: TextDecoration.underline,
                                   ),
-                                  duration: Duration(milliseconds: 300),
+                                  duration: const Duration(milliseconds: 300),
                                   curve: Curves.easeIn,
+                                  child: const Text("Resend"),
                                 ),
                               ),
                               const Text(

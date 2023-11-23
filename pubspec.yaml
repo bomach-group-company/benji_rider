@@ -33,6 +33,7 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   lottie:
   flutter_layout_grid:
+  http:
   flutter_carousel_widget:
   flutter_polyline_points: ^2.0.0
   autoscale_tabbarview: ^1.0.2
