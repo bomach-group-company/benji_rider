@@ -170,7 +170,7 @@ class _DashboardState extends State<Dashboard>
                     padding: const EdgeInsets.all(kDefaultPadding),
                     children: [
                       EarningContainer(
-                        accountBalance: getUserSync()?.balance ?? 0,
+                        accountBalance: getUserSync().balance ?? 0,
                       ),
                       kSizedBox,
                       Row(

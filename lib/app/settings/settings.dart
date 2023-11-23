@@ -80,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           scrollDirection: Axis.vertical,
           children: [
-            ProfileFirstHalf(availableBalance: getUserSync()?.balance ?? 0),
+            ProfileFirstHalf(availableBalance: getUserSync().balance ?? 0),
             Padding(
               padding: const EdgeInsets.only(
                 top: kDefaultPadding / 1.5,
