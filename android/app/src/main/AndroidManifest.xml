@@ -1,4 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.benji.rider">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.benji.rider">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -52,7 +54,9 @@
     <application
         android:label="Benji Rider"
         android:name="${applicationName}"
-        android:icon="@mipmap/launcher_icon">
+        android:enableOnBackInvokedCallback="true"
+        android:icon="@mipmap/launcher_icon"
+        tools:targetApi="tiramisu">
         <activity
             android:name=".MainActivity"
             android:exported="true"
