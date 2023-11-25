@@ -3,18 +3,26 @@ import 'package:lottie/lottie.dart';
 
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
+import '../button/my_elevatedbutton.dart';
 
 class EmptyCard extends StatelessWidget {
-  final String message;
+  final String emptyCardMessage;
+  final String buttonTitle;
+  final dynamic onPressed;
+  final bool showButton;
   const EmptyCard({
     super.key,
-    this.message = "Oops! There is nothing here.",
+    this.emptyCardMessage = "Oops! There is nothing here",
+    this.buttonTitle = "",
+    this.onPressed,
+    this.showButton = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
+      padding: const EdgeInsets.all(kDefaultPadding),
       children: [
         Column(
           children: [
@@ -23,7 +31,8 @@ class EmptyCard extends StatelessWidget {
             ),
             kSizedBox,
             Text(
-              message,
+              emptyCardMessage,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 color: kTextGreyColor,
                 fontSize: 18,
@@ -31,6 +40,12 @@ class EmptyCard extends StatelessWidget {
               ),
             ),
             kSizedBox,
+            showButton == false
+                ? const SizedBox()
+                : MyElevatedButton(
+                    title: buttonTitle,
+                    onPressed: onPressed ?? () {},
+                  ),
           ],
         ),
       ],

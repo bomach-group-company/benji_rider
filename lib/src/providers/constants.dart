@@ -1,4 +1,6 @@
 //default value
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -36,10 +38,16 @@ const String streetAddressPattern = r'^\d+\s+[a-zA-Z0-9\s.-]+$';
 const String emailPattern =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
-String intFormattedText(int value) {
-  final numberFormat = NumberFormat('#,##0');
-  return numberFormat.format(value);
-}
+//===================== DateTime Formate ==========================\\
+
+DateTime today = DateTime.now();
+
+String formattedDate = DateFormat('yyyy-MM-dd').format(today);
+
+DateTime yesterday = today.subtract(const Duration(days: 1));
+
+String yesterdayFormattedDate =
+    "${yesterday.year}-${yesterday.month.toString().padLeft(2, '0')}-${yesterday.day.toString().padLeft(2, '0')}";
 
 String formatDateAndTime(DateTime dateTime) {
   // Format the date as '23 Feb 2020'
@@ -54,8 +62,64 @@ String formatDateAndTime(DateTime dateTime) {
   return formattedDateTime;
 }
 
+String format12HrTime(DateTime time) {
+  // Format the time as '1:20PM'
+  String formattedTime = DateFormat.jm().format(time);
+
+  return formattedTime;
+}
+
+String formatDate(DateTime date) {
+  // Format the date as '23 Feb 2020'
+  String formattedDate = DateFormat('dd MMM y').format(date);
+
+  return formattedDate;
+}
+
+int createUniqueId() {
+  return DateTime.now().millisecondsSinceEpoch.remainder(1);
+}
+
+//===================== Number format ==========================\\
+String doubleFormattedText(double value) {
+  final numberFormat = NumberFormat('#,##0.00');
+  return numberFormat.format(value);
+}
+
+String intFormattedText(int value) {
+  final numberFormat = NumberFormat('#,##0');
+  return numberFormat.format(value);
+}
+
+const String notAvailable = "N/A";
+
+String formatNumber(int num) {
+  if (num >= 1000) {
+    double numDouble = num / 1000.0;
+    return '${numDouble.toStringAsFixed(numDouble.truncateToDouble() == numDouble ? 0 : 1)}K';
+  } else {
+    return num.toString();
+  }
+}
+
+convertToCurrency(String e) {
+  String newStr = e.replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[0]},");
+  return newStr;
+}
+
 //===================== Number format ==========================\\
 String formattedText(double value) {
   final numberFormat = NumberFormat('#,##0');
   return numberFormat.format(value);
+}
+
+void consoleLog(String val) {
+  for (var i = 0; i < val.length; i += 1024) {
+    debugPrint(val.substring(i, i + 1024 < val.length ? i + 1024 : val.length));
+  }
+}
+
+void consoleLogToFile(String val) {
+  File('log.txt').writeAsStringSync(val);
 }

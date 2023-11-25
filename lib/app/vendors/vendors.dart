@@ -138,7 +138,6 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                       padding: const EdgeInsets.all(kDefaultPadding / 2),
                       children: [
                         ListView.separated(
-                          reverse: true,
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: kDefaultPadding / 2),
                           itemCount: controller.vendors.length,

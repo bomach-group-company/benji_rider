@@ -2,8 +2,8 @@ import 'package:benji_rider/src/widget/responsive/reponsive_width.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 
+import '../../repo/controller/withdraw_controller.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/my textformfield.dart';
@@ -24,6 +24,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
   @override
   void initState() {
     super.initState();
+    WithdrawController.instance.listBanks();
   }
 
   @override
@@ -35,6 +36,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
 //===================================== ALL VARIABLES =========================================\\
 
 //===================================== BOOL VALUES =========================================\\
+  bool isVisible = false;
 
 //================= Controllers ==================\\
   final scrollController = ScrollController();
@@ -48,19 +50,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
 
   final formKey = GlobalKey<FormState>();
 
-  String dropDownItemValue = "Access Bank";
+  String bankCode = "";
 
   //================================== FUNCTION ====================================\\
 
-  void dropDownOnChanged(String? onChanged) {
-    setState(() {
-      dropDownItemValue = onChanged!;
-    });
-  }
-
   //=================================== Navigation ============================\\
   selectBank() async {
-    final selectedBank = await Get.to(
+    final result = await Get.to(
       () => const SelectBank(),
       routeName: 'SelectBank',
       duration: const Duration(milliseconds: 300),
@@ -70,10 +66,17 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       popGesture: true,
       transition: Transition.downToUp,
     );
-    if (selectedBank != null) {
+    if (result != null) {
+      final newBankName = result['name'];
+      final newBankCode = result['code'];
+
       setState(() {
-        bankNameEC.text = selectedBank;
+        bankNameEC.text = newBankName;
+        bankCode = newBankCode;
       });
+
+      consoleLog(newBankCode);
+      consoleLog("Bank code: $bankCode");
     }
   }
 
@@ -145,30 +148,40 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                       ),
                     ),
                     kHalfSizedBox,
-                    InkWell(
-                      onTap: selectBank,
-                      child: MyBlueTextFormField(
-                        controller: bankNameEC,
-                        isEnabled: false,
-                        textInputAction: TextInputAction.next,
-                        focusNode: bankNameFN,
-                        hintText: "Select a bank",
-                        suffixIcon: FaIcon(
-                          FontAwesomeIcons.chevronDown,
-                          size: 20,
-                          color: kAccentColor,
-                        ),
-                        textInputType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value!.isEmpty) {
-                            return "Select a bank";
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          bankNameEC.text = value!;
-                        },
-                      ),
+                    GetBuilder<WithdrawController>(
+                      builder: (controller) {
+                        return InkWell(
+                          onTap: controller.listOfBanks.isEmpty &&
+                                  controller.isLoad.value
+                              ? null
+                              : selectBank,
+                          child: MyBlueTextFormField(
+                            controller: bankNameEC,
+                            isEnabled: false,
+                            textInputAction: TextInputAction.next,
+                            focusNode: bankNameFN,
+                            hintText: controller.listOfBanks.isEmpty &&
+                                    controller.isLoad.value
+                                ? "Loading..."
+                                : "Select a bank",
+                            suffixIcon: FaIcon(
+                              FontAwesomeIcons.chevronDown,
+                              size: 20,
+                              color: kAccentColor,
+                            ),
+                            textInputType: TextInputType.name,
+                            validator: (value) {
+                              if (value == null || value!.isEmpty) {
+                                return "Select a bank";
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              bankNameEC.text = value!;
+                            },
+                          ),
+                        );
+                      },
                     ),
                     kSizedBox,
                     Text(
@@ -186,6 +199,12 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                       hintText: "Enter the account number here",
                       textInputAction: TextInputAction.next,
                       textInputType: TextInputType.name,
+                      onChanged: (value) {
+                        if (value.length >= 9) {
+                          WithdrawController.instance.validateBankNumbers(
+                              accountNumberEC.text, bankCode);
+                        }
+                      },
                       validator: (value) {
                         if (value == null || value!.isEmpty) {
                           accountNumberFN.requestFocus();
@@ -198,17 +217,29 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
                       },
                     ),
                     kSizedBox,
-                    Visibility(
-                      visible: false,
-                      child: Text(
-                        'Blessing Mesoma',
+                    GetBuilder<WithdrawController>(builder: (controller) {
+                      if (controller.isLoad.value) {
+                        return Text(
+                          'Loading...',
+                          style: TextStyle(
+                            color: kAccentColor.withOpacity(0.8),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        );
+                      }
+                      return Text(
+                        controller.validateAccount.value.requestSuccessful
+                            ? controller
+                                .validateAccount.value.responseBody.accountName
+                            : 'Bank details not found',
                         style: TextStyle(
                           color: kAccentColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
-                      ),
-                    ),
+                      );
+                    })
                   ],
                 ),
               ),

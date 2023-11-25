@@ -166,9 +166,7 @@ class _DeliveryState extends State<Delivery> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 15,
-                            ),
+                            kHalfWidthSizedBox,
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:

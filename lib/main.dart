@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       defaultTransition: Transition.rightToLeft,
+      navigatorKey: Get.key,
       debugShowCheckedModeBanner: false,
       title: "Benji Rider",
       color: kPrimaryColor,

@@ -65,11 +65,11 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
                       ),
                     ),
                     kSizedBox,
-                    const Text(
+                    Text(
                       'Rider App',
                       style: TextStyle(
-                        color: kTextBlackColor,
-                        fontSize: 16,
+                        color: kAccentColor,
+                        fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

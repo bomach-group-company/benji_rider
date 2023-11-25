@@ -6,13 +6,13 @@ import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../repo/controller/vendor_controller.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
 import '../../src/widget/card/earning_container.dart';
 import '../../src/widget/section/drawer.dart';
+import '../../src/widget/section/my_liquid_refresh.dart';
 import '../../theme/colors.dart';
 
 class Dashboard extends StatefulWidget {
@@ -97,14 +97,8 @@ class _DashboardState extends State<Dashboard>
 
 //====================================================================================\\
 
-    return LiquidPullToRefresh(
+    return MyLiquidRefresh(
       onRefresh: _handleRefresh,
-      color: kAccentColor,
-      borderWidth: 5.0,
-      backgroundColor: kPrimaryColor,
-      height: 150,
-      animSpeedFactor: 2,
-      showChildOpacityTransition: false,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -184,7 +178,7 @@ class _DashboardState extends State<Dashboard>
                 GetBuilder<VendorController>(
                   builder: (controller) => RiderVendorContainer(
                     onTap: toSeeAllVendors,
-                    number: controller.total.value.toString(),
+                    number: controller.vendors.length.toString(),
                     typeOf: "Vendors",
                   ),
                 ),
