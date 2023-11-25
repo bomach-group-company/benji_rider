@@ -19,7 +19,7 @@ class WithdrawController extends GetxController {
   bool? isFirst;
   WithdrawController({this.isFirst});
   var isLoad = false.obs;
-  var agentId = UserController.instance.user.value.id;
+  var userId = UserController.instance.user.value.id;
   var listOfBanks = <BankModel>[].obs;
   var listOfWithdrawals = <WithdrawalHistoryModel>[].obs;
   var noWithdrawalHistory = "".obs;
@@ -56,7 +56,7 @@ class WithdrawController extends GetxController {
   }
 
   Future withdrawalHistory() async {
-    var url = "${Api.baseUrl}${Api.withdrawalHistory}?user_id=$agentId";
+    var url = "${Api.baseUrl}${Api.withdrawalHistory}?user_id=$userId";
     isLoad.value = true;
     update();
 
