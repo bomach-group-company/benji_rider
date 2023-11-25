@@ -30,12 +30,12 @@ void main() async {
   prefs = await SharedPreferences.getInstance();
 
   Get.put(UserController());
+  Get.put(AuthController());
   Get.put(LoginController());
   Get.put(OrderController());
   Get.put(FormController());
   Get.put(LatLngDetailController());
   Get.put(NotificationController());
-  Get.put(AuthController());
   Get.put(VendorController());
   Get.put(TasksController());
 

@@ -23,8 +23,10 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   @override
   void initState() {
     super.initState();
-    UserController.instance.setUserSync();
-    VendorController.instance.getVendorList();
+    if (UserController.instance.ifUser()) {
+      UserController.instance.setUserSync();
+      VendorController.instance.getVendorList();
+    }
   }
 
   @override
