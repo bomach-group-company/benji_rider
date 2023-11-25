@@ -26,6 +26,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    VendorController.instance.getVendorList();
     checkAuth(context);
     _scrollController.addListener(_scrollListener);
   }
@@ -124,145 +125,137 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                 child: const Icon(Icons.keyboard_arrow_up),
               )
             : const SizedBox(),
-        extendBody: true,
-        extendBodyBehindAppBar: true,
-        body: GetBuilder<VendorController>(
-            initState: (state) => VendorController.instance.getVendorList(),
-            builder: (controller) {
-              return SafeArea(
-                maintainBottomViewPadding: true,
-                child: controller.isLoading.value && controller.vendors.isEmpty
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          color: kAccentColor,
-                        ),
-                      )
-                    : Scrollbar(
-                        controller: _scrollController,
-                        radius: const Radius.circular(10),
-                        scrollbarOrientation: ScrollbarOrientation.right,
-                        child: ListView(
-                          controller: _scrollController,
+        body: GetBuilder<VendorController>(builder: (controller) {
+          return SafeArea(
+            maintainBottomViewPadding: true,
+            child: controller.isLoading.value && controller.vendors.isEmpty
+                ? Center(
+                    child: CircularProgressIndicator(
+                      color: kAccentColor,
+                    ),
+                  )
+                : Scrollbar(
+                    controller: _scrollController,
+                    radius: const Radius.circular(10),
+                    scrollbarOrientation: ScrollbarOrientation.right,
+                    child: ListView(
+                      controller: _scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.all(kDefaultPadding / 2),
+                      children: [
+                        ListView.separated(
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: kDefaultPadding / 2),
+                          itemCount: controller.vendors.length,
+                          addAutomaticKeepAlives: true,
                           physics: const BouncingScrollPhysics(),
-                          padding: const EdgeInsets.all(kDefaultPadding / 2),
-                          children: [
-                            ListView.separated(
-                              separatorBuilder: (context, index) =>
-                                  const SizedBox(height: kDefaultPadding / 2),
-                              itemCount: controller.vendors.length,
-                              addAutomaticKeepAlives: true,
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) => InkWell(
-                                onTap: _viewVendor,
-                                borderRadius: BorderRadius.circular(16),
-                                child: Container(
-                                  decoration: ShapeDecoration(
-                                    color: kPrimaryColor,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    shadows: const [
-                                      BoxShadow(
-                                        color: Color(0x0F000000),
-                                        blurRadius: 24,
-                                        offset: Offset(0, 4),
-                                        spreadRadius: 0,
-                                      ),
-                                    ],
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: _viewVendor,
+                            borderRadius: BorderRadius.circular(16),
+                            child: Container(
+                              decoration: ShapeDecoration(
+                                color: kPrimaryColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                shadows: const [
+                                  BoxShadow(
+                                    color: Color(0x0F000000),
+                                    blurRadius: 24,
+                                    offset: Offset(0, 4),
+                                    spreadRadius: 0,
                                   ),
-                                  child: Row(
+                                ],
+                              ),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    width: 130,
+                                    height: 130,
+                                    decoration: ShapeDecoration(
+                                      color: kPageSkeletonColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                    ),
+                                    child: MyImage(
+                                        url: controller
+                                            .vendors[index].profileLogo),
+                                  ),
+                                  kHalfWidthSizedBox,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        width: 130,
-                                        height: 130,
-                                        decoration: ShapeDecoration(
-                                          color: kPageSkeletonColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(16),
+                                      SizedBox(
+                                        width: mediaWidth - 200,
+                                        child: Text(
+                                          controller.vendors[index].shopName,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 1,
+                                          style: const TextStyle(
+                                            color: kBlackColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w700,
+                                            letterSpacing: -0.36,
                                           ),
                                         ),
-                                        child: MyImage(
-                                            url: controller
-                                                .vendors[index].profileLogo),
                                       ),
-                                      kHalfWidthSizedBox,
-                                      Column(
+                                      kHalfSizedBox,
+                                      Row(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          SizedBox(
-                                            width: mediaWidth - 200,
-                                            child: Text(
-                                              controller
-                                                  .vendors[index].shopName,
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                color: kBlackColor,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w700,
-                                                letterSpacing: -0.36,
+                                          InkWell(
+                                            onTap: _viewVendor,
+                                            child: Container(
+                                              margin:
+                                                  const EdgeInsets.only(top: 1),
+                                              child: FaIcon(
+                                                FontAwesomeIcons.locationDot,
+                                                color: kAccentColor,
+                                                size: 21,
                                               ),
                                             ),
                                           ),
-                                          kHalfSizedBox,
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              InkWell(
-                                                onTap: _viewVendor,
-                                                child: Container(
-                                                  margin:
-                                                      const EdgeInsets.only(top: 1),
-                                                  child: FaIcon(
-                                                    FontAwesomeIcons
-                                                        .locationDot,
-                                                    color: kAccentColor,
-                                                    size: 21,
-                                                  ),
-                                                ),
+                                          const SizedBox(width: 5),
+                                          SizedBox(
+                                            width: mediaWidth - 200,
+                                            child: Text(
+                                              controller.vendors[index].address,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                              style: const TextStyle(
+                                                color: kTextBlackColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
                                               ),
-                                              const SizedBox(width: 5),
-                                              SizedBox(
-                                                width: mediaWidth - 200,
-                                                child: Text(
-                                                  controller.vendors[index].address,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 3,
-                                                  style: const TextStyle(
-                                                    color: kTextBlackColor,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                          kHalfSizedBox,
                                         ],
                                       ),
+                                      kHalfSizedBox,
                                     ],
                                   ),
-                                ),
+                                ],
                               ),
                             ),
-                            kSizedBox,
-                            TextButton(
-                              onPressed: _seeMoreOnlineVendors,
-                              child: Text(
-                                "See more",
-                                style: TextStyle(color: kAccentColor),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-              );
-            }),
+                        kSizedBox,
+                        TextButton(
+                          onPressed: _seeMoreOnlineVendors,
+                          child: Text(
+                            "See more",
+                            style: TextStyle(color: kAccentColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+          );
+        }),
       ),
     );
   }

@@ -24,7 +24,7 @@ class LoginController extends GetxController {
       UserController.instance;
       isLoad.value = true;
       update();
-      Map finalData = {
+      Map<String, dynamic> finalData = {
         "username": data.username,
         "password": data.password,
       };
@@ -32,7 +32,9 @@ class LoginController extends GetxController {
       http.Response? response =
           await HandleData.postApi(Api.baseUrl + Api.login, null, finalData);
 
-      if (response?.statusCode != 200) {
+      consoleLog(finalData.toString());
+      consoleLog(Api.baseUrl + Api.login);
+      if (response!.statusCode != 200) {
         ApiProcessorController.errorSnack(
             "Invalid email or password. Try again");
         isLoad.value = false;
@@ -40,16 +42,17 @@ class LoginController extends GetxController {
         return;
       }
 
-      var jsonData = jsonDecode(response?.body ?? '');
-      debugPrint(jsonData);
-      if (jsonData["token"] == false) {
+      var responseData = jsonDecode(response.body);
+      consoleLog("This is the response: $responseData");
+      // debugPrint(responseData);
+      if (responseData["token"] == false) {
         ApiProcessorController.errorSnack(
             "Invalid email or password. Try again");
         isLoad.value = false;
         update();
       } else {
-        http.Response? responseUser =
-            await HandleData.getApi(Api.baseUrl + Api.user, jsonData["token"]);
+        http.Response? responseUser = await HandleData.getApi(
+            Api.baseUrl + Api.user, responseData["token"]);
         if (responseUser?.statusCode != 200) {
           ApiProcessorController.errorSnack(
               "Invalid email or password. Try again");
@@ -60,7 +63,7 @@ class LoginController extends GetxController {
 
         http.Response? responseUserData = await HandleData.getApi(
             '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser?.body ?? '{}')['id']}/',
-            jsonData["token"]);
+            responseData["token"]);
         debugPrint("${responseUserData?.statusCode}");
 
         if (responseUserData?.statusCode != 200) {
@@ -73,7 +76,7 @@ class LoginController extends GetxController {
         debugPrint('almost');
 
         UserController.instance
-            .saveUser(responseUserData?.body ?? '', jsonData["token"]);
+            .saveUser(responseUserData?.body ?? '', responseData["token"]);
         isLoad.value = false;
         update();
         ApiProcessorController.successSnack("Login Successful");
@@ -91,6 +94,7 @@ class LoginController extends GetxController {
     } on SocketException {
       ApiProcessorController.errorSnack("Please connect to the internet");
     } catch (e) {
+      consoleLog("This is the error: $e");
       ApiProcessorController.errorSnack("Invalid email or password. Try again");
       isLoad.value = false;
       update();

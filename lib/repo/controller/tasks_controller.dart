@@ -69,6 +69,7 @@ class TasksController extends GetxController {
   }
 
   getTasksSocket() {
+    print('in the getTasksSocket func');
     final wsUrlTask = Uri.parse('$websocketBaseUrl/getridertask/');
     channelTask = WebSocketChannel.connect(wsUrlTask);
     channelTask.sink.add(jsonEncode({
@@ -76,6 +77,9 @@ class TasksController extends GetxController {
     }));
 
     Timer.periodic(const Duration(minutes: 1), (timer) {
+      print({
+        'rider_id': UserController.instance.user.value.id,
+      });
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
       }));
@@ -83,16 +87,16 @@ class TasksController extends GetxController {
 
     channelTask.stream.listen((message) {
       setTasks(jsonDecode(message)['message'] as List);
-      debugPrint('tasks $message');
+      print('tasks $message');
     });
   }
 
   getCoordinatesSocket() {
     final wsUrl = Uri.parse('$websocketBaseUrl/updateRiderCoordinates/');
     channel = WebSocketChannel.connect(wsUrl);
-    taskToBeDone();
+    getCoordinates();
     Timer.periodic(const Duration(minutes: 1), (timer) {
-      taskToBeDone();
+      getCoordinates();
     });
 
     channel.stream.listen((message) {
@@ -100,34 +104,48 @@ class TasksController extends GetxController {
     });
   }
 
-  closeTaskSocket() {
-    channel.sink.close(status.goingAway);
-    channelTask.sink.close(status.goingAway);
-  }
-
-  taskToBeDone() async {
+  getCoordinates() async {
     String latitude = '';
     String longitude = '';
+    LocationPermission permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.deniedForever) {
+      return;
+    }
+
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.unableToDetermine) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return;
+      }
+    }
+
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
       latitude = position.latitude.toString();
       longitude = position.longitude.toString();
+      channel.sink.add(jsonEncode({
+        'rider_id': UserController.instance.user.value.id,
+        'latitude': latitude,
+        'longitude': longitude
+      }));
     } catch (e) {
       latitude = '';
       longitude = '';
-      debugPrint('in catch');
+      debugPrint('in catch $e');
     }
     debugPrint("${{
       'rider_id': UserController.instance.user.value.id,
       'latitude': latitude,
       'longitude': longitude
     }}");
-    channel.sink.add(jsonEncode({
-      'rider_id': UserController.instance.user.value.id,
-      'latitude': latitude,
-      'longitude': longitude
-    }));
+  }
+
+  closeTaskSocket() {
+    channel.sink.close(status.goingAway);
+    channelTask.sink.close(status.goingAway);
   }
 
   bool isAccepted(TasksModel val) {

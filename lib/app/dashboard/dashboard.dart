@@ -38,6 +38,9 @@ class _DashboardState extends State<Dashboard>
     // coordinates
     TasksController.instance.getCoordinatesSocket();
 
+    //Get vnendors
+    VendorController.instance.getVendorList();
+
     super.initState();
   }
 
@@ -65,7 +68,7 @@ class _DashboardState extends State<Dashboard>
 
   // void _toSeeAllNewOrders() {}
 
-  void _toSeeAllVendors() => Get.to(
+  void toSeeAllVendors() => Get.to(
         () => const Vendors(),
         routeName: 'Delivery',
         duration: const Duration(milliseconds: 300),
@@ -182,7 +185,7 @@ class _DashboardState extends State<Dashboard>
                 kSizedBox,
                 GetBuilder<VendorController>(
                   builder: (controller) => RiderVendorContainer(
-                    onTap: _toSeeAllVendors,
+                    onTap: toSeeAllVendors,
                     number: controller.total.value.toString(),
                     typeOf: "Vendors",
                   ),
