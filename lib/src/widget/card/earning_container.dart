@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../../app/withdrawal _old_one/select_account.dart';
+import '../../../app/withdrawal/select_account.dart';
 import '../../../repo/models/user_model.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';

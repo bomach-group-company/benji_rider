@@ -1,4 +1,3 @@
-import 'package:benji_rider/app/withdrawal%20_old_one/withdraw_history.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import '../../src/widget/section/profile_first_half.dart';
 import '../../theme/colors.dart';
 import '../auth/login.dart';
 import '../delivery/delivery.dart';
+import '../withdrawal/withdrawal_history.dart';
 import 'help_n_support.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -112,8 +112,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     ListTile(
                       onTap: () {
                         Get.to(
-                          () => const WithdrawHistoryPage(),
-                          routeName: 'WithdrawHistoryPage',
+                          () => const WithdrawalHistoryPage(),
+                          routeName: 'WithdrawalHistoryPage',
                           duration: const Duration(milliseconds: 300),
                           fullscreenDialog: true,
                           curve: Curves.easeIn,
