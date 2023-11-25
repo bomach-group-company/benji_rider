@@ -7,6 +7,7 @@ import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
+import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -38,6 +39,7 @@ void main() async {
   Get.put(NotificationController());
   Get.put(VendorController());
   Get.put(TasksController());
+  Get.put(WithdrawController());
 
   runApp(const MyApp());
 }

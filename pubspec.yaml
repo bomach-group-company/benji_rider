@@ -104,6 +104,7 @@ flutter:
     - assets/images/profile/
     - assets/animations/login/
     - assets/animations/payment/
+    - assets/animations/empty/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
