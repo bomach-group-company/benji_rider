@@ -10,12 +10,10 @@ import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../repo/controller/vendor_controller.dart';
 import '../../src/providers/constants.dart';
-import '../../src/widget/card/dashboard_orders_container.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
 import '../../src/widget/card/earning_container.dart';
 import '../../src/widget/section/drawer.dart';
 import '../../theme/colors.dart';
-import '../delivery/delivery.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -70,7 +68,7 @@ class _DashboardState extends State<Dashboard>
 
   void toSeeAllVendors() => Get.to(
         () => const Vendors(),
-        routeName: 'Delivery',
+        routeName: 'Vendors',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,
@@ -79,16 +77,16 @@ class _DashboardState extends State<Dashboard>
         transition: Transition.rightToLeft,
       );
 
-  void _deliveryRoute(StatusType status) => Get.to(
-        () => Delivery(status: status),
-        routeName: 'Delivery',
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.rightToLeft,
-      );
+  // void _deliveryRoute(StatusType status) => Get.to(
+  //       () => Delivery(status: status),
+  //       routeName: 'Delivery',
+  //       duration: const Duration(milliseconds: 300),
+  //       fullscreenDialog: true,
+  //       curve: Curves.easeIn,
+  //       preventDuplicates: true,
+  //       popGesture: true,
+  //       transition: Transition.rightToLeft,
+  //     );
 
   @override
   Widget build(BuildContext context) {
@@ -161,28 +159,28 @@ class _DashboardState extends State<Dashboard>
               children: [
                 const EarningContainer(),
                 kSizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    OrdersContainer(
-                      containerColor: kPrimaryColor,
-                      typeOfOrderColor: kTextGreyColor,
-                      iconColor: kGreyColor1,
-                      numberOfOrders: "47",
-                      typeOfOrders: "Completed",
-                      onTap: () => _deliveryRoute(StatusType.delivered),
-                    ),
-                    OrdersContainer(
-                      containerColor: Colors.red.shade100,
-                      typeOfOrderColor: kAccentColor,
-                      iconColor: kAccentColor,
-                      numberOfOrders: "3",
-                      typeOfOrders: "Pending",
-                      onTap: () => _deliveryRoute(StatusType.pending),
-                    ),
-                  ],
-                ),
-                kSizedBox,
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     OrdersContainer(
+                //       containerColor: kPrimaryColor,
+                //       typeOfOrderColor: kTextGreyColor,
+                //       iconColor: kGreyColor1,
+                //       numberOfOrders: "47",
+                //       typeOfOrders: "Completed",
+                //       onTap: () => _deliveryRoute(StatusType.delivered),
+                //     ),
+                //     OrdersContainer(
+                //       containerColor: Colors.red.shade100,
+                //       typeOfOrderColor: kAccentColor,
+                //       iconColor: kAccentColor,
+                //       numberOfOrders: "3",
+                //       typeOfOrders: "Pending",
+                //       onTap: () => _deliveryRoute(StatusType.pending),
+                //     ),
+                //   ],
+                // ),
+                // kSizedBox,
                 GetBuilder<VendorController>(
                   builder: (controller) => RiderVendorContainer(
                     onTap: toSeeAllVendors,

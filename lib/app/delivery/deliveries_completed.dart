@@ -11,7 +11,7 @@ class DeliverComplete extends StatelessWidget {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kPrimaryColor,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         titleSpacing: kDefaultPadding / 2,
@@ -22,7 +22,7 @@ class DeliverComplete extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(10, 10),
-                  backgroundColor: Colors.white,
+                  backgroundColor: kPrimaryColor,
                   elevation: 0,
                   shape: const CircleBorder()),
               onPressed: () {},
@@ -49,7 +49,7 @@ class DeliverComplete extends StatelessWidget {
           ),
         ],
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: kPrimaryColor,
         title: InkWell(
           onTap: () {
             Get.back();

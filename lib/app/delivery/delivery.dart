@@ -202,11 +202,11 @@ class _DeliveryState extends State<Delivery> {
                   ),
                   Expanded(
                     child: Scrollbar(
-                      controller: _scrollController,
                       child: ListView.separated(
                         controller: _scrollController,
                         physics: const BouncingScrollPhysics(),
                         itemCount: 6,
+                        shrinkWrap: true,
                         padding: const EdgeInsets.all(kDefaultPadding),
                         separatorBuilder: (context, index) =>
                             const SizedBox(height: kDefaultPadding / 2),
@@ -309,42 +309,37 @@ class _DeliveryState extends State<Delivery> {
                                                                 .circular(5),
                                                       ),
                                                     ),
-                                                    child: SizedBox(
-                                                      width: 54,
-                                                      height: 10,
-                                                      child: Text(
-                                                        checkStatus(
+                                                    child: Text(
+                                                      checkStatus(
+                                                              _status,
+                                                              StatusType
+                                                                  .delivered)
+                                                          ? 'Delivered'
+                                                          : checkStatus(
+                                                                  _status,
+                                                                  StatusType
+                                                                      .pending)
+                                                              ? 'Pending'
+                                                              : 'Cancelled',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: TextStyle(
+                                                        color: checkStatus(
                                                                 _status,
                                                                 StatusType
                                                                     .delivered)
-                                                            ? 'Delivered'
+                                                            ? kAccentColor
                                                             : checkStatus(
                                                                     _status,
                                                                     StatusType
                                                                         .pending)
-                                                                ? 'Pending'
-                                                                : 'Cancelled',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          color: checkStatus(
-                                                                  _status,
-                                                                  StatusType
-                                                                      .delivered)
-                                                              ? kAccentColor
-                                                              : checkStatus(
-                                                                      _status,
-                                                                      StatusType
-                                                                          .pending)
-                                                                  ? kLoadingColor
-                                                                  : const Color(
-                                                                      0xFF979797),
-                                                          fontSize: 10,
-                                                          fontFamily:
-                                                              'Overpass',
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
+                                                                ? kLoadingColor
+                                                                : const Color(
+                                                                    0xFF979797),
+                                                        fontSize: 10,
+                                                        fontFamily: 'Overpass',
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                       ),
                                                     ),
                                                   )

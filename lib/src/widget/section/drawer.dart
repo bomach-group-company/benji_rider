@@ -104,7 +104,7 @@ class _MyDrawerState extends State<MyDrawer> {
             kSizedBox,
             MyListTile(
               text: 'Dashboard',
-              icon: Icons.speed_outlined,
+              icon: Icons.grid_view_rounded,
               nav: () {
                 Get.to(
                   () => const Dashboard(),
@@ -120,7 +120,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'Ride',
-              icon: Icons.pedal_bike,
+              icon: Icons.speed_outlined,
               nav: () {
                 Get.to(
                   () => const Ride(),
@@ -136,7 +136,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'Vendors',
-              icon: Icons.sell_outlined,
+              icon: Icons.storefront,
               nav: () {
                 Get.to(
                   () => const Vendors(),

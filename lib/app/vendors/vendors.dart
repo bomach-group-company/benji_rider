@@ -4,11 +4,11 @@ import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
+import 'package:benji_rider/src/widget/section/my_liquid_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
@@ -75,7 +75,6 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
 //============================================== FUNCTIONS =================================================\\
 
 //===================== View Vendor ==========================\\
-  void _viewVendor() {}
 
 //===================== Number format ==========================\\
   String formattedText(int value) {
@@ -85,10 +84,10 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
 
 //===================== Handle refresh ==========================\\
 
-  Future<void> _handleRefresh() async {}
+  Future<void> handleRefresh() async {}
 
 //=============================== See more ========================================\\
-  void _seeMoreOnlineVendors() {}
+  void seeMoreOnlineVendors() {}
 
   @override
   Widget build(BuildContext context) {
@@ -96,18 +95,12 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
     double mediaWidth = MediaQuery.of(context).size.width;
     double mediaHeight = MediaQuery.of(context).size.height;
 
-    return LiquidPullToRefresh(
-      onRefresh: _handleRefresh,
-      color: kAccentColor,
-      borderWidth: 5.0,
-      backgroundColor: kPrimaryColor,
-      height: 150,
-      animSpeedFactor: 2,
-      showChildOpacityTransition: false,
+    return MyLiquidRefresh(
+      onRefresh: handleRefresh,
       child: Scaffold(
         appBar: MyAppBar(
           title: "All vendors",
-          elevation: 0.0,
+          elevation: 0,
           backgroundColor: kPrimaryColor,
           toolbarHeight: kToolbarHeight,
           actions: const [],
@@ -116,6 +109,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
             ? FloatingActionButton(
                 onPressed: _scrollToTop,
                 mini: true,
+                foregroundColor: kPrimaryColor,
                 backgroundColor: kAccentColor,
                 enableFeedback: true,
                 mouseCursor: SystemMouseCursors.click,
@@ -144,6 +138,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                       padding: const EdgeInsets.all(kDefaultPadding / 2),
                       children: [
                         ListView.separated(
+                          reverse: true,
                           separatorBuilder: (context, index) =>
                               const SizedBox(height: kDefaultPadding / 2),
                           itemCount: controller.vendors.length,
@@ -151,7 +146,6 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                           physics: const BouncingScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) => InkWell(
-                            onTap: _viewVendor,
                             borderRadius: BorderRadius.circular(16),
                             child: Container(
                               decoration: ShapeDecoration(
@@ -208,7 +202,6 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                             CrossAxisAlignment.start,
                                         children: [
                                           InkWell(
-                                            onTap: _viewVendor,
                                             child: Container(
                                               margin:
                                                   const EdgeInsets.only(top: 1),
@@ -243,14 +236,14 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                             ),
                           ),
                         ),
-                        kSizedBox,
-                        TextButton(
-                          onPressed: _seeMoreOnlineVendors,
-                          child: Text(
-                            "See more",
-                            style: TextStyle(color: kAccentColor),
-                          ),
-                        ),
+                        // kSizedBox,
+                        // TextButton(
+                        //   onPressed: seeMoreOnlineVendors,
+                        //   child: Text(
+                        //     "See more",
+                        //     style: TextStyle(color: kAccentColor),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
