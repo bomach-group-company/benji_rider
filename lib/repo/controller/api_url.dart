@@ -28,6 +28,12 @@ class Api {
 
   //BusinessTypes
   static const businessType = "/categories/list";
+
+  //Wallet
+  static const listBanks = "/wallet/list_banks";
+  static const withdrawalHistory = "/wallet/withdrawalHistory/";
+  static const listWithdrawalHistories =
+      "/withdrawalhistory/listWithdrawalHistories/";
 }
 
 String header = "application/json";

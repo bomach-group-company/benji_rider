@@ -36,6 +36,11 @@ const String streetAddressPattern = r'^\d+\s+[a-zA-Z0-9\s.-]+$';
 const String emailPattern =
     r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
+String intFormattedText(int value) {
+  final numberFormat = NumberFormat('#,##0');
+  return numberFormat.format(value);
+}
+
 String formatDateAndTime(DateTime dateTime) {
   // Format the date as '23 Feb 2020'
   String formattedDate = DateFormat('dd MMM y').format(dateTime);

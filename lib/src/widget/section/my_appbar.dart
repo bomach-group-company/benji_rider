@@ -21,7 +21,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.elevation,
     required this.actions,
     required this.backgroundColor,
-    required this.toolbarHeight,
+    this.toolbarHeight = kToolbarHeight,
   });
 //========================================= FUNCTIONS ============================================\\
 

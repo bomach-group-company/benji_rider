@@ -1,12 +1,16 @@
-import 'package:benji_rider/app/withdrawal/withdraw.dart';
-import 'package:benji_rider/src/widget/section/my_appbar.dart';
+import 'dart:async';
+
+import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/providers/responsive_constant.dart';
+import '../../src/widget/section/my_appbar.dart';
 import '../../theme/colors.dart';
 import 'add_bank_account.dart';
+import 'withdraw.dart';
 
 class SelectAccountPage extends StatefulWidget {
   const SelectAccountPage({super.key});
@@ -16,7 +20,74 @@ class SelectAccountPage extends StatefulWidget {
 }
 
 class _SelectAccountPageState extends State<SelectAccountPage> {
-//===================================== ALL =========================================\\
+  //===================================== INITIAL STATE AND DISPOSE =========================================\\
+  @override
+  void initState() {
+    super.initState();
+    _loadingScreen = true;
+    scrollController.addListener(_scrollListener);
+    _timer = Timer(const Duration(milliseconds: 1000), () {
+      setState(() => _loadingScreen = false);
+    });
+  }
+
+  @override
+  void dispose() {
+    _handleRefresh().ignore();
+    scrollController.dispose();
+    _timer.cancel();
+    super.dispose();
+  }
+
+//=============================================== ALL CONTROLLERS ======================================================\\
+  final scrollController = ScrollController();
+
+//=============================================== ALL VARIABLES ======================================================\\
+  late Timer _timer;
+
+//=============================================== BOOL VALUES ======================================================\\
+  late bool _loadingScreen;
+  bool _isScrollToTopBtnVisible = false;
+
+//=============================================== FUNCTIONS ======================================================\\
+
+  //===================== Scroll to Top ==========================\\
+  Future<void> _scrollToTop() async {
+    await scrollController.animateTo(
+      0.0,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+    setState(() {
+      _isScrollToTopBtnVisible = false;
+    });
+  }
+
+  Future<void> _scrollListener() async {
+    if (scrollController.position.pixels >= 100 &&
+        _isScrollToTopBtnVisible != true) {
+      setState(() {
+        _isScrollToTopBtnVisible = true;
+      });
+    }
+    if (scrollController.position.pixels < 100 &&
+        _isScrollToTopBtnVisible == true) {
+      setState(() {
+        _isScrollToTopBtnVisible = false;
+      });
+    }
+  }
+
+//===================== Handle refresh ==========================\\
+
+  Future<void> _handleRefresh() async {
+    _loadingScreen = true;
+    _timer = Timer(const Duration(milliseconds: 1000), () {
+      scrollController.addListener(_scrollListener);
+
+      setState(() => _loadingScreen = false);
+    });
+  }
 
   void _goToWithdraw() {
     Get.to(
@@ -31,7 +102,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
     );
   }
 
-  _addNewAccount() => Get.to(
+  void _addBankAccount() => Get.to(
         () => const AddBankAccountPage(),
         routeName: 'AddBankAccountPage',
         duration: const Duration(milliseconds: 300),
@@ -41,159 +112,207 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
         popGesture: true,
         transition: Transition.rightToLeft,
       );
-
   @override
   Widget build(BuildContext context) {
+    var media = MediaQuery.of(context).size;
     return Scaffold(
-      // backgroundColor: kPrimaryColor,
       appBar: MyAppBar(
-        title: "Select Account",
+        title: "Select an account",
         elevation: 0,
         actions: const [],
         backgroundColor: kPrimaryColor,
         toolbarHeight: kToolbarHeight,
       ),
-      body: SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            ListView.separated(
-              physics: const BouncingScrollPhysics(),
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(kDefaultPadding),
-              separatorBuilder: (context, index) => kSizedBox,
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) {
-                return InkWell(
-                  onTap: _goToWithdraw,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: kPrimaryColor,
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 2,
-                          color: Colors.grey.shade400,
-                          spreadRadius: 1,
-                          // offset: Offset(1, 1),
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(kDefaultPadding),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Image.asset('assets/icons/accessbank.png'),
-                                kHalfWidthSizedBox,
-                                const Text(
-                                  'Access Bank',
-                                  style: TextStyle(
-                                    color: Color(0xFF979797),
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                _showBottomSheet(context);
-                              },
-                              icon: FaIcon(
-                                FontAwesomeIcons.ellipsis,
-                                color: kAccentColor,
-                              ),
-                            )
-                          ],
-                        ),
-                        kSizedBox,
-                        const Text(
-                          'Blessing George....09876',
-                          style: TextStyle(
-                            color: kTextBlackColor,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
-            kHalfSizedBox,
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: OutlinedButton(
-                  style: OutlinedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFEF8F8),
-                      minimumSize: const Size(double.infinity, 60)),
-                  onPressed: _addNewAccount,
-                  child: Text(
-                    'Add a new Account',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: kAccentColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: kAccentColor.withOpacity(0.08),
+            offset: const Offset(3, 0),
+            blurRadius: 32,
+          ),
+        ]),
+        child: MyElevatedButton(
+          title: "Add a new account",
+          onPressed: _addBankAccount,
+        ),
+      ),
+      floatingActionButton: _isScrollToTopBtnVisible
+          ? FloatingActionButton(
+              onPressed: _scrollToTop,
+              mini: deviceType(media.width) > 2 ? false : true,
+              backgroundColor: kAccentColor,
+              enableFeedback: true,
+              mouseCursor: SystemMouseCursors.click,
+              tooltip: "Scroll to top",
+              hoverColor: kAccentColor,
+              hoverElevation: 50.0,
+              child: const FaIcon(FontAwesomeIcons.chevronUp, size: 18),
             )
-          ],
+          : const SizedBox(),
+      body: RefreshIndicator(
+        onRefresh: _handleRefresh,
+        displacement: 5,
+        color: kAccentColor,
+        child: SafeArea(
+          maintainBottomViewPadding: true,
+          child: _loadingScreen
+              ? Center(
+                  child: CircularProgressIndicator(color: kAccentColor),
+                )
+              : ListView(
+                  padding: const EdgeInsets.all(10),
+                  controller: scrollController,
+                  physics: const BouncingScrollPhysics(),
+                  children: [
+                    Scrollbar(
+                      controller: scrollController,
+                      child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: 10,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: _goToWithdraw,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: kDefaultPadding,
+                                vertical: kDefaultPadding / 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: kPrimaryColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 2,
+                                    color: Colors.grey.shade400,
+                                    spreadRadius: 1,
+                                    // offset: Offset(1, 1),
+                                  ),
+                                ],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              padding: const EdgeInsets.all(kDefaultPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          FaIcon(
+                                            FontAwesomeIcons.buildingColumns,
+                                            color: kAccentColor,
+                                          ),
+                                          kHalfWidthSizedBox,
+                                          Text(
+                                            'Access Bank',
+                                            style: TextStyle(
+                                              color: kTextGreyColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      IconButton(
+                                        onPressed: () {
+                                          _showBottomSheet(context);
+                                        },
+                                        icon: FaIcon(
+                                          FontAwesomeIcons.ellipsis,
+                                          color: kAccentColor,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  kSizedBox,
+                                  const Text(
+                                    'Blessing George....09876',
+                                    style: TextStyle(
+                                      color: kTextBlackColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    kSizedBox,
+                  ],
+                ),
         ),
       ),
     );
   }
 
+//Delete Account
+  void _deleteAccount() {}
+
   void _showBottomSheet(BuildContext context) {
+    var media = MediaQuery.of(context).size;
     showModalBottomSheet(
       showDragHandle: true,
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: kPrimaryColor,
+      isScrollControlled: true,
+      useSafeArea: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
       ),
       builder: (BuildContext context) {
         return SingleChildScrollView(
+          padding: const EdgeInsets.only(left: 100, right: 100, bottom: 25),
           child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(10),
-                ),
-              ),
-              padding: const EdgeInsets.all(kDefaultPadding),
-              child: InkWell(
-                onTap: () {},
-                mouseCursor: SystemMouseCursors.click,
-                child: Container(
-                  alignment: Alignment.center,
-                  height: 60,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FaIcon(
-                        FontAwesomeIcons.solidTrashCan,
-                        color: kAccentColor,
-                        size: 18,
-                      ),
-                      kWidthSizedBox,
-                      const Text(
-                        'Delete account',
-                        style: TextStyle(
-                          color: kTextBlackColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: _deleteAccount,
+                  mouseCursor: SystemMouseCursors.click,
+                  borderRadius: BorderRadius.circular(12),
+                  child: Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(5),
+                    width: media.width - 200,
+                    height: 50,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(
+                          FontAwesomeIcons.solidTrashCan,
+                          color: kAccentColor,
                         ),
-                      )
-                    ],
+                        kWidthSizedBox,
+                        const SizedBox(
+                          child: Center(
+                            child: Text(
+                              'Delete account',
+                              textAlign: TextAlign.left,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: kTextBlackColor,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              )),
+                const Divider(),
+              ],
+            ),
+          ),
         );
       },
     );

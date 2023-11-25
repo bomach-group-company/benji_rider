@@ -1,4 +1,4 @@
-import 'package:benji_rider/app/withdrawal/withdraw_history.dart';
+import 'package:benji_rider/app/withdrawal%20_old_one/withdraw_history.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
