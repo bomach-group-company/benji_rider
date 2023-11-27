@@ -1,4 +1,5 @@
 import 'package:benji_rider/repo/controller/auth_controller.dart';
+import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/latlng_detail_controller.dart';
 import 'package:benji_rider/repo/controller/login_controller.dart';
@@ -40,6 +41,7 @@ void main() async {
   Get.put(VendorController());
   Get.put(TasksController());
   Get.put(WithdrawController());
+  Get.put(DeliveryHistoryController());
 
   runApp(const MyApp());
 }

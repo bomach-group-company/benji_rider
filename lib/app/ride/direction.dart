@@ -22,7 +22,7 @@ class _DirectsPageState extends State<DirectsPage> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       appBar: MyAppBar(
-        title: "Directions",
+        title: "Items",
         elevation: 10.0,
         actions: const [],
         backgroundColor: kPrimaryColor,

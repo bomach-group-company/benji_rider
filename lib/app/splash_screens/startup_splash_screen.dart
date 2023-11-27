@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:benji_rider/repo/controller/auth_controller.dart';
+import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,10 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
   @override
   void initState() {
     super.initState();
-    UserController.instance.setUserSync();
-    VendorController.instance.getVendorList();
+    if (UserController.instance.ifUser()) {
+      VendorController.instance.getVendorList();
+      DeliveryHistoryController.instance.getDeliveryHistory();
+    }
   }
 
   @override

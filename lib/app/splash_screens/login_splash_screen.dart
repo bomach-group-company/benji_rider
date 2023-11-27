@@ -3,13 +3,13 @@
 import 'dart:async';
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
+import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
+import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart'
-;
+import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../theme/colors.dart';
-
 
 class LoginSplashScreen extends StatefulWidget {
   const LoginSplashScreen({super.key});
@@ -22,6 +22,8 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
   @override
   void initState() {
     super.initState();
+    VendorController.instance.getVendorList();
+    DeliveryHistoryController.instance.getDeliveryHistory();
     Timer(
       const Duration(seconds: 2),
       () {

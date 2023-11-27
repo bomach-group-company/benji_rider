@@ -15,7 +15,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../theme/colors.dart';
-import '../delivery/deliveries_completed.dart';
 
 class Ride extends StatefulWidget {
   const Ride({super.key});
@@ -54,24 +53,6 @@ class _RideState extends State<Ride> {
         popGesture: true,
         transition: Transition.rightToLeft,
       );
-
-  void deliveryFunc(context) {
-    setState(() {
-      _pickedUp = false;
-      _acceptRequest = !_acceptRequest;
-      _showDeliveryDialog = !_showDeliveryDialog;
-
-      Get.to(
-        const DeliverComplete(),
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.rightToLeft,
-      );
-    });
-  }
 
   void pickedUpFunc(context) {
     setState(() {

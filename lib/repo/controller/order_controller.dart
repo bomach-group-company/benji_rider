@@ -2,7 +2,6 @@
 
 import 'dart:convert';
 
-import 'package:benji_rider/app/delivery/delivery.dart';
 import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
@@ -10,6 +9,8 @@ import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+enum StatusType { delivered, pending, cancelled }
 
 class OrderController extends GetxController {
   static OrderController get instance {
