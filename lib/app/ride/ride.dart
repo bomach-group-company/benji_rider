@@ -2,9 +2,12 @@
 
 import 'dart:async';
 
+import 'package:benji_rider/app/ride/direction.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
+import 'package:benji_rider/repo/models/tasks.dart';
 import 'package:benji_rider/src/providers/constants.dart';
 import 'package:benji_rider/src/widget/section/drawer.dart';
+import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -41,6 +44,17 @@ class _RideState extends State<Ride> {
   GoogleMapController? _newGoogleMapController;
 
   //=================================== FUNCTIONS ======================================================\\
+  void _toDirectsPagePage(TasksModel task) => Get.to(
+        () => DirectsPage(task: task),
+        routeName: 'DirectsPage',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+
   void deliveryFunc(context) {
     setState(() {
       _pickedUp = false;
@@ -160,81 +174,132 @@ class _RideState extends State<Ride> {
         }
       },
       drawer: const MyDrawer(),
+      appBar: MyAppBar(
+        title: "Tasks",
+        elevation: 10.0,
+        actions: const [],
+        backgroundColor: kPrimaryColor,
+        toolbarHeight: kToolbarHeight,
+      ),
       body: SafeArea(
         maintainBottomViewPadding: true,
-        child: Stack(
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
           children: [
-            FutureBuilder(
-              future: _getStatus(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data == false) {
-                    return const Center();
-                  } else {
-                    return GoogleMap(
-                      mapType: MapType.normal,
-                      padding: const EdgeInsets.only(bottom: 125),
-                      buildingsEnabled: true,
-                      compassEnabled: true,
-                      indoorViewEnabled: true,
-                      mapToolbarEnabled: true,
-                      minMaxZoomPreference: MinMaxZoomPreference.unbounded,
-                      tiltGesturesEnabled: true,
-                      zoomControlsEnabled: true,
-                      zoomGesturesEnabled: true,
-                      myLocationButtonEnabled: true,
-                      myLocationEnabled: true,
-                      cameraTargetBounds: CameraTargetBounds.unbounded,
-                      rotateGesturesEnabled: true,
-                      scrollGesturesEnabled: true,
-                      trafficEnabled: true,
-                      initialCameraPosition: _kGooglePlex,
-                      onMapCreated: _onMapCreated,
-                    );
-                  }
-                } else {
-                  return Center(
-                    child: CircularProgressIndicator(
-                      color: kAccentColor,
+            // FutureBuilder(
+            //   future: _getStatus(),
+            //   builder: (context, snapshot) {
+            //     if (snapshot.hasData) {
+            //       if (snapshot.data == false) {
+            //         return const Center();
+            //       } else {
+            //         return GoogleMap(
+            //           mapType: MapType.normal,
+            //           padding: const EdgeInsets.only(bottom: 125),
+            //           buildingsEnabled: true,
+            //           compassEnabled: true,
+            //           indoorViewEnabled: true,
+            //           mapToolbarEnabled: true,
+            //           minMaxZoomPreference: MinMaxZoomPreference.unbounded,
+            //           tiltGesturesEnabled: true,
+            //           zoomControlsEnabled: true,
+            //           zoomGesturesEnabled: true,
+            //           myLocationButtonEnabled: true,
+            //           myLocationEnabled: true,
+            //           cameraTargetBounds: CameraTargetBounds.unbounded,
+            //           rotateGesturesEnabled: true,
+            //           scrollGesturesEnabled: true,
+            //           trafficEnabled: true,
+            //           initialCameraPosition: _kGooglePlex,
+            //           onMapCreated: _onMapCreated,
+            //         );
+            //       }
+            //     } else {
+            //       return Center(
+            //         child: CircularProgressIndicator(
+            //           color: kAccentColor,
+            //         ),
+            //       );
+            //     }
+            //   },
+            // ),
+
+            // Container(
+            //   margin: const EdgeInsets.all(30),
+            //   decoration: BoxDecoration(
+            //     color: kPrimaryColor,
+            //     borderRadius: const BorderRadius.all(
+            //       Radius.circular(20),
+            //     ),
+            //   ),
+            //   child: Builder(
+            //     builder: (context) => IconButton(
+            //       splashRadius: 20,
+            //       onPressed: () {
+            //         Scaffold.of(context).openDrawer();
+            //       },
+            //       icon: Icon(
+            //         Icons.menu,
+            //         color: kAccentColor,
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            kSizedBox,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              //Red delivery request card
+              child: GetBuilder<TasksController>(builder: (controller) {
+                if (controller.tasks.isEmpty) {
+                  return Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.only(
+                      top: 10,
+                      left: 20,
+                      right: 20,
+                      bottom: 20,
+                    ),
+                    decoration: ShapeDecoration(
+                      color: kAccentColor.withOpacity(0.9),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'No Delivery Requests',
+                          style: TextStyle(
+                            color: kTextWhiteColor,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        kSizedBox,
+                        Text(
+                          'You have No Delivery Requests For Now',
+                          style: TextStyle(
+                            color: kTextWhiteColor,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 }
-              },
-            ),
-
-            Container(
-              margin: const EdgeInsets.all(30),
-              decoration: BoxDecoration(
-                color: kPrimaryColor,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20),
-                ),
-              ),
-              child: Builder(
-                builder: (context) => IconButton(
-                  splashRadius: 20,
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  icon: Icon(
-                    Icons.menu,
-                    color: kAccentColor,
-                  ),
-                ),
-              ),
-            ),
-
-            Positioned(
-              top: 90,
-              left: 30,
-              right: 30,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                //Red delivery request card
-                child: GetBuilder<TasksController>(builder: (controller) {
-                  if (controller.tasks.isEmpty) {
+                return ListView.separated(
+                  physics: const BouncingScrollPhysics(),
+                  separatorBuilder: (context, index) => kSizedBox,
+                  shrinkWrap: true,
+                  itemCount: controller.tasks.length,
+                  itemBuilder: (BuildContext context, int index) {
                     return Container(
                       width: double.infinity,
                       padding: const EdgeInsets.only(
@@ -249,188 +314,90 @@ class _RideState extends State<Ride> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'No Delivery Requests',
-                            style: TextStyle(
+                            controller.isAccepted(controller.tasks[index])
+                                ? 'Request Accepted'
+                                : 'Delivery Request',
+                            style: const TextStyle(
                               color: kTextWhiteColor,
                               fontSize: 24,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
                           kSizedBox,
-                          Text(
-                            'You have No Delivery Requests For Now',
-                            style: TextStyle(
-                              color: kTextWhiteColor,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              controller.isAccepted(controller.tasks[index])
+                                  ? const SizedBox()
+                                  : ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: kTextWhiteColor,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        controller.rejectTask(
+                                            controller.tasks[index].id);
+                                      },
+                                      child: Text(
+                                        'Reject',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: kAccentColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                    ),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kTextWhiteColor,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (controller
+                                      .isAccepted(controller.tasks[index])) {
+                                    // direct to s page
+                                    _toDirectsPagePage(controller.tasks[index]);
+                                  } else {
+                                    controller
+                                        .acceptTask(controller.tasks[index].id);
+                                  }
+                                },
+                                child: Text(
+                                  controller.isAccepted(controller.tasks[index])
+                                      ? 'Direction'
+                                      : 'Accept',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: kAccentColor,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
                         ],
                       ),
                     );
-                  }
-                  return ListView.separated(
-                    separatorBuilder: (context, index) => kSizedBox,
-                    shrinkWrap: true,
-                    itemCount: controller.tasks.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.only(
-                          top: 10,
-                          left: 20,
-                          right: 20,
-                          bottom: 20,
-                        ),
-                        decoration: ShapeDecoration(
-                          color: kAccentColor.withOpacity(0.9),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              controller.isAccepted(controller.tasks[index])
-                                  ? 'Request Accepted'
-                                  : 'Delivery Request',
-                              style: const TextStyle(
-                                color: kTextWhiteColor,
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            kSizedBox,
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                controller.isAccepted(controller.tasks[index])
-                                    ? const SizedBox()
-                                    : ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: kTextWhiteColor,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(20),
-                                            ),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          controller.rejectTask(
-                                              controller.tasks[index].id);
-                                        },
-                                        child: Text(
-                                          'Reject',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: kAccentColor,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        ),
-                                      ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: kTextWhiteColor,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    if (controller
-                                        .isAccepted(controller.tasks[index])) {
-                                      // direct to directions page
-                                    } else {
-                                      controller.acceptTask(
-                                          controller.tasks[index].id);
-                                    }
-                                  },
-                                  child: Text(
-                                    controller
-                                            .isAccepted(controller.tasks[index])
-                                        ? 'Direction'
-                                        : 'Accept',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: kAccentColor,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }),
-              ),
+                  },
+                );
+              }),
             ),
-            // _acceptRequest
-            //     ? PickupDeliveryCard(
-            //         isDelivery: _pickedUp,
-            //         pickupFunc: () {
-            //           deliveryModel(
-            //             context,
-            //             () {
-            //               acceptRequestFunc(context);
-            //             },
-            //             isPickup: true,
-            //             pickedUpFunc: () {
-            //               pickedUpFunc(context);
-            //             },
-            //           );
-            //         },
-            //         deliveryFunc: () {
-            //           deliveryModel(
-            //             context,
-            //             () {
-            //               acceptRequestFunc(context);
-            //             },
-            //             isDelivery: true,
-            //             deliveryFunc: () {
-            //               deliveryFunc(context);
-            //             },
-            //           );
-            //         },
-            //       )
-            //     :
-
-            // FutureBuilder(
-            //   future: _getStatus(),
-            //   builder: (BuildContext context, AsyncSnapshot snapshot) {
-            //     if (snapshot.hasData) {
-            //       return AnimatedPositioned(
-            //         duration: Duration(milliseconds: 300),
-            //         curve: Curves.easeInOut,
-            //         bottom: 10,
-            //         right: snapshot.data ? 10 : 0,
-            //         left: snapshot.data ? 10 : 0,
-            //         child: OnlineOfflineCard(
-            //           isOnline: snapshot.data,
-            //           toggleOnline: _toggleOnline,
-            //         ),
-            //       );
-            //     } else {
-            //       return Center(
-            //         child: CircularProgressIndicator(
-            //           color: kAccentColor,
-            //         ),
-            //       );
-            //     }
-            //   },
-            // ),
+            kSizedBox
           ],
         ),
       ),

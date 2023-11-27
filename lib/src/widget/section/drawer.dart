@@ -119,12 +119,12 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             MyListTile(
-              text: 'Ride',
-              icon: Icons.speed_outlined,
+              text: 'Tasks',
+              icon: Icons.directions_bike,
               nav: () {
                 Get.to(
                   () => const Ride(),
-                  routeName: 'Ride',
+                  routeName: 'Tasks',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
