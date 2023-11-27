@@ -2,8 +2,10 @@
 
 import 'dart:async';
 
+import 'package:benji_rider/app/ride/direction.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
+import 'package:benji_rider/repo/models/tasks.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -27,6 +29,16 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
+  void _toDirectsPagePage(TasksModel task) => Get.to(
+        () => DirectsPage(task: task),
+        routeName: 'DirectsPage',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
 
   @override
   void initState() {
@@ -153,28 +165,6 @@ class _DashboardState extends State<Dashboard>
               children: [
                 const EarningContainer(),
                 kSizedBox,
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     OrdersContainer(
-                //       containerColor: kPrimaryColor,
-                //       typeOfOrderColor: kTextGreyColor,
-                //       iconColor: kGreyColor1,
-                //       numberOfOrders: "47",
-                //       typeOfOrders: "Completed",
-                //       onTap: () => _deliveryRoute(StatusType.delivered),
-                //     ),
-                //     OrdersContainer(
-                //       containerColor: Colors.red.shade100,
-                //       typeOfOrderColor: kAccentColor,
-                //       iconColor: kAccentColor,
-                //       numberOfOrders: "3",
-                //       typeOfOrders: "Pending",
-                //       onTap: () => _deliveryRoute(StatusType.pending),
-                //     ),
-                //   ],
-                // ),
-                // kSizedBox,
                 GetBuilder<VendorController>(
                   builder: (controller) => RiderVendorContainer(
                     onTap: toSeeAllVendors,
@@ -183,6 +173,160 @@ class _DashboardState extends State<Dashboard>
                   ),
                 ),
                 kSizedBox,
+                const Text(
+                  'Incoming Tasks',
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                kSizedBox,
+                Container(
+                  //Red delivery request card
+                  child: GetBuilder<TasksController>(builder: (controller) {
+                    if (controller.tasks.isEmpty) {
+                      return Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.only(
+                          top: 10,
+                          left: 20,
+                          right: 20,
+                          bottom: 20,
+                        ),
+                        decoration: ShapeDecoration(
+                          color: kTextWhiteColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'No Delivery Requests',
+                              style: TextStyle(
+                                color: kBlackColor,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            kSizedBox,
+                            Text(
+                              'You have No Delivery Requests For Now',
+                              style: TextStyle(
+                                color: kTextWhiteColor,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.separated(
+                      physics: const BouncingScrollPhysics(),
+                      separatorBuilder: (context, index) => kSizedBox,
+                      shrinkWrap: true,
+                      itemCount: controller.tasks.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(
+                            top: 10,
+                            left: 20,
+                            right: 20,
+                            bottom: 20,
+                          ),
+                          decoration: ShapeDecoration(
+                            color: kTextWhiteColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            shadows: const [
+                              BoxShadow(
+                                color: Color(0x0F000000),
+                                blurRadius: 24,
+                                offset: Offset(0, 4),
+                                spreadRadius: 4,
+                              )
+                            ],
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '#CTGHU34 - 4 items',
+                                style: TextStyle(
+                                  color: kBlackColor,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              kSizedBox,
+                              const Text(
+                                  'Pickup from - 98 gra by blabla enugu'),
+                              kHalfSizedBox,
+                              const Text('Deliver to - 98 gra by blabla enugu'),
+                              kSizedBox,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: kTextWhiteColor,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      controller.rejectTask(
+                                          controller.tasks[index].id);
+                                    },
+                                    child: Text(
+                                      'Reject',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: kAccentColor,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      controller.acceptTask(
+                                          controller.tasks[index].id);
+                                    },
+                                    child: const Text(
+                                      'Accept',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: kTextWhiteColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                ),
+                kSizedBox
               ],
             ),
           ),

@@ -17,9 +17,8 @@ class WithdrawController extends GetxController {
     return Get.find<WithdrawController>();
   }
 
-  bool? isFirst;
-  WithdrawController({this.isFirst});
   var isLoad = false.obs;
+  var isLoadValidateAccount = false.obs;
   var userId = UserController.instance.user.value.id;
   var listOfBanks = <BankModel>[].obs;
   var listOfWithdrawals = <WithdrawalHistoryModel>[].obs;
@@ -68,7 +67,7 @@ class WithdrawController extends GetxController {
         "${Api.baseUrl}${Api.validateBankNumber}?account_number=$accountNumber&bank_code=$bankCode";
     consoleLog(url);
 
-    isLoad.value = true;
+    isLoadValidateAccount.value = true;
     update();
 
     try {
@@ -93,7 +92,7 @@ class WithdrawController extends GetxController {
           "An unexpected error occurred. \nERROR: $e");
     }
 
-    isLoad.value = false;
+    isLoadValidateAccount.value = false;
     update();
     return;
   }

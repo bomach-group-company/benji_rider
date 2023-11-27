@@ -35,6 +35,16 @@ class OrderController extends GetxController {
     status.value = StatusType.delivered;
   }
 
+  resetOrders() async {
+    vendorsOrderList.value = <Order>[];
+    loadedAll.value = false;
+    isLoadMore.value = false;
+    loadNum.value = 10;
+    total.value = 0;
+    status.value = StatusType.pending;
+    setStatus();
+  }
+
   Future<void> scrollListener(scrollController) async {
     if (OrderController.instance.loadedAll.value) {
       return;

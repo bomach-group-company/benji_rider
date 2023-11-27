@@ -147,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: kAccentColor,
                       ),
                       title: const Text(
-                        'Delivery',
+                        'My Orders',
                         style: TextStyle(
                           color: Color(0xFF333333),
                           fontSize: 15,

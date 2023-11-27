@@ -87,7 +87,7 @@ class TasksController extends GetxController {
 
     channelTask.stream.listen((message) {
       setTasks(jsonDecode(message)['message'] as List);
-      print('tasks $message');
+      // print('tasks $message');
     });
   }
 

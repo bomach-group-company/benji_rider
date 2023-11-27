@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
-import 'package:benji_rider/app/ride/ride.dart';
+import 'package:benji_rider/app/delivery/delivery_history.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
@@ -119,12 +119,12 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             MyListTile(
-              text: 'Tasks',
-              icon: Icons.directions_bike,
+              text: 'My Orders',
+              icon: Icons.map_outlined,
               nav: () {
                 Get.to(
-                  () => const Ride(),
-                  routeName: 'Tasks',
+                  () => const Delivery(),
+                  routeName: 'Delivery',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,

@@ -15,12 +15,11 @@ class AccountController extends GetxController {
     return Get.find<AccountController>();
   }
 
-  AccountController();
   var isLoad = false.obs;
-  var userId = UserController.instance.user.value.id;
   var accounts = <AccountModel>[].obs;
 
   getAccounts() async {
+    var userId = UserController.instance.user.value.id;
     var url = "${Api.baseUrl}/payments/getSaveBankDetails/$userId/";
     consoleLog(url);
     isLoad.value = true;
@@ -28,28 +27,16 @@ class AccountController extends GetxController {
     try {
       final response = await http.get(Uri.parse(url), headers: authHeader());
 
+      consoleLog(response.body);
       if (response.statusCode == 200) {
-        consoleLog(response.body);
         dynamic jsonResponse = jsonDecode(response.body);
-        if (jsonResponse is List) {
-          accounts.value = AccountModel.listFromJson(
-              jsonResponse.cast<Map<String, dynamic>>());
-        } else if (jsonResponse is Map) {
-          if (jsonResponse.containsKey('items')) {
-            accounts.value = AccountModel.listFromJson(
-                (jsonResponse['items'] as List).cast<Map<String, dynamic>>());
-          } else {
-            accounts.value = [];
-          }
-        } else {
-          accounts.value = [];
-        }
-      } else {
-        accounts.value = [];
+        accounts.value = AccountModel.listFromJson(
+            (jsonResponse as List).cast<Map<String, dynamic>>());
       }
     } on SocketException {
       ApiProcessorController.errorSnack("Please connect to the internet");
     } catch (e) {
+      accounts.value = [];
       consoleLog(e.toString());
     }
     isLoad.value = false;

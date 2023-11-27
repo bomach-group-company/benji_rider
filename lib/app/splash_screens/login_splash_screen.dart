@@ -3,8 +3,10 @@
 import 'dart:async';
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
+import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
+import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
@@ -24,6 +26,9 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
     super.initState();
     VendorController.instance.getVendorList();
     DeliveryHistoryController.instance.getDeliveryHistory();
+    AccountController.instance.getAccounts();
+    WithdrawController.instance.listBanks();
+
     Timer(
       const Duration(seconds: 2),
       () {

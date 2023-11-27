@@ -6,6 +6,8 @@ class Client {
   final String email;
   final String phone;
   final String image;
+  final String firstName;
+  final String lastName;
 
   Client({
     required this.id,
@@ -13,6 +15,8 @@ class Client {
     required this.email,
     required this.phone,
     required this.image,
+    required this.firstName,
+    required this.lastName,
   });
 
   factory Client.fromJson(Map<String, dynamic>? json) {
@@ -24,6 +28,8 @@ class Client {
       email: json['email'] ?? notAvailable,
       phone: json['phone'] ?? notAvailable,
       image: json['image'] ?? '',
+      firstName: json['first_name'] ?? notAvailable,
+      lastName: json['last_name'] ?? notAvailable,
     );
   }
   Map<String, dynamic> toJson() => {
@@ -32,5 +38,7 @@ class Client {
         "username": username,
         "phone": phone,
         "image": image,
+        "first_name": firstName,
+        "last_name": lastName,
       };
 }

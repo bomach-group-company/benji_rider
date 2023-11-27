@@ -65,18 +65,65 @@ class FormController extends GetxController {
     update([tag]);
   }
 
-  Future postAuth(String url, Map data, String tag,
+  Future patchAuth(String url, Map data, String tag,
       [String errorMsg = "Error occurred",
       String successMsg = "Submitted successfully"]) async {
+    isLoad.value = true;
+    update();
+    update([tag]);
+    try {
+      final response = await http.patch(
+        Uri.parse(url),
+        headers: authHeader(),
+        body: jsonEncode(data),
+      );
+      status.value = response.statusCode;
+      var responseBody = jsonDecode(response.body);
+
+      if (response.statusCode != 200) {
+        ApiProcessorController.errorSnack(errorMsg);
+        isLoad.value = false;
+        update();
+        update([tag]);
+        return;
+      } else {
+        if (responseBody is String) {
+          ApiProcessorController.successSnack(successMsg);
+          isLoad.value = false;
+          update();
+          update([tag]);
+        } else if (responseBody is Map) {
+          responseObject.value = (responseBody);
+          ApiProcessorController.successSnack(successMsg);
+          isLoad.value = false;
+          update();
+          update([tag]);
+        }
+      }
+    } on SocketException {
+      ApiProcessorController.errorSnack("Please connect to the internet");
+    } catch (e) {
+      ApiProcessorController.errorSnack(errorMsg);
+    }
+
+    isLoad.value = false;
+    update();
+    update([tag]);
+  }
+
+  Future postAuth(String url, Map data, String tag,
+      [String errorMsg = "Error occurred",
+      String successMsg = "Submitted successfully",
+      bool encodeIt = true]) async {
     isLoad.value = true;
     update([tag]);
     final response = await http.post(
       Uri.parse(url),
       headers: authHeader(),
-      body: jsonEncode(data),
+      body: encodeIt ? jsonEncode(data) : data,
     );
-    debugPrint("${response.statusCode}");
-    debugPrint(response.body);
+    print("${response.statusCode}, $encodeIt");
+    print('response.body ${response.body}');
     status.value = response.statusCode;
     if (response.statusCode != 200) {
       ApiProcessorController.errorSnack(errorMsg);
