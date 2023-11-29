@@ -158,10 +158,16 @@ class _DeliveryState extends State<Delivery> {
                 initState: (state) =>
                     OrderController.instance.getOrdersByStatus(),
                 builder: (controller) {
-                  if (controller.isLoad.value) {
+                  if (controller.isLoad.value &&
+                      controller.vendorsOrderList.isEmpty) {
                     return Center(
-                      child: CircularProgressIndicator(
-                        color: kAccentColor,
+                      child: Column(
+                        children: [
+                          kSizedBox,
+                          CircularProgressIndicator(
+                            color: kAccentColor,
+                          ),
+                        ],
                       ),
                     );
                   }

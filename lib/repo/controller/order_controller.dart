@@ -92,7 +92,7 @@ class OrderController extends GetxController {
           .map((e) => DeliveryModel.fromJson(e))
           .toList();
       consoleLog(data.toString());
-      vendorsOrderList.value += data;
+      vendorsOrderList.value = data;
     } catch (e) {
       consoleLog(e.toString());
     }
