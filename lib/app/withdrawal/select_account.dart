@@ -92,9 +92,9 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
     });
   }
 
-  void _goToWithdraw() {
+  void _goToWithdraw(String bankDetailId) {
     Get.to(
-      () => const WithdrawPage(),
+      () => WithdrawPage(bankDetailId: bankDetailId),
       routeName: 'WithdrawPage',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
@@ -185,7 +185,8 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                         itemCount: controller.accounts.length,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: _goToWithdraw,
+                            onTap: () =>
+                                _goToWithdraw(controller.accounts[index].id),
                             child: Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: kDefaultPadding,

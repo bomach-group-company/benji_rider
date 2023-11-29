@@ -2,7 +2,7 @@
 
 import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/repo/controller/auth_controller.dart';
-import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
@@ -28,7 +28,8 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     super.initState();
     if (UserController.instance.ifUser()) {
       VendorController.instance.getVendorList();
-      DeliveryHistoryController.instance.getDeliveryHistory();
+      OrderController.instance.getOrdersByStatus();
+      // DeliveryHistoryController.instance.getDeliveryHistory();
       AccountController.instance.getAccounts();
       WithdrawController.instance.listBanks();
     }

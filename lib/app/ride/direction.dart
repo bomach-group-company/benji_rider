@@ -15,7 +15,7 @@ class DirectsPage extends StatefulWidget {
 class _DirectsPageState extends State<DirectsPage> {
   @override
   Widget build(BuildContext context) {
-    print('widget.task ${widget.task} ${widget.task.orders}');
+    print('widget.task ${widget.task} ${widget.task.order}');
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -45,29 +45,13 @@ class _DirectsPageState extends State<DirectsPage> {
               kSizedBox,
               ListView.separated(
                 shrinkWrap: true,
-                itemCount: widget.task.orders.length,
+                itemCount: widget.task.order.orderitems.length,
                 separatorBuilder: (BuildContext context, int index) {
-                  return kSizedBox;
+                  return kHalfSizedBox;
                 },
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: kTextWhiteColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: ListView.separated(
-                      shrinkWrap: true,
-                      itemCount: widget.task.orders[index].orderitems.length,
-                      separatorBuilder: (BuildContext context, int index) {
-                        return kHalfSizedBox;
-                      },
-                      itemBuilder: (BuildContext context, int indexItem) {
-                        return Text(
-                            '${widget.task.orders[index].orderitems[indexItem].quantity}x ${widget.task.orders[index].orderitems[indexItem].product.name}');
-                      },
-                    ),
-                  );
+                itemBuilder: (BuildContext context, int indexItem) {
+                  return Text(
+                      '${widget.task.order.orderitems[indexItem].quantity}x ${widget.task.order.orderitems[indexItem].product.name}');
                 },
               ),
             ],

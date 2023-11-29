@@ -148,13 +148,13 @@ Future<bool> isAuthorized() async {
 
 String statusTypeConverter(StatusType statusType) {
   if (statusType == StatusType.delivered) {
-    return "COMP";
+    return "completed";
   }
   if (statusType == StatusType.pending) {
-    return "PEND";
+    return "pending";
   }
   if (statusType == StatusType.cancelled) {
-    return "CANC";
+    return "cancelled";
   }
-  return "COMP";
+  return "completed";
 }

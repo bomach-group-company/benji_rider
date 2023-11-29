@@ -47,6 +47,7 @@ class _SelectBankBodyState extends State<SelectBankBody> {
   onChanged(value) async {
     selectedBankName.value = value;
     isTyping = true;
+    WithdrawController.instance.searchBanks(value);
 
     consoleLog("ONCHANGED VALUE: ${selectedBankName.value}");
   }
@@ -102,11 +103,11 @@ class _SelectBankBodyState extends State<SelectBankBody> {
             child: Scrollbar(
               controller: scrollController,
               child: GetBuilder<WithdrawController>(builder: (banks) {
-                return banks.listOfBanks.isEmpty
+                return banks.listOfBanksSearch.isEmpty
                     ? const EmptyCard(
                         emptyCardMessage: "There are no banks",
                       )
-                    // : banks.listOfBanks.isEmpty && banks.isLoad.value
+                    // : banks.listOfBanksSearch.isEmpty && banks.isLoad.value
                     //     ? Center(
                     //         child:
                     //             CircularProgressIndicator(color: kAccentColor),
@@ -115,10 +116,10 @@ class _SelectBankBodyState extends State<SelectBankBody> {
                         shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
                         padding: const EdgeInsets.all(10),
-                        itemCount: banks.listOfBanks.length,
+                        itemCount: banks.listOfBanksSearch.length,
                         separatorBuilder: (context, index) => kSizedBox,
                         itemBuilder: (context, index) {
-                          final bankName = banks.listOfBanks[index].name;
+                          final bankName = banks.listOfBanksSearch[index].name;
                           // Check if the bankName contains the search query
                           if (bankName
                               .toLowerCase()
@@ -133,7 +134,7 @@ class _SelectBankBodyState extends State<SelectBankBody> {
                           }
                           // BankListTile(
                           //   onTap: () => selectBank(index),
-                          //   bank: banks.listOfBanks[index].name,
+                          //   bank: banks.listOfBanksSearch[index].name,
                           // );
                         });
               }),

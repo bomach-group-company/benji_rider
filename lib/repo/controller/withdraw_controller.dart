@@ -21,9 +21,21 @@ class WithdrawController extends GetxController {
   var isLoadValidateAccount = false.obs;
   var userId = UserController.instance.user.value.id;
   var listOfBanks = <BankModel>[].obs;
+  var listOfBanksSearch = <BankModel>[].obs;
   var listOfWithdrawals = <WithdrawalHistoryModel>[].obs;
   var validateAccount = ValidateBankAccountModel.fromJson(null).obs;
   var noWithdrawalHistory = "".obs;
+
+  searchBanks(String search) {
+    listOfBanksSearch = listOfBanks;
+    listOfBanksSearch.value =
+        listOfBanksSearch.where((str) => str.name.contains(search)).toList();
+    update();
+  }
+
+  makeWithdrawal(double amount) {
+    final userId = UserController.instance.user.value.id;
+  }
 
   listBanks() async {
     var url = "${Api.baseUrl}${Api.listBanks}";
@@ -39,18 +51,23 @@ class WithdrawController extends GetxController {
         if (jsonResponse is List) {
           listOfBanks.value =
               BankModel.listFromJson(jsonResponse.cast<Map<String, dynamic>>());
+          listOfBanksSearch = listOfBanks;
         } else if (jsonResponse is Map) {
           if (jsonResponse.containsKey('items')) {
             listOfBanks.value = BankModel.listFromJson(
                 jsonResponse['items'].cast<Map<String, dynamic>>());
+            listOfBanksSearch = listOfBanks;
           } else {
             listOfBanks.value = [];
+            listOfBanksSearch.value = [];
           }
         } else {
           listOfBanks.value = [];
+          listOfBanksSearch.value = [];
         }
       } else {
         listOfBanks.value = [];
+        listOfBanksSearch.value = [];
       }
     } on SocketException {
       ApiProcessorController.errorSnack("Please connect to the internet");
@@ -98,7 +115,8 @@ class WithdrawController extends GetxController {
   }
 
   Future withdrawalHistory() async {
-    var url = "${Api.baseUrl}${Api.withdrawalHistory}?user_id=$userId";
+    var url =
+        "${Api.baseUrl}${Api.withdrawalHistory}?user_id=$userId&start=0&end=100";
     isLoad.value = true;
     update();
 
@@ -106,27 +124,19 @@ class WithdrawController extends GetxController {
       final response = await http.get(Uri.parse(url), headers: authHeader());
 
       if (response.statusCode == 200) {
-        consoleLog(response.body);
-
-        if (response.body == '"user histories not found."' ||
-            (jsonDecode(response.body) as List).isEmpty) {
-          noWithdrawalHistory.value = response.body;
-        } else {
-          try {
-            List<dynamic> jsonResponse = jsonDecode(response.body);
-
-            List<WithdrawalHistoryModel> withdrawalHistoryList = jsonResponse
-                .map((item) => WithdrawalHistoryModel.fromJson(item))
-                .toList();
-            listOfWithdrawals.value = withdrawalHistoryList;
-          } on SocketException {
-            ApiProcessorController.errorSnack("Please connect to the internet");
-          } catch (e) {
-            consoleLog("Error parsing JSON: $e");
-            ApiProcessorController.errorSnack(
-                "An unexpected error occurred. \nERROR: $e");
-            listOfWithdrawals.value = [];
-          }
+        try {
+          List<WithdrawalHistoryModel> withdrawalHistoryList =
+              (jsonDecode(response.body)['items'] as List)
+                  .map((item) => WithdrawalHistoryModel.fromJson(item))
+                  .toList();
+          listOfWithdrawals.value = withdrawalHistoryList;
+        } on SocketException {
+          ApiProcessorController.errorSnack("Please connect to the internet");
+        } catch (e) {
+          consoleLog("Error parsing JSON: $e");
+          ApiProcessorController.errorSnack(
+              "An unexpected error occurred. \nERROR: $e");
+          listOfWithdrawals.value = [];
         }
       } else {
         listOfWithdrawals.value = [];

@@ -10,29 +10,24 @@ class TasksModel {
   String acceptanceStatus;
   String deliveryStatus;
   String created;
-  List<Order> orders;
+  Order order;
 
   TasksModel({
     required this.id,
     required this.acceptanceStatus,
     required this.deliveryStatus,
     required this.created,
-    required this.orders,
+    required this.order,
   });
 
   factory TasksModel.fromJson(Map<String, dynamic>? json) {
-    // print('json json TasksModel $json');
     json ??= {};
     return TasksModel(
       id: json["id"] ?? '',
       acceptanceStatus: json["acceptance_status"] ?? "PEND",
       deliveryStatus: json["delivery_status"] ?? "pending",
       created: json["created_date"] ?? notAvailable,
-      orders: json["orders"] == null
-          ? []
-          : (json["orders"] as List)
-              .map((item) => Order.fromJson(item))
-              .toList(),
+      order: Order.fromJson(json["orders"]),
     );
   }
 }

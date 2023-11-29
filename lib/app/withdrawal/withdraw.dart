@@ -1,3 +1,6 @@
+import 'package:benji_rider/repo/controller/api_url.dart';
+import 'package:benji_rider/repo/controller/form_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:intl/intl.dart';
@@ -8,10 +11,10 @@ import '../../src/widget/form_and_auth/number_textformfield.dart';
 import '../../src/widget/responsive/reponsive_width.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../theme/colors.dart';
-import 'verify_withdrawal.dart';
 
 class WithdrawPage extends StatefulWidget {
-  const WithdrawPage({super.key});
+  final String bankDetailId;
+  const WithdrawPage({super.key, required this.bankDetailId});
 
   @override
   State<WithdrawPage> createState() => _WithdrawPageState();
@@ -45,17 +48,23 @@ class _WithdrawPageState extends State<WithdrawPage> {
   final formKey = GlobalKey<FormState>();
 
   //================================== FUNCTION ====================================\\
-  void goToVerify() {
-    Get.to(
-      () => const VerifyWithdrawalPage(),
-      routeName: 'VerifyWithdrawalPage',
-      duration: const Duration(milliseconds: 300),
-      fullscreenDialog: true,
-      curve: Curves.easeIn,
-      preventDuplicates: true,
-      popGesture: true,
-      transition: Transition.rightToLeft,
-    );
+  void makeWithdrawal() async {
+    Map data = {
+      "user_id": UserController.instance.user.value.id,
+      "amount_to_withdraw": amountEC.text,
+      "bank_details_id": widget.bankDetailId
+    };
+    print(data);
+
+    await FormController.instance.postAuth(
+        '${Api.baseUrl}/wallet/requestRiderWithdrawal',
+        data,
+        'requestRiderWithdrawal',
+        "Error occurred",
+        "Withdrawal Successful");
+    if (FormController.instance.status.value.toString().startsWith('2')) {
+      Get.close(1);
+    }
   }
 
   @override
@@ -116,7 +125,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
                         MyElevatedButton(
                           onPressed: (() async {
                             if (formKey.currentState!.validate()) {
-                              goToVerify();
+                              makeWithdrawal();
                             }
                           }),
                           title: "Withdraw",

@@ -43,6 +43,7 @@ dependencies:
   pdf: ^3.10.4
   cached_network_image:
   web_socket_channel: ^2.4.0
+  geocoding: ^2.1.1
 
 dev_dependencies:
   flutter_test:

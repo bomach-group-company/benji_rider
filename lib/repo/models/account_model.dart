@@ -1,6 +1,7 @@
 import '../utils/constants.dart';
 
 class AccountModel {
+  String id;
   int userId;
   String bankName;
   String bankCode;
@@ -9,6 +10,7 @@ class AccountModel {
   // String logo;
 
   AccountModel({
+    required this.id,
     required this.userId,
     required this.bankName,
     required this.bankCode,
@@ -20,6 +22,7 @@ class AccountModel {
   factory AccountModel.fromJson(Map<String, dynamic>? json) {
     json ??= {};
     return AccountModel(
+      id: json['id'] ?? '',
       userId: json['user_id'] ?? 0,
       bankName: json['bank_name'] ?? notAvailable,
       bankCode: json['bank_code'] ?? notAvailable,
@@ -30,6 +33,7 @@ class AccountModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'user_id': userId,
       'bank_name': bankName,
       'bank_code': bankCode,

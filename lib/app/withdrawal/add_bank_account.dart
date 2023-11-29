@@ -76,9 +76,6 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
         bankNameEC.text = newBankName;
         bankCode = newBankCode;
       });
-
-      print(newBankCode);
-      print("Bank code: $bankCode");
     }
   }
 
@@ -90,7 +87,6 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       'account_holder': data.responseBody.accountName,
       'account_number': data.responseBody.accountNumber,
     };
-    print('body in save account $body');
 
     await FormController.instance.postAuth(
         '${Api.baseUrl}/payments/saveBankDetails',
@@ -99,10 +95,10 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
         'Error occured',
         'Added successfully',
         false);
-    print(FormController.instance.status);
 
-    print(FormController.instance.responseObject);
-
+    if (FormController.instance.status.value == 200) {
+      Get.close(1);
+    }
     Get.back();
   }
 

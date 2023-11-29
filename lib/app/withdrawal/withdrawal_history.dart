@@ -102,40 +102,39 @@ class _WithdrawalHistoryPageState extends State<WithdrawalHistoryPage> {
           : const SizedBox(),
       body: SafeArea(
         maintainBottomViewPadding: true,
-        child: loadingScreen
-            ? Center(child: CircularProgressIndicator(color: kAccentColor))
-            : Scrollbar(
+        child: Scrollbar(
+          controller: scrollController,
+          child: GetBuilder<WithdrawController>(
+            initState: (state) =>
+                WithdrawController.instance.withdrawalHistory(),
+            builder: (detail) {
+              if (detail.listOfWithdrawals.isEmpty && detail.isLoad.value) {
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: kAccentColor,
+                  ),
+                );
+              }
+              if (detail.listOfWithdrawals.isEmpty) {
+                return const Center(child: EmptyCard());
+              }
+
+              return ListView.separated(
                 controller: scrollController,
-                child: GetBuilder<WithdrawController>(
-                  initState: (state) =>
-                      WithdrawController.instance.withdrawalHistory(),
-                  builder: (detail) {
-                    return detail.listOfWithdrawals.isEmpty &&
-                            detail.isLoad.value
-                        ? Center(
-                            child: CircularProgressIndicator(
-                              color: kAccentColor,
-                            ),
-                          )
-                        : detail.listOfWithdrawals.isEmpty
-                            ? const Center(child: EmptyCard())
-                            : ListView.separated(
-                                controller: scrollController,
-                                physics: const BouncingScrollPhysics(),
-                                shrinkWrap: true,
-                                itemCount: 20,
-                                padding: const EdgeInsets.all(10),
-                                separatorBuilder: (context, index) => kSizedBox,
-                                itemBuilder: (context, index) {
-                                  return WithdrawalDetailCard(
-                                    withdrawalDetail:
-                                        detail.listOfWithdrawals[index],
-                                  );
-                                },
-                              );
-                  },
-                ),
-              ),
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: detail.listOfWithdrawals.length,
+                padding: const EdgeInsets.all(10),
+                separatorBuilder: (context, index) => kSizedBox,
+                itemBuilder: (context, index) {
+                  return WithdrawalDetailCard(
+                    withdrawalDetail: detail.listOfWithdrawals[index],
+                  );
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -122,8 +121,8 @@ class FormController extends GetxController {
       headers: authHeader(),
       body: encodeIt ? jsonEncode(data) : data,
     );
-    print("${response.statusCode}, $encodeIt");
-    print('response.body ${response.body}');
+    print('post controller ${response.body}');
+    print('post controller ${response.statusCode}');
     status.value = response.statusCode;
     if (response.statusCode != 200) {
       ApiProcessorController.errorSnack(errorMsg);
@@ -174,7 +173,6 @@ class FormController extends GetxController {
 
     var request = http.MultipartRequest("POST", Uri.parse(url));
     Map<String, String> headers = authHeader();
-    debugPrint("This is the image: ${files.toString()}");
     try {
       for (String key in files.keys) {
         if (files[key] == null) {
@@ -183,24 +181,16 @@ class FormController extends GetxController {
         request.files
             .add(await http.MultipartFile.fromPath(key, files[key]!.path));
       }
-      debugPrint("${request.files}");
 
       request.headers.addAll(headers);
 
       data.forEach((key, value) {
         request.fields[key] = value.toString();
       });
-      debugPrint('request.fields ${request.fields}');
-      debugPrint('stream response emma $response');
       // try {
       response = await request.send();
-      debugPrint('pass 1 $response');
       status.value = response.statusCode;
-      debugPrint('pass 2');
       final normalResp = await http.Response.fromStream(response);
-      debugPrint('pass 3 ${response.statusCode}');
-      debugPrint('resp response $normalResp');
-      debugPrint('stream response ${normalResp.body}');
       if (response.statusCode == 200) {
         UserController.instance.saveUser(
             normalResp.body, UserController.instance.user.value.token);
@@ -231,7 +221,6 @@ class FormController extends GetxController {
       [String errorMsg = "Error occurred",
       String successMsg = "Submitted successfully"]) async {
     http.StreamedResponse? response;
-    debugPrint('we in the in');
     isLoad.value = true;
     update();
     update([tag]);
@@ -246,24 +235,16 @@ class FormController extends GetxController {
       request.files
           .add(await http.MultipartFile.fromPath(key, files[key]!.path));
     }
-    debugPrint("${request.files}");
 
     request.headers.addAll(headers);
 
     data.forEach((key, value) {
       request.fields[key] = value;
     });
-    debugPrint('request.fields ${request.fields}');
-    debugPrint('stream response emma $response');
     // try {
     response = await request.send();
-    debugPrint('pass 1 $response');
     status.value = response.statusCode;
-    debugPrint('pass 2');
     final normalResp = await http.Response.fromStream(response);
-    debugPrint('pass 3 ${response.statusCode}');
-    debugPrint('resp response $normalResp');
-    debugPrint('stream response ${normalResp.body}');
     if (response.statusCode == 200) {
       ApiProcessorController.successSnack(successMsg);
       isLoad.value = false;

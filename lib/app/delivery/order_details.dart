@@ -4,7 +4,10 @@ import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
+import 'package:benji_rider/repo/utils/map_stuff.dart';
+import 'package:benji_rider/src/providers/responsive_constant.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
+import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -146,7 +149,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                           letterSpacing: -0.32,
                         ),
                       ),
-
                       Text(
                         widget.orderStatus,
                         textAlign: TextAlign.right,
@@ -157,53 +159,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                           letterSpacing: -0.32,
                         ),
                       )
-                      // widget.order.deliveryStatus == "COMP"
-                      //     ? const Text(
-                      //         'Delivered',
-                      //         textAlign: TextAlign.right,
-                      //         style: TextStyle(
-                      //           color: kSuccessColor,
-                      //           fontSize: 16,
-                      //           fontWeight: FontWeight.w700,
-                      //           letterSpacing: -0.32,
-                      //         ),
-                      //       )
-                      //     : isDispatched == true &&
-                      //             widget.order.deliveryStatus == "dispatched"
-                      //         ? Text(
-                      //             'Dispatched',
-                      //             textAlign: TextAlign.right,
-                      //             style: TextStyle(
-                      //               color: kSecondaryColor,
-                      //               fontSize: 16,
-                      //               fontWeight: FontWeight.w700,
-                      //               letterSpacing: -0.32,
-                      //             ),
-                      //           )
-                      //         : isDispatched == false &&
-                      //                 widget.order.deliveryStatus == "PEND"
-                      //             ?
-                      //             Text(
-                      //                 'Canceled',
-                      //                 textAlign: TextAlign.right,
-                      //                 style: TextStyle(
-                      //                   color: kAccentColor,
-                      //                   fontSize: 16,
-                      //                   fontWeight: FontWeight.w700,
-                      //                   letterSpacing: -0.32,
-                      //                 ),
-                      //               )
-
-                      //             :  Text(
-                      //                 'Pending',
-                      //                 textAlign: TextAlign.right,
-                      //                 style: TextStyle(
-                      //                   color: kLoadingColor,
-                      //                   fontSize: 16,
-                      //                   fontWeight: FontWeight.w700,
-                      //                   letterSpacing: -0.32,
-                      //                 ),
-                      //               )
                     ],
                   ),
                 ],
@@ -273,6 +228,103 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
           ),
           kSizedBox,
+          widget.order.orderitems.isEmpty
+              ? const SizedBox()
+              : Container(
+                  width: media.width,
+                  padding: const EdgeInsets.all(kDefaultPadding / 2),
+                  decoration: ShapeDecoration(
+                    color: kPrimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    shadows: const [
+                      BoxShadow(
+                        color: Color(0x0F000000),
+                        blurRadius: 24,
+                        offset: Offset(0, 4),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Pickup's Detail",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: kTextBlackColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: -0.32,
+                        ),
+                      ),
+                      kSizedBox,
+                      Row(
+                        children: [
+                          Container(
+                            width: 60,
+                            height: 60,
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: CircleAvatar(
+                              radius: deviceType(media.width) >= 2 ? 60 : 30,
+                              child: ClipOval(
+                                child: MyImage(url: widget.order.client.image),
+                              ),
+                            ),
+                          ),
+                          kWidthSizedBox,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${widget.order.client.firstName} ${widget.order.client.lastName}",
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: kTextBlackColor,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              kHalfSizedBox,
+                              Text(
+                                widget.order.client.phone,
+                                style: TextStyle(
+                                  color: kTextGreyColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              kHalfSizedBox,
+                              FutureBuilder(
+                                  future: getAddressFromCoordinates(
+                                      '6.801965310155346', '7.092915443774477'),
+                                  builder: (context, controller) {
+                                    print(widget.order.orderitems.first.product
+                                        .vendorId.id);
+                                    return Text(
+                                      controller.data ?? 'Loading',
+                                      style: TextStyle(
+                                        color: kTextGreyColor,
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    );
+                                  }),
+                              kHalfSizedBox,
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+          kSizedBox,
           Container(
             width: media.width,
             padding: const EdgeInsets.all(kDefaultPadding / 2),
@@ -295,7 +347,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Customer's Detail",
+                  "Deliver to Detail",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: kTextBlackColor,
@@ -312,17 +364,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                       height: 60,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(20)),
-                        image: DecorationImage(
-                          image: AssetImage(
-                              "assets/images/profile/avatar-image.jpg"),
+                      ),
+                      child: CircleAvatar(
+                        radius: deviceType(media.width) >= 2 ? 60 : 30,
+                        child: ClipOval(
+                          child: MyImage(url: widget.order.client.image),
                         ),
                       ),
-                      // child: CircleAvatar(
-                      //   radius: deviceType(media.width) >= 2 ? 60 : 30,
-                      //   child: ClipOval(
-                      //     child: MyImage(url: widget.order.client.image),
-                      //   ),
-                      // ),
                     ),
                     kWidthSizedBox,
                     Column(
@@ -347,15 +395,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                         ),
                         kHalfSizedBox,
-                        // Text(
-                        //   widget.order.deliveryAddress,
-                        //   style: TextStyle(
-                        //     color: kTextGreyColor,
-                        //     fontSize: 12,
-                        //     fontWeight: FontWeight.w400,
-                        //   ),
-                        // ),
-                        // kHalfSizedBox,
+                        Text(
+                          widget.order.deliveryAddress.details,
+                          style: TextStyle(
+                            color: kTextGreyColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        kHalfSizedBox,
                       ],
                     ),
                   ],
@@ -364,86 +412,6 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
           ),
           kSizedBox,
-          Container(
-            width: media.width,
-            padding: const EdgeInsets.all(kDefaultPadding / 2),
-            decoration: ShapeDecoration(
-              color: kPrimaryColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14.30),
-              ),
-              shadows: const [
-                BoxShadow(
-                  color: Color(0x0F000000),
-                  blurRadius: 24,
-                  offset: Offset(0, 4),
-                  spreadRadius: 0,
-                )
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Order Summary',
-                  style: TextStyle(
-                    color: kTextBlackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.32,
-                  ),
-                ),
-                kSizedBox,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Total',
-                      style: TextStyle(
-                        color: kTextBlackColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: "₦ ",
-                            style: TextStyle(
-                              color: kTextBlackColor,
-                              fontSize: 14,
-                              fontFamily: 'Sen',
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          TextSpan(
-                            text: convertToCurrency(
-                                widget.order.totalPrice.toString()),
-                            style: const TextStyle(
-                              color: kTextBlackColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                          // TextSpan(
-                          //   text: widget.order.orderitems.totalAmount,
-                          //   style: TextStyle(
-                          //     color: kTextBlackColor,
-                          //     fontSize: 14.30,
-                          //     fontWeight: FontWeight.w400,
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
-                ),
-                kHalfSizedBox,
-              ],
-            ),
-          ),
         ],
       ),
     );

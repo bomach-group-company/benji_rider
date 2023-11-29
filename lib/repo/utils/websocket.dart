@@ -13,9 +13,7 @@
 //   } catch (e) {
 //     latitude = '';
 //     longitude = '';
-//     debugPrint('in catch');
 //   }
-//   debugPrint('in taskToBeDone again');
 //   channel.sink.add(jsonEncode({
 //     'rider_id': UserController.instance.user.value.id,
 //     'latitude': latitude,
