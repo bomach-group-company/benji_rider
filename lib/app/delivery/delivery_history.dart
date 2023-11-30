@@ -1,6 +1,7 @@
 import 'package:benji_rider/app/delivery/order_details.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
+import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
@@ -339,22 +340,37 @@ class _DeliveryState extends State<Delivery> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      controller
-                                                          .vendorsOrderList[
-                                                              index]
-                                                          .order
-                                                          .deliveryAddress
-                                                          .details,
-                                                      style: const TextStyle(
-                                                        color:
-                                                            Color(0xFF979797),
-                                                        fontSize: 10,
-                                                        height: 2,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                      ),
-                                                    ),
+                                                    FutureBuilder(
+                                                        future: getAddressFromCoordinates(
+                                                            controller
+                                                                .vendorsOrderList[
+                                                                    index]
+                                                                .order
+                                                                .deliveryAddress
+                                                                .latitude,
+                                                            controller
+                                                                .vendorsOrderList[
+                                                                    index]
+                                                                .order
+                                                                .deliveryAddress
+                                                                .longitude),
+                                                        builder: (context,
+                                                            controller) {
+                                                          return Text(
+                                                            controller.data ??
+                                                                'Loading',
+                                                            style:
+                                                                const TextStyle(
+                                                              color: Color(
+                                                                  0xFF979797),
+                                                              fontSize: 10,
+                                                              height: 2,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                          );
+                                                        }),
                                                   ],
                                                 ),
                                               ),
