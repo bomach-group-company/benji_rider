@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
+import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/providers/responsive_constant.dart';
@@ -89,9 +92,9 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
     });
   }
 
-  void _goToWithdraw() {
+  void _goToWithdraw(String bankDetailId) {
     Get.to(
-      () => const WithdrawPage(),
+      () => WithdrawPage(bankDetailId: bankDetailId),
       routeName: 'WithdrawPage',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
@@ -156,24 +159,34 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
         color: kAccentColor,
         child: SafeArea(
           maintainBottomViewPadding: true,
-          child: _loadingScreen
-              ? Center(
-                  child: CircularProgressIndicator(color: kAccentColor),
-                )
-              : ListView(
-                  padding: const EdgeInsets.all(10),
-                  controller: scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  children: [
-                    Scrollbar(
-                      controller: scrollController,
-                      child: ListView.builder(
+          child: ListView(
+            padding: const EdgeInsets.all(10),
+            controller: scrollController,
+            physics: const BouncingScrollPhysics(),
+            children: [
+              Scrollbar(
+                controller: scrollController,
+                child: GetBuilder<AccountController>(
+                    initState: (state) =>
+                        AccountController.instance.getAccounts(),
+                    builder: (controller) {
+                      if (controller.isLoad.value &&
+                          controller.accounts.isEmpty) {
+                        return Center(
+                          child: CircularProgressIndicator(color: kAccentColor),
+                        );
+                      }
+                      if (controller.accounts.isEmpty) {
+                        return const EmptyCard();
+                      }
+                      return ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: 10,
+                        itemCount: controller.accounts.length,
                         itemBuilder: (BuildContext context, int index) {
                           return InkWell(
-                            onTap: _goToWithdraw,
+                            onTap: () =>
+                                _goToWithdraw(controller.accounts[index].id),
                             child: Container(
                               margin: const EdgeInsets.symmetric(
                                 horizontal: kDefaultPadding,
@@ -207,7 +220,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                                           ),
                                           kHalfWidthSizedBox,
                                           Text(
-                                            'Access Bank',
+                                            controller.accounts[index].bankName,
                                             style: TextStyle(
                                               color: kTextGreyColor,
                                               fontSize: 16,
@@ -216,21 +229,21 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                                           ),
                                         ],
                                       ),
-                                      IconButton(
-                                        onPressed: () {
-                                          _showBottomSheet(context);
-                                        },
-                                        icon: FaIcon(
-                                          FontAwesomeIcons.ellipsis,
-                                          color: kAccentColor,
-                                        ),
-                                      )
+                                      // IconButton(
+                                      //   onPressed: () {
+                                      //     _showBottomSheet(context);
+                                      //   },
+                                      //   icon: FaIcon(
+                                      //     FontAwesomeIcons.ellipsis,
+                                      //     color: kAccentColor,
+                                      //   ),
+                                      // )
                                     ],
                                   ),
                                   kSizedBox,
-                                  const Text(
-                                    'Blessing George....09876',
-                                    style: TextStyle(
+                                  Text(
+                                    '${controller.accounts[index].accountHolder}....${controller.accounts[index].accountNumber.substring(max(controller.accounts[index].accountNumber.length - 5, 0))}',
+                                    style: const TextStyle(
                                       color: kTextBlackColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
@@ -241,11 +254,12 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                             ),
                           );
                         },
-                      ),
-                    ),
-                    kSizedBox,
-                  ],
-                ),
+                      );
+                    }),
+              ),
+              kSizedBox,
+            ],
+          ),
         ),
       ),
     );

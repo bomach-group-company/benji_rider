@@ -5,8 +5,8 @@ import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 
 import '../../../app/withdrawal/select_account.dart';
 import '../../../repo/models/user_model.dart';
@@ -28,6 +28,7 @@ class _EarningContainerState extends State<EarningContainer> {
   @override
   void initState() {
     super.initState();
+    _getData();
   }
 
 //======================================================= ALL VARIABLES ================================================\\
@@ -45,11 +46,6 @@ class _EarningContainerState extends State<EarningContainer> {
     await prefs.setBool('isVisibleCash', !isVisibleCash);
 
     setState(() {});
-  }
-
-  String formattedText(double value) {
-    final numberFormat = NumberFormat('#,##0.00');
-    return numberFormat.format(value);
   }
 
 //======================================================= Navigation=================================================\\
@@ -99,7 +95,7 @@ class _EarningContainerState extends State<EarningContainer> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          "Hi ${data['user'].username},",
+          "Hi ${data['user'].firstName} ${data['user'].lastName},",
           overflow: TextOverflow.ellipsis,
           style: const TextStyle(
             color: kTextBlackColor,
@@ -132,9 +128,11 @@ class _EarningContainerState extends State<EarningContainer> {
             kHalfWidthSizedBox,
             IconButton(
               onPressed: toggleVisibleCash,
-              icon: Icon(
-                data['status'] ? Icons.visibility : Icons.visibility_off,
-                color: data['status'] ? kDefaultIconDarkColor : kAccentColor,
+              icon: FaIcon(
+                data['status']
+                    ? FontAwesomeIcons.solidEye
+                    : FontAwesomeIcons.solidEyeSlash,
+                color: data['status'] ? kAccentColor : kAccentColor,
               ),
             ),
           ],
@@ -175,8 +173,8 @@ class _EarningContainerState extends State<EarningContainer> {
               children: [
                 IconButton(
                   onPressed: _toSelectAccountPage,
-                  icon: Icon(
-                    Icons.payment,
+                  icon: FaIcon(
+                    FontAwesomeIcons.solidCreditCard,
                     color: kAccentColor,
                   ),
                 ),

@@ -55,8 +55,7 @@ class WithdrawalDetailCard extends StatelessWidget {
           ),
           kSizedBox,
           Text(
-            withdrawalDetail.bankName +
-                withdrawalDetail.bankAccountNumber.replaceRange(0, 5, "."),
+            '${withdrawalDetail.bankName} ${withdrawalDetail.bankAccountNumber}',
             style: const TextStyle(
               color: kTextBlackColor,
               fontSize: 14,

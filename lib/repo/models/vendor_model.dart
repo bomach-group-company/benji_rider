@@ -27,6 +27,8 @@ class VendorModel {
   int numberOfClientsReactions;
   String shopName;
   String shopImage;
+  String latitude;
+  String longitude;
   String profileLogo;
   ShopTypeModel shopType;
 
@@ -45,6 +47,8 @@ class VendorModel {
     required this.numberOfClientsReactions,
     required this.shopName,
     required this.shopImage,
+    required this.latitude,
+    required this.longitude,
     required this.profileLogo,
     required this.shopType,
   });
@@ -66,6 +70,8 @@ class VendorModel {
       numberOfClientsReactions: json["number_of_clients_reactions"] ?? 0,
       shopName: json["shop_name"] ?? notAvailable,
       shopImage: json["shop_image"] ?? '',
+      latitude: json["latitude"] ?? '',
+      longitude: json["longitude"] ?? '',
       profileLogo: json["profileLogo"] ?? '',
       shopType: ShopTypeModel.fromJson(json["shop_type"]),
     );
@@ -86,6 +92,8 @@ class VendorModel {
         "number_of_clients_reactions": numberOfClientsReactions,
         "shop_name": shopName,
         "shop_image": shopImage,
+        "latitude": latitude,
+        "longitude": longitude,
         "profileLogo": profileLogo,
         "shop_type": shopType.toJson(),
       };

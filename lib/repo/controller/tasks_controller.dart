@@ -5,7 +5,6 @@ import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/tasks.dart';
 import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -33,13 +32,10 @@ class TasksController extends GetxController {
   }
 
   Future acceptTask(id) async {
-    debugPrint(id);
     final response = await http.put(
       Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
       headers: authHeader(),
     );
-    debugPrint(response.body);
-    debugPrint("${response.statusCode}");
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
@@ -51,13 +47,10 @@ class TasksController extends GetxController {
   }
 
   Future rejectTask(id) async {
-    debugPrint(id);
     final response = await http.put(
       Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
       headers: authHeader(),
     );
-    debugPrint(response.body);
-    debugPrint("${response.statusCode}");
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
@@ -69,7 +62,6 @@ class TasksController extends GetxController {
   }
 
   getTasksSocket() {
-    print('in the getTasksSocket func');
     final wsUrlTask = Uri.parse('$websocketBaseUrl/getridertask/');
     channelTask = WebSocketChannel.connect(wsUrlTask);
     channelTask.sink.add(jsonEncode({
@@ -86,8 +78,9 @@ class TasksController extends GetxController {
     });
 
     channelTask.stream.listen((message) {
+      // print(message);
       setTasks(jsonDecode(message)['message'] as List);
-      print('tasks $message');
+      // print('tasks $message');
     });
   }
 
@@ -99,9 +92,7 @@ class TasksController extends GetxController {
       getCoordinates();
     });
 
-    channel.stream.listen((message) {
-      debugPrint('message $message');
-    });
+    channel.stream.listen((message) {});
   }
 
   getCoordinates() async {
@@ -134,13 +125,7 @@ class TasksController extends GetxController {
     } catch (e) {
       latitude = '';
       longitude = '';
-      debugPrint('in catch $e');
     }
-    debugPrint("${{
-      'rider_id': UserController.instance.user.value.id,
-      'latitude': latitude,
-      'longitude': longitude
-    }}");
   }
 
   closeTaskSocket() {

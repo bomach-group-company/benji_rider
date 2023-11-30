@@ -12,6 +12,7 @@ class MyTextFormField extends StatelessWidget {
   final dynamic onSaved;
   final TextInputAction textInputAction;
   final FocusNode focusNode;
+  final dynamic onChanged;
 
   const MyTextFormField({
     super.key,
@@ -22,6 +23,7 @@ class MyTextFormField extends StatelessWidget {
     required this.focusNode,
     required this.hintText,
     required this.textInputType,
+    this.onChanged,
   });
 
   @override
@@ -34,6 +36,7 @@ class MyTextFormField extends StatelessWidget {
       textInputAction: textInputAction,
       textAlign: TextAlign.start,
       cursorColor: kSecondaryColor,
+      onChanged: onChanged,
       autocorrect: true,
       enableSuggestions: true,
       keyboardType: textInputType,

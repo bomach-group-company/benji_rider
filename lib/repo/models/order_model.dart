@@ -22,6 +22,7 @@ class Order {
   String deliveryStatus;
   Client client;
   List<OrderItem> orderitems;
+  Address deliveryAddress;
   String created;
 
   Order({
@@ -36,6 +37,7 @@ class Order {
     required this.client,
     required this.orderitems,
     required this.created,
+    required this.deliveryAddress,
   });
 
   factory Order.fromJson(Map<String, dynamic>? json) {
@@ -56,6 +58,7 @@ class Order {
               .map((item) => OrderItem.fromJson(item))
               .toList(),
       created: json["created"] ?? notAvailable,
+      deliveryAddress: Address.fromJson(json["delivery_address"]),
     );
   }
 }

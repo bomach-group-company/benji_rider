@@ -1,4 +1,7 @@
+import 'package:benji_rider/app/splash_screens/startup_splash_screen.dart';
+import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/repo/controller/auth_controller.dart';
+import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/latlng_detail_controller.dart';
 import 'package:benji_rider/repo/controller/login_controller.dart';
@@ -13,7 +16,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'app/splash_screens/startup_splash_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
 
@@ -40,6 +42,8 @@ void main() async {
   Get.put(VendorController());
   Get.put(TasksController());
   Get.put(WithdrawController());
+  Get.put(DeliveryHistoryController());
+  Get.put(AccountController());
 
   runApp(const MyApp());
 }
@@ -52,6 +56,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       defaultTransition: Transition.rightToLeft,
+      navigatorKey: Get.key,
       debugShowCheckedModeBanner: false,
       title: "Benji Rider",
       color: kPrimaryColor,

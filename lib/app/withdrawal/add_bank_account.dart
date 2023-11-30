@@ -1,9 +1,12 @@
-import 'package:benji_rider/src/widget/responsive/reponsive_width.dart';
+import 'package:benji_rider/repo/controller/api_url.dart';
+import 'package:benji_rider/repo/controller/form_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
+import 'package:benji_rider/repo/models/validate_bank_account.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 
+import '../../repo/controller/withdraw_controller.dart';
 import '../../src/providers/constants.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/my textformfield.dart';
@@ -35,6 +38,7 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
 //===================================== ALL VARIABLES =========================================\\
 
 //===================================== BOOL VALUES =========================================\\
+  bool isVisible = false;
 
 //================= Controllers ==================\\
   final scrollController = ScrollController();
@@ -48,19 +52,13 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
 
   final formKey = GlobalKey<FormState>();
 
-  String dropDownItemValue = "Access Bank";
+  String bankCode = "";
 
   //================================== FUNCTION ====================================\\
 
-  void dropDownOnChanged(String? onChanged) {
-    setState(() {
-      dropDownItemValue = onChanged!;
-    });
-  }
-
   //=================================== Navigation ============================\\
   selectBank() async {
-    final selectedBank = await Get.to(
+    final result = await Get.to(
       () => const SelectBank(),
       routeName: 'SelectBank',
       duration: const Duration(milliseconds: 300),
@@ -70,14 +68,37 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       popGesture: true,
       transition: Transition.downToUp,
     );
-    if (selectedBank != null) {
+    if (result != null) {
+      final newBankName = result['name'];
+      final newBankCode = result['code'];
+
       setState(() {
-        bankNameEC.text = selectedBank;
+        bankNameEC.text = newBankName;
+        bankCode = newBankCode;
       });
     }
   }
 
-  void saveAccount() {
+  saveAccount(ValidateBankAccountModel data) async {
+    Map body = {
+      'user_id': UserController.instance.user.value.id.toString(),
+      'bank_name': bankNameEC.text,
+      'bank_code': data.responseBody.bankCode,
+      'account_holder': data.responseBody.accountName,
+      'account_number': data.responseBody.accountNumber,
+    };
+
+    await FormController.instance.postAuth(
+        '${Api.baseUrl}/payments/saveBankDetails',
+        body,
+        'saveBankDetails',
+        'Error occured',
+        'Added successfully',
+        false);
+
+    if (FormController.instance.status.value == 200) {
+      Get.close(1);
+    }
     Get.back();
   }
 
@@ -94,123 +115,152 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
           backgroundColor: kPrimaryColor,
           toolbarHeight: kToolbarHeight,
         ),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              color: kAccentColor.withOpacity(0.08),
-              offset: const Offset(3, 0),
-              blurRadius: 32,
+        bottomNavigationBar:
+            GetBuilder<WithdrawController>(builder: (controller) {
+          return Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(boxShadow: [
+              BoxShadow(
+                color: kAccentColor.withOpacity(0.08),
+                offset: const Offset(3, 0),
+                blurRadius: 32,
+              ),
+            ]),
+            child: Obx(
+              () => MyElevatedButton(
+                title: "Save Account",
+                onPressed: !controller
+                            .validateAccount.value.requestSuccessful ||
+                        accountNumberEC.text.length < 10
+                    ? null
+                    : () async {
+                        if (formKey.currentState!.validate()) {
+                          await saveAccount(controller.validateAccount.value);
+                        }
+                      },
+                isLoading: FormController.instance.isLoad.value,
+              ),
             ),
-          ]),
-          child: MyElevatedButton(
-            title: "Save Account",
-            onPressed: () async {
-              if (formKey.currentState!.validate()) {
-                saveAccount();
-              }
-            },
-            // isLoading: controller.isLoad.value,
-          ),
-        ),
+          );
+        }),
         body: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(kDefaultPadding),
             physics: const BouncingScrollPhysics(),
-            child: MyResponsiveWidth(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // const Center(
-                    //   child: Text(
-                    //     'Bank Details',
-                    //     style: TextStyle(
-                    //       color: kTextBlackColor,
-                    //       fontSize: 22,
-                    //       fontWeight: FontWeight.w600,
-                    //       height: 1.45,
-                    //     ),
-                    //   ),
-                    // ),
-                    // kSizedBox,
-                    Text(
-                      'Bank Name',
-                      style: TextStyle(
-                        color: kTextGreyColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Bank Name',
+                    style: TextStyle(
+                      color: kTextGreyColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
-                    kHalfSizedBox,
-                    InkWell(
-                      onTap: selectBank,
-                      child: MyBlueTextFormField(
-                        controller: bankNameEC,
-                        isEnabled: false,
-                        textInputAction: TextInputAction.next,
-                        focusNode: bankNameFN,
-                        hintText: "Select a bank",
-                        suffixIcon: FaIcon(
-                          FontAwesomeIcons.chevronDown,
-                          size: 20,
-                          color: kAccentColor,
+                  ),
+                  kHalfSizedBox,
+                  GetBuilder<WithdrawController>(
+                    builder: (controller) {
+                      return InkWell(
+                        onTap: controller.listOfBanks.isEmpty &&
+                                controller.isLoad.value
+                            ? null
+                            : selectBank,
+                        child: MyBlueTextFormField(
+                          controller: bankNameEC,
+                          isEnabled: false,
+                          textInputAction: TextInputAction.next,
+                          focusNode: bankNameFN,
+                          hintText: controller.listOfBanks.isEmpty &&
+                                  controller.isLoad.value
+                              ? "Loading..."
+                              : "Select a bank",
+                          suffixIcon: FaIcon(
+                            FontAwesomeIcons.chevronDown,
+                            size: 20,
+                            color: kAccentColor,
+                          ),
+                          textInputType: TextInputType.name,
+                          validator: (value) {
+                            if (value == null || value!.isEmpty) {
+                              return "Select a bank";
+                            }
+                            return null;
+                          },
+                          onSaved: (value) {
+                            setState(() {
+                              bankNameEC.text = value!;
+                            });
+                          },
                         ),
-                        textInputType: TextInputType.name,
-                        validator: (value) {
-                          if (value == null || value!.isEmpty) {
-                            return "Select a bank";
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          bankNameEC.text = value!;
-                        },
-                      ),
+                      );
+                    },
+                  ),
+                  kSizedBox,
+                  Text(
+                    'Account Number',
+                    style: TextStyle(
+                      color: kTextGreyColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
-                    kSizedBox,
-                    Text(
-                      'Account Number',
-                      style: TextStyle(
-                        color: kTextGreyColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    kHalfSizedBox,
-                    MyTextFormField(
-                      controller: accountNumberEC,
-                      focusNode: accountNumberFN,
-                      hintText: "Enter the account number here",
-                      textInputAction: TextInputAction.next,
-                      textInputType: TextInputType.name,
-                      validator: (value) {
-                        if (value == null || value!.isEmpty) {
-                          accountNumberFN.requestFocus();
-                          return "Enter the account number";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        accountNumberEC.text = value!;
-                      },
-                    ),
-                    kSizedBox,
-                    Visibility(
-                      visible: false,
-                      child: Text(
-                        'Blessing Mesoma',
+                  ),
+                  kHalfSizedBox,
+                  MyTextFormField(
+                    controller: accountNumberEC,
+                    focusNode: accountNumberFN,
+                    hintText: "Enter the account number here",
+                    textInputAction: TextInputAction.next,
+                    textInputType: TextInputType.name,
+                    onChanged: (value) {
+                      if (value.length >= 10) {
+                        WithdrawController.instance.validateBankNumbers(
+                            accountNumberEC.text, bankCode);
+                      }
+                      setState(() {});
+                    },
+                    validator: (value) {
+                      if (value == null || value!.isEmpty) {
+                        accountNumberFN.requestFocus();
+                        return "Enter the account number";
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      accountNumberEC.text = value!;
+                    },
+                  ),
+                  kSizedBox,
+                  GetBuilder<WithdrawController>(builder: (controller) {
+                    if (controller.isLoadValidateAccount.value) {
+                      return Text(
+                        'Loading...',
                         style: TextStyle(
-                          color: kAccentColor,
+                          color: kAccentColor.withOpacity(0.8),
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
+                      );
+                    }
+                    if (accountNumberEC.text.length < 10) {
+                      return const Text('');
+                    }
+                    return Text(
+                      controller.validateAccount.value.requestSuccessful
+                          ? controller
+                              .validateAccount.value.responseBody.accountName
+                          : 'Bank details not found',
+                      style: TextStyle(
+                        color: kAccentColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ),
-                  ],
-                ),
+                    );
+                  })
+                ],
               ),
             ),
           ),

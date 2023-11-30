@@ -36,9 +36,6 @@ class _HelpNSupportState extends State<HelpNSupport> {
       "message": _messageEC.text,
     };
 
-    debugPrint("$data");
-    debugPrint(Api.baseUrl + Api.createSupport);
-
     await FormController.instance
         .postAuth(Api.baseUrl + Api.createSupport, data, 'createSupport');
     if (FormController.instance.status.value.toString().startsWith('2')) {

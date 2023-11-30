@@ -1,8 +1,11 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/repo/controller/auth_controller.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
+import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -22,10 +25,12 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
 
   @override
   void initState() {
-    super.initState();
     if (UserController.instance.ifUser()) {
-      UserController.instance.setUserSync();
       VendorController.instance.getVendorList();
+      OrderController.instance.getOrdersByStatus();
+      WithdrawController.instance.withdrawalHistory();
+      AccountController.instance.getAccounts();
+      WithdrawController.instance.listBanks();
     }
   }
 
@@ -67,11 +72,11 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
                       ),
                     ),
                     kSizedBox,
-                    const Text(
+                    Text(
                       'Rider App',
                       style: TextStyle(
-                        color: kTextBlackColor,
-                        fontSize: 16,
+                        color: kAccentColor,
+                        fontSize: 18,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

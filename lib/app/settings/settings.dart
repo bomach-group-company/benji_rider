@@ -7,7 +7,7 @@ import '../../src/providers/constants.dart';
 import '../../src/widget/section/profile_first_half.dart';
 import '../../theme/colors.dart';
 import '../auth/login.dart';
-import '../delivery/delivery.dart';
+import '../delivery/delivery_history.dart';
 import '../withdrawal/withdrawal_history.dart';
 import 'help_n_support.dart';
 
@@ -147,7 +147,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         color: kAccentColor,
                       ),
                       title: const Text(
-                        'Delivery',
+                        'My Orders',
                         style: TextStyle(
                           color: Color(0xFF333333),
                           fontSize: 15,
