@@ -37,9 +37,11 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
   }
 
-  toMapDirectionage() {
+  toMapDirectionage(
+      [double latitude = 6.463832607452451,
+      double longitude = 7.53990682395574]) {
     Get.to(
-      () => const MapDirection(),
+      () => MapDirection(latitude: latitude, longitude: longitude),
       routeName: 'MapDirection',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
@@ -81,34 +83,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       appBar: MyAppBar(
         title: "Order Details",
         elevation: 0,
-        actions: [
-          widget.order.orderitems.isEmpty
-              ? const SizedBox()
-              : Container(
-                  margin: const EdgeInsets.only(right: 25),
-                  child: InkWell(
-                    onTap: toMapDirectionage,
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          color: kAccentColor,
-                        ),
-                        const SizedBox(
-                          width: kDefaultPadding * 0.2,
-                        ),
-                        Text(
-                          'Map',
-                          style: TextStyle(
-                              color: kAccentColor,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-        ],
+        actions: const [],
         backgroundColor: kPrimaryColor,
       ),
       bottomNavigationBar: Container(
@@ -292,15 +267,45 @@ class _OrderDetailsState extends State<OrderDetails> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "Pickup's Detail",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: kTextBlackColor,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.32,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Pickup's Detail",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: kTextBlackColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: -0.32,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(right: 25),
+                            child: InkWell(
+                              onTap: toMapDirectionage,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.location_on,
+                                    color: kAccentColor,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(
+                                    width: kDefaultPadding * 0.2,
+                                  ),
+                                  Text(
+                                    'Map',
+                                    style: TextStyle(
+                                        color: kAccentColor,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
                       ),
                       kSizedBox,
                       Row(
@@ -387,15 +392,45 @@ class _OrderDetailsState extends State<OrderDetails> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "Deliver to Detail",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: kTextBlackColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: -0.32,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Deliver to Detail",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: kTextBlackColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.32,
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(right: 25),
+                      child: InkWell(
+                        onTap: toMapDirectionage,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.location_on,
+                              color: kAccentColor,
+                              size: 20,
+                            ),
+                            const SizedBox(
+                              width: kDefaultPadding * 0.2,
+                            ),
+                            Text(
+                              'Map',
+                              style: TextStyle(
+                                  color: kAccentColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 kSizedBox,
                 Row(

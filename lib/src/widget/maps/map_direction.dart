@@ -13,7 +13,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapDirection extends StatefulWidget {
-  const MapDirection({super.key});
+  final double latitude;
+  final double longitude;
+  const MapDirection(
+      {super.key, required this.latitude, required this.longitude});
 
   @override
   State<MapDirection> createState() => _MapDirectionState();
@@ -24,9 +27,11 @@ class _MapDirectionState extends State<MapDirection> {
   @override
   void initState() {
     super.initState();
-    // _getPolyPoints();
     _markerTitle = <String>["Me", "Rider"];
     _markerSnippet = <String>["My Location", "Rider location"];
+    deliveryLocation = LatLng(widget.latitude, widget.longitude);
+    // deliveryLocation = LatLng(6.463832607452451, 7.53990682395574);
+
     _loadMapData();
   }
 
@@ -39,14 +44,13 @@ class _MapDirectionState extends State<MapDirection> {
   //============================================================= BOOL VALUES ======================================================================\\
 
   //====================================== Setting Google Map Consts =========================================\\
-
+  late LatLng deliveryLocation;
   Position? _userPosition;
 
   static const LatLng _riderLocation = pickupLocation;
 
   static const LatLng pickupLocation =
       LatLng(6.45540420992054, 7.507061460857368);
-  static const deliveryLocation = LatLng(6.463832607452451, 7.53990682395574);
 
   final List<LatLng> _polylineCoordinates = [];
   // List<LatLng> _latLng = <LatLng>[_userLocation, _riderLocation];
@@ -209,7 +213,7 @@ class _MapDirectionState extends State<MapDirection> {
     PolylinePoints polyLinePoints = PolylinePoints();
     PolylineResult result = await polyLinePoints.getRouteBetweenCoordinates(
       googleMapsApiKey,
-      PointLatLng(pickupLocation.latitude, pickupLocation.longitude),
+      PointLatLng(_userPosition!.latitude, _userPosition!.longitude),
       PointLatLng(deliveryLocation.latitude, deliveryLocation.longitude),
     );
 
