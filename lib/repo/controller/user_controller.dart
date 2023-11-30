@@ -5,11 +5,14 @@ import 'dart:convert';
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:benji_rider/main.dart';
+import 'package:benji_rider/repo/controller/api_url.dart';
+import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/models/user_model.dart';
 import 'package:benji_rider/repo/models/vendor_model.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 class UserController extends GetxController {
   static UserController get instance {
@@ -70,5 +73,25 @@ class UserController extends GetxController {
 
   Future<bool> deleteUser() async {
     return await prefs.remove('user');
+  }
+
+  getUser() async {
+    isLoading.value = true;
+    update();
+
+    final user = UserController.instance.user.value;
+    http.Response? responseUserData = await HandleData.getApi(
+        '${Api.baseUrl}${Api.getSpecificRider}${user.id}/', user.token);
+
+    if (responseUserData?.statusCode != 200) {
+      ApiProcessorController.errorSnack("Failed to refresh");
+      isLoading.value = false;
+      update();
+      return;
+    }
+
+    UserController.instance.saveUser(responseUserData!.body, user.token);
+    isLoading.value = false;
+    update();
   }
 }

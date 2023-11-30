@@ -1,10 +1,8 @@
 import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../repo/controller/withdraw_controller.dart';
-import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
 import 'bank_list_tile.dart';
 
@@ -77,28 +75,28 @@ class _SelectBankBodyState extends State<SelectBankBody> {
       maintainBottomViewPadding: true,
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: SearchBar(
-              controller: bankQueryEC,
-              hintText: "Search bank",
-              backgroundColor: MaterialStatePropertyAll(
-                  Theme.of(context).scaffoldBackgroundColor),
-              elevation: const MaterialStatePropertyAll(0),
-              leading: FaIcon(
-                FontAwesomeIcons.magnifyingGlass,
-                color: kAccentColor,
-                size: 20,
-              ),
-              onChanged: onChanged,
-              padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              )),
-              side:
-                  MaterialStatePropertyAll(BorderSide(color: kLightGreyColor)),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.all(10),
+          //   child: SearchBar(
+          //     controller: bankQueryEC,
+          //     hintText: "Search bank",
+          //     backgroundColor: MaterialStatePropertyAll(
+          //         Theme.of(context).scaffoldBackgroundColor),
+          //     elevation: const MaterialStatePropertyAll(0),
+          //     leading: FaIcon(
+          //       FontAwesomeIcons.magnifyingGlass,
+          //       color: kAccentColor,
+          //       size: 20,
+          //     ),
+          //     onChanged: onChanged,
+          //     padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
+          //     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(10),
+          //     )),
+          //     side:
+          //         MaterialStatePropertyAll(BorderSide(color: kLightGreyColor)),
+          //   ),
+          // ),
           Expanded(
             child: Scrollbar(
               controller: scrollController,

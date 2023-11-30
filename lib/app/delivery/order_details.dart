@@ -289,7 +289,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text(
-                            "Pickup's Detail",
+                            "Pickup Detail",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: kTextBlackColor,
