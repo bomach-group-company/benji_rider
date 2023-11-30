@@ -8,6 +8,7 @@ import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/providers/responsive_constant.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
+import 'package:benji_rider/src/widget/maps/map_direction.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -411,6 +412,8 @@ class _OrderDetailsState extends State<OrderDetails> {
               ],
             ),
           ),
+          kSizedBox,
+          const MapDirection(),
           kSizedBox,
         ],
       ),

@@ -1,4 +1,6 @@
+import 'package:benji_rider/app/splash_screens/startup_splash_screen.dart';
 import 'package:benji_rider/repo/controller/account_controller.dart';
+import 'package:benji_rider/repo/controller/auth_controller.dart';
 import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/latlng_detail_controller.dart';
@@ -9,7 +11,6 @@ import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
-import 'package:benji_rider/src/widget/maps/map1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,7 @@ void main() async {
   Get.put(FormController());
   Get.put(LatLngDetailController());
   Get.put(NotificationController());
-  // Get.put(AuthController());
+  Get.put(AuthController());
   Get.put(VendorController());
   Get.put(TasksController());
   Get.put(WithdrawController());
@@ -62,7 +63,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const ChooseRider(),
+      home: const StartupSplashscreen(),
     );
   }
 }
