@@ -25,7 +25,6 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
 
   @override
   void initState() {
-    super.initState();
     if (UserController.instance.ifUser()) {
       VendorController.instance.getVendorList();
       OrderController.instance.getOrdersByStatus();
