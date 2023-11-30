@@ -9,8 +9,7 @@ import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
-import 'package:benji_rider/repo/models/vendor_model.dart';
-import 'package:benji_rider/src/widget/maps/map2.dart';
+import 'package:benji_rider/src/widget/maps/map1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -63,9 +62,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: VendorLocation(
-        vendor: VendorModel.fromJson(null),
-      ),
+      home: const ChooseRider(),
     );
   }
 }

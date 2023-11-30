@@ -3,9 +3,7 @@
 import 'dart:async';
 import 'dart:ui' as ui; // Import the ui library with an alias
 
-import 'package:benji_rider/src/providers/constants.dart';
 import 'package:benji_rider/src/providers/keys.dart';
-import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
@@ -61,9 +59,10 @@ class _ChooseRiderState extends State<ChooseRider> {
   List<String>? _markerTitle;
   List<String>? _markerSnippet;
   final List<String> _customMarkers = <String>[
-    "assets/icons/person_location.png",
-    "assets/icons/delivery_bike.png",
+    "assets/icons/instagram-icon.png",
+    "assets/icons/instagram-icon.png",
   ];
+
   //============================================================= BOOL VALUES ======================================================================\\
 
   //========================================================== GlobalKeys ============================================================\\
@@ -287,106 +286,106 @@ class _ChooseRiderState extends State<ChooseRider> {
                       scrollGesturesEnabled: true,
                     ),
                   ),
-                  Container(
-                    height: media.height * 0.24,
-                    width: media.width,
-                    padding: const EdgeInsets.all(kDefaultPadding / 2),
-                    decoration: ShapeDecoration(
-                      shadows: [
-                        BoxShadow(
-                          color: kBlackColor.withOpacity(0.1),
-                          blurRadius: 5,
-                          spreadRadius: 2,
-                          blurStyle: BlurStyle.normal,
-                        ),
-                      ],
-                      color: const Color(0xFFFEF8F8),
-                      shape: const RoundedRectangleBorder(
-                        side: BorderSide(
-                          width: 0.50,
-                          color: Color(0xFFFDEDED),
-                        ),
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(25),
-                          topRight: Radius.circular(25),
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: ShapeDecoration(
-                            color: const Color(0xFFFEF8F8),
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                width: 0.50,
-                                color: Color(0xFFFDEDED),
-                              ),
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            shadows: const [
-                              BoxShadow(
-                                color: Color(0x0F000000),
-                                blurRadius: 24,
-                                offset: Offset(0, 4),
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          child: ListTile(
-                            contentPadding: const EdgeInsets.all(5),
-                            leading:
-                                Image.asset("assets/icons/delivery_bike.png"),
-                            title: const Text(
-                              "Benji Rider",
-                              style: TextStyle(
-                                color: kTextBlackColor,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                            subtitle: Text(
-                              "10 MIN",
-                              style: TextStyle(
-                                color: kTextGreyColor,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            trailing: Text.rich(
-                              TextSpan(
-                                children: [
-                                  const TextSpan(
-                                    text: "₦ ",
-                                    style: TextStyle(
-                                      color: kTextBlackColor,
-                                      fontSize: 16,
-                                      fontFamily: 'sen',
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: formattedText(5000),
-                                    style: const TextStyle(
-                                      color: kTextBlackColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        kSizedBox,
-                        MyElevatedButton(
-                          title: "Proceed to Payout",
-                          onPressed: _toPayOut,
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Container(
+                  //   height: media.height * 0.24,
+                  //   width: media.width,
+                  //   padding: const EdgeInsets.all(kDefaultPadding / 2),
+                  //   decoration: ShapeDecoration(
+                  //     shadows: [
+                  //       BoxShadow(
+                  //         color: kBlackColor.withOpacity(0.1),
+                  //         blurRadius: 5,
+                  //         spreadRadius: 2,
+                  //         blurStyle: BlurStyle.normal,
+                  //       ),
+                  //     ],
+                  //     color: const Color(0xFFFEF8F8),
+                  //     shape: const RoundedRectangleBorder(
+                  //       side: BorderSide(
+                  //         width: 0.50,
+                  //         color: Color(0xFFFDEDED),
+                  //       ),
+                  //       borderRadius: BorderRadius.only(
+                  //         topLeft: Radius.circular(25),
+                  //         topRight: Radius.circular(25),
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   child: Column(
+                  //     children: [
+                  //       Container(
+                  //         padding: const EdgeInsets.all(5),
+                  //         decoration: ShapeDecoration(
+                  //           color: const Color(0xFFFEF8F8),
+                  //           shape: RoundedRectangleBorder(
+                  //             side: const BorderSide(
+                  //               width: 0.50,
+                  //               color: Color(0xFFFDEDED),
+                  //             ),
+                  //             borderRadius: BorderRadius.circular(25),
+                  //           ),
+                  //           shadows: const [
+                  //             BoxShadow(
+                  //               color: Color(0x0F000000),
+                  //               blurRadius: 24,
+                  //               offset: Offset(0, 4),
+                  //               spreadRadius: 0,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //         child: ListTile(
+                  //           contentPadding: const EdgeInsets.all(5),
+                  //           leading:
+                  //               Image.asset("assets/icons/delivery_bike.png"),
+                  //           title: const Text(
+                  //             "Benji Rider",
+                  //             style: TextStyle(
+                  //               color: kTextBlackColor,
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w700,
+                  //             ),
+                  //           ),
+                  //           subtitle: Text(
+                  //             "10 MIN",
+                  //             style: TextStyle(
+                  //               color: kTextGreyColor,
+                  //               fontSize: 14,
+                  //               fontWeight: FontWeight.w400,
+                  //             ),
+                  //           ),
+                  //           trailing: Text.rich(
+                  //             TextSpan(
+                  //               children: [
+                  //                 const TextSpan(
+                  //                   text: "₦ ",
+                  //                   style: TextStyle(
+                  //                     color: kTextBlackColor,
+                  //                     fontSize: 16,
+                  //                     fontFamily: 'sen',
+                  //                     fontWeight: FontWeight.w700,
+                  //                   ),
+                  //                 ),
+                  //                 TextSpan(
+                  //                   text: formattedText(5000),
+                  //                   style: const TextStyle(
+                  //                     color: kTextBlackColor,
+                  //                     fontSize: 16,
+                  //                     fontWeight: FontWeight.w700,
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //       kSizedBox,
+                  //       MyElevatedButton(
+                  //         title: "Proceed to Payout",
+                  //         onPressed: _toPayOut,
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
       ),
