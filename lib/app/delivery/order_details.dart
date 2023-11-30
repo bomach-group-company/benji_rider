@@ -82,30 +82,32 @@ class _OrderDetailsState extends State<OrderDetails> {
         title: "Order Details",
         elevation: 0,
         actions: [
-          Container(
-            margin: const EdgeInsets.only(right: 25),
-            child: InkWell(
-              onTap: toMapDirectionage,
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.location_on,
-                    color: kAccentColor,
+          widget.order.orderitems.isEmpty
+              ? const SizedBox()
+              : Container(
+                  margin: const EdgeInsets.only(right: 25),
+                  child: InkWell(
+                    onTap: toMapDirectionage,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.location_on,
+                          color: kAccentColor,
+                        ),
+                        const SizedBox(
+                          width: kDefaultPadding * 0.2,
+                        ),
+                        Text(
+                          'Map',
+                          style: TextStyle(
+                              color: kAccentColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
                   ),
-                  const SizedBox(
-                    width: kDefaultPadding * 0.2,
-                  ),
-                  Text(
-                    'Map',
-                    style: TextStyle(
-                        color: kAccentColor,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-            ),
-          )
+                )
         ],
         backgroundColor: kPrimaryColor,
       ),
