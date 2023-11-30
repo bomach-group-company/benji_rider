@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:benji_rider/repo/controller/api_url.dart';
+import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
@@ -37,9 +38,26 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
   }
 
-  toMapDirectionage(
-      [double latitude = 6.463832607452451,
-      double longitude = 7.53990682395574]) {
+// [double latitude = 6.463832607452451,
+  // double longitude = 7.53990682395574])
+  toMapDirectionage([String latitudeStr = '', String longitudeStr = '']) {
+    double latitude;
+    double longitude;
+    try {
+      latitude = double.parse(latitudeStr);
+      longitude = double.parse(longitudeStr);
+      if (latitude >= -90 &&
+          latitude <= 90 &&
+          longitude >= -180 &&
+          longitude <= 180) {
+      } else {
+        ApiProcessorController.errorSnack("Couldn't get the address");
+        return;
+      }
+    } catch (e) {
+      ApiProcessorController.errorSnack("Couldn't get the address");
+      return;
+    }
     Get.to(
       () => MapDirection(latitude: latitude, longitude: longitude),
       routeName: 'MapDirection',
@@ -280,29 +298,30 @@ class _OrderDetailsState extends State<OrderDetails> {
                               letterSpacing: -0.32,
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.only(right: 25),
-                            child: InkWell(
-                              onTap: toMapDirectionage,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.location_on,
-                                    color: kAccentColor,
-                                    size: 20,
-                                  ),
-                                  const SizedBox(
-                                    width: kDefaultPadding * 0.2,
-                                  ),
-                                  Text(
-                                    'Map',
-                                    style: TextStyle(
-                                        color: kAccentColor,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
+                          InkWell(
+                            onTap: () => toMapDirectionage(
+                                widget.order.orderitems.first.product.vendorId
+                                    .latitude,
+                                widget.order.orderitems.first.product.vendorId
+                                    .longitude),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: kAccentColor,
+                                  size: 20,
+                                ),
+                                const SizedBox(
+                                  width: kDefaultPadding * 0.2,
+                                ),
+                                Text(
+                                  'Map',
+                                  style: TextStyle(
+                                      color: kAccentColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
                           )
                         ],
@@ -329,7 +348,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "${widget.order.client.firstName} ${widget.order.client.lastName}",
+                                "${widget.order.orderitems.first.product.vendorId.firstName} ${widget.order.orderitems.first.product.vendorId.lastName}",
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
                                   color: kTextBlackColor,
@@ -339,7 +358,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                               kHalfSizedBox,
                               Text(
-                                widget.order.client.phone,
+                                widget.order.orderitems.first.product.vendorId
+                                    .phone,
                                 style: TextStyle(
                                   color: kTextGreyColor,
                                   fontSize: 12,
@@ -349,12 +369,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                               kHalfSizedBox,
                               FutureBuilder(
                                   future: getAddressFromCoordinates(
-                                      '6.801965310155346', '7.092915443774477'),
+                                      widget.order.orderitems.first.product
+                                          .vendorId.latitude,
+                                      widget.order.orderitems.first.product
+                                          .vendorId.longitude),
                                   builder: (context, controller) {
-                                    print(widget.order.orderitems.first.product
-                                        .vendorId.id);
+                                    // '6.801965310155346', '7.092915443774477'
                                     return Text(
-                                      controller.data ?? 'Loading',
+                                      controller.data ?? 'Loading...',
                                       style: TextStyle(
                                         color: kTextGreyColor,
                                         fontSize: 12,
@@ -405,29 +427,28 @@ class _OrderDetailsState extends State<OrderDetails> {
                         letterSpacing: -0.32,
                       ),
                     ),
-                    Container(
-                      margin: const EdgeInsets.only(right: 25),
-                      child: InkWell(
-                        onTap: toMapDirectionage,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.location_on,
-                              color: kAccentColor,
-                              size: 20,
-                            ),
-                            const SizedBox(
-                              width: kDefaultPadding * 0.2,
-                            ),
-                            Text(
-                              'Map',
-                              style: TextStyle(
-                                  color: kAccentColor,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
+                    InkWell(
+                      onTap: () => toMapDirectionage(
+                          widget.order.deliveryAddress.latitude,
+                          widget.order.deliveryAddress.longitude),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            color: kAccentColor,
+                            size: 20,
+                          ),
+                          const SizedBox(
+                            width: kDefaultPadding * 0.2,
+                          ),
+                          Text(
+                            'Map',
+                            style: TextStyle(
+                                color: kAccentColor,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     )
                   ],
@@ -471,14 +492,21 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                         ),
                         kHalfSizedBox,
-                        Text(
-                          widget.order.deliveryAddress.details,
-                          style: TextStyle(
-                            color: kTextGreyColor,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                        FutureBuilder(
+                            future: getAddressFromCoordinates(
+                                widget.order.deliveryAddress.latitude,
+                                widget.order.deliveryAddress.longitude),
+                            builder: (context, controller) {
+                              // '6.801965310155346', '7.092915443774477'
+                              return Text(
+                                controller.data ?? 'Loading...',
+                                style: TextStyle(
+                                  color: kTextGreyColor,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              );
+                            }),
                         kHalfSizedBox,
                       ],
                     ),

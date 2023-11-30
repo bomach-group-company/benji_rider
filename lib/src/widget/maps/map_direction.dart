@@ -27,10 +27,12 @@ class _MapDirectionState extends State<MapDirection> {
   @override
   void initState() {
     super.initState();
-    _markerTitle = <String>["Me", "Rider"];
-    _markerSnippet = <String>["My Location", "Rider location"];
-    deliveryLocation = LatLng(widget.latitude, widget.longitude);
-    // deliveryLocation = LatLng(6.463832607452451, 7.53990682395574);
+    _markerTitle = <String>["Me", "Destination"];
+    _markerSnippet = <String>["My Location", "Heading to"];
+    destinationLocation = LatLng(widget.latitude, widget.longitude);
+
+    // destinationLocation = LatLng(6.463832607452451, 7.53990682395574);
+    // riderLocation = const LatLng(6.45540420992054, 7.507061460857368);
 
     _loadMapData();
   }
@@ -41,19 +43,11 @@ class _MapDirectionState extends State<MapDirection> {
   }
   //============================================================= ALL VARIABLES ======================================================================\\
 
-  //============================================================= BOOL VALUES ======================================================================\\
-
-  //====================================== Setting Google Map Consts =========================================\\
-  late LatLng deliveryLocation;
-  Position? _userPosition;
-
-  static const LatLng _riderLocation = pickupLocation;
-
-  static const LatLng pickupLocation =
-      LatLng(6.45540420992054, 7.507061460857368);
+  late LatLng destinationLocation;
+  LatLng? riderLocation;
 
   final List<LatLng> _polylineCoordinates = [];
-  // List<LatLng> _latLng = <LatLng>[_userLocation, _riderLocation];
+
   Uint8List? _markerImage;
   final List<Marker> _markers = <Marker>[];
   final List<MarkerId> _markerId = <MarkerId>[
@@ -63,8 +57,8 @@ class _MapDirectionState extends State<MapDirection> {
   List<String>? _markerTitle;
   List<String>? _markerSnippet;
   final List<String> _customMarkers = <String>[
-    "assets/icons/person_location.png",
     "assets/icons/delivery_bike.png",
+    "assets/icons/person_location.png",
   ];
 
   //============================================================= BOOL VALUES ======================================================================\\
@@ -121,10 +115,8 @@ class _MapDirectionState extends State<MapDirection> {
 
   Future<Position> _getUserCurrentLocation() async {
     Position userLocation = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    ).then(
-      (location) => _userPosition = location,
-    );
+        desiredAccuracy: LocationAccuracy.high);
+    riderLocation = LatLng(userLocation.latitude, userLocation.longitude);
 
     LatLng latLngPosition =
         LatLng(userLocation.latitude, userLocation.longitude);
@@ -157,13 +149,12 @@ class _MapDirectionState extends State<MapDirection> {
 
   _loadCustomMarkers() async {
     Position userLocation = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    ).then(
-      (location) => _userPosition = location,
-    );
+        desiredAccuracy: LocationAccuracy.high);
+    riderLocation = LatLng(userLocation.latitude, userLocation.longitude);
+
     List<LatLng> latLng = <LatLng>[
       LatLng(userLocation.latitude, userLocation.longitude),
-      _riderLocation
+      destinationLocation
     ];
     for (int i = 0; i < _customMarkers.length; i++) {
       final Uint8List markerIcon =
@@ -192,7 +183,10 @@ class _MapDirectionState extends State<MapDirection> {
     ];
     List<String> markerTitle = <String>["Pickup Location", "Delivery Location"];
 
-    final List<LatLng> locations = <LatLng>[pickupLocation, deliveryLocation];
+    final List<LatLng> locations = <LatLng>[
+      riderLocation!,
+      destinationLocation
+    ];
     final List<BitmapDescriptor> markers = <BitmapDescriptor>[
       BitmapDescriptor.defaultMarker,
       BitmapDescriptor.defaultMarkerWithHue(8),
@@ -213,8 +207,8 @@ class _MapDirectionState extends State<MapDirection> {
     PolylinePoints polyLinePoints = PolylinePoints();
     PolylineResult result = await polyLinePoints.getRouteBetweenCoordinates(
       googleMapsApiKey,
-      PointLatLng(_userPosition!.latitude, _userPosition!.longitude),
-      PointLatLng(deliveryLocation.latitude, deliveryLocation.longitude),
+      PointLatLng(riderLocation!.latitude, riderLocation!.longitude),
+      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
     );
 
     if (result.points.isNotEmpty) {
@@ -245,7 +239,7 @@ class _MapDirectionState extends State<MapDirection> {
       body: SafeArea(
         maintainBottomViewPadding: true,
         child: Container(
-          child: _userPosition == null
+          child: riderLocation == null
               ? Center(
                   child: CircularProgressIndicator(
                     color: kAccentColor,
@@ -257,8 +251,8 @@ class _MapDirectionState extends State<MapDirection> {
                       child: GoogleMap(
                         mapType: MapType.normal,
                         onMapCreated: _onMapCreated,
-                        initialCameraPosition: const CameraPosition(
-                          target: pickupLocation,
+                        initialCameraPosition: CameraPosition(
+                          target: riderLocation!,
                           zoom: 14,
                         ),
                         markers: Set.of(_markers),

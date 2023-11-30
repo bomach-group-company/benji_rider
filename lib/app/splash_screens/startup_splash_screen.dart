@@ -29,7 +29,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     if (UserController.instance.ifUser()) {
       VendorController.instance.getVendorList();
       OrderController.instance.getOrdersByStatus();
-      // DeliveryHistoryController.instance.getDeliveryHistory();
+      WithdrawController.instance.withdrawalHistory();
       AccountController.instance.getAccounts();
       WithdrawController.instance.listBanks();
     }

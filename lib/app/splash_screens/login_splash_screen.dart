@@ -4,7 +4,6 @@ import 'dart:async';
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:benji_rider/repo/controller/account_controller.dart';
-import 'package:benji_rider/repo/controller/delivery_history_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
@@ -27,8 +26,8 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
     super.initState();
     VendorController.instance.getVendorList();
     OrderController.instance.getOrdersByStatus();
+    WithdrawController.instance.withdrawalHistory();
 
-    // DeliveryHistoryController.instance.getDeliveryHistory();
     AccountController.instance.getAccounts();
     WithdrawController.instance.listBanks();
 
