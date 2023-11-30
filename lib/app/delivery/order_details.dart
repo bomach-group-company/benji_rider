@@ -37,6 +37,19 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
   }
 
+  toMapDirectionage() {
+    Get.to(
+      () => const MapDirection(),
+      routeName: 'MapDirection',
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
+    );
+  }
+
 //============================== ALL VARIABLES ================================\\
   bool isDispatched = false;
   String dispatchMessage = "Your order has been dispatched";
@@ -68,7 +81,32 @@ class _OrderDetailsState extends State<OrderDetails> {
       appBar: MyAppBar(
         title: "Order Details",
         elevation: 0,
-        actions: const [],
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 25),
+            child: InkWell(
+              onTap: toMapDirectionage,
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: kAccentColor,
+                  ),
+                  const SizedBox(
+                    width: kDefaultPadding * 0.2,
+                  ),
+                  Text(
+                    'Map',
+                    style: TextStyle(
+                        color: kAccentColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
         backgroundColor: kPrimaryColor,
       ),
       bottomNavigationBar: Container(
@@ -412,8 +450,6 @@ class _OrderDetailsState extends State<OrderDetails> {
               ],
             ),
           ),
-          kSizedBox,
-          const MapDirection(),
           kSizedBox,
         ],
       ),
