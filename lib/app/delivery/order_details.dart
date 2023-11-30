@@ -19,14 +19,8 @@ import '../../theme/colors.dart';
 
 class OrderDetails extends StatefulWidget {
   final Order order;
-  final String orderStatus;
-  final Color orderStatusColor;
 
-  const OrderDetails(
-      {super.key,
-      required this.order,
-      required this.orderStatus,
-      required this.orderStatusColor});
+  const OrderDetails({super.key, required this.order});
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -106,8 +100,9 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(kDefaultPadding),
-        child: isDispatched == false && widget.orderStatus == "Pending"
+        child: isDispatched == false && widget.order.deliveryStatus == "Pending"
             ? GetBuilder<FormController>(
+                tag: 'dispatchOrder',
                 init: FormController(),
                 builder: (controller) {
                   return MyElevatedButton(
@@ -117,7 +112,16 @@ class _OrderDetailsState extends State<OrderDetails> {
                   );
                 },
               )
-            : const SizedBox(),
+            : GetBuilder<FormController>(
+                init: FormController(),
+                builder: (controller) {
+                  return MyElevatedButton(
+                    title: "Delivered",
+                    onPressed: () {},
+                    isLoading: controller.isLoad.value,
+                  );
+                },
+              ),
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),
@@ -184,10 +188,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                         ),
                       ),
                       Text(
-                        widget.orderStatus,
+                        widget.order.deliveryStatus,
                         textAlign: TextAlign.right,
                         style: TextStyle(
-                          color: widget.orderStatusColor,
+                          color: kAccentColor,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           letterSpacing: -0.32,
@@ -497,7 +501,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 widget.order.deliveryAddress.latitude,
                                 widget.order.deliveryAddress.longitude),
                             builder: (context, controller) {
-                              // '6.801965310155346', '7.092915443774477'
                               return Text(
                                 controller.data ?? 'Loading...',
                                 style: TextStyle(

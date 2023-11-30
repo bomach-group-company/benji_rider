@@ -29,10 +29,7 @@ class _DeliveryState extends State<Delivery> {
   }
 
   void _toOrderDetailPage(Order order) => Get.to(
-        () => OrderDetails(
-            order: order,
-            orderStatus: 'Pending',
-            orderStatusColor: kAccentColor),
+        () => OrderDetails(order: order),
         routeName: 'DirectsPage',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,

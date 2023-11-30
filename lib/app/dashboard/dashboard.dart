@@ -2,10 +2,10 @@
 
 import 'dart:async';
 
-import 'package:benji_rider/app/ride/direction.dart';
+import 'package:benji_rider/app/delivery/order_details.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
-import 'package:benji_rider/repo/models/tasks.dart';
+import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,9 +29,9 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
-  void _toDirectsPagePage(TasksModel task) => Get.to(
-        () => DirectsPage(task: task),
-        routeName: 'DirectsPage',
+  void _toDOrderDetailsPage(Order order) => Get.to(
+        () => OrderDetails(order: order),
+        routeName: 'OrderDetails',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,
