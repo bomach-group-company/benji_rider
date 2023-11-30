@@ -17,8 +17,7 @@ class TasksController extends GetxController {
   }
 
   var tasks = <TasksModel>[].obs;
-  var isLoadingAccept = false.obs;
-  var isLoadingReject = false.obs;
+  var isLoading = false.obs;
 
   late WebSocketChannel channel;
   late WebSocketChannel channelTask;
@@ -34,13 +33,13 @@ class TasksController extends GetxController {
   }
 
   Future acceptTask(id) async {
-    isLoadingAccept.value = true;
+    isLoading.value = true;
     update();
     final response = await http.put(
       Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
       headers: authHeader(),
     );
-    isLoadingAccept.value = true;
+    isLoading.value = true;
     update();
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
@@ -53,13 +52,13 @@ class TasksController extends GetxController {
   }
 
   Future rejectTask(id) async {
-    isLoadingReject.value = true;
+    isLoading.value = true;
     update();
     final response = await http.put(
       Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
       headers: authHeader(),
     );
-    isLoadingReject.value = true;
+    isLoading.value = true;
     update();
 
     if (response.statusCode == 200) {
@@ -95,8 +94,8 @@ class TasksController extends GetxController {
       print(message);
 
       setTasks(jsonDecode(message)['message'] as List);
-      isLoadingAccept.value = false;
-      isLoadingReject.value = false;
+      isLoading.value = false;
+      isLoading.value = false;
       update();
     });
   }

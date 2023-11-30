@@ -20,6 +20,7 @@ class MyElevatedOvalButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        disabledBackgroundColor: kAccentColor.withOpacity(0.5),
         backgroundColor: kAccentColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
@@ -28,17 +29,15 @@ class MyElevatedOvalButton extends StatelessWidget {
         ),
       ),
       onPressed: isLoading ? null : onPressed,
-      child: isLoading
-          ? CircularProgressIndicator(color: kPrimaryColor)
-          : Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: kTextWhiteColor,
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: kTextWhiteColor,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
     );
   }
 }

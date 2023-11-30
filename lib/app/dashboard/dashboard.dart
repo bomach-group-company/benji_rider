@@ -316,7 +316,7 @@ class _DashboardState extends State<Dashboard>
                                       controller.rejectTask(
                                           controller.tasks[index].id);
                                     },
-                                    isLoading: controller.isLoadingReject.value,
+                                    isLoading: controller.isLoading.value,
                                   ),
                                   MyElevatedOvalButton(
                                     title: 'Accept',
@@ -324,7 +324,7 @@ class _DashboardState extends State<Dashboard>
                                       controller.acceptTask(
                                           controller.tasks[index].id);
                                     },
-                                    isLoading: controller.isLoadingAccept.value,
+                                    isLoading: controller.isLoading.value,
                                   ),
                                 ],
                               )
