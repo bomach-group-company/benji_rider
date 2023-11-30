@@ -229,15 +229,15 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                                           ),
                                         ],
                                       ),
-                                      IconButton(
-                                        onPressed: () {
-                                          _showBottomSheet(context);
-                                        },
-                                        icon: FaIcon(
-                                          FontAwesomeIcons.ellipsis,
-                                          color: kAccentColor,
-                                        ),
-                                      )
+                                      // IconButton(
+                                      //   onPressed: () {
+                                      //     _showBottomSheet(context);
+                                      //   },
+                                      //   icon: FaIcon(
+                                      //     FontAwesomeIcons.ellipsis,
+                                      //     color: kAccentColor,
+                                      //   ),
+                                      // )
                                     ],
                                   ),
                                   kSizedBox,
