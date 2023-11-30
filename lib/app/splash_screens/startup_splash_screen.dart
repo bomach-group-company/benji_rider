@@ -48,6 +48,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     double mediaWidth = MediaQuery.of(context).size.width;
 
     return GetBuilder<AuthController>(
+      initState: (state) => AuthController.instance.checkAuth(),
       init: AuthController(),
       builder: (controller) {
         return Scaffold(

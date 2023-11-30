@@ -17,6 +17,8 @@ class TasksController extends GetxController {
   }
 
   var tasks = <TasksModel>[].obs;
+  var isLoadingAccept = false.obs;
+  var isLoadingReject = false.obs;
 
   late WebSocketChannel channel;
   late WebSocketChannel channelTask;
@@ -32,10 +34,14 @@ class TasksController extends GetxController {
   }
 
   Future acceptTask(id) async {
+    isLoadingAccept.value = true;
+    update();
     final response = await http.put(
       Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
       headers: authHeader(),
     );
+    isLoadingAccept.value = true;
+    update();
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
@@ -47,10 +53,15 @@ class TasksController extends GetxController {
   }
 
   Future rejectTask(id) async {
+    isLoadingReject.value = true;
+    update();
     final response = await http.put(
       Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
       headers: authHeader(),
     );
+    isLoadingReject.value = true;
+    update();
+
     if (response.statusCode == 200) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
@@ -78,9 +89,10 @@ class TasksController extends GetxController {
     });
 
     channelTask.stream.listen((message) {
-      // print(message);
       setTasks(jsonDecode(message)['message'] as List);
-      // print('tasks $message');
+      isLoadingAccept.value = false;
+      isLoadingReject.value = false;
+      update();
     });
   }
 

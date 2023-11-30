@@ -6,6 +6,7 @@ import 'package:benji_rider/app/delivery/order_details.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
+import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,7 +30,7 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
-  void _toDOrderDetailsPage(Order order) => Get.to(
+  void _toOrderDetailsPage(Order order) => Get.to(
         () => OrderDetails(order: order),
         routeName: 'OrderDetails',
         duration: const Duration(milliseconds: 300),
@@ -271,52 +272,22 @@ class _DashboardState extends State<Dashboard>
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: kTextWhiteColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
-                                        ),
-                                      ),
-                                    ),
+                                  MyElevatedOvalButton(
+                                    title: 'Reject',
                                     onPressed: () {
                                       controller.rejectTask(
                                           controller.tasks[index].id);
                                     },
-                                    child: Text(
-                                      'Reject',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: kAccentColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
+                                    isLoading: controller.isLoadingReject.value,
                                   ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: kAccentColor,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(20),
-                                        ),
-                                      ),
-                                    ),
+                                  MyElevatedOvalButton(
+                                    title: 'Accept',
                                     onPressed: () {
                                       controller.acceptTask(
                                           controller.tasks[index].id);
                                     },
-                                    child: const Text(
-                                      'Accept',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: kTextWhiteColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  )
+                                    isLoading: controller.isLoadingAccept.value,
+                                  ),
                                 ],
                               )
                             ],

@@ -42,7 +42,7 @@ class ProductModel {
       isAvailable: json['is_available'] ?? false,
       isTrending: json['is_trending'] ?? false,
       isRecommended: json['is_recommended'] ?? false,
-      vendorId: VendorModel.fromJson(json['vendor_id']),
+      vendorId: VendorModel.fromJson(json['vendor']),
       subCategoryId: SubCategory.fromJson(json['sub_category_id']),
     );
   }
