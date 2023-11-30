@@ -33,6 +33,7 @@ class TasksController extends GetxController {
   }
 
   Future acceptTask(id) async {
+    print('acceptTask');
     isLoading.value = true;
     update();
     final response = await http.put(
@@ -52,6 +53,8 @@ class TasksController extends GetxController {
   }
 
   Future rejectTask(id) async {
+    print('rejectTask');
+
     isLoading.value = true;
     update();
     final response = await http.put(

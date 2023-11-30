@@ -73,6 +73,7 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
 
   Column profileHead(data) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Row(
@@ -97,33 +98,61 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
           ],
         ),
         kSizedBox,
-        GetBuilder<UserController>(
-          init: UserController(),
-          builder: (controller) => Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: "₦",
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 20,
-                    fontFamily: 'sen',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                TextSpan(
-                  text: data
-                      ? formattedText(controller.user.value.balance)
-                      : '******',
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GetBuilder<UserController>(
+              init: UserController(),
+              builder: (controller) => controller.isLoading.value
+                  ? Text(
+                      'Loading...',
+                      style: TextStyle(
+                        color: kTextWhiteColor.withOpacity(0.8),
+                        fontSize: 20,
+                        fontFamily: 'sen',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  : Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "₦",
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 20,
+                              fontFamily: 'sen',
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          TextSpan(
+                            text: data
+                                ? formattedText(controller.user.value.balance)
+                                : '******',
+                            style: TextStyle(
+                              color: kPrimaryColor,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
             ),
-          ),
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () async {
+                await UserController.instance.getUser();
+              },
+              color: kTextWhiteColor.withOpacity(0.8),
+              iconSize: 25.0,
+              tooltip: 'Refresh',
+              padding: const EdgeInsets.all(10.0),
+              splashRadius: 20.0,
+              splashColor: Colors.blue,
+              highlightColor: Colors.transparent,
+            ),
+          ],
         ),
         kSizedBox,
         InkWell(

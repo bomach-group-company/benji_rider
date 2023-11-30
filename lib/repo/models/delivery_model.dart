@@ -29,7 +29,7 @@ class DeliveryModel {
       deliveryStatus: json["delivery_status"] ?? "PEND",
       order: Order.fromJson(json["orders"]),
       createdDate: json["created_date"] ?? '',
-      deliveredDate: json["delivered_date"] ?? '',
+      deliveredDate: json["delivered_date_time"] ?? '',
     );
   }
 }

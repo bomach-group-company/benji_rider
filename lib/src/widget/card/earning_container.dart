@@ -140,34 +140,62 @@ class _EarningContainerState extends State<EarningContainer> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            GetBuilder<UserController>(
-              init: UserController(),
-              builder: (controller) => Text.rich(
-                TextSpan(
-                  children: [
-                    const TextSpan(
-                      text: "₦",
-                      style: TextStyle(
-                        color: kTextBlackColor,
-                        fontSize: 20,
-                        fontFamily: 'sen',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    TextSpan(
-                      text: data['status']
-                          ? formattedText(controller.user.value.balance)
-                          : '******',
-                      style: const TextStyle(
-                        color: kTextBlackColor,
-                        fontSize: 20,
-                        fontFamily: 'sen',
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ],
+            Row(
+              children: [
+                GetBuilder<UserController>(
+                  init: UserController(),
+                  builder: (controller) => controller.isLoading.value
+                      ? Text(
+                          'Loading...',
+                          style: TextStyle(
+                            color: kGreyColor,
+                            fontSize: 20,
+                            fontFamily: 'sen',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        )
+                      : Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(
+                                text: "₦",
+                                style: TextStyle(
+                                  color: kTextBlackColor,
+                                  fontSize: 20,
+                                  fontFamily: 'sen',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              TextSpan(
+                                text: data['status']
+                                    ? formattedText(
+                                        controller.user.value.balance)
+                                    : '******',
+                                style: const TextStyle(
+                                  color: kTextBlackColor,
+                                  fontSize: 20,
+                                  fontFamily: 'sen',
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                 ),
-              ),
+                IconButton(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: () async {
+                    await UserController.instance.getUser();
+                  },
+                  color: kGreyColor,
+                  iconSize: 25.0,
+                  tooltip: 'Refresh',
+                  padding: const EdgeInsets.all(10.0),
+                  splashRadius: 20.0,
+                  splashColor: Colors.blue,
+                  highlightColor: Colors.transparent,
+                ),
+              ],
             ),
             Row(
               children: [

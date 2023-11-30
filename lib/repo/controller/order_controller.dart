@@ -24,7 +24,7 @@ class OrderController extends GetxController {
   var isLoadMore = false.obs;
   var loadNum = 10.obs;
   var total = 0.obs;
-  var status = StatusType.delivered.obs;
+  var status = StatusType.pending.obs;
 
   deleteCachedOrders() {
     vendorsOrderList.value = <DeliveryModel>[];
@@ -32,7 +32,7 @@ class OrderController extends GetxController {
     isLoadMore.value = false;
     loadNum.value = 10;
     total.value = 0;
-    status.value = StatusType.delivered;
+    status.value = StatusType.pending;
   }
 
   resetOrders() async {
@@ -75,7 +75,7 @@ class OrderController extends GetxController {
     late String token;
     String id = UserController.instance.user.value.id.toString();
     var url =
-        "${Api.baseUrl}/drivers/completeDeliveryRequestStatus/$id/${statusTypeConverter(status.value)}";
+        "${Api.baseUrl}/drivers/getTasksByStatus/$id/${statusTypeConverter(status.value)}?start=0&end=100";
     token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);
     var responseData = await ApiProcessorController.errorState(response);
@@ -86,7 +86,7 @@ class OrderController extends GetxController {
     }
     List<DeliveryModel> data = [];
     try {
-      data = (jsonDecode(responseData) as List)
+      data = (jsonDecode(responseData)['items'] as List)
           .map((e) => DeliveryModel.fromJson(e))
           .toList();
       vendorsOrderList.value = data;

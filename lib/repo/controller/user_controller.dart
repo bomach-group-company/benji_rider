@@ -82,7 +82,6 @@ class UserController extends GetxController {
     final user = UserController.instance.user.value;
     http.Response? responseUserData = await HandleData.getApi(
         '${Api.baseUrl}${Api.getSpecificRider}${user.id}/', user.token);
-
     if (responseUserData?.statusCode != 200) {
       ApiProcessorController.errorSnack("Failed to refresh");
       isLoading.value = false;

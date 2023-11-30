@@ -156,5 +156,5 @@ String statusTypeConverter(StatusType statusType) {
   if (statusType == StatusType.cancelled) {
     return "cancelled";
   }
-  return "completed";
+  return "pending";
 }
