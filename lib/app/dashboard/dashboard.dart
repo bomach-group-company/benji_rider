@@ -6,6 +6,7 @@ import 'package:benji_rider/app/delivery/order_details.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
+import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -254,19 +255,56 @@ class _DashboardState extends State<Dashboard>
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                '#CTGHU34 - 4 items',
-                                style: TextStyle(
+                              Text(
+                                '#${controller.tasks[index].order.code} - ${controller.tasks[index].order.orderitems.length} items',
+                                style: const TextStyle(
                                   color: kBlackColor,
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
                               kSizedBox,
-                              const Text(
-                                  'Pickup from - 98 gra by blabla enugu'),
+                              controller.tasks[index].order.orderitems.isEmpty
+                                  ? const Text('Pickup from - Not Found')
+                                  : FutureBuilder(
+                                      future: getAddressFromCoordinates(
+                                          controller
+                                              .tasks[index]
+                                              .order
+                                              .orderitems
+                                              .first
+                                              .product
+                                              .vendorId
+                                              .latitude,
+                                          controller
+                                              .tasks[index]
+                                              .order
+                                              .orderitems
+                                              .first
+                                              .product
+                                              .vendorId
+                                              .longitude),
+                                      builder: (context, controller) {
+                                        return Text(
+                                          controller.data == null
+                                              ? 'Loading...'
+                                              : 'Pickup from - ${controller.data!}',
+                                        );
+                                      }),
                               kHalfSizedBox,
-                              const Text('Deliver to - 98 gra by blabla enugu'),
+                              FutureBuilder(
+                                  future: getAddressFromCoordinates(
+                                      controller.tasks[index].order
+                                          .deliveryAddress.latitude,
+                                      controller.tasks[index].order
+                                          .deliveryAddress.longitude),
+                                  builder: (context, controller) {
+                                    return Text(
+                                      controller.data == null
+                                          ? 'Loading...'
+                                          : 'Deliver to - ${controller.data!}',
+                                    );
+                                  }),
                               kSizedBox,
                               Row(
                                 mainAxisAlignment:

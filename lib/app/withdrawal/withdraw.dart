@@ -54,7 +54,6 @@ class _WithdrawPageState extends State<WithdrawPage> {
       "amount_to_withdraw": amountEC.text,
       "bank_details_id": widget.bankDetailId
     };
-    print(data);
 
     await FormController.instance.postAuth(
         '${Api.baseUrl}/wallet/requestRiderWithdrawal',

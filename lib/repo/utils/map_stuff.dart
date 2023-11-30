@@ -3,10 +3,8 @@ import 'package:geocoding/geocoding.dart';
 Future<String> getAddressFromCoordinates(
     String latitude, String longitude) async {
   try {
-    print('lat, lng: $latitude, $longitude');
     List<Placemark> placemarks = await placemarkFromCoordinates(
         double.parse(latitude), double.parse(longitude));
-    print(placemarks);
     if (placemarks.isNotEmpty) {
       Placemark firstPlacemark = placemarks.first;
       String address =
@@ -16,7 +14,6 @@ Future<String> getAddressFromCoordinates(
       return 'No address found';
     }
   } catch (e) {
-    print('error in placemarks $e');
     return 'Error getting address';
   }
 }

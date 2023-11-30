@@ -14,7 +14,6 @@ class ValidateBankAccountModel {
   });
 
   factory ValidateBankAccountModel.fromJson(Map<String, dynamic>? json) {
-    consoleLog(json.toString());
     json ??= {};
     return ValidateBankAccountModel(
       requestSuccessful: json['requestSuccessful'] ?? false,

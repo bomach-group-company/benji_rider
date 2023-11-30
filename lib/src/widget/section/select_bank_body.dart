@@ -46,8 +46,6 @@ class _SelectBankBodyState extends State<SelectBankBody> {
     selectedBankName.value = value;
     isTyping = true;
     WithdrawController.instance.searchBanks(value);
-
-    consoleLog("ONCHANGED VALUE: ${selectedBankName.value}");
   }
 
   selectBank(index) async {
@@ -58,11 +56,6 @@ class _SelectBankBodyState extends State<SelectBankBody> {
     selectedBankCode.value = newBankCode;
 
     bankQueryEC.text = newBankName;
-
-    consoleLog("Selected Bank Name: ${selectedBankName.value}");
-    consoleLog("Selected Bank Code: ${selectedBankCode.value}");
-    consoleLog("New selected Bank: $newBankName");
-    consoleLog("Bank Query: ${bankQueryEC.text}");
 
     final result = {'name': newBankName, 'code': newBankCode};
 

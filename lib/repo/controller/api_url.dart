@@ -75,7 +75,6 @@ class HandleData {
       }
     } catch (e) {
       response = null;
-      consoleLog(e.toString());
     }
     return response;
   }
@@ -95,7 +94,6 @@ class HandleData {
       );
     } catch (e) {
       response = null;
-      consoleLog(e.toString());
     }
     return response;
   }

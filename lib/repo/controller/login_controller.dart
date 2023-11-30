@@ -32,8 +32,6 @@ class LoginController extends GetxController {
       http.Response? response =
           await HandleData.postApi(Api.baseUrl + Api.login, null, finalData);
 
-      consoleLog(finalData.toString());
-      consoleLog(Api.baseUrl + Api.login);
       if (response!.statusCode != 200) {
         ApiProcessorController.errorSnack(
             "Invalid email or password. Try again");
@@ -43,7 +41,6 @@ class LoginController extends GetxController {
       }
 
       var responseData = jsonDecode(response.body);
-      consoleLog("This is the response: $responseData");
       if (responseData["token"] == false) {
         ApiProcessorController.errorSnack(
             "Invalid email or password. Try again");
@@ -91,7 +88,6 @@ class LoginController extends GetxController {
     } on SocketException {
       ApiProcessorController.errorSnack("Please connect to the internet");
     } catch (e) {
-      consoleLog("This is the error: $e");
       ApiProcessorController.errorSnack("Invalid email or password. Try again");
       isLoad.value = false;
       update();

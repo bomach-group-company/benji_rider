@@ -78,17 +78,22 @@ class TasksController extends GetxController {
     channelTask.sink.add(jsonEncode({
       'rider_id': UserController.instance.user.value.id,
     }));
+    print({
+      'rider_id': UserController.instance.user.value.id,
+    });
 
     Timer.periodic(const Duration(minutes: 1), (timer) {
-      print({
-        'rider_id': UserController.instance.user.value.id,
-      });
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
       }));
+      print({
+        'rider_id': UserController.instance.user.value.id,
+      });
     });
 
     channelTask.stream.listen((message) {
+      print(message);
+
       setTasks(jsonDecode(message)['message'] as List);
       isLoadingAccept.value = false;
       isLoadingReject.value = false;

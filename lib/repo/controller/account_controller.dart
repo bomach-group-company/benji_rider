@@ -21,13 +21,11 @@ class AccountController extends GetxController {
   getAccounts() async {
     var userId = UserController.instance.user.value.id;
     var url = "${Api.baseUrl}/payments/getSaveBankDetails/$userId/";
-    consoleLog(url);
     isLoad.value = true;
     update();
     try {
       final response = await http.get(Uri.parse(url), headers: authHeader());
 
-      consoleLog(response.body);
       if (response.statusCode == 200) {
         dynamic jsonResponse = jsonDecode(response.body);
         accounts.value = AccountModel.listFromJson(
@@ -37,7 +35,6 @@ class AccountController extends GetxController {
       ApiProcessorController.errorSnack("Please connect to the internet");
     } catch (e) {
       accounts.value = [];
-      consoleLog(e.toString());
     }
     isLoad.value = false;
     update();

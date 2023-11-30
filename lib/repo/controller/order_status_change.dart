@@ -26,12 +26,11 @@ class OrderStatusChangeController extends GetxController {
     order.value = Order.fromJson(null);
   }
 
-  Future getStatus(String orderId) async {
+  Future getOrderStatus(String orderId) async {
     isLoad.value = true;
     update();
 
     var url = "${Api.baseUrl}/orders/order/$orderId";
-    consoleLog(url);
 
     String token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);
@@ -47,10 +46,11 @@ class OrderStatusChangeController extends GetxController {
 
     try {
       order.value = Order.fromJson(jsonDecode(responseData));
-    } catch (e) {
-      consoleLog(e.toString());
-    }
+    } catch (e) {}
     isLoad.value = false;
     update();
   }
+
+  Future setDispatched() async {}
+  Future setDelivered() async {}
 }

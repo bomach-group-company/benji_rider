@@ -76,11 +76,9 @@ class OrderController extends GetxController {
     String id = UserController.instance.user.value.id.toString();
     var url =
         "${Api.baseUrl}/drivers/completeDeliveryRequestStatus/$id/${statusTypeConverter(status.value)}";
-    consoleLog(url);
     token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);
     var responseData = await ApiProcessorController.errorState(response);
-    consoleLog(response!.body);
     if (responseData == null) {
       isLoad.value = false;
       update();
@@ -91,11 +89,8 @@ class OrderController extends GetxController {
       data = (jsonDecode(responseData) as List)
           .map((e) => DeliveryModel.fromJson(e))
           .toList();
-      consoleLog(data.toString());
       vendorsOrderList.value = data;
-    } catch (e) {
-      consoleLog(e.toString());
-    }
+    } catch (e) {}
     isLoad.value = false;
     update();
   }

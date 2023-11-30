@@ -15,8 +15,6 @@ class DirectsPage extends StatefulWidget {
 class _DirectsPageState extends State<DirectsPage> {
   @override
   Widget build(BuildContext context) {
-    print('widget.task ${widget.task} ${widget.task.order}');
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       extendBody: true,
