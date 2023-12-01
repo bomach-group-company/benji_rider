@@ -63,10 +63,14 @@ class UserController extends GetxController {
 
   void setUserSync() {
     String? userData = prefs.getString('user');
+    bool? isVisibleCash = prefs.getBool('isVisibleCash');
     if (userData == null) {
       user.value = User.fromJson(null);
     } else {
-      user.value = User.fromJson(jsonDecode(userData) as Map<String, dynamic>);
+      Map<String, dynamic> userObj =
+          (jsonDecode(userData) as Map<String, dynamic>);
+      userObj['isVisibleCash'] = isVisibleCash;
+      user.value = User.fromJson(userObj);
     }
     update();
   }

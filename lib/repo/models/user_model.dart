@@ -18,6 +18,7 @@ class User {
   final String plateNumber;
   final int tripCount;
   final String token;
+  final bool isVisibleCash;
 
   const User({
     required this.id,
@@ -35,6 +36,7 @@ class User {
     required this.plateNumber,
     required this.tripCount,
     required this.token,
+    required this.isVisibleCash,
   });
 
   factory User.fromJson(Map<String, dynamic>? json) {
@@ -55,6 +57,7 @@ class User {
       plateNumber: json['plate_number'] ?? notAvailable,
       tripCount: json['tripCount'] ?? 0,
       token: json['token'] ?? notAvailable,
+      isVisibleCash: json['isVisibleCash'] ?? true,
     );
   }
 }

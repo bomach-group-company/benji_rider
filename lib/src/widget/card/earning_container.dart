@@ -45,7 +45,7 @@ class _EarningContainerState extends State<EarningContainer> {
     bool isVisibleCash = prefs.getBool('isVisibleCash') ?? true;
     await prefs.setBool('isVisibleCash', !isVisibleCash);
 
-    setState(() {});
+    UserController.instance.setUserSync();
   }
 
 //======================================================= Navigation=================================================\\
@@ -126,13 +126,16 @@ class _EarningContainerState extends State<EarningContainer> {
               ),
             ),
             kHalfWidthSizedBox,
-            IconButton(
-              onPressed: toggleVisibleCash,
-              icon: FaIcon(
-                data['status']
-                    ? FontAwesomeIcons.solidEye
-                    : FontAwesomeIcons.solidEyeSlash,
-                color: data['status'] ? kAccentColor : kAccentColor,
+            GetBuilder<UserController>(
+              init: UserController(),
+              builder: (controller) => IconButton(
+                onPressed: toggleVisibleCash,
+                icon: FaIcon(
+                  controller.user.value.isVisibleCash
+                      ? FontAwesomeIcons.solidEye
+                      : FontAwesomeIcons.solidEyeSlash,
+                  color: data['status'] ? kAccentColor : kAccentColor,
+                ),
               ),
             ),
           ],
@@ -167,7 +170,7 @@ class _EarningContainerState extends State<EarningContainer> {
                                 ),
                               ),
                               TextSpan(
-                                text: data['status']
+                                text: controller.user.value.isVisibleCash
                                     ? formattedText(
                                         controller.user.value.balance)
                                     : '******',

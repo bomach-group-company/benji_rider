@@ -41,7 +41,7 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
     bool isVisibleCash = prefs.getBool('isVisibleCash') ?? true;
     await prefs.setBool('isVisibleCash', !isVisibleCash);
 
-    setState(() {});
+    UserController.instance.setUserSync();
   }
 
   String formattedText(double value) {
@@ -88,11 +88,16 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            IconButton(
-              onPressed: toggleVisibleCash,
-              icon: Icon(
-                data ? Icons.visibility : Icons.visibility_off,
-                color: kPrimaryColor,
+            GetBuilder<UserController>(
+              init: UserController(),
+              builder: (controller) => IconButton(
+                onPressed: toggleVisibleCash,
+                icon: Icon(
+                  controller.isLoading.value
+                      ? Icons.visibility
+                      : Icons.visibility_off,
+                  color: kPrimaryColor,
+                ),
               ),
             ),
           ],
@@ -126,7 +131,7 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
                             ),
                           ),
                           TextSpan(
-                            text: data
+                            text: controller.user.value.isVisibleCash
                                 ? formattedText(controller.user.value.balance)
                                 : '******',
                             style: TextStyle(
