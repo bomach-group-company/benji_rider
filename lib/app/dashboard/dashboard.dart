@@ -6,6 +6,7 @@ import 'package:benji_rider/app/delivery/order_details.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
+import 'package:benji_rider/repo/models/tasks.dart';
 import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
 import 'package:flutter/material.dart';
@@ -31,8 +32,8 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
-  void _toOrderDetailsPage(Order order) => Get.to(
-        () => OrderDetails(order: order),
+  void _toOrderDetailsPage(Order order, String status) => Get.to(
+        () => OrderDetails(order: order, status: status),
         routeName: 'OrderDetails',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
@@ -180,10 +181,53 @@ class _DashboardState extends State<Dashboard>
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                 ),
                 kSizedBox,
-                Container(
-                  //Red delivery request card
-                  child: GetBuilder<TasksController>(builder: (controller) {
-                    if (controller.tasks.isEmpty) {
+                GetBuilder<TasksController>(builder: (controller) {
+                  if (controller.tasks.isEmpty) {
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(
+                        top: 10,
+                        left: 20,
+                        right: 20,
+                        bottom: 20,
+                      ),
+                      decoration: ShapeDecoration(
+                        color: kTextWhiteColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: const Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'No Delivery Requests',
+                            style: TextStyle(
+                              color: kBlackColor,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          kSizedBox,
+                          Text(
+                            'You have No Delivery Requests For Now',
+                            style: TextStyle(
+                              color: kTextWhiteColor,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  return ListView.separated(
+                    physics: const BouncingScrollPhysics(),
+                    separatorBuilder: (context, index) => kSizedBox,
+                    shrinkWrap: true,
+                    itemCount: controller.tasks.length,
+                    itemBuilder: (BuildContext context, int index) {
                       return Container(
                         width: double.infinity,
                         padding: const EdgeInsets.only(
@@ -197,144 +241,97 @@ class _DashboardState extends State<Dashboard>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
+                          shadows: const [
+                            BoxShadow(
+                              color: Color(0x0F000000),
+                              blurRadius: 24,
+                              offset: Offset(0, 4),
+                              spreadRadius: 4,
+                            )
+                          ],
                         ),
-                        child: const Column(
+                        child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'No Delivery Requests',
-                              style: TextStyle(
+                              '#${controller.tasks[index].order.code} - ${controller.tasks[index].order.orderitems.length} items',
+                              style: const TextStyle(
                                 color: kBlackColor,
-                                fontSize: 17,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
                             kSizedBox,
-                            Text(
-                              'You have No Delivery Requests For Now',
-                              style: TextStyle(
-                                color: kTextWhiteColor,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
+                            controller.tasks[index].order.orderitems.isEmpty
+                                ? const Text('Pickup from - Not Found')
+                                : FutureBuilder(
+                                    future: getAddressFromCoordinates(
+                                        controller.tasks[index].order.orderitems
+                                            .first.product.vendorId.latitude,
+                                        controller.tasks[index].order.orderitems
+                                            .first.product.vendorId.longitude),
+                                    builder: (context, controller) {
+                                      return Text(
+                                        controller.data == null
+                                            ? 'Loading...'
+                                            : 'Pickup from - ${controller.data!}',
+                                      );
+                                    }),
+                            kHalfSizedBox,
+                            FutureBuilder(
+                                future: getAddressFromCoordinates(
+                                    controller.tasks[index].order
+                                        .deliveryAddress.latitude,
+                                    controller.tasks[index].order
+                                        .deliveryAddress.longitude),
+                                builder: (context, controller) {
+                                  return Text(
+                                    controller.data == null
+                                        ? 'Loading...'
+                                        : 'Deliver to - ${controller.data!}',
+                                  );
+                                }),
+                            kSizedBox,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MyElevatedOvalButton(
+                                  title: 'Reject',
+                                  onPressed: () {
+                                    controller
+                                        .rejectTask(controller.tasks[index].id);
+                                  },
+                                  isLoading: controller.isLoading.value,
+                                ),
+                                MyElevatedOvalButton(
+                                  title: 'Accept',
+                                  onPressed: () async {
+                                    TasksModel task = controller.tasks[index];
+                                    await controller
+                                        .acceptTask(controller.tasks[index].id);
+
+                                    while (controller.isLoading.value) {
+                                      await Future.delayed(
+                                          const Duration(seconds: 1));
+                                    }
+                                    if (!controller.isLoading.value) {
+                                      print(
+                                          ' got to the func later ${controller.isLoading.value} chai');
+                                      _toOrderDetailsPage(
+                                          task.order, 'pending');
+                                    }
+                                  },
+                                  isLoading: controller.isLoading.value,
+                                ),
+                              ],
+                            )
                           ],
                         ),
                       );
-                    }
-                    return ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      separatorBuilder: (context, index) => kSizedBox,
-                      shrinkWrap: true,
-                      itemCount: controller.tasks.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            left: 20,
-                            right: 20,
-                            bottom: 20,
-                          ),
-                          decoration: ShapeDecoration(
-                            color: kTextWhiteColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            shadows: const [
-                              BoxShadow(
-                                color: Color(0x0F000000),
-                                blurRadius: 24,
-                                offset: Offset(0, 4),
-                                spreadRadius: 4,
-                              )
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '#${controller.tasks[index].order.code} - ${controller.tasks[index].order.orderitems.length} items',
-                                style: const TextStyle(
-                                  color: kBlackColor,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              kSizedBox,
-                              controller.tasks[index].order.orderitems.isEmpty
-                                  ? const Text('Pickup from - Not Found')
-                                  : FutureBuilder(
-                                      future: getAddressFromCoordinates(
-                                          controller
-                                              .tasks[index]
-                                              .order
-                                              .orderitems
-                                              .first
-                                              .product
-                                              .vendorId
-                                              .latitude,
-                                          controller
-                                              .tasks[index]
-                                              .order
-                                              .orderitems
-                                              .first
-                                              .product
-                                              .vendorId
-                                              .longitude),
-                                      builder: (context, controller) {
-                                        return Text(
-                                          controller.data == null
-                                              ? 'Loading...'
-                                              : 'Pickup from - ${controller.data!}',
-                                        );
-                                      }),
-                              kHalfSizedBox,
-                              FutureBuilder(
-                                  future: getAddressFromCoordinates(
-                                      controller.tasks[index].order
-                                          .deliveryAddress.latitude,
-                                      controller.tasks[index].order
-                                          .deliveryAddress.longitude),
-                                  builder: (context, controller) {
-                                    return Text(
-                                      controller.data == null
-                                          ? 'Loading...'
-                                          : 'Deliver to - ${controller.data!}',
-                                    );
-                                  }),
-                              kSizedBox,
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  MyElevatedOvalButton(
-                                    title: 'Reject',
-                                    onPressed: () {
-                                      controller.rejectTask(
-                                          controller.tasks[index].id);
-                                    },
-                                    isLoading: controller.isLoading.value,
-                                  ),
-                                  MyElevatedOvalButton(
-                                    title: 'Accept',
-                                    onPressed: () {
-                                      controller.acceptTask(
-                                          controller.tasks[index].id);
-                                    },
-                                    isLoading: controller.isLoading.value,
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  }),
-                ),
+                    },
+                  );
+                }),
                 kSizedBox
               ],
             ),

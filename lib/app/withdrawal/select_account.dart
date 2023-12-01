@@ -199,7 +199,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
                                     blurRadius: 2,
                                     color: Colors.grey.shade400,
                                     spreadRadius: 1,
-                                    // offset: Offset(1, 1),
+                                    offset: const Offset(0, 1),
                                   ),
                                 ],
                                 borderRadius: BorderRadius.circular(10),

@@ -24,11 +24,11 @@ class WithdrawalHistoryModel {
     return WithdrawalHistoryModel(
       id: json['id'] ?? notAvailable,
       user: json['user_id'] ?? 0,
-      amountWithdrawn: json['amount'] ?? 0,
+      amountWithdrawn: json['amount_withdrawed'] ?? 0,
       bankName: json['bank_name'] ?? notAvailable,
       bankHolder: json['bank_holder'] ?? notAvailable,
-      bankAccountNumber: json['account_number'] ?? notAvailable,
-      created: json['date_time'] ?? notAvailable,
+      bankAccountNumber: json['bank_account_number'] ?? notAvailable,
+      created: json['created'] ?? notAvailable,
     );
   }
 

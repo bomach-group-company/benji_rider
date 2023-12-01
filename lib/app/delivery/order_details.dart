@@ -19,8 +19,8 @@ import '../../theme/colors.dart';
 
 class OrderDetails extends StatefulWidget {
   final Order order;
-
-  const OrderDetails({super.key, required this.order});
+  final String status;
+  const OrderDetails({super.key, required this.order, required this.status});
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -65,7 +65,6 @@ class _OrderDetailsState extends State<OrderDetails> {
   }
 
 //============================== ALL VARIABLES ================================\\
-  bool isDispatched = false;
   String dispatchMessage = "Your order has been dispatched";
 
 //============================== FUNCTIONS ================================\\
@@ -78,9 +77,6 @@ class _OrderDetailsState extends State<OrderDetails> {
         "${Api.baseUrl}${Api.changeOrderStatus}?order_id=${widget.order.id}&display_message=$dispatchMessage";
     await FormController.instance.patchAuth(url, data, 'dispatchOrder');
     if (FormController.instance.status.toString().startsWith('2')) {
-      setState(() {
-        isDispatched = true;
-      });
       await Future.delayed(const Duration(microseconds: 500), () {
         OrderController.instance.resetOrders();
         Get.close(1);
@@ -100,7 +96,7 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(kDefaultPadding),
-        child: isDispatched == false && widget.order.deliveryStatus == "Pending"
+        child: widget.status == "pending"
             ? GetBuilder<FormController>(
                 tag: 'dispatchOrder',
                 init: FormController(),
@@ -188,7 +184,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                         ),
                       ),
                       Text(
-                        widget.order.deliveryStatus,
+                        widget.status,
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           color: kAccentColor,

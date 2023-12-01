@@ -124,7 +124,7 @@ class _WithdrawalHistoryPageState extends State<WithdrawalHistoryPage> {
                 physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: detail.listOfWithdrawals.length,
-                padding: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(30),
                 separatorBuilder: (context, index) => kSizedBox,
                 itemBuilder: (context, index) {
                   return WithdrawalDetailCard(

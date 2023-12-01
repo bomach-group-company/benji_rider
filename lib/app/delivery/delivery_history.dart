@@ -28,9 +28,9 @@ class _DeliveryState extends State<Delivery> {
     super.initState();
   }
 
-  void _toOrderDetailPage(Order order) => Get.to(
-        () => OrderDetails(order: order),
-        routeName: 'DirectsPage',
+  void _toOrderDetailPage(Order order, String status) => Get.to(
+        () => OrderDetails(order: order, status: status),
+        routeName: 'OrderDetails',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,
@@ -183,7 +183,8 @@ class _DeliveryState extends State<Delivery> {
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () => _toOrderDetailPage(
-                            controller.vendorsOrderList[index].order),
+                            controller.vendorsOrderList[index].order,
+                            controller.vendorsOrderList[index].deliveryStatus),
                         child: Column(
                           children: [
                             Container(

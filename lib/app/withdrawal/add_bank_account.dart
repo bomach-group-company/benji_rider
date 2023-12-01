@@ -99,7 +99,6 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
     if (FormController.instance.status.value == 200) {
       Get.close(1);
     }
-    Get.back();
   }
 
   @override
