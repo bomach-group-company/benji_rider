@@ -1,5 +1,6 @@
-import 'package:benji_rider/app/delivery/order_details.dart';
+import 'package:benji_rider/app/order/order_details.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/order_status_change.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
@@ -28,16 +29,19 @@ class _DeliveryState extends State<Delivery> {
     super.initState();
   }
 
-  void _toOrderDetailPage(Order order, String status) => Get.to(
-        () => OrderDetails(order: order, status: status),
-        routeName: 'OrderDetails',
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.rightToLeft,
-      );
+  void _toOrderDetailPage(Order order) {
+    OrderStatusChangeController.instance.setOrder(order);
+    Get.to(
+      () => const OrderDetails(),
+      routeName: 'OrderDetails',
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +188,7 @@ class _DeliveryState extends State<Delivery> {
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
                         onTap: () => _toOrderDetailPage(
-                            controller.vendorsOrderList[index].order,
-                            controller.vendorsOrderList[index].deliveryStatus),
+                            controller.vendorsOrderList[index].order),
                         child: Column(
                           children: [
                             Container(

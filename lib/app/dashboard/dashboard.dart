@@ -2,8 +2,9 @@
 
 import 'dart:async';
 
-import 'package:benji_rider/app/delivery/order_details.dart';
+import 'package:benji_rider/app/order/order_details.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
+import 'package:benji_rider/repo/controller/order_status_change.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:benji_rider/repo/models/tasks.dart';
@@ -32,16 +33,20 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
-  void _toOrderDetailsPage(Order order, String status) => Get.to(
-        () => OrderDetails(order: order, status: status),
-        routeName: 'OrderDetails',
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.rightToLeft,
-      );
+  void _toOrderDetailsPage(Order order) {
+    OrderStatusChangeController.instance.setOrder(order);
+
+    Get.to(
+      () => const OrderDetails(),
+      routeName: 'OrderDetails',
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
+    );
+  }
 
   @override
   void initState() {
@@ -318,8 +323,7 @@ class _DashboardState extends State<Dashboard>
                                     if (!controller.isLoading.value) {
                                       print(
                                           ' got to the func later ${controller.isLoading.value} chai');
-                                      _toOrderDetailsPage(
-                                          task.order, 'processing');
+                                      _toOrderDetailsPage(task.order);
                                     }
                                   },
                                   isLoading: controller.isLoading.value,

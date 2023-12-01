@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
+import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:get/get.dart';
@@ -18,27 +19,23 @@ class OrderStatusChangeController extends GetxController {
 
   var order = Order.fromJson(null).obs;
 
-  setOrders(Order newOrder) {
+  setOrder(Order newOrder) {
     order.value = newOrder;
     update();
   }
 
-  deleteCachedOrders() {
+  deleteCachedOrder() {
     order.value = Order.fromJson(null);
     update();
   }
 
-  resetOrders() async {
+  resetOrder() async {
     order.value = Order.fromJson(null);
     update();
   }
 
   Future refreshOrder() async {
-    isLoad.value = true;
-    update();
-
     var url = "${Api.baseUrl}/orders/order/${order.value.id}";
-
     String token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);
     var responseData = await ApiProcessorController.errorState(response);
@@ -58,6 +55,28 @@ class OrderStatusChangeController extends GetxController {
     update();
   }
 
-  Future setDispatched() async {}
-  Future setDelivered() async {}
+  orderDispatched() async {
+    isLoad.value = true;
+    update();
+
+    var url =
+        "${Api.baseUrl}/orders/RiderToVendorChangeStatus?order_id=${order.value.id}";
+    await FormController.instance.getAuth(url, 'dispatchOrder');
+    print(FormController.instance.status);
+
+    if (FormController.instance.status.toString().startsWith('2')) {}
+    await refreshOrder();
+  }
+
+  orderDelivered() async {
+    isLoad.value = true;
+
+    update();
+    var url =
+        "${Api.baseUrl}/orders/RiderToUserChangeStatus?order_id=${order.value.id}";
+    await FormController.instance.getAuth(url, 'deliveredOrder');
+    print(FormController.instance.status);
+    if (FormController.instance.status.toString().startsWith('2')) {}
+    await refreshOrder();
+  }
 }
