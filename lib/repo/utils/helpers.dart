@@ -150,11 +150,11 @@ String statusTypeConverter(StatusType statusType) {
   if (statusType == StatusType.delivered) {
     return "completed";
   }
-  if (statusType == StatusType.pending) {
-    return "pending";
+  if (statusType == StatusType.processing) {
+    return "processing";
   }
   if (statusType == StatusType.cancelled) {
     return "cancelled";
   }
-  return "pending";
+  return "processing";
 }

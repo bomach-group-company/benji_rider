@@ -44,7 +44,7 @@ class _DeliveryState extends State<Delivery> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: MyAppBar(
-        title: "My Orders",
+        title: "My Order Task",
         elevation: 0.0,
         actions: const [],
         backgroundColor: kPrimaryColor,
@@ -65,7 +65,7 @@ class _DeliveryState extends State<Delivery> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
-                              controller.status.value == StatusType.pending
+                              controller.status.value == StatusType.processing
                                   ? kAccentColor
                                   : kDefaultCategoryBackgroundColor,
                           shape: const RoundedRectangleBorder(
@@ -73,15 +73,16 @@ class _DeliveryState extends State<Delivery> {
                                   BorderRadius.all(Radius.circular(16))),
                         ),
                         onPressed: () async {
-                          await controller.setStatus(StatusType.pending);
+                          await controller.setStatus(StatusType.processing);
                         },
                         child: Text(
-                          'Accepted',
+                          'Processing',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: controller.status.value == StatusType.pending
-                                ? kTextWhiteColor
-                                : kGreyColor2,
+                            color:
+                                controller.status.value == StatusType.processing
+                                    ? kTextWhiteColor
+                                    : kGreyColor2,
                             fontSize: 14,
                             fontWeight: FontWeight.w400,
                           ),
@@ -135,7 +136,7 @@ class _DeliveryState extends State<Delivery> {
                           await controller.setStatus(StatusType.cancelled);
                         },
                         child: Text(
-                          'Rejected',
+                          'Cancelled',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color:

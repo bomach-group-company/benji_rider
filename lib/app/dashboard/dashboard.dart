@@ -319,7 +319,7 @@ class _DashboardState extends State<Dashboard>
                                       print(
                                           ' got to the func later ${controller.isLoading.value} chai');
                                       _toOrderDetailsPage(
-                                          task.order, 'pending');
+                                          task.order, 'processing');
                                     }
                                   },
                                   isLoading: controller.isLoading.value,

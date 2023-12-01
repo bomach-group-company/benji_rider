@@ -18,19 +18,26 @@ class OrderStatusChangeController extends GetxController {
 
   var order = Order.fromJson(null).obs;
 
+  setOrders(Order newOrder) {
+    order.value = newOrder;
+    update();
+  }
+
   deleteCachedOrders() {
     order.value = Order.fromJson(null);
+    update();
   }
 
   resetOrders() async {
     order.value = Order.fromJson(null);
+    update();
   }
 
-  Future getOrderStatus(String orderId) async {
+  Future refreshOrder() async {
     isLoad.value = true;
     update();
 
-    var url = "${Api.baseUrl}/orders/order/$orderId";
+    var url = "${Api.baseUrl}/orders/order/${order.value.id}";
 
     String token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);

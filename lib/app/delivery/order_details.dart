@@ -69,19 +69,17 @@ class _OrderDetailsState extends State<OrderDetails> {
 
 //============================== FUNCTIONS ================================\\
   orderDispatched() async {
-    Map<String, dynamic> data = {
-      "delivery_status": "dispatched",
-    };
-
     var url =
-        "${Api.baseUrl}${Api.changeOrderStatus}?order_id=${widget.order.id}&display_message=$dispatchMessage";
-    await FormController.instance.patchAuth(url, data, 'dispatchOrder');
-    if (FormController.instance.status.toString().startsWith('2')) {
-      await Future.delayed(const Duration(microseconds: 500), () {
-        OrderController.instance.resetOrders();
-        Get.close(1);
-      });
-    }
+        "${Api.baseUrl}/orders/RiderToVendorChangeStatus?order_id=${widget.order.id}";
+    await FormController.instance.getAuth(url, 'dispatchOrder');
+    if (FormController.instance.status.toString().startsWith('2')) {}
+  }
+
+  orderDelivered() async {
+    var url =
+        "${Api.baseUrl}/orders/RiderToUserChangeStatus?order_id=${widget.order.id}";
+    await FormController.instance.getAuth(url, 'deliveredOrder');
+    if (FormController.instance.status.toString().startsWith('2')) {}
   }
 
   @override
@@ -96,9 +94,9 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(kDefaultPadding),
-        child: widget.status == "pending"
+        child: widget.order.riderOutgoingDeliveryStatus == "PEND"
             ? GetBuilder<FormController>(
-                tag: 'dispatchOrder',
+                id: 'dispatchOrder',
                 init: FormController(),
                 builder: (controller) {
                   return MyElevatedButton(
@@ -109,11 +107,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                 },
               )
             : GetBuilder<FormController>(
+                id: 'deliveredOrder',
                 init: FormController(),
                 builder: (controller) {
                   return MyElevatedButton(
                     title: "Delivered",
-                    onPressed: () {},
+                    onPressed: orderDelivered,
                     isLoading: controller.isLoad.value,
                   );
                 },

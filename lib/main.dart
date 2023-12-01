@@ -7,6 +7,7 @@ import 'package:benji_rider/repo/controller/latlng_detail_controller.dart';
 import 'package:benji_rider/repo/controller/login_controller.dart';
 import 'package:benji_rider/repo/controller/notification_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/order_status_change.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
@@ -44,6 +45,7 @@ void main() async {
   Get.put(WithdrawController());
   Get.put(DeliveryHistoryController());
   Get.put(AccountController());
+  Get.put(OrderStatusChangeController());
 
   runApp(const MyApp());
 }

@@ -10,7 +10,7 @@ import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-enum StatusType { delivered, pending, cancelled }
+enum StatusType { delivered, processing, cancelled }
 
 class OrderController extends GetxController {
   static OrderController get instance {
@@ -24,7 +24,7 @@ class OrderController extends GetxController {
   var isLoadMore = false.obs;
   var loadNum = 10.obs;
   var total = 0.obs;
-  var status = StatusType.pending.obs;
+  var status = StatusType.processing.obs;
 
   deleteCachedOrders() {
     vendorsOrderList.value = <DeliveryModel>[];
@@ -32,7 +32,7 @@ class OrderController extends GetxController {
     isLoadMore.value = false;
     loadNum.value = 10;
     total.value = 0;
-    status.value = StatusType.pending;
+    status.value = StatusType.processing;
   }
 
   resetOrders() async {
@@ -41,7 +41,7 @@ class OrderController extends GetxController {
     isLoadMore.value = false;
     loadNum.value = 10;
     total.value = 0;
-    status.value = StatusType.pending;
+    status.value = StatusType.processing;
     setStatus();
   }
 
