@@ -255,7 +255,7 @@ class _DashboardState extends State<Dashboard>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '#${controller.tasks[index].order.code} - ${controller.tasks[index].order.orderitems.length} items',
+                              '#${controller.tasks[index].id.substring(0, 8)}... - ${controller.tasks[index].order.orderitems.length} items',
                               style: const TextStyle(
                                 color: kBlackColor,
                                 fontSize: 20,

@@ -2,7 +2,7 @@ import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../src/providers/constants.dart';
@@ -121,14 +121,19 @@ class _WithdrawPageState extends State<WithdrawPage> {
                           },
                         ),
                         kSizedBox,
-                        MyElevatedButton(
-                          onPressed: (() async {
-                            if (formKey.currentState!.validate()) {
-                              makeWithdrawal();
-                            }
-                          }),
-                          title: "Withdraw",
-                        ),
+                        GetBuilder<FormController>(
+                          id: 'requestRiderWithdrawal',
+                          init: FormController(),
+                          builder: (controller) => MyElevatedButton(
+                            isLoading: controller.isLoad.value,
+                            onPressed: (() async {
+                              if (formKey.currentState!.validate()) {
+                                makeWithdrawal();
+                              }
+                            }),
+                            title: "Withdraw",
+                          ),
+                        )
                       ],
                     ),
                   ),

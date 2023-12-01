@@ -33,13 +33,14 @@ class TasksController extends GetxController {
   }
 
   Future acceptTask(id) async {
-    print('acceptTask');
     isLoading.value = true;
     update();
     final response = await http.put(
       Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
       headers: authHeader(),
     );
+    print('acceptTask ${response.statusCode}: ${response.body}');
+
     isLoading.value = true;
     update();
     if (response.statusCode == 200) {
@@ -53,14 +54,14 @@ class TasksController extends GetxController {
   }
 
   Future rejectTask(id) async {
-    print('rejectTask');
-
     isLoading.value = true;
     update();
     final response = await http.put(
       Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
       headers: authHeader(),
     );
+    print('rejectTask ${response.statusCode}: ${response.body}');
+
     isLoading.value = true;
     update();
 
