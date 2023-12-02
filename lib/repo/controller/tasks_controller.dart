@@ -36,7 +36,8 @@ class TasksController extends GetxController {
     isLoading.value = true;
     update();
     final response = await http.put(
-      Uri.parse('$baseURL/drivers/acceptDeliveryRequest/$id'),
+      Uri.parse(
+          '$baseURL/drivers/acceptDeliveryRequest/$id/${UserController.instance.user.value.id}'),
       headers: authHeader(),
     );
     print('acceptTask ${response.statusCode}: ${response.body}');
@@ -57,7 +58,8 @@ class TasksController extends GetxController {
     isLoading.value = true;
     update();
     final response = await http.put(
-      Uri.parse('$baseURL/drivers/rejectDeliveryRequest/$id'),
+      Uri.parse(
+          '$baseURL/drivers/rejectDeliveryRequest/$id/${UserController.instance.user.value.id}'),
       headers: authHeader(),
     );
     print('rejectTask ${response.statusCode}: ${response.body}');

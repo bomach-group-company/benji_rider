@@ -76,9 +76,13 @@ class _DeliveryState extends State<Delivery> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                         ),
-                        onPressed: () async {
-                          await controller.setStatus(StatusType.processing);
-                        },
+                        onPressed: controller.isLoad.value &&
+                                controller.status.value != StatusType.processing
+                            ? null
+                            : () async {
+                                await controller
+                                    .setStatus(StatusType.processing);
+                              },
                         child: Text(
                           'Processing',
                           textAlign: TextAlign.center,
@@ -105,9 +109,13 @@ class _DeliveryState extends State<Delivery> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(16))),
                         ),
-                        onPressed: () async {
-                          await controller.setStatus(StatusType.delivered);
-                        },
+                        onPressed: controller.isLoad.value &&
+                                controller.status.value != StatusType.delivered
+                            ? null
+                            : () async {
+                                await controller
+                                    .setStatus(StatusType.delivered);
+                              },
                         child: Text(
                           'Completed',
                           textAlign: TextAlign.center,
@@ -136,9 +144,13 @@ class _DeliveryState extends State<Delivery> {
                             ),
                           ),
                         ),
-                        onPressed: () async {
-                          await controller.setStatus(StatusType.cancelled);
-                        },
+                        onPressed: controller.isLoad.value &&
+                                controller.status.value != StatusType.cancelled
+                            ? null
+                            : () async {
+                                await controller
+                                    .setStatus(StatusType.cancelled);
+                              },
                         child: Text(
                           'Cancelled',
                           textAlign: TextAlign.center,
