@@ -112,7 +112,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
-                  preventDuplicates: true,
+                  preventDuplicates: false,
                   popGesture: true,
                   transition: Transition.rightToLeft,
                 );
@@ -128,7 +128,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
-                  preventDuplicates: true,
+                  preventDuplicates: false,
                   popGesture: true,
                   transition: Transition.rightToLeft,
                 );
@@ -144,7 +144,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
-                  preventDuplicates: true,
+                  preventDuplicates: false,
                   popGesture: true,
                   transition: Transition.rightToLeft,
                 );
@@ -160,7 +160,7 @@ class _MyDrawerState extends State<MyDrawer> {
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
-                  preventDuplicates: true,
+                  preventDuplicates: false,
                   popGesture: true,
                   transition: Transition.rightToLeft,
                 );
