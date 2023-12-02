@@ -15,7 +15,8 @@ import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
 class OrderDetails extends StatefulWidget {
-  const OrderDetails({super.key});
+  final String taskStatus;
+  const OrderDetails({super.key, this.taskStatus = 'processing'});
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -79,8 +80,14 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
             bottomNavigationBar: Container(
               padding: const EdgeInsets.all(kDefaultPadding),
-              child:
-                  controller.order.value.riderOutgoingDeliveryStatus == "PEND"
+              child: widget.taskStatus == 'cancelled'
+                  ? MyElevatedButton(
+                      disable: true,
+                      title: "Cancelled",
+                      onPressed: controller.orderDelivered,
+                      isLoading: controller.isLoad.value,
+                    )
+                  : controller.order.value.riderOutgoingDeliveryStatus == "PEND"
                       ? MyElevatedButton(
                           title: "Dispatched",
                           onPressed: controller.orderDispatched,
