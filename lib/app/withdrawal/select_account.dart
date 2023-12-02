@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:benji_rider/repo/controller/account_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
   @override
   void initState() {
     super.initState();
+    UserController.instance.getUser();
     _loadingScreen = true;
     scrollController.addListener(_scrollListener);
     _timer = Timer(const Duration(milliseconds: 1000), () {

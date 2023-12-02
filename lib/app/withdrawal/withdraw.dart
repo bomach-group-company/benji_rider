@@ -1,4 +1,5 @@
 import 'package:benji_rider/repo/controller/api_url.dart';
+import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -49,6 +50,12 @@ class _WithdrawPageState extends State<WithdrawPage> {
 
   //================================== FUNCTION ====================================\\
   void makeWithdrawal() async {
+    final user = UserController.instance.user.value;
+    if (user.balance < double.parse(amountEC.text.replaceAll(',', ''))) {
+      ApiProcessorController.errorSnack('Amount more than balance');
+      return;
+    }
+
     Map data = {
       "user_id": UserController.instance.user.value.id,
       "amount_to_withdraw": amountEC.text,
@@ -59,7 +66,7 @@ class _WithdrawPageState extends State<WithdrawPage> {
         '${Api.baseUrl}/wallet/requestRiderWithdrawal',
         data,
         'requestRiderWithdrawal',
-        "Error occurred",
+        "Balance too small or an error occured",
         "Withdrawal Successful");
     if (FormController.instance.status.value.toString().startsWith('2')) {
       Get.close(1);

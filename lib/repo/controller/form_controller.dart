@@ -124,6 +124,7 @@ class FormController extends GetxController {
       headers: authHeader(),
       body: encodeIt ? jsonEncode(data) : data,
     );
+    print(response.body);
     status.value = response.statusCode;
     if (response.statusCode != 200) {
       ApiProcessorController.errorSnack(errorMsg);
