@@ -93,7 +93,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           onPressed: controller.orderDispatched,
                           isLoading: controller.isLoad.value,
                         )
-                      : controller.order.value.riderOutgoingDeliveryStatus !=
+                      : controller.order.value.riderDeliveryStatus !=
                               'delivered'
                           ? MyElevatedButton(
                               title: "Delivered",
