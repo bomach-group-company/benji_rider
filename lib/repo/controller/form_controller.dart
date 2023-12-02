@@ -21,7 +21,7 @@ class FormController extends GetxController {
 
   Future getAuth(String url, String tag,
       [String errorMsg = "Error occurred",
-      String successMsg = " Successfully"]) async {
+      String successMsg = " Successful"]) async {
     isLoad.value = true;
     update([tag]);
     final response = await http.get(

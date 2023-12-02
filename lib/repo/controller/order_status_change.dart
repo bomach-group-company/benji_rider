@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:get/get.dart';
@@ -19,9 +20,10 @@ class OrderStatusChangeController extends GetxController {
 
   var order = Order.fromJson(null).obs;
 
-  setOrder(Order newOrder) {
+  setOrder(Order newOrder) async {
     order.value = newOrder;
     update();
+    await refreshOrder();
   }
 
   deleteCachedOrder() {
@@ -41,6 +43,7 @@ class OrderStatusChangeController extends GetxController {
     var responseData = await ApiProcessorController.errorState(response);
     print(response?.body);
     print(response?.statusCode);
+    OrderController.instance.getOrdersByStatus();
 
     if (responseData == null) {
       isLoad.value = false;
