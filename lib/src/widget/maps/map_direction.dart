@@ -178,10 +178,10 @@ class _MapDirectionState extends State<MapDirection> {
   //============================================== Adding polypoints ==================================================\\
   void getPolyPoints() async {
     final List<MarkerId> markerId = <MarkerId>[
-      const MarkerId("Pickup Location"),
-      const MarkerId("Delivery Location"),
+      const MarkerId("Location"),
+      const MarkerId("Destination"),
     ];
-    List<String> markerTitle = <String>["Pickup Location", "Delivery Location"];
+    List<String> markerTitle = <String>["Location", "Destination"];
 
     final List<LatLng> locations = <LatLng>[
       riderLocation!,
