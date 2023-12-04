@@ -93,42 +93,45 @@ class _SelectBankBodyState extends State<SelectBankBody> {
           Expanded(
             child: Scrollbar(
               controller: scrollController,
-              child: GetBuilder<WithdrawController>(builder: (banks) {
-                return banks.listOfBanksSearch.isEmpty
-                    ? const EmptyCard(
-                        emptyCardMessage: "There are no banks",
-                      )
-                    // : banks.listOfBanksSearch.isEmpty && banks.isLoad.value
-                    //     ? Center(
-                    //         child:
-                    //             CircularProgressIndicator(color: kAccentColor),
-                    //       )
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.all(10),
-                        itemCount: banks.listOfBanksSearch.length,
-                        separatorBuilder: (context, index) => kSizedBox,
-                        itemBuilder: (context, index) {
-                          final bankName = banks.listOfBanksSearch[index].name;
-                          // Check if the bankName contains the search query
-                          if (bankName
-                              .toLowerCase()
-                              .contains(bankQueryEC.text.toLowerCase())) {
-                            return BankListTile(
-                              onTap: () => selectBank(index),
-                              bank: bankName,
-                            );
-                          } else {
-                            // Return an empty container for banks that do not match the search
-                            return Container();
-                          }
-                          // BankListTile(
-                          //   onTap: () => selectBank(index),
-                          //   bank: banks.listOfBanksSearch[index].name,
-                          // );
-                        });
-              }),
+              child: GetBuilder<WithdrawController>(
+                  initState: (state) =>
+                      WithdrawController.instance.listOfBanks(),
+                  builder: (banks) {
+                    return banks.listOfBanks.isEmpty
+                        ? const EmptyCard(
+                            emptyCardMessage: "There are no banks",
+                          )
+                        // : banks.listOfBanks.isEmpty && banks.isLoad.value
+                        //     ? Center(
+                        //         child:
+                        //             CircularProgressIndicator(color: kAccentColor),
+                        //       )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            padding: const EdgeInsets.all(10),
+                            itemCount: banks.listOfBanks.length,
+                            separatorBuilder: (context, index) => kSizedBox,
+                            itemBuilder: (context, index) {
+                              final bankName = banks.listOfBanks[index].name;
+                              // Check if the bankName contains the search query
+                              if (bankName
+                                  .toLowerCase()
+                                  .contains(bankQueryEC.text.toLowerCase())) {
+                                return BankListTile(
+                                  onTap: () => selectBank(index),
+                                  bank: bankName,
+                                );
+                              } else {
+                                // Return an empty container for banks that do not match the search
+                                return Container();
+                              }
+                              // BankListTile(
+                              //   onTap: () => selectBank(index),
+                              //   bank: banks.listOfBanks[index].name,
+                              // );
+                            });
+                  }),
             ),
           ),
         ],

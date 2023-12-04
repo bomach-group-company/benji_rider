@@ -3,7 +3,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:benji_rider/app/dashboard/dashboard.dart';
+import 'package:benji_rider/app/splash_screens/login_splash_screen.dart';
 import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/login_model.dart';
@@ -29,10 +29,20 @@ class LoginController extends GetxController {
         "password": data.password,
       };
 
-      http.Response? response =
-          await HandleData.postApi(Api.baseUrl + Api.login, null, finalData);
+      // http.Response? response =
+      //     await HandleData.postApi(Api.baseUrl + Api.login, null, finalData);
+      final response = await http
+          .post(
+            Uri.parse(Api.baseUrl + Api.login),
+            headers: {
+              HttpHeaders.contentTypeHeader: "application/json",
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: finalData,
+          )
+          .timeout(const Duration(seconds: 20));
 
-      if (response!.statusCode != 200) {
+      if (response.statusCode != 200) {
         ApiProcessorController.errorSnack(
             "Invalid email or password. Try again");
         isLoad.value = false;
@@ -47,9 +57,16 @@ class LoginController extends GetxController {
         isLoad.value = false;
         update();
       } else {
-        http.Response? responseUser = await HandleData.getApi(
-            Api.baseUrl + Api.user, responseData["token"]);
-        if (responseUser?.statusCode != 200) {
+        // http.Response? responseUser = await HandleData.getApi(
+        //     Api.baseUrl + Api.user, responseData["token"]);
+        final responseUser = await http.get(
+          Uri.parse(Api.baseUrl + Api.user),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: "Bearer ${responseData["token"]}",
+          },
+        );
+        if (responseUser.statusCode != 200) {
           ApiProcessorController.errorSnack(
               "Invalid email or password. Try again");
           isLoad.value = false;
@@ -57,11 +74,20 @@ class LoginController extends GetxController {
           return;
         }
 
-        http.Response? responseUserData = await HandleData.getApi(
-            '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser?.body ?? '{}')['id']}/',
-            responseData["token"]);
+        // http.Response? responseUserData = await HandleData.getApi(
+        //     '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser?.body ?? '{}')['id']}/',
+        //     responseData["token"]);
 
-        if (responseUserData?.statusCode != 200) {
+        final responseUserData = await http.get(
+          Uri.parse(
+              '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser.body ?? '{}')['id']}/'),
+          headers: {
+            HttpHeaders.contentTypeHeader: "application/json",
+            HttpHeaders.authorizationHeader: "Bearer ${responseData["token"]}",
+          },
+        );
+
+        if (responseUserData.statusCode != 200) {
           ApiProcessorController.errorSnack(
               "Invalid email or password. Try again");
           isLoad.value = false;
@@ -69,16 +95,16 @@ class LoginController extends GetxController {
           return;
         }
 
-        UserController.instance
-            .saveUser(responseUserData?.body ?? '', responseData["token"]);
+        await UserController.instance
+            .saveUser(responseUserData.body, responseData["token"]);
         isLoad.value = false;
         update();
         ApiProcessorController.successSnack("Login Successful");
         Get.offAll(
-          () => const Dashboard(),
+          () => const LoginSplashScreen(),
           fullscreenDialog: true,
           curve: Curves.easeIn,
-          routeName: "Dashboard",
+          routeName: "LoginSplashScreen",
           predicate: (route) => false,
           popGesture: true,
           transition: Transition.cupertinoDialog,

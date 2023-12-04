@@ -25,13 +25,16 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
 
   @override
   void initState() {
-    if (UserController.instance.ifUser()) {
-      VendorController.instance.getVendorList();
-      OrderController.instance.getOrdersByStatus();
-      WithdrawController.instance.withdrawalHistory();
-      AccountController.instance.getAccounts();
-      WithdrawController.instance.listBanks();
-    }
+    super.initState();
+    UserController.instance.ifUser().then((value) {
+      if (value) {
+        VendorController.instance.getVendorList();
+        OrderController.instance.getOrdersByStatus();
+        WithdrawController.instance.withdrawalHistory();
+        AccountController.instance.getAccounts();
+        WithdrawController.instance.listBanks();
+      }
+    });
   }
 
   @override

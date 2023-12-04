@@ -29,12 +29,11 @@ class UserController extends GetxController {
     super.onInit();
   }
 
-  bool ifUser() {
-    String? userData = prefs.getString('user');
-    if (userData != null) {
-      return true;
+  Future<bool> ifUser() async {
+    if (!(await isAuthorized())) {
+      return false;
     }
-    return false;
+    return true;
   }
 
   Future checkAuth() async {

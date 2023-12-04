@@ -17,9 +17,10 @@ class WithdrawController extends GetxController {
     return Get.find<WithdrawController>();
   }
 
+  var isLoadWithdraw = false.obs;
   var isLoad = false.obs;
   var isLoadValidateAccount = false.obs;
-  var userId = UserController.instance.user.value.id;
+  // var userId = UserController.instance.user.value.id;
   var listOfBanks = <BankModel>[].obs;
   var listOfBanksSearch = <BankModel>[].obs;
   var listOfWithdrawals = <WithdrawalHistoryModel>[].obs;
@@ -43,7 +44,6 @@ class WithdrawController extends GetxController {
     update();
     try {
       final response = await http.get(Uri.parse(url), headers: authHeader());
-
       if (response.statusCode == 200) {
         dynamic jsonResponse = jsonDecode(response.body);
         if (jsonResponse is List) {
@@ -78,12 +78,14 @@ class WithdrawController extends GetxController {
       String accountNumber, String bankCode) async {
     var url =
         "${Api.baseUrl}${Api.validateBankNumber}?account_number=$accountNumber&bank_code=$bankCode";
-
+    print(url);
     isLoadValidateAccount.value = true;
     update();
 
     try {
       final response = await http.get(Uri.parse(url), headers: authHeader());
+      print(response.body);
+      print(response.statusCode);
 
       if (response.statusCode != 200) {
         validateAccount.value = ValidateBankAccountModel.fromJson(null);
@@ -106,6 +108,8 @@ class WithdrawController extends GetxController {
   }
 
   Future withdrawalHistory() async {
+    var userId = UserController.instance.user.value.id;
+
     var url =
         "${Api.baseUrl}${Api.withdrawalHistory}?user_id=$userId&start=0&end=100";
     isLoad.value = true;
@@ -142,5 +146,28 @@ class WithdrawController extends GetxController {
     update();
 
     return;
+  }
+
+  Future<http.Response> withdraw(Map data) async {
+    isLoadWithdraw.value = true;
+    update();
+    final response = await http.post(
+      Uri.parse('${Api.baseUrl}/wallet/requestRiderWithdrawal'),
+      headers: authHeader(),
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode != 200) {
+      ApiProcessorController.errorSnack(
+          'Balance too small or an error occured');
+      isLoadWithdraw.value = false;
+      update();
+      return response;
+    }
+
+    ApiProcessorController.successSnack('Withdrawal successfully');
+    isLoadWithdraw.value = false;
+    update();
+    return response;
   }
 }

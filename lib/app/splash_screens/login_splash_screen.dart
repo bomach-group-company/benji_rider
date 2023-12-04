@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:benji_rider/app/dashboard/dashboard.dart';
 import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
+import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
   @override
   void initState() {
     super.initState();
+    UserController.instance.setUserSync();
     VendorController.instance.getVendorList();
     OrderController.instance.getOrdersByStatus();
     WithdrawController.instance.withdrawalHistory();

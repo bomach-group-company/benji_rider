@@ -1,7 +1,6 @@
-import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
-import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
+import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -62,13 +61,10 @@ class _WithdrawPageState extends State<WithdrawPage> {
       "bank_details_id": widget.bankDetailId
     };
 
-    await FormController.instance.postAuth(
-        '${Api.baseUrl}/wallet/requestRiderWithdrawal',
-        data,
-        'requestRiderWithdrawal',
-        "Balance too small or an error occured",
-        "Withdrawal Successful");
-    if (FormController.instance.status.value.toString().startsWith('2')) {
+    final result = await WithdrawController.instance.withdraw(data);
+    print('got to the before ${result.statusCode.toString()}');
+    if (result.statusCode == 200) {
+      print('got to the close');
       Get.close(1);
     }
   }
@@ -128,11 +124,9 @@ class _WithdrawPageState extends State<WithdrawPage> {
                           },
                         ),
                         kSizedBox,
-                        GetBuilder<FormController>(
-                          id: 'requestRiderWithdrawal',
-                          init: FormController(),
+                        GetBuilder<WithdrawController>(
                           builder: (controller) => MyElevatedButton(
-                            isLoading: controller.isLoad.value,
+                            isLoading: controller.isLoadWithdraw.value,
                             onPressed: (() async {
                               if (formKey.currentState!.validate()) {
                                 makeWithdrawal();
