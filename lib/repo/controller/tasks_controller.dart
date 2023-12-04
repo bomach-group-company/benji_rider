@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/models/tasks.dart';
+import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,16 +16,16 @@ class TasksController extends GetxController {
     return Get.find<TasksController>();
   }
 
-  var tasks = <TasksModel>[].obs;
+  var tasks = <DeliveryModel>[].obs;
   var isLoading = false.obs;
 
   late WebSocketChannel channel;
   late WebSocketChannel channelTask;
 
   setTasks(List taskList) {
-    List<TasksModel> newTasks = [];
+    List<DeliveryModel> newTasks = [];
     for (var task in taskList) {
-      TasksModel newTask = TasksModel.fromJson(task);
+      DeliveryModel newTask = DeliveryModel.fromJson(task);
       newTasks.add(newTask);
     }
     tasks.value = newTasks;
@@ -100,7 +100,7 @@ class TasksController extends GetxController {
       print(message);
 
       setTasks(jsonDecode(message)['message'] as List);
-      isLoading.value = false;
+      setTasks(jsonDecode(message)['packages'] as List);
       isLoading.value = false;
       update();
     });
@@ -155,7 +155,7 @@ class TasksController extends GetxController {
     channelTask.sink.close(status.goingAway);
   }
 
-  bool isAccepted(TasksModel val) {
+  bool isAccepted(DeliveryModel val) {
     return val.acceptanceStatus == 'ACCP';
   }
 }

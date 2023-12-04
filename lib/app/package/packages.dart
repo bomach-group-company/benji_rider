@@ -12,14 +12,14 @@ import 'package:get/get.dart';
 import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
-class Delivery extends StatefulWidget {
-  const Delivery({super.key});
+class Package extends StatefulWidget {
+  const Package({super.key});
 
   @override
-  State<Delivery> createState() => _DeliveryState();
+  State<Package> createState() => _PackageState();
 }
 
-class _DeliveryState extends State<Delivery> {
+class _PackageState extends State<Package> {
   bool isLoading = false;
 
   final _scrollController = ScrollController();
@@ -29,10 +29,10 @@ class _DeliveryState extends State<Delivery> {
     super.initState();
   }
 
-  void _toDetailPage(DeliveryModel deliveryObj) {
+  void _toDetailPage(DeliveryModel deliveryObj, String taskStatus) {
     OrderStatusChangeController.instance.setOrder(deliveryObj);
     Get.to(
-      () => OrderDetails(taskStatus: deliveryObj.deliveryStatus),
+      () => OrderDetails(taskStatus: taskStatus),
       routeName: 'OrderDetails',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
@@ -48,7 +48,7 @@ class _DeliveryState extends State<Delivery> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: MyAppBar(
-        title: "My Order Task",
+        title: "My Package Task",
         elevation: 0.0,
         actions: const [],
         backgroundColor: kPrimaryColor,
@@ -199,8 +199,9 @@ class _DeliveryState extends State<Delivery> {
                         const SizedBox(height: kDefaultPadding / 2),
                     itemBuilder: (BuildContext context, int index) {
                       return InkWell(
-                        onTap: () =>
-                            _toDetailPage(controller.vendorsOrderList[index]),
+                        onTap: () => _toDetailPage(
+                            controller.vendorsOrderList[index],
+                            controller.vendorsOrderList[index].deliveryStatus),
                         child: Column(
                           children: [
                             Container(

@@ -7,6 +7,7 @@ import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
+import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/repo/models/order_model.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -19,9 +20,11 @@ class OrderStatusChangeController extends GetxController {
   var isLoad = false.obs;
 
   var order = Order.fromJson(null).obs;
+  var task = DeliveryModel.fromJson(null).obs;
 
-  setOrder(Order newOrder) async {
-    order.value = newOrder;
+  setOrder(DeliveryModel deliveryObj) async {
+    order.value = deliveryObj.order;
+    task.value = deliveryObj;
     update();
     await refreshOrder();
   }
@@ -75,11 +78,17 @@ class OrderStatusChangeController extends GetxController {
 
   orderDelivered() async {
     isLoad.value = true;
+    final user = UserController.instance.user.value;
 
     update();
     var url =
         "${Api.baseUrl}/orders/RiderToUserChangeStatus?order_id=${order.value.id}";
+
+    var url2 =
+        "${Api.baseUrl}/drivers/completeMyTask/${task.value.id}/${user.id}";
+
     await FormController.instance.getAuth(url, 'deliveredOrder');
+    await FormController.instance.getAuth(url2, 'deliveredOrder');
     print(FormController.instance.status);
     if (FormController.instance.status.toString().startsWith('2')) {}
     await refreshOrder();

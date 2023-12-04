@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
 import 'package:benji_rider/app/order/orders.dart';
+import 'package:benji_rider/app/package/packages.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
@@ -125,6 +126,22 @@ class _MyDrawerState extends State<MyDrawer> {
                 Get.to(
                   () => const Delivery(),
                   routeName: 'Delivery',
+                  duration: const Duration(milliseconds: 300),
+                  fullscreenDialog: true,
+                  curve: Curves.easeIn,
+                  preventDuplicates: false,
+                  popGesture: true,
+                  transition: Transition.rightToLeft,
+                );
+              },
+            ),
+            MyListTile(
+              text: 'My Packages',
+              icon: Icons.storefront,
+              nav: () {
+                Get.to(
+                  () => const Package(),
+                  routeName: 'Package',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,

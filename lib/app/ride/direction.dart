@@ -1,11 +1,11 @@
-import 'package:benji_rider/repo/models/tasks.dart';
+import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/src/providers/constants.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
 
 class DirectsPage extends StatefulWidget {
-  final TasksModel task;
+  final DeliveryModel task;
   const DirectsPage({super.key, required this.task});
 
   @override

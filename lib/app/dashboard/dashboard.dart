@@ -3,11 +3,12 @@
 import 'dart:async';
 
 import 'package:benji_rider/app/order/order_details.dart';
+import 'package:benji_rider/app/package/package_detail.dart';
 import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/repo/controller/order_status_change.dart';
+import 'package:benji_rider/repo/controller/package_controller.dart';
 import 'package:benji_rider/repo/controller/tasks_controller.dart';
-import 'package:benji_rider/repo/models/order_model.dart';
-import 'package:benji_rider/repo/models/tasks.dart';
+import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
 import 'package:flutter/material.dart';
@@ -33,19 +34,33 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
-  void _toOrderDetailsPage(Order order) {
-    OrderStatusChangeController.instance.setOrder(order);
+  void _toDetailsPage(DeliveryModel task) {
+    if (task.isOrder()) {
+      OrderStatusChangeController.instance.setOrder(task);
 
-    Get.to(
-      () => const OrderDetails(),
-      routeName: 'OrderDetails',
-      duration: const Duration(milliseconds: 300),
-      fullscreenDialog: true,
-      curve: Curves.easeIn,
-      preventDuplicates: true,
-      popGesture: true,
-      transition: Transition.rightToLeft,
-    );
+      Get.to(
+        () => const OrderDetails(),
+        routeName: 'OrderDetails',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+    } else {
+      PackageController.instance.setPackage(task);
+      Get.to(
+        () => const PackageDetails(),
+        routeName: 'PackageDetails',
+        duration: const Duration(milliseconds: 300),
+        fullscreenDialog: true,
+        curve: Curves.easeIn,
+        preventDuplicates: true,
+        popGesture: true,
+        transition: Transition.rightToLeft,
+      );
+    }
   }
 
   @override
@@ -260,7 +275,7 @@ class _DashboardState extends State<Dashboard>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '#${controller.tasks[index].id.substring(0, 8)}... - ${controller.tasks[index].order.orderitems.length} items',
+                              '#${controller.tasks[index].id.substring(0, 8)}... - ${controller.tasks[index].isOrder() ? controller.tasks[index].order.orderitems.length : controller.tasks[index].package.itemQuantity} items',
                               style: const TextStyle(
                                 color: kBlackColor,
                                 fontSize: 20,
@@ -268,14 +283,34 @@ class _DashboardState extends State<Dashboard>
                               ),
                             ),
                             kSizedBox,
-                            controller.tasks[index].order.orderitems.isEmpty
+                            controller.tasks[index].order.orderitems.isEmpty &&
+                                    controller.tasks[index].isOrder()
                                 ? const Text('Pickup from - Not Found')
                                 : FutureBuilder(
-                                    future: getAddressFromCoordinates(
-                                        controller.tasks[index].order.orderitems
-                                            .first.product.vendorId.latitude,
-                                        controller.tasks[index].order.orderitems
-                                            .first.product.vendorId.longitude),
+                                    future: !controller.tasks[index].isOrder()
+                                        ? getAddressFromCoordinates(
+                                            controller.tasks[index].package
+                                                .pickUpAddressLatitude,
+                                            controller.tasks[index].package
+                                                .pickUpAddressLongitude,
+                                          )
+                                        : getAddressFromCoordinates(
+                                            controller
+                                                .tasks[index]
+                                                .order
+                                                .orderitems
+                                                .first
+                                                .product
+                                                .vendorId
+                                                .latitude,
+                                            controller
+                                                .tasks[index]
+                                                .order
+                                                .orderitems
+                                                .first
+                                                .product
+                                                .vendorId
+                                                .longitude),
                                     builder: (context, controller) {
                                       return Text(
                                         controller.data == null
@@ -285,11 +320,18 @@ class _DashboardState extends State<Dashboard>
                                     }),
                             kHalfSizedBox,
                             FutureBuilder(
-                                future: getAddressFromCoordinates(
-                                    controller.tasks[index].order
-                                        .deliveryAddress.latitude,
-                                    controller.tasks[index].order
-                                        .deliveryAddress.longitude),
+                                future: !controller.tasks[index].isOrder()
+                                    ? getAddressFromCoordinates(
+                                        controller.tasks[index].package
+                                            .dropOffAddressLatitude,
+                                        controller.tasks[index].package
+                                            .dropOffAddressLongitude,
+                                      )
+                                    : getAddressFromCoordinates(
+                                        controller.tasks[index].order
+                                            .deliveryAddress.latitude,
+                                        controller.tasks[index].order
+                                            .deliveryAddress.longitude),
                                 builder: (context, controller) {
                                   return Text(
                                     controller.data == null
@@ -312,7 +354,8 @@ class _DashboardState extends State<Dashboard>
                                 MyElevatedOvalButton(
                                   title: 'Accept',
                                   onPressed: () async {
-                                    TasksModel task = controller.tasks[index];
+                                    DeliveryModel task =
+                                        controller.tasks[index];
                                     await controller
                                         .acceptTask(controller.tasks[index].id);
 
@@ -323,7 +366,7 @@ class _DashboardState extends State<Dashboard>
                                     if (!controller.isLoading.value) {
                                       print(
                                           ' got to the func later ${controller.isLoading.value} chai');
-                                      _toOrderDetailsPage(task.order);
+                                      _toDetailsPage(task);
                                     }
                                   },
                                   isLoading: controller.isLoading.value,

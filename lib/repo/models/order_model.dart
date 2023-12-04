@@ -47,7 +47,7 @@ class Order {
   factory Order.fromJson(Map<String, dynamic>? json) {
     json ??= {};
     return Order(
-      id: json["id"] ?? notAvailable,
+      id: json["id"] ?? '',
       code: json["code"] ?? notAvailable,
       latitude: json["latitude"] ?? '',
       longtitude: json["longtitude"] ?? '',

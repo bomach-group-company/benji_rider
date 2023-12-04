@@ -1,4 +1,5 @@
 import 'package:benji_rider/repo/models/order_model.dart';
+import 'package:benji_rider/repo/models/package.dart';
 
 import '../utils/constants.dart';
 
@@ -11,6 +12,7 @@ class DeliveryModel {
   Order order;
   String createdDate;
   String deliveredDate;
+  Package package;
 
   DeliveryModel({
     required this.id,
@@ -19,6 +21,7 @@ class DeliveryModel {
     required this.order,
     required this.createdDate,
     required this.deliveredDate,
+    required this.package,
   });
 
   factory DeliveryModel.fromJson(Map<String, dynamic>? json) {
@@ -30,6 +33,11 @@ class DeliveryModel {
       order: Order.fromJson(json["orders"]),
       createdDate: json["created_date"] ?? '',
       deliveredDate: json["delivered_date_time"] ?? '',
+      package: Package.fromJson(json["package"]),
     );
+  }
+
+  bool isOrder() {
+    return order.id != '';
   }
 }
