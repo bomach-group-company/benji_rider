@@ -28,8 +28,6 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
   }
 
-// [double latitude = 6.463832607452451,
-  // double longitude = 7.53990682395574])
   toMapDirectionage([String latitudeStr = '', String longitudeStr = '']) {
     double latitude;
     double longitude;

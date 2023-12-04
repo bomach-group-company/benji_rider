@@ -53,7 +53,9 @@ class OrderStatusChangeController extends GetxController {
 
     try {
       order.value = Order.fromJson(jsonDecode(responseData));
-    } catch (e) {}
+    } catch (e) {
+      print('error in order change status controller to refresh order $e');
+    }
     isLoad.value = false;
     update();
   }

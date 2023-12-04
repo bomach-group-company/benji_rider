@@ -113,6 +113,8 @@ class LoginController extends GetxController {
       }
     } on SocketException {
       ApiProcessorController.errorSnack("Please connect to the internet");
+      isLoad.value = false;
+      update();
     } catch (e) {
       ApiProcessorController.errorSnack("Invalid email or password. Try again");
       isLoad.value = false;

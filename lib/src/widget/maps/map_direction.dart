@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:ui' as ui; // Import the ui library with an alias
 
+import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/src/providers/keys.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:benji_rider/theme/colors.dart';
@@ -30,9 +31,6 @@ class _MapDirectionState extends State<MapDirection> {
     _markerTitle = <String>["Me", "Destination"];
     _markerSnippet = <String>["My Location", "Heading to"];
     destinationLocation = LatLng(widget.latitude, widget.longitude);
-
-    // destinationLocation = LatLng(6.463832607452451, 7.53990682395574);
-    // riderLocation = const LatLng(6.45540420992054, 7.507061460857368);
 
     _loadMapData();
   }
@@ -84,7 +82,8 @@ class _MapDirectionState extends State<MapDirection> {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      ApiProcessorController.errorSnack('Location services are disabled');
+      return;
     }
 
     permission = await Geolocator.checkPermission();
@@ -96,15 +95,17 @@ class _MapDirectionState extends State<MapDirection> {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+        ApiProcessorController.errorSnack(
+            'Location permissions are denied, allow in settings');
+        return;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.',
-      );
+      ApiProcessorController.errorSnack(
+          'Location permissions are denied, allow in settings');
+      return;
     }
     await _getUserCurrentLocation();
     await _loadCustomMarkers();
