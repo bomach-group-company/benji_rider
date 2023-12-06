@@ -4,9 +4,11 @@ import 'dart:convert';
 
 import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
+import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/repo/models/package.dart';
+import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,10 +18,26 @@ class PackageController extends GetxController {
   }
 
   var isLoad = false.obs;
+  var vendorsOrderList = <DeliveryModel>[].obs;
+
+  var loadedAll = false.obs;
+  var isLoadMore = false.obs;
+  var loadNum = 10.obs;
+  var total = 0.obs;
+  var status = StatusType.processing.obs;
 
   var package = Package.fromJson(null).obs;
 
   var task = DeliveryModel.fromJson(null).obs;
+
+  setStatus([StatusType newStatus = StatusType.delivered]) async {
+    status.value = newStatus;
+    vendorsOrderList.value = [];
+    loadNum.value = 10;
+    loadedAll.value = false;
+    update();
+    await getOrdersByStatus();
+  }
 
   setPackage(DeliveryModel deliveryObj) async {
     package.value = deliveryObj.package;
@@ -59,6 +77,34 @@ class PackageController extends GetxController {
     } catch (e) {
       print('error in package change status controller to refresh package $e');
     }
+    isLoad.value = false;
+    update();
+  }
+
+  Future getOrdersByStatus() async {
+    isLoad.value = true;
+    late String token;
+    String id = UserController.instance.user.value.id.toString();
+    var url =
+        "${Api.baseUrl}/tasks/getPackageTaskByStatus/$id/${statusTypeConverter(status.value)}";
+    print(url);
+    token = UserController.instance.user.value.token;
+    http.Response? response = await HandleData.getApi(url, token);
+    var responseData = await ApiProcessorController.errorState(response);
+    if (responseData == null) {
+      isLoad.value = false;
+      update();
+      return;
+    }
+    print(response?.body);
+
+    List<DeliveryModel> data = [];
+    try {
+      data = (jsonDecode(responseData) as List)
+          .map((e) => DeliveryModel.fromJson(e))
+          .toList();
+      vendorsOrderList.value = data;
+    } catch (e) {}
     isLoad.value = false;
     update();
   }

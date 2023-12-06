@@ -356,35 +356,38 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       ),
                                     ),
                                     kHalfSizedBox,
-                                    FutureBuilder(
-                                        future: getAddressFromCoordinates(
-                                            controller
-                                                .order
-                                                .value
-                                                .orderitems
-                                                .first
-                                                .product
-                                                .vendorId
-                                                .latitude,
-                                            controller
-                                                .order
-                                                .value
-                                                .orderitems
-                                                .first
-                                                .product
-                                                .vendorId
-                                                .longitude),
-                                        builder: (context, controller) {
-                                          // '6.801965310155346', '7.092915443774477'
-                                          return Text(
-                                            controller.data ?? 'Loading...',
-                                            style: TextStyle(
-                                              color: kTextGreyColor,
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          );
-                                        }),
+                                    SizedBox(
+                                      width: media.width - 60,
+                                      child: FutureBuilder(
+                                          future: getAddressFromCoordinates(
+                                              controller
+                                                  .order
+                                                  .value
+                                                  .orderitems
+                                                  .first
+                                                  .product
+                                                  .vendorId
+                                                  .latitude,
+                                              controller
+                                                  .order
+                                                  .value
+                                                  .orderitems
+                                                  .first
+                                                  .product
+                                                  .vendorId
+                                                  .longitude),
+                                          builder: (context, controller) {
+                                            // '6.801965310155346', '7.092915443774477'
+                                            return Text(
+                                              controller.data ?? 'Loading...',
+                                              style: TextStyle(
+                                                color: kTextGreyColor,
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            );
+                                          }),
+                                    ),
                                     kHalfSizedBox,
                                   ],
                                 ),
@@ -496,22 +499,25 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 ),
                               ),
                               kHalfSizedBox,
-                              FutureBuilder(
-                                  future: getAddressFromCoordinates(
-                                      controller
-                                          .order.value.deliveryAddress.latitude,
-                                      controller.order.value.deliveryAddress
-                                          .longitude),
-                                  builder: (context, controller) {
-                                    return Text(
-                                      controller.data ?? 'Loading...',
-                                      style: TextStyle(
-                                        color: kTextGreyColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    );
-                                  }),
+                              SizedBox(
+                                width: media.width - 60,
+                                child: FutureBuilder(
+                                    future: getAddressFromCoordinates(
+                                        controller.order.value.deliveryAddress
+                                            .latitude,
+                                        controller.order.value.deliveryAddress
+                                            .longitude),
+                                    builder: (context, controller) {
+                                      return Text(
+                                        controller.data ?? 'Loading...',
+                                        style: TextStyle(
+                                          color: kTextGreyColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      );
+                                    }),
+                              ),
                               kHalfSizedBox,
                             ],
                           ),

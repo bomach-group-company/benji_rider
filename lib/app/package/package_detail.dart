@@ -329,23 +329,25 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 ),
                               ),
                               kHalfSizedBox,
-                              FutureBuilder(
-                                  future: getAddressFromCoordinates(
-                                      controller
-                                          .package.value.dropOffAddressLatitude,
-                                      controller.package.value
-                                          .dropOffAddressLongitude),
-                                  builder: (context, controller) {
-                                    // '6.801965310155346', '7.092915443774477'
-                                    return Text(
-                                      controller.data ?? 'Loading...',
-                                      style: TextStyle(
-                                        color: kTextGreyColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    );
-                                  }),
+                              SizedBox(
+                                width: media.width - 60,
+                                child: FutureBuilder(
+                                    future: getAddressFromCoordinates(
+                                        controller.package.value
+                                            .dropOffAddressLatitude,
+                                        controller.package.value
+                                            .dropOffAddressLongitude),
+                                    builder: (context, controller) {
+                                      return Text(
+                                        controller.data ?? 'Loading...',
+                                        style: TextStyle(
+                                          color: kTextGreyColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      );
+                                    }),
+                              ),
                               kHalfSizedBox,
                             ],
                           ),
@@ -457,22 +459,25 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 ),
                               ),
                               kHalfSizedBox,
-                              FutureBuilder(
-                                  future: getAddressFromCoordinates(
-                                      controller
-                                          .package.value.dropOffAddressLatitude,
-                                      controller.package.value
-                                          .dropOffAddressLongitude),
-                                  builder: (context, controller) {
-                                    return Text(
-                                      controller.data ?? 'Loading...',
-                                      style: TextStyle(
-                                        color: kTextGreyColor,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    );
-                                  }),
+                              SizedBox(
+                                width: media.width - 60,
+                                child: FutureBuilder(
+                                    future: getAddressFromCoordinates(
+                                        controller.package.value
+                                            .dropOffAddressLatitude,
+                                        controller.package.value
+                                            .dropOffAddressLongitude),
+                                    builder: (context, controller) {
+                                      return Text(
+                                        controller.data ?? 'Loading...',
+                                        style: TextStyle(
+                                          color: kTextGreyColor,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      );
+                                    }),
+                              ),
                               kHalfSizedBox,
                             ],
                           ),

@@ -1,6 +1,6 @@
-import 'package:benji_rider/app/order/order_details.dart';
+import 'package:benji_rider/app/package/package_detail.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
-import 'package:benji_rider/repo/controller/order_status_change.dart';
+import 'package:benji_rider/repo/controller/package_controller.dart';
 import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
@@ -30,10 +30,10 @@ class _PackageState extends State<Package> {
   }
 
   void _toDetailPage(DeliveryModel deliveryObj, String taskStatus) {
-    OrderStatusChangeController.instance.setOrder(deliveryObj);
+    PackageController.instance.setPackage(deliveryObj);
     Get.to(
-      () => OrderDetails(taskStatus: taskStatus),
-      routeName: 'OrderDetails',
+      () => PackageDetails(taskStatus: taskStatus),
+      routeName: 'PackageDetails',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
       curve: Curves.easeIn,
@@ -58,7 +58,7 @@ class _PackageState extends State<Package> {
         child: ListView(
           shrinkWrap: true,
           children: [
-            GetBuilder<OrderController>(builder: (controller) {
+            GetBuilder<PackageController>(builder: (controller) {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: SingleChildScrollView(
@@ -169,9 +169,9 @@ class _PackageState extends State<Package> {
                 ),
               );
             }),
-            GetBuilder<OrderController>(
+            GetBuilder<PackageController>(
                 initState: (state) =>
-                    OrderController.instance.getOrdersByStatus(),
+                    PackageController.instance.getOrdersByStatus(),
                 builder: (controller) {
                   if (controller.isLoad.value &&
                       controller.vendorsOrderList.isEmpty) {
@@ -360,15 +360,13 @@ class _PackageState extends State<Package> {
                                                             controller
                                                                 .vendorsOrderList[
                                                                     index]
-                                                                .order
-                                                                .deliveryAddress
-                                                                .latitude,
+                                                                .package
+                                                                .dropOffAddressLatitude,
                                                             controller
                                                                 .vendorsOrderList[
                                                                     index]
-                                                                .order
-                                                                .deliveryAddress
-                                                                .longitude),
+                                                                .package
+                                                                .dropOffAddressLongitude),
                                                         builder: (context,
                                                             controller) {
                                                           return Text(
