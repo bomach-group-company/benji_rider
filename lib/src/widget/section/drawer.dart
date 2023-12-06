@@ -120,7 +120,7 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             MyListTile(
-              text: 'My Order Task',
+              text: 'My Orders',
               icon: Icons.map_outlined,
               nav: () {
                 Get.to(

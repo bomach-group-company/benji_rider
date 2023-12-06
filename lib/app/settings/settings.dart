@@ -1,3 +1,4 @@
+import 'package:benji_rider/app/package/packages.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
@@ -148,6 +149,35 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                       title: const Text(
                         'My Orders',
+                        style: TextStyle(
+                          color: Color(0xFF333333),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      trailing: const Icon(
+                        Icons.arrow_forward_ios_rounded,
+                      ),
+                    ),
+                    ListTile(
+                      onTap: () {
+                        Get.to(
+                          () => const Package(),
+                          routeName: 'Package',
+                          duration: const Duration(milliseconds: 300),
+                          fullscreenDialog: true,
+                          curve: Curves.easeIn,
+                          preventDuplicates: false,
+                          popGesture: true,
+                          transition: Transition.rightToLeft,
+                        );
+                      },
+                      leading: Icon(
+                        Icons.receipt_long_outlined,
+                        color: kAccentColor,
+                      ),
+                      title: const Text(
+                        'My Packages',
                         style: TextStyle(
                           color: Color(0xFF333333),
                           fontSize: 15,

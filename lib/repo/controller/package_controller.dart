@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:benji_rider/repo/controller/api_url.dart';
 import 'package:benji_rider/repo/controller/error_controller.dart';
+import 'package:benji_rider/repo/controller/form_controller.dart';
 import 'package:benji_rider/repo/controller/order_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/delivery_model.dart';
@@ -109,28 +110,50 @@ class PackageController extends GetxController {
     update();
   }
 
-  // packageDispatched() async {
-  //   isLoad.value = true;
-  //   update();
+  userConfirm(String packageCode) async {
+    isLoad.value = true;
+    update();
 
-  //   var url =
-  //       "${Api.baseUrl}/packages/RiderToVendorChangeStatus?package_id=${package.value.id}";
-  //   await FormController.instance.getAuth(url, 'dispatchPackage');
-  //   print(FormController.instance.status);
+    var url =
+        "${Api.baseUrl}/sendPackage/packageUserStatus/${package.value.id}/$packageCode";
+    await FormController.instance.getAuth(url, 'userConfirm');
+    print(FormController.instance.status);
 
-  //   if (FormController.instance.status.toString().startsWith('2')) {}
-  //   await refreshPackage();
-  // }
+    if (FormController.instance.status.toString().startsWith('2')) {
+      await orderDelivered();
+    } else {
+      ApiProcessorController.errorSnack('An error occured');
+    }
+    await refreshPackage();
+  }
 
-  // packageDelivered() async {
-  //   isLoad.value = true;
+  orderDispatched() async {
+    isLoad.value = true;
+    update();
 
-  //   update();
-  //   var url =
-  //       "${Api.baseUrl}/packages/RiderToUserChangeStatus?package_id=${package.value.id}";
-  //   await FormController.instance.getAuth(url, 'deliveredPackage');
-  //   print(FormController.instance.status);
-  //   if (FormController.instance.status.toString().startsWith('2')) {}
-  //   await refreshPackage();
-  // }
+    var url =
+        "${Api.baseUrl}/sendPackage/riderReceiveStatus/?package_id=${package.value.id}";
+    await FormController.instance.getAuth(url, 'dispatchPackage');
+    print(FormController.instance.status);
+
+    if (FormController.instance.status.toString().startsWith('2')) {}
+    await refreshPackage();
+  }
+
+  orderDelivered() async {
+    isLoad.value = true;
+    final user = UserController.instance.user.value;
+
+    update();
+    var url =
+        "${Api.baseUrl}/sendPackage/riderConfirmStatus/?package_id=${package.value.id}";
+
+    var url2 =
+        "${Api.baseUrl}/drivers/completeMyPackageTask/${task.value.id}/${user.id}";
+
+    await FormController.instance.getAuth(url, 'deliveredPackage');
+    await FormController.instance.getAuth(url2, 'deliveredPackage');
+    print(FormController.instance.status);
+    if (FormController.instance.status.toString().startsWith('2')) {}
+  }
 }

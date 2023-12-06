@@ -4,6 +4,7 @@ import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/package_controller.dart';
 import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
+import 'package:benji_rider/src/widget/form_and_auth/my%20textformfield.dart';
 import 'package:benji_rider/src/widget/maps/map_direction.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,10 @@ class _PackageDetailsState extends State<PackageDetails> {
 
 //============================== ALL VARIABLES ================================\\
   String dispatchMessage = "Your package has been dispatched";
+  final codeEC = TextEditingController();
 
+//================= Focus Nodes ==================\\
+  final codeFN = FocusNode();
 //============================== FUNCTIONS ================================\\
 
   @override
@@ -76,11 +80,37 @@ class _PackageDetailsState extends State<PackageDetails> {
             ),
             bottomNavigationBar: Container(
                 padding: const EdgeInsets.all(kDefaultPadding),
-                child: MyElevatedButton(
-                  title: "Delivered",
-                  onPressed: () {},
-                  isLoading: controller.isLoad.value,
-                )),
+                child: controller.package.value.status == 'pending'
+                    ? MyElevatedButton(
+                        title: "Received",
+                        onPressed: controller.orderDispatched,
+                        isLoading: controller.isLoad.value,
+                      )
+                    : Column(
+                        children: [
+                          MyTextFormField(
+                            controller: codeEC,
+                            focusNode: codeFN,
+                            hintText: "Enter the code from the user",
+                            textInputAction: TextInputAction.next,
+                            textInputType: TextInputType.name,
+                            validator: (value) {
+                              if (value == null || value!.isEmpty) {
+                                codeFN.requestFocus();
+                                return "Enter the code from the user";
+                              }
+                              return null;
+                            },
+                          ),
+                          kSizedBox,
+                          MyElevatedButton(
+                            title: "Delivered",
+                            onPressed: () =>
+                                controller.userConfirm(codeEC.text),
+                            isLoading: controller.isLoad.value,
+                          )
+                        ],
+                      )),
             body: ListView(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
