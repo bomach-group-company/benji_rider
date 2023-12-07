@@ -287,14 +287,8 @@ class _DashboardState extends State<Dashboard>
                                     controller.tasks[index].isOrder()
                                 ? const Text('Pickup from - Not Found')
                                 : FutureBuilder(
-                                    future: !controller.tasks[index].isOrder()
+                                    future: controller.tasks[index].isOrder()
                                         ? getAddressFromCoordinates(
-                                            controller.tasks[index].package
-                                                .pickUpAddressLatitude,
-                                            controller.tasks[index].package
-                                                .pickUpAddressLongitude,
-                                          )
-                                        : getAddressFromCoordinates(
                                             controller
                                                 .tasks[index]
                                                 .order
@@ -310,7 +304,13 @@ class _DashboardState extends State<Dashboard>
                                                 .first
                                                 .product
                                                 .vendorId
-                                                .longitude),
+                                                .longitude)
+                                        : getAddressFromCoordinates(
+                                            controller.tasks[index].package
+                                                .pickUpAddressLatitude,
+                                            controller.tasks[index].package
+                                                .pickUpAddressLongitude,
+                                          ),
                                     builder: (context, controller) {
                                       return Text(
                                         controller.data == null
@@ -320,18 +320,18 @@ class _DashboardState extends State<Dashboard>
                                     }),
                             kHalfSizedBox,
                             FutureBuilder(
-                                future: !controller.tasks[index].isOrder()
+                                future: controller.tasks[index].isOrder()
                                     ? getAddressFromCoordinates(
+                                        controller.tasks[index].order
+                                            .deliveryAddress.latitude,
+                                        controller.tasks[index].order
+                                            .deliveryAddress.longitude)
+                                    : getAddressFromCoordinates(
                                         controller.tasks[index].package
                                             .dropOffAddressLatitude,
                                         controller.tasks[index].package
                                             .dropOffAddressLongitude,
-                                      )
-                                    : getAddressFromCoordinates(
-                                        controller.tasks[index].order
-                                            .deliveryAddress.latitude,
-                                        controller.tasks[index].order
-                                            .deliveryAddress.longitude),
+                                      ),
                                 builder: (context, controller) {
                                   return Text(
                                     controller.data == null

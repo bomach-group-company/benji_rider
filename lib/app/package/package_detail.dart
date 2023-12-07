@@ -78,39 +78,6 @@ class _PackageDetailsState extends State<PackageDetails> {
               actions: const [],
               backgroundColor: kPrimaryColor,
             ),
-            bottomNavigationBar: Container(
-                padding: const EdgeInsets.all(kDefaultPadding),
-                child: controller.package.value.status == 'pending'
-                    ? MyElevatedButton(
-                        title: "Received",
-                        onPressed: controller.orderDispatched,
-                        isLoading: controller.isLoad.value,
-                      )
-                    : Column(
-                        children: [
-                          MyTextFormField(
-                            controller: codeEC,
-                            focusNode: codeFN,
-                            hintText: "Enter the code from the user",
-                            textInputAction: TextInputAction.next,
-                            textInputType: TextInputType.name,
-                            validator: (value) {
-                              if (value == null || value!.isEmpty) {
-                                codeFN.requestFocus();
-                                return "Enter the code from the user";
-                              }
-                              return null;
-                            },
-                          ),
-                          kSizedBox,
-                          MyElevatedButton(
-                            title: "Delivered",
-                            onPressed: () =>
-                                controller.userConfirm(codeEC.text),
-                            isLoading: controller.isLoad.value,
-                          )
-                        ],
-                      )),
             body: ListView(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
@@ -515,6 +482,56 @@ class _PackageDetailsState extends State<PackageDetails> {
                       ),
                     ],
                   ),
+                ),
+                kSizedBox,
+                Container(
+                  child: controller.package.value.riderReceiveStatus ==
+                          'pending'
+                      ? MyElevatedButton(
+                          title: "Received",
+                          onPressed: controller.orderDispatched,
+                          isLoading: controller.isLoad.value,
+                        )
+                      : controller.package.value.riderReceiveStatus ==
+                              'received'
+                          ? SizedBox(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    'Enter package delivery code and confirm',
+                                    style: TextStyle(color: kAccentColor),
+                                  ),
+                                  kSizedBox,
+                                  MyTextFormField(
+                                    controller: codeEC,
+                                    focusNode: codeFN,
+                                    hintText: "Enter the code from the user",
+                                    textInputAction: TextInputAction.next,
+                                    textInputType: TextInputType.name,
+                                    validator: (value) {
+                                      if (value == null || value!.isEmpty) {
+                                        codeFN.requestFocus();
+                                        return "Enter the code from the user";
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                  kSizedBox,
+                                  MyElevatedButton(
+                                    title: "Delivered",
+                                    onPressed: () =>
+                                        controller.userConfirm(codeEC.text),
+                                    isLoading: controller.isLoad.value,
+                                  )
+                                ],
+                              ),
+                            )
+                          : MyElevatedButton(
+                              disable: true,
+                              title: "Completed",
+                              onPressed: () {},
+                              isLoading: false,
+                            ),
                 ),
                 kSizedBox,
               ],

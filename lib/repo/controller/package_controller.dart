@@ -132,7 +132,7 @@ class PackageController extends GetxController {
     update();
 
     var url =
-        "${Api.baseUrl}/sendPackage/riderReceiveStatus/?package_id=${package.value.id}";
+        "${Api.baseUrl}/sendPackage/riderReceiveStatus/${package.value.id}";
     await FormController.instance.getAuth(url, 'dispatchPackage');
     print(FormController.instance.status);
 
@@ -146,7 +146,7 @@ class PackageController extends GetxController {
 
     update();
     var url =
-        "${Api.baseUrl}/sendPackage/riderConfirmStatus/?package_id=${package.value.id}";
+        "${Api.baseUrl}/sendPackage/riderConfirmStatus/${package.value.id}";
 
     var url2 =
         "${Api.baseUrl}/drivers/completeMyPackageTask/${task.value.id}/${user.id}";

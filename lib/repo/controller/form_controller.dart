@@ -28,6 +28,8 @@ class FormController extends GetxController {
       Uri.parse(url),
       headers: authHeader(),
     );
+    print(url);
+    print(response.body);
     status.value = response.statusCode;
     update([tag]);
     if (response.statusCode != 200) {
