@@ -22,11 +22,11 @@ class OrderStatusChangeController extends GetxController {
   var order = Order.fromJson(null).obs;
   var task = DeliveryModel.fromJson(null).obs;
 
-  setOrder(DeliveryModel deliveryObj) async {
+  Future setOrder(DeliveryModel deliveryObj) async {
     order.value = deliveryObj.order;
     task.value = deliveryObj;
     update();
-    await refreshOrder();
+    refreshOrder();
   }
 
   deleteCachedOrder() {

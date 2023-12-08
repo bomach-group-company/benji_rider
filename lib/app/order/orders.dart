@@ -29,8 +29,8 @@ class _DeliveryState extends State<Delivery> {
     super.initState();
   }
 
-  void _toDetailPage(DeliveryModel deliveryObj) {
-    OrderStatusChangeController.instance.setOrder(deliveryObj);
+  void _toDetailPage(DeliveryModel deliveryObj) async {
+    await OrderStatusChangeController.instance.setOrder(deliveryObj);
     Get.to(
       () => OrderDetails(taskStatus: deliveryObj.deliveryStatus),
       routeName: 'OrderDetails',

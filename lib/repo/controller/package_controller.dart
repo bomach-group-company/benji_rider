@@ -40,11 +40,11 @@ class PackageController extends GetxController {
     await getOrdersByStatus();
   }
 
-  setPackage(DeliveryModel deliveryObj) async {
+  Future setPackage(DeliveryModel deliveryObj) async {
     package.value = deliveryObj.package;
     task.value = deliveryObj;
     update();
-    await refreshPackage();
+    refreshPackage();
   }
 
   deleteCachedPackage() {

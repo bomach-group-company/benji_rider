@@ -29,8 +29,8 @@ class _PackageState extends State<Package> {
     super.initState();
   }
 
-  void _toDetailPage(DeliveryModel deliveryObj, String taskStatus) {
-    PackageController.instance.setPackage(deliveryObj);
+  void _toDetailPage(DeliveryModel deliveryObj, String taskStatus) async {
+    await PackageController.instance.setPackage(deliveryObj);
     Get.to(
       () => PackageDetails(taskStatus: taskStatus),
       routeName: 'PackageDetails',
