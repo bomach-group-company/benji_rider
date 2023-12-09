@@ -110,20 +110,39 @@ class PackageController extends GetxController {
     update();
   }
 
-  userConfirm(String packageCode) async {
+  orderDelivered(String packageCode) async {
     isLoad.value = true;
     update();
 
     var url =
         "${Api.baseUrl}/sendPackage/packageUserStatus/${package.value.id}/$packageCode";
-    await FormController.instance.getAuth(url, 'userConfirm');
-    print(FormController.instance.status);
+    // await FormController.instance.getAuth(url, 'orderDelivered');
 
-    if (FormController.instance.status.toString().startsWith('2')) {
-      await orderDelivered();
-    } else {
+    final user = UserController.instance.user.value;
+    http.Response? response = await HandleData.getApi(url, user.token);
+    // var responseData = await ApiProcessorController.errorState(response);
+    print('response?.body package ${response?.body}');
+    try {
+      final data = (jsonDecode(response!.body) as Map);
+      print('passed the first one');
+      if (data['message'] == null && response.statusCode == 200) {
+        ApiProcessorController.successSnack('Package delivered success');
+      }
+      ApiProcessorController.errorSnack(data['message']);
+    } catch (e) {
       ApiProcessorController.errorSnack('An error occured');
     }
+
+    isLoad.value = false;
+    update();
+    // print(FormController.instance.status);
+
+    // if (FormController.instance.status.toString().startsWith('2')) {
+    //   // await orderDelivered();
+    // } else {
+    //   ApiProcessorController.errorSnack('An error occured');
+    // }
+    // await refreshPackage();
     await refreshPackage();
   }
 
@@ -140,20 +159,20 @@ class PackageController extends GetxController {
     await refreshPackage();
   }
 
-  orderDelivered() async {
-    isLoad.value = true;
-    final user = UserController.instance.user.value;
+  // orderDelivered() async {
+  //   isLoad.value = true;
+  //   final user = UserController.instance.user.value;
 
-    update();
-    var url =
-        "${Api.baseUrl}/sendPackage/riderConfirmStatus/${package.value.id}";
+  //   update();
+  //   var url =
+  //       "${Api.baseUrl}/sendPackage/riderConfirmStatus/${package.value.id}";
 
-    var url2 =
-        "${Api.baseUrl}/drivers/completeMyPackageTask/${task.value.id}/${user.id}";
+  //   var url2 =
+  //       "${Api.baseUrl}/drivers/completeMyPackageTask/${task.value.id}/${user.id}";
 
-    await FormController.instance.getAuth(url, 'deliveredPackage');
-    await FormController.instance.getAuth(url2, 'deliveredPackage');
-    print(FormController.instance.status);
-    if (FormController.instance.status.toString().startsWith('2')) {}
-  }
+  //   await FormController.instance.getAuth(url, 'deliveredPackage');
+  //   await FormController.instance.getAuth(url2, 'deliveredPackage');
+  //   print(FormController.instance.status);
+  //   if (FormController.instance.status.toString().startsWith('2')) {}
+  // }
 }
