@@ -34,9 +34,9 @@ typedef ModalContentBuilder = Widget Function(BuildContext);
 class _DashboardState extends State<Dashboard>
     with SingleTickerProviderStateMixin {
   //===================== Initial State ==========================\\
-  void _toDetailsPage(DeliveryModel task) {
+  void _toDetailsPage(DeliveryModel task) async {
     if (task.isOrder()) {
-      OrderStatusChangeController.instance.setOrder(task);
+      await OrderStatusChangeController.instance.setOrder(task);
 
       Get.to(
         () => const OrderDetails(),
@@ -49,7 +49,7 @@ class _DashboardState extends State<Dashboard>
         transition: Transition.rightToLeft,
       );
     } else {
-      PackageController.instance.setPackage(task);
+      await PackageController.instance.setPackage(task);
       Get.to(
         () => const PackageDetails(),
         routeName: 'PackageDetails',

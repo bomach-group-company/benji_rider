@@ -357,7 +357,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                     kHalfSizedBox,
                                     SizedBox(
-                                      width: media.width - 60,
+                                      width: media.width - 160,
                                       child: FutureBuilder(
                                           future: getAddressFromCoordinates(
                                               controller
@@ -500,7 +500,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                               kHalfSizedBox,
                               SizedBox(
-                                width: media.width - 60,
+                                width: media.width - 160,
                                 child: FutureBuilder(
                                     future: getAddressFromCoordinates(
                                         controller.order.value.deliveryAddress
