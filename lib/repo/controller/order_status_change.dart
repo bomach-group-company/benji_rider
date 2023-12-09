@@ -84,11 +84,11 @@ class OrderStatusChangeController extends GetxController {
     var url =
         "${Api.baseUrl}/orders/RiderToUserChangeStatus?order_id=${order.value.id}";
 
-    var url2 =
-        "${Api.baseUrl}/drivers/completeMyTask/${task.value.id}/${user.id}";
+    // var url2 =
+    //     "${Api.baseUrl}/drivers/completeMyTask/${task.value.id}/${user.id}";
 
     await FormController.instance.getAuth(url, 'deliveredOrder');
-    await FormController.instance.getAuth(url2, 'deliveredOrder');
+    // await FormController.instance.getAuth(url2, 'deliveredOrder');
     print(FormController.instance.status);
     if (FormController.instance.status.toString().startsWith('2')) {}
     await refreshOrder();
