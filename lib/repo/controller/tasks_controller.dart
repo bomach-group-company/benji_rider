@@ -98,9 +98,11 @@ class TasksController extends GetxController {
 
     channelTask.stream.listen((message) {
       print(message);
+      List data = [];
+      data.addAll(jsonDecode(message)['message'] as List);
+      data.addAll(jsonDecode(message)['packages'] as List);
 
-      setTasks(jsonDecode(message)['message'] as List);
-      setTasks(jsonDecode(message)['packages'] as List);
+      setTasks(data);
       isLoading.value = false;
       update();
     });
