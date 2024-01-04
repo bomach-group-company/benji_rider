@@ -9,6 +9,7 @@ import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/maps/map_direction.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
@@ -16,6 +17,7 @@ import '../../theme/colors.dart';
 
 class OrderDetails extends StatefulWidget {
   final String taskStatus;
+
   const OrderDetails({super.key, this.taskStatus = 'processing'});
 
   @override
@@ -292,20 +294,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                                           .product.vendorId.longitude),
                                   child: Row(
                                     children: [
-                                      Icon(
-                                        Icons.location_on,
+                                      FaIcon(
+                                        FontAwesomeIcons.locationDot,
                                         color: kAccentColor,
                                         size: 20,
                                       ),
-                                      const SizedBox(
-                                        width: kDefaultPadding * 0.2,
-                                      ),
+                                      const SizedBox(width: 4),
                                       Text(
                                         'Map',
                                         style: TextStyle(
-                                            color: kAccentColor,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
+                                          color: kAccentColor,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -322,14 +323,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(20)),
                                   ),
-                                  child: CircleAvatar(
-                                    radius:
-                                        deviceType(media.width) >= 2 ? 60 : 30,
-                                    child: ClipOval(
-                                      child: MyImage(
-                                          url: controller
-                                              .order.value.client.image),
-                                    ),
+                                  child: MyImage(
+                                    url: controller.order.value.client.image,
                                   ),
                                 ),
                                 kWidthSizedBox,
@@ -438,20 +433,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     .order.value.deliveryAddress.longitude),
                             child: Row(
                               children: [
-                                Icon(
-                                  Icons.location_on,
+                                FaIcon(
+                                  FontAwesomeIcons.locationDot,
                                   color: kAccentColor,
                                   size: 20,
                                 ),
-                                const SizedBox(
-                                  width: kDefaultPadding * 0.2,
-                                ),
+                                const SizedBox(width: 4),
                                 Text(
                                   'Map',
                                   style: TextStyle(
-                                      color: kAccentColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
+                                    color: kAccentColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
@@ -468,12 +462,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(20)),
                             ),
-                            child: CircleAvatar(
-                              radius: deviceType(media.width) >= 2 ? 60 : 30,
-                              child: ClipOval(
-                                child: MyImage(
-                                    url: controller.order.value.client.image),
-                              ),
+                            child: MyImage(
+                              url: controller.order.value.client.image,
                             ),
                           ),
                           kWidthSizedBox,
