@@ -60,6 +60,7 @@ class _EarningContainerState extends State<EarningContainer> {
         popGesture: true,
         transition: Transition.rightToLeft,
       );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -186,7 +187,10 @@ class _EarningContainerState extends State<EarningContainer> {
                         ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.refresh),
+                  icon: FaIcon(
+                    FontAwesomeIcons.arrowsRotate,
+                    color: kAccentColor,
+                  ),
                   onPressed: () async {
                     await UserController.instance.getUser();
                   },
