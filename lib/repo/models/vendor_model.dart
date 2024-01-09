@@ -1,19 +1,17 @@
 import 'dart:convert';
 
-import 'package:benji_rider/repo/models/shoptype_model.dart';
 import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-List<VendorModel> vendorModelFromJson(String str) => List<VendorModel>.from(
-    json.decode(str).map((x) => VendorModel.fromJson(x)));
+VendorModel userModelFromJson(String str) =>
+    VendorModel.fromJson(json.decode(str));
 
-String vendorModelToJson(List<VendorModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String userModelToJson(VendorModel data) => json.encode(data.toJson());
 
 class VendorModel {
   int id;
+  String token;
   String email;
   String phone;
   String username;
@@ -22,18 +20,17 @@ class VendorModel {
   String lastName;
   String gender;
   String address;
-  bool isOnline;
-  double averageRating;
-  int numberOfClientsReactions;
-  String shopName;
-  String shopImage;
-  String latitude;
   String longitude;
+  String latitude;
+  String country;
+  String state;
+  String city;
+  String lga;
   String profileLogo;
-  ShopTypeModel shopType;
 
   VendorModel({
     required this.id,
+    required this.token,
     required this.email,
     required this.phone,
     required this.username,
@@ -42,43 +39,48 @@ class VendorModel {
     required this.lastName,
     required this.gender,
     required this.address,
-    required this.isOnline,
-    required this.averageRating,
-    required this.numberOfClientsReactions,
-    required this.shopName,
-    required this.shopImage,
-    required this.latitude,
     required this.longitude,
+    required this.latitude,
+    required this.country,
+    required this.state,
+    required this.city,
+    required this.lga,
     required this.profileLogo,
-    required this.shopType,
   });
 
   factory VendorModel.fromJson(Map<String, dynamic>? json) {
     json ??= {};
-    return VendorModel(
-      id: json["id"] ?? 0,
-      email: json["email"] ?? notAvailable,
-      phone: json["phone"] ?? notAvailable,
-      username: json["username"] ?? notAvailable,
-      code: json["code"] ?? notAvailable,
-      firstName: json["first_name"] ?? notAvailable,
-      lastName: json["last_name"] ?? notAvailable,
-      gender: json["gender"] ?? notAvailable,
-      address: json["address"] ?? notAvailable,
-      isOnline: json["is_online"] ?? false,
-      averageRating: ((json["average_rating"] ?? 0.0) as double).toPrecision(1),
-      numberOfClientsReactions: json["number_of_clients_reactions"] ?? 0,
-      shopName: json["shop_name"] ?? notAvailable,
-      shopImage: json["shop_image"] ?? '',
-      latitude: json["latitude"] ?? '',
-      longitude: json["longitude"] ?? '',
-      profileLogo: json["profileLogo"] ?? '',
-      shopType: ShopTypeModel.fromJson(json["shop_type"]),
-    );
+    print("JSON data: $json");
+    try {
+      return VendorModel(
+        id: json["id"] ?? 0,
+        token: json["token"] ?? '',
+        email: json["email"] ?? notAvailable,
+        phone: json["phone"] ?? notAvailable,
+        username: json["username"] ?? notAvailable,
+        code: json["code"] ?? notAvailable,
+        firstName: json["first_name"] ?? notAvailable,
+        lastName: json["last_name"] ?? notAvailable,
+        gender: json["gender"] ?? notAvailable,
+        address: json["address"] ?? notAvailable,
+        longitude: json["longitude"] ?? notAvailable,
+        latitude: json["latitude"] ?? notAvailable,
+        country: json["country"] ?? notAvailable,
+        state: json["state"] ?? notAvailable,
+        city: json["city"] ?? notAvailable,
+        lga: json["lga"] ?? notAvailable,
+        profileLogo: json["profileLogo"] ?? '',
+      );
+    } catch (e) {
+      print("Error parsing average_rating: $e");
+      return VendorModel.fromJson(null);
+      //  return VendorModel.defaults();
+    }
   }
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "token": token,
         "email": email,
         "phone": phone,
         "username": username,
@@ -87,15 +89,11 @@ class VendorModel {
         "last_name": lastName,
         "gender": gender,
         "address": address,
-        "is_online": isOnline,
-        "average_rating": averageRating,
-        "number_of_clients_reactions": numberOfClientsReactions,
-        "shop_name": shopName,
-        "shop_image": shopImage,
-        "latitude": latitude,
-        "longitude": longitude,
+        "country": country,
+        "state": state,
+        "city": city,
+        "lga": lga,
         "profileLogo": profileLogo,
-        "shop_type": shopType.toJson(),
       };
 }
 

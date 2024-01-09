@@ -184,7 +184,7 @@ class _VendorsState extends State<Vendors> with SingleTickerProviderStateMixin {
                                       SizedBox(
                                         width: mediaWidth - 200,
                                         child: Text(
-                                          controller.vendors[index].shopName,
+                                          controller.vendors[index].username,
                                           overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: const TextStyle(
