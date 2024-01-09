@@ -4,14 +4,8 @@ import 'package:benji_rider/repo/utils/constants.dart';
 import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:http/http.dart' as http;
 
-VendorModel userModelFromJson(String str) =>
-    VendorModel.fromJson(json.decode(str));
-
-String userModelToJson(VendorModel data) => json.encode(data.toJson());
-
 class VendorModel {
   int id;
-  String token;
   String email;
   String phone;
   String username;
@@ -30,7 +24,6 @@ class VendorModel {
 
   VendorModel({
     required this.id,
-    required this.token,
     required this.email,
     required this.phone,
     required this.username,
@@ -54,7 +47,6 @@ class VendorModel {
     try {
       return VendorModel(
         id: json["id"] ?? 0,
-        token: json["token"] ?? '',
         email: json["email"] ?? notAvailable,
         phone: json["phone"] ?? notAvailable,
         username: json["username"] ?? notAvailable,
@@ -80,7 +72,6 @@ class VendorModel {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "token": token,
         "email": email,
         "phone": phone,
         "username": username,
