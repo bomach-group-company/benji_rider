@@ -1,6 +1,7 @@
 // ignore_for_file: empty_catches
 
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:benji_rider/repo/controller/error_controller.dart';
@@ -28,8 +29,8 @@ class FormController extends GetxController {
       Uri.parse(url),
       headers: authHeader(),
     );
-    print(url);
-    print(response.body);
+    log(url);
+    log(response.body);
     status.value = response.statusCode;
     update([tag]);
     if (response.statusCode != 200) {
@@ -126,7 +127,7 @@ class FormController extends GetxController {
       headers: authHeader(),
       body: encodeIt ? jsonEncode(data) : data,
     );
-    print(response.body);
+    log(response.body);
     status.value = response.statusCode;
     if (response.statusCode != 200) {
       ApiProcessorController.errorSnack(errorMsg);
@@ -248,7 +249,7 @@ class FormController extends GetxController {
     // try {
     response = await request.send();
     status.value = response.statusCode;
-    final normalResp = await http.Response.fromStream(response);
+    // final normalResp = await http.Response.fromStream(response);
     if (response.statusCode == 200) {
       ApiProcessorController.successSnack(successMsg);
       isLoad.value = false;

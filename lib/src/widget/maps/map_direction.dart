@@ -229,7 +229,7 @@ class _MapDirectionState extends State<MapDirection> {
 
   @override
   Widget build(BuildContext context) {
-    var media = MediaQuery.of(context).size;
+    // var media = MediaQuery.of(context).size;
     return Scaffold(
       appBar: MyAppBar(
         title: "Map direction",

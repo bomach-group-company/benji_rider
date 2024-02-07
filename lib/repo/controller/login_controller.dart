@@ -80,7 +80,7 @@ class LoginController extends GetxController {
 
         final responseUserData = await http.get(
           Uri.parse(
-              '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser.body ?? '{}')['id']}/'),
+              '${Api.baseUrl}${Api.getSpecificRider}${jsonDecode(responseUser.body)['id']}/'),
           headers: {
             HttpHeaders.contentTypeHeader: "application/json",
             HttpHeaders.authorizationHeader: "Bearer ${responseData["token"]}",

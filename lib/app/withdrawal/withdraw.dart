@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:benji_rider/repo/controller/error_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
@@ -62,9 +64,9 @@ class _WithdrawPageState extends State<WithdrawPage> {
     };
 
     final result = await WithdrawController.instance.withdraw(data);
-    print('got to the before ${result.statusCode.toString()}');
+    log('got to the before ${result.statusCode.toString()}');
     if (result.statusCode == 200) {
-      print('got to the close');
+      log('got to the close');
       Get.close(1);
     }
   }

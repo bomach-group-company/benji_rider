@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:benji_rider/repo/models/item_category.dart';
 import 'package:benji_rider/repo/models/item_weight.dart';
@@ -57,7 +58,7 @@ class Package {
   });
 
   factory Package.fromJson(Map<String, dynamic>? json) {
-    // print('Package  $json');
+    // log('Package  $json');
     json ??= {};
     return Package(
       id: json['id'] ?? '',
@@ -94,7 +95,7 @@ Future<List<Package>> getDeliveryItemsByClientAndStatus(String status) async {
       Uri.parse(
           '$baseURL/sendPackage/gettemPackageByClientId/${user!.id}/$status'),
       headers: authHeader());
-  print('packages ${response.statusCode} ${jsonDecode(response.body)}');
+  log('packages ${response.statusCode} ${jsonDecode(response.body)}');
   if (response.statusCode == 200) {
     return (jsonDecode(response.body) as List)
         .map((item) => Package.fromJson(item))
