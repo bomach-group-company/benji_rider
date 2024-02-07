@@ -14,7 +14,9 @@ import '../../src/providers/constants.dart';
 import '../../theme/colors.dart';
 
 class StartupSplashscreen extends StatefulWidget {
-  const StartupSplashscreen({super.key});
+  StartupSplashscreen({super.key});
+
+  final auth = Get.put(AuthController());
 
   @override
   State<StartupSplashscreen> createState() => _StartupSplashscreenState();

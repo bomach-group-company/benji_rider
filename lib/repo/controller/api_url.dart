@@ -36,6 +36,9 @@ class Api {
   static const listWithdrawalHistories =
       "/withdrawalhistory/listWithdrawalHistories/";
   static const validateBankNumber = "/payments/validateBankNumbers/";
+
+  //Push Notification
+  static const createPushNotification = "/notifier/create_push_notification";
 }
 
 String header = "application/json";

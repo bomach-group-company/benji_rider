@@ -45,6 +45,12 @@ dependencies:
   cached_network_image:
   web_socket_channel: ^2.4.0
   geocoding: ^2.1.1
+  firebase_messaging: 
+  awesome_notifications: 
+  awesome_notifications_fcm: 
+  awesome_notifications_core: 
+  
+
 
 dev_dependencies:
   flutter_test:

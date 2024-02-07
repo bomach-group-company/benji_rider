@@ -15,11 +15,17 @@ import 'package:benji_rider/repo/controller/tasks_controller.dart';
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/controller/vendor_controller.dart';
 import 'package:benji_rider/repo/controller/withdraw_controller.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'firebase_options.dart';
+import 'repo/controller/fcm_messaging_controller.dart';
+import 'repo/controller/push_notifications_controller.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
 
@@ -51,6 +57,15 @@ void main() async {
   Get.put(OrderStatusChangeController());
   Get.put(PackageController());
 
+  if (!kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FirebaseMessaging.instance.setAutoInitEnabled(true);
+    await PushNotificationController.initializeNotification();
+    await FcmMessagingController.instance.handleFCM();
+  }
+
   runApp(const MyApp());
 }
 
@@ -70,7 +85,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         darkTheme: AppTheme.darkTheme,
         theme: AppTheme.lightTheme,
-        home: const StartupSplashscreen(),
+        home: StartupSplashscreen(),
       );
     }
     if (Platform.isAndroid) {
@@ -83,7 +98,7 @@ class MyApp extends StatelessWidget {
         themeMode: ThemeMode.light,
         darkTheme: AppTheme.darkTheme,
         theme: AppTheme.lightTheme,
-        home: const StartupSplashscreen(),
+        home: StartupSplashscreen(),
       );
     }
     return GetMaterialApp(
@@ -95,7 +110,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: const StartupSplashscreen(),
+      home: StartupSplashscreen(),
     );
   }
 }
