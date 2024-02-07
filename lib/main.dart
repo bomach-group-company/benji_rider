@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:benji_rider/app/splash_screens/startup_splash_screen.dart';
 import 'package:benji_rider/repo/controller/account_controller.dart';
 import 'package:benji_rider/repo/controller/auth_controller.dart';
@@ -58,6 +60,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if (Platform.isIOS) {
+      return GetMaterialApp(
+        defaultTransition: Transition.rightToLeft,
+        navigatorKey: Get.key,
+        debugShowCheckedModeBanner: false,
+        title: "Benji Rider",
+        color: kPrimaryColor,
+        themeMode: ThemeMode.light,
+        darkTheme: AppTheme.darkTheme,
+        theme: AppTheme.lightTheme,
+        home: const StartupSplashscreen(),
+      );
+    }
+    if (Platform.isAndroid) {
+      return GetMaterialApp(
+        defaultTransition: Transition.rightToLeft,
+        navigatorKey: Get.key,
+        debugShowCheckedModeBanner: false,
+        title: "Benji Rider",
+        color: kPrimaryColor,
+        themeMode: ThemeMode.light,
+        darkTheme: AppTheme.darkTheme,
+        theme: AppTheme.lightTheme,
+        home: const StartupSplashscreen(),
+      );
+    }
     return GetMaterialApp(
       defaultTransition: Transition.rightToLeft,
       navigatorKey: Get.key,

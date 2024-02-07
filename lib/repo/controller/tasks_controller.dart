@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/repo/models/delivery_model.dart';
@@ -40,7 +41,7 @@ class TasksController extends GetxController {
           '$baseURL/drivers/acceptDeliveryRequest/$id/${UserController.instance.user.value.id}'),
       headers: authHeader(),
     );
-    print('acceptTask ${response.statusCode}: ${response.body}');
+    log('acceptTask ${response.statusCode}: ${response.body}');
 
     isLoading.value = true;
     update();
@@ -62,7 +63,7 @@ class TasksController extends GetxController {
           '$baseURL/drivers/rejectDeliveryRequest/$id/${UserController.instance.user.value.id}'),
       headers: authHeader(),
     );
-    print('rejectTask ${response.statusCode}: ${response.body}');
+    log('rejectTask ${response.statusCode}: ${response.body}');
 
     isLoading.value = true;
     update();
@@ -83,21 +84,21 @@ class TasksController extends GetxController {
     channelTask.sink.add(jsonEncode({
       'rider_id': UserController.instance.user.value.id,
     }));
-    print({
-      'rider_id': UserController.instance.user.value.id,
-    });
+    // log({
+    //   'rider_id': UserController.instance.user.value.id,
+    // });
 
     Timer.periodic(const Duration(minutes: 1), (timer) {
       channelTask.sink.add(jsonEncode({
         'rider_id': UserController.instance.user.value.id,
       }));
-      print({
-        'rider_id': UserController.instance.user.value.id,
-      });
+      // log({
+      //   'rider_id': UserController.instance.user.value.id,
+      // });
     });
 
     channelTask.stream.listen((message) {
-      print(message);
+      log(message);
       List data = [];
       data.addAll(jsonDecode(message)['message'] as List);
       data.addAll(jsonDecode(message)['packages'] as List);

@@ -364,8 +364,8 @@ class _DashboardState extends State<Dashboard>
                                           const Duration(seconds: 1));
                                     }
                                     if (!controller.isLoading.value) {
-                                      print(
-                                          ' got to the func later ${controller.isLoading.value} chai');
+                                      // print(
+                                      //     ' got to the func later ${controller.isLoading.value} chai');
                                       _toDetailsPage(task);
                                     }
                                   },

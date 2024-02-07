@@ -63,8 +63,8 @@ class PackageController extends GetxController {
     String token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);
     var responseData = await ApiProcessorController.errorState(response);
-    print(response?.body);
-    print(response?.statusCode);
+    // print(response?.body);
+    // print(response?.statusCode);
     // PackageController.instance.getPackagesByStatus();
 
     if (responseData == null) {
@@ -76,7 +76,7 @@ class PackageController extends GetxController {
     try {
       package.value = Package.fromJson(jsonDecode(responseData));
     } catch (e) {
-      print('error in package change status controller to refresh package $e');
+      // print('error in package change status controller to refresh package $e');
     }
     isLoad.value = false;
     update();
@@ -88,7 +88,7 @@ class PackageController extends GetxController {
     String id = UserController.instance.user.value.id.toString();
     var url =
         "${Api.baseUrl}/tasks/getPackageTaskByStatus/$id/${statusTypeConverter(status.value)}";
-    print(url);
+    // print(url);
     token = UserController.instance.user.value.token;
     http.Response? response = await HandleData.getApi(url, token);
     var responseData = await ApiProcessorController.errorState(response);
@@ -97,7 +97,7 @@ class PackageController extends GetxController {
       update();
       return;
     }
-    print(response?.body);
+    // print(response?.body);
 
     List<DeliveryModel> data = [];
     try {
@@ -121,10 +121,10 @@ class PackageController extends GetxController {
     final user = UserController.instance.user.value;
     http.Response? response = await HandleData.getApi(url, user.token);
     // var responseData = await ApiProcessorController.errorState(response);
-    print('response?.body package ${response?.body}');
+    // print('response?.body package ${response?.body}');
     try {
       final data = (jsonDecode(response!.body) as Map);
-      print('passed the first one');
+      // print('passed the first one');
       if (data['message'] == null && response.statusCode == 200) {
         ApiProcessorController.successSnack('Package delivered success');
       }
@@ -153,7 +153,7 @@ class PackageController extends GetxController {
     var url =
         "${Api.baseUrl}/sendPackage/riderReceiveStatus/${package.value.id}";
     await FormController.instance.getAuth(url, 'dispatchPackage');
-    print(FormController.instance.status);
+    // print(FormController.instance.status);
 
     if (FormController.instance.status.toString().startsWith('2')) {}
     await refreshPackage();
@@ -172,7 +172,7 @@ class PackageController extends GetxController {
 
   //   await FormController.instance.getAuth(url, 'deliveredPackage');
   //   await FormController.instance.getAuth(url2, 'deliveredPackage');
-  //   print(FormController.instance.status);
+  // print(FormController.instance.status);
   //   if (FormController.instance.status.toString().startsWith('2')) {}
   // }
 }
