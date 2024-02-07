@@ -56,7 +56,8 @@
         android:name="${applicationName}"
         android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/launcher_icon"
-        tools:targetApi="tiramisu">
+        tools:targetApi="tiramisu"
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".MainActivity"
             android:exported="true"

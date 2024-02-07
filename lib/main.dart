@@ -42,6 +42,8 @@ void main() async {
   // );
   prefs = await SharedPreferences.getInstance();
 
+  Get.put(FcmMessagingController());
+
   Get.put(UserController());
   Get.put(AuthController());
   Get.put(LoginController());
@@ -56,6 +58,7 @@ void main() async {
   Get.put(AccountController());
   Get.put(OrderStatusChangeController());
   Get.put(PackageController());
+  Get.put(PushNotificationController());
 
   if (!kIsWeb) {
     await Firebase.initializeApp(
