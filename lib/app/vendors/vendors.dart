@@ -1,7 +1,5 @@
 // ignore_for_file: unused_local_variable
 
-import 'package:benji_rider/repo/controller/vendor_controller.dart';
-import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:benji_rider/src/widget/section/my_liquid_refresh.dart';
@@ -11,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/vendor_controller.dart';
+import '../../src/repo/utils/helpers.dart';
 import '../../theme/colors.dart';
 
 class Vendors extends StatefulWidget {

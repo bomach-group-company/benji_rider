@@ -1,18 +1,19 @@
-import 'package:benji_rider/repo/models/delivery_model.dart';
 import 'package:benji_rider/src/providers/constants.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
 
-class DirectsPage extends StatefulWidget {
+import '../../src/repo/models/delivery_model.dart';
+
+class DirectionPage extends StatefulWidget {
   final DeliveryModel task;
-  const DirectsPage({super.key, required this.task});
+  const DirectionPage({super.key, required this.task});
 
   @override
-  State<DirectsPage> createState() => _DirectsPageState();
+  State<DirectionPage> createState() => _DirectionPageState();
 }
 
-class _DirectsPageState extends State<DirectsPage> {
+class _DirectionPageState extends State<DirectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

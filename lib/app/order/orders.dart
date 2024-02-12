@@ -1,8 +1,4 @@
 import 'package:benji_rider/app/order/order_details.dart';
-import 'package:benji_rider/repo/controller/order_controller.dart';
-import 'package:benji_rider/repo/controller/order_status_change.dart';
-import 'package:benji_rider/repo/models/delivery_model.dart';
-import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
@@ -10,6 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/order_controller.dart';
+import '../../src/repo/controller/order_status_change.dart';
+import '../../src/repo/models/delivery_model.dart';
+import '../../src/repo/utils/map_stuff.dart';
 import '../../theme/colors.dart';
 
 class Delivery extends StatefulWidget {

@@ -3,15 +3,15 @@
 import 'dart:async';
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
-import 'package:benji_rider/repo/controller/account_controller.dart';
-import 'package:benji_rider/repo/controller/order_controller.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/controller/vendor_controller.dart';
-import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../src/repo/controller/account_controller.dart';
+import '../../src/repo/controller/order_controller.dart';
+import '../../src/repo/controller/user_controller.dart';
+import '../../src/repo/controller/vendor_controller.dart';
+import '../../src/repo/controller/withdraw_controller.dart';
 import '../../theme/colors.dart';
 
 class LoginSplashScreen extends StatefulWidget {

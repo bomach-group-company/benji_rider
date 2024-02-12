@@ -2,8 +2,8 @@ import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../repo/controller/withdraw_controller.dart';
 import '../../providers/constants.dart';
+import '../../repo/controller/withdraw_controller.dart';
 import 'bank_list_tile.dart';
 
 class SelectBankBody extends StatefulWidget {

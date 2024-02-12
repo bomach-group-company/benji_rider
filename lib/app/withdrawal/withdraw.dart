@@ -1,13 +1,13 @@
 import 'dart:developer';
 
-import 'package:benji_rider/repo/controller/error_controller.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/error_controller.dart';
+import '../../src/repo/controller/user_controller.dart';
+import '../../src/repo/controller/withdraw_controller.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/number_textformfield.dart';
 import '../../src/widget/responsive/reponsive_width.dart';

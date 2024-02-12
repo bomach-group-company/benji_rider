@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../repo/controller/withdraw_controller.dart';
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/withdraw_controller.dart';
 import '../../src/widget/card/empty.dart';
 import '../../src/widget/card/withdrawal_detail_card.dart';
 import '../../src/widget/section/my_appbar.dart';

@@ -1,17 +1,17 @@
 // ignore_for_file: file_names
 
 import 'package:benji_rider/main.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../../app/withdrawal/select_account.dart';
-import '../../../repo/models/user_model.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
+import '../../repo/controller/user_controller.dart';
+import '../../repo/models/user_model.dart';
+import '../../repo/utils/helpers.dart';
 
 class EarningContainer extends StatefulWidget {
   const EarningContainer({

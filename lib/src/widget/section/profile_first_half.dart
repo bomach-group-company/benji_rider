@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:benji_rider/main.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +8,7 @@ import 'package:intl/intl.dart';
 import '../../../app/withdrawal/select_account.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
+import '../../repo/controller/user_controller.dart';
 
 class ProfileFirstHalf extends StatefulWidget {
   const ProfileFirstHalf({

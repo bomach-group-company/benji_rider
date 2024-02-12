@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:benji_rider/repo/controller/error_controller.dart';
-import 'package:benji_rider/repo/controller/order_status_change.dart';
-import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/maps/map_direction.dart';
@@ -12,6 +9,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/error_controller.dart';
+import '../../src/repo/controller/order_status_change.dart';
+import '../../src/repo/utils/map_stuff.dart';
 import '../../theme/colors.dart';
 
 class OrderDetails extends StatefulWidget {

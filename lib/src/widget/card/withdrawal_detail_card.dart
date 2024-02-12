@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../../repo/models/withdrawal_history_model.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
+import '../../repo/models/withdrawal_history_model.dart';
 
 class WithdrawalDetailCard extends StatelessWidget {
   const WithdrawalDetailCard({

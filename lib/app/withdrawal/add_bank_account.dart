@@ -1,13 +1,13 @@
-import 'package:benji_rider/repo/controller/api_url.dart';
-import 'package:benji_rider/repo/controller/form_controller.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/models/validate_bank_account.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
-import '../../repo/controller/withdraw_controller.dart';
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/api_url.dart';
+import '../../src/repo/controller/form_controller.dart';
+import '../../src/repo/controller/user_controller.dart';
+import '../../src/repo/controller/withdraw_controller.dart';
+import '../../src/repo/models/validate_bank_account.dart';
 import '../../src/widget/button/my_elevatedbutton.dart';
 import '../../src/widget/form_and_auth/my textformfield.dart';
 import '../../src/widget/form_and_auth/my_blue_textformfield.dart';

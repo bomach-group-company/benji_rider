@@ -1,8 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:benji_rider/repo/controller/error_controller.dart';
-import 'package:benji_rider/repo/controller/package_controller.dart';
-import 'package:benji_rider/repo/utils/map_stuff.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/form_and_auth/my%20textformfield.dart';
 import 'package:benji_rider/src/widget/maps/map_direction.dart';
@@ -11,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/error_controller.dart';
+import '../../src/repo/controller/package_controller.dart';
+import '../../src/repo/utils/map_stuff.dart';
 import '../../theme/colors.dart';
 
 class PackageDetails extends StatefulWidget {

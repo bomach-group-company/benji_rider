@@ -1,16 +1,14 @@
-// ignore_for_file: file_names
-
-import 'package:benji_rider/repo/controller/account_controller.dart';
-import 'package:benji_rider/repo/controller/auth_controller.dart';
-import 'package:benji_rider/repo/controller/order_controller.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
-import 'package:benji_rider/repo/controller/vendor_controller.dart';
-import 'package:benji_rider/repo/controller/withdraw_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/account_controller.dart';
+import '../../src/repo/controller/auth_controller.dart';
+import '../../src/repo/controller/order_controller.dart';
+import '../../src/repo/controller/user_controller.dart';
+import '../../src/repo/controller/vendor_controller.dart';
+import '../../src/repo/controller/withdraw_controller.dart';
 import '../../theme/colors.dart';
 
 class StartupSplashscreen extends StatefulWidget {
@@ -73,7 +71,8 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(
-                              "assets/images/splash_screen/frame_1.png"),
+                            "assets/images/splash_screen/frame_1.png",
+                          ),
                         ),
                       ),
                     ),

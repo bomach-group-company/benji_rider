@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, use_build_context_synchronously
 
-import 'package:benji_rider/repo/controller/login_controller.dart';
-import 'package:benji_rider/repo/controller/login_model.dart';
 import 'package:benji_rider/src/providers/responsive_constant.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/form_and_auth/email_textformfield.dart';
@@ -13,6 +11,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/login_controller.dart';
+import '../../src/repo/controller/login_model.dart';
 import '../../theme/colors.dart';
 import 'forgot_password.dart';
 
@@ -63,10 +63,9 @@ class _LoginState extends State<Login> {
   //Navigate to forgotPassword
   void toForgotPasswordPage() => Get.to(
         () => const ForgotPassword(),
-        duration: const Duration(milliseconds: 500),
         fullscreenDialog: true,
         curve: Curves.easeIn,
-        routeName: "Forgot Password",
+        routeName: "ForgotPassword",
         preventDuplicates: true,
         popGesture: true,
         transition: Transition.rightToLeft,

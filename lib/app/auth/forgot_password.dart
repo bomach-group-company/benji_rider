@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, file_names
 
+import 'package:benji_rider/src/repo/controller/error_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +11,6 @@ import '../../src/providers/responsive_constant.dart';
 import '../../src/widget/form_and_auth/email_textformfield.dart';
 import '../../src/widget/form_and_auth/reusable_authentication_first_half.dart';
 import '../../src/widget/section/my_appbar.dart';
-import '../../src/widget/section/my_fixed_snackBar.dart';
 import '../../theme/colors.dart';
 import 'otp.dart';
 
@@ -54,14 +54,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     });
 
     //Display snackBar
-    myFixedSnackBar(
-      context,
-      "An OTP code has been sent to your email".toUpperCase(),
-      kSuccessColor,
-      const Duration(
-        seconds: 2,
-      ),
-    );
+    ApiProcessorController.errorSnack(
+        "An OTP code has been sent to your email");
 
     // Simulating a delay of 2 seconds
     await Future.delayed(const Duration(seconds: 2));

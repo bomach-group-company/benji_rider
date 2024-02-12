@@ -1,10 +1,10 @@
 import 'package:benji_rider/app/package/packages.dart';
-import 'package:benji_rider/repo/controller/order_controller.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/order_controller.dart';
+import '../../src/repo/controller/user_controller.dart';
 import '../../src/widget/section/profile_first_half.dart';
 import '../../theme/colors.dart';
 import '../auth/login.dart';

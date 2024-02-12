@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:benji_rider/repo/controller/account_controller.dart';
-import 'package:benji_rider/repo/controller/user_controller.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,8 @@ import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/providers/responsive_constant.dart';
+import '../../src/repo/controller/account_controller.dart';
+import '../../src/repo/controller/user_controller.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../theme/colors.dart';
 import 'add_bank_account.dart';
