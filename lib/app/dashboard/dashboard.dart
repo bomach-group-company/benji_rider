@@ -201,7 +201,10 @@ class _DashboardState extends State<Dashboard>
                 GetBuilder<BusinessController>(
                   builder: (controller) => RiderVendorContainer(
                     onTap: toSeeAllVendors,
-                    number: controller.businesses.length.toString(),
+                    number:
+                        controller.isLoad.value && controller.businesses.isEmpty
+                            ? "..."
+                            : controller.businesses.length.toString(),
                     typeOf: "Businesses",
                   ),
                 ),
