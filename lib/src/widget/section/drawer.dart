@@ -49,7 +49,7 @@ class _MyDrawerState extends State<MyDrawer> {
           vertical: kDefaultPadding / 2,
         ),
         child: ListView(
-          physics: const BouncingScrollPhysics(),
+          physics: const ScrollPhysics(),
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

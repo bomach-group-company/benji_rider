@@ -1,5 +1,5 @@
-import 'package:benji_rider/app/package/packages.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../src/providers/constants.dart';
@@ -8,7 +8,6 @@ import '../../src/repo/controller/user_controller.dart';
 import '../../src/widget/section/profile_first_half.dart';
 import '../../theme/colors.dart';
 import '../auth/login.dart';
-import '../order/orders.dart';
 import '../withdrawal/withdrawal_history.dart';
 import 'help_n_support.dart';
 
@@ -42,16 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
         transition: Transition.rightToLeft,
       );
 
-  void _toDeliveryPage() => Get.to(
-        () => const Delivery(),
-        routeName: 'Delivery',
-        duration: const Duration(milliseconds: 300),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        preventDuplicates: true,
-        popGesture: true,
-        transition: Transition.rightToLeft,
-      );
   @override
   Widget build(BuildContext context) {
     // //===================== _changeCaseVisibility ================================\\
@@ -75,7 +64,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         ),
-        elevation: 0.0,
       ),
       body: SafeArea(
         maintainBottomViewPadding: true,
@@ -123,89 +111,40 @@ class _SettingsPageState extends State<SettingsPage> {
                           transition: Transition.rightToLeft,
                         );
                       },
-                      leading: Icon(
-                        Icons.history,
+                      leading: FaIcon(
+                        FontAwesomeIcons.clockRotateLeft,
                         color: kAccentColor,
                       ),
                       title: const Text(
                         'Withdrawal History',
                         style: TextStyle(
-                          color: Color(
-                            0xFF333333,
-                          ),
+                          color: kTextBlackColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                      ),
-                    ),
-                    ListTile(
-                      onTap: _toDeliveryPage,
-                      leading: Icon(
-                        Icons.receipt_long_outlined,
-                        color: kAccentColor,
-                      ),
-                      title: const Text(
-                        'My Orders',
-                        style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                      ),
-                    ),
-                    ListTile(
-                      onTap: () {
-                        Get.to(
-                          () => const Package(),
-                          routeName: 'Package',
-                          duration: const Duration(milliseconds: 300),
-                          fullscreenDialog: true,
-                          curve: Curves.easeIn,
-                          preventDuplicates: false,
-                          popGesture: true,
-                          transition: Transition.rightToLeft,
-                        );
-                      },
-                      leading: Icon(
-                        Icons.receipt_long_outlined,
-                        color: kAccentColor,
-                      ),
-                      title: const Text(
-                        'My Packages',
-                        style: TextStyle(
-                          color: Color(0xFF333333),
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios_rounded,
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        size: 14,
                       ),
                     ),
                     ListTile(
                       onTap: _toHelpAndSupportPage,
-                      leading: Icon(
-                        Icons.question_mark_outlined,
+                      leading: FaIcon(
+                        FontAwesomeIcons.solidCircleQuestion,
                         color: kAccentColor,
                       ),
                       title: const Text(
                         'Help & Support',
                         style: TextStyle(
-                          color: Color(
-                            0xFF333333,
-                          ),
+                          color: kTextBlackColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w400,
                         ),
                       ),
-                      trailing: const Icon(
-                        Icons.arrow_forward_ios_rounded,
+                      trailing: const FaIcon(
+                        FontAwesomeIcons.chevronRight,
+                        size: 14,
                       ),
                     ),
                   ],
@@ -227,9 +166,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 decoration: ShapeDecoration(
                   color: kPrimaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      15,
-                    ),
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   shadows: const [
                     BoxShadow(
@@ -255,22 +192,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       transition: Transition.rightToLeft,
                     );
                   },
-                  leading: Icon(
-                    Icons.logout_rounded,
+                  leading: FaIcon(
+                    FontAwesomeIcons.arrowRightFromBracket,
                     color: kAccentColor,
                   ),
                   title: const Text(
                     'Log Out',
                     style: TextStyle(
-                      color: Color(
-                        0xFF333333,
-                      ),
+                      color: kTextBlackColor,
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  trailing: const Icon(
-                    Icons.arrow_forward_ios_rounded,
+                  trailing: const FaIcon(
+                    FontAwesomeIcons.chevronRight,
+                    size: 14,
                   ),
                 ),
               ),

@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:benji_rider/app/businesses/businesses.dart';
 import 'package:benji_rider/app/order/order_details.dart';
 import 'package:benji_rider/app/package/package_detail.dart';
+import 'package:benji_rider/src/repo/controller/user_controller.dart';
 import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -95,7 +96,17 @@ class _DashboardState extends State<Dashboard>
 
 //===================== Handle refresh ==========================\\
 
-  Future<void> _handleRefresh() async {}
+  Future<void> handleRefresh() async {
+    UserController.instance.setUserSync();
+    // tasks
+    TasksController.instance.getTasksSocket();
+
+    // coordinates
+    TasksController.instance.getCoordinatesSocket();
+
+    //Get vnendors
+    BusinessController.instance.getVendorList();
+  }
 
 //=================================== Navigation =====================================\\
 
@@ -133,7 +144,7 @@ class _DashboardState extends State<Dashboard>
 //====================================================================================\\
 
     return MyLiquidRefresh(
-      onRefresh: _handleRefresh,
+      onRefresh: handleRefresh,
       child: Scaffold(
         appBar: AppBar(
           elevation: 0,
