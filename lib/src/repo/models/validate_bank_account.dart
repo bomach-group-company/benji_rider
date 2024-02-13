@@ -1,4 +1,4 @@
-import 'package:benji_rider/src/providers/constants.dart';
+import '../../providers/constants.dart';
 
 class ValidateBankAccountModel {
   bool requestSuccessful;

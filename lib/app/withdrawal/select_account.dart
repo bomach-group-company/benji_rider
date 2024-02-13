@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
-import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -10,7 +8,8 @@ import 'package:get/get.dart';
 import '../../src/providers/constants.dart';
 import '../../src/providers/responsive_constant.dart';
 import '../../src/repo/controller/account_controller.dart';
-import '../../src/repo/controller/user_controller.dart';
+import '../../src/widget/button/my_elevatedbutton.dart';
+import '../../src/widget/card/empty.dart';
 import '../../src/widget/section/my_appbar.dart';
 import '../../theme/colors.dart';
 import 'add_bank_account.dart';
@@ -28,19 +27,16 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
   @override
   void initState() {
     super.initState();
-    UserController.instance.getUser();
-    loadingScreen = true;
-    scrollController.addListener(_scrollListener);
-    _timer = Timer(const Duration(milliseconds: 1000), () {
-      setState(() => loadingScreen = false);
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      AccountController.instance.getAccounts();
     });
+    scrollController.addListener(_scrollListener);
   }
 
   @override
   void dispose() {
     _handleRefresh().ignore();
     scrollController.dispose();
-    _timer.cancel();
     super.dispose();
   }
 
@@ -48,7 +44,6 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
   final scrollController = ScrollController();
 
 //=============================================== ALL VARIABLES ======================================================\\
-  late Timer _timer;
 
 //=============================================== BOOL VALUES ======================================================\\
   late bool loadingScreen;
@@ -86,12 +81,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
 //===================== Handle refresh ==========================\\
 
   Future<void> _handleRefresh() async {
-    loadingScreen = true;
-    _timer = Timer(const Duration(milliseconds: 1000), () {
-      scrollController.addListener(_scrollListener);
-
-      setState(() => loadingScreen = false);
-    });
+    await AccountController.instance.getAccounts();
   }
 
   void _goToWithdraw(String bankDetailId) {
@@ -126,17 +116,9 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
         elevation: 0,
         actions: const [],
         backgroundColor: kPrimaryColor,
-        toolbarHeight: kToolbarHeight,
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(boxShadow: [
-          BoxShadow(
-            color: kAccentColor.withOpacity(0.08),
-            offset: const Offset(3, 0),
-            blurRadius: 32,
-          ),
-        ]),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: MyElevatedButton(
           title: "Add a new account",
           onPressed: _addBankAccount,
@@ -147,6 +129,7 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
               onPressed: _scrollToTop,
               mini: deviceType(media.width) > 2 ? false : true,
               backgroundColor: kAccentColor,
+              foregroundColor: kPrimaryColor,
               enableFeedback: true,
               mouseCursor: SystemMouseCursors.click,
               tooltip: "Scroll to top",
@@ -160,107 +143,114 @@ class _SelectAccountPageState extends State<SelectAccountPage> {
         displacement: 5,
         color: kAccentColor,
         child: SafeArea(
-          maintainBottomViewPadding: true,
-          child: ListView(
-            padding: const EdgeInsets.all(10),
-            controller: scrollController,
-            physics: const BouncingScrollPhysics(),
-            children: [
-              Scrollbar(
-                controller: scrollController,
-                child: GetBuilder<AccountController>(
-                    initState: (state) =>
-                        AccountController.instance.getAccounts(),
-                    builder: (controller) {
-                      if (controller.isLoad.value &&
-                          controller.accounts.isEmpty) {
-                        return Center(
-                          child: CircularProgressIndicator(color: kAccentColor),
-                        );
-                      }
-                      if (controller.accounts.isEmpty) {
-                        return const EmptyCard();
-                      }
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: controller.accounts.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return InkWell(
-                            onTap: () =>
-                                _goToWithdraw(controller.accounts[index].id),
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(
-                                horizontal: kDefaultPadding,
-                                vertical: kDefaultPadding / 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: kPrimaryColor,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 2,
-                                    color: Colors.grey.shade400,
-                                    spreadRadius: 1,
-                                    offset: const Offset(0, 1),
-                                  ),
-                                ],
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              padding: const EdgeInsets.all(kDefaultPadding),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          FaIcon(
-                                            FontAwesomeIcons.buildingColumns,
-                                            color: kAccentColor,
-                                          ),
-                                          kHalfWidthSizedBox,
-                                          Text(
-                                            controller.accounts[index].bankName,
-                                            style: TextStyle(
-                                              color: kTextGreyColor,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      // IconButton(
-                                      //   onPressed: () {
-                                      //     showBottomSheet(context);
-                                      //   },
-                                      //   icon: FaIcon(
-                                      //     FontAwesomeIcons.ellipsis,
-                                      //     color: kAccentColor,
-                                      //   ),
-                                      // )
-                                    ],
-                                  ),
-                                  kSizedBox,
-                                  Text(
-                                    '${controller.accounts[index].accountHolder}....${controller.accounts[index].accountNumber.substring(max(controller.accounts[index].accountNumber.length - 5, 0))}',
-                                    style: const TextStyle(
-                                      color: kTextBlackColor,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
+          child: Scrollbar(
+            child: ListView(
+              padding: const EdgeInsets.all(10),
+              controller: scrollController,
+              physics: const BouncingScrollPhysics(),
+              children: [
+                GetBuilder<AccountController>(
+                  builder: (controller) {
+                    if (controller.isLoad.value &&
+                        controller.accounts.isEmpty) {
+                      return Center(
+                        child: CircularProgressIndicator(color: kAccentColor),
                       );
-                    }),
-              ),
-              kSizedBox,
-            ],
+                    }
+                    if (controller.accounts.isEmpty) {
+                      return const Center(
+                        child: Column(
+                          children: [
+                            EmptyCard(
+                              animation: "assets/animations/empty/frame_4.json",
+                              emptyCardMessage: "Please add an account",
+                            ),
+                            kSizedBox,
+                          ],
+                        ),
+                      );
+                    }
+                    return ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: controller.accounts.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return InkWell(
+                          onTap: () =>
+                              _goToWithdraw(controller.accounts[index].id),
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: kDefaultPadding,
+                              vertical: kDefaultPadding / 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color: kPrimaryColor,
+                              boxShadow: [
+                                BoxShadow(
+                                  blurRadius: 2,
+                                  color: Colors.grey.shade400,
+                                  spreadRadius: 1,
+                                  offset: const Offset(0, 1),
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: const EdgeInsets.all(kDefaultPadding),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        FaIcon(
+                                          FontAwesomeIcons.buildingColumns,
+                                          color: kAccentColor,
+                                        ),
+                                        kHalfWidthSizedBox,
+                                        Text(
+                                          controller.accounts[index].bankName,
+                                          style: TextStyle(
+                                            color: kTextGreyColor,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // IconButton(
+                                    //   onPressed: () {
+                                    //     showBottomSheet(context);
+                                    //   },
+                                    //   icon: FaIcon(
+                                    //     FontAwesomeIcons.ellipsis,
+                                    //     color: kAccentColor,
+                                    //   ),
+                                    // )
+                                  ],
+                                ),
+                                kSizedBox,
+                                Text(
+                                  '${controller.accounts[index].accountHolder}....${controller.accounts[index].accountNumber.substring(max(controller.accounts[index].accountNumber.length - 5, 0))}',
+                                  style: const TextStyle(
+                                    color: kTextBlackColor,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                kSizedBox,
+              ],
+            ),
           ),
         ),
       ),

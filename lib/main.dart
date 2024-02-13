@@ -1,14 +1,19 @@
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/splash_screens/startup_splash_screen.dart';
+import 'firebase_options.dart';
 import 'src/repo/controller/account_controller.dart';
-import 'src/repo/controller/auth_controller.dart';
+import 'src/repo/controller/business_controller.dart';
 import 'src/repo/controller/delivery_history_controller.dart';
+import 'src/repo/controller/fcm_messaging_controller.dart';
 import 'src/repo/controller/form_controller.dart';
 import 'src/repo/controller/latlng_detail_controller.dart';
 import 'src/repo/controller/login_controller.dart';
@@ -19,7 +24,6 @@ import 'src/repo/controller/package_controller.dart';
 import 'src/repo/controller/push_notifications_controller.dart';
 import 'src/repo/controller/tasks_controller.dart';
 import 'src/repo/controller/user_controller.dart';
-import 'src/repo/controller/vendor_controller.dart';
 import 'src/repo/controller/withdraw_controller.dart';
 import 'theme/app_theme.dart';
 import 'theme/colors.dart';
@@ -35,16 +39,15 @@ void main() async {
 
   prefs = await SharedPreferences.getInstance();
 
-  // Get.put(FcmMessagingController());
+  Get.put(FcmMessagingController());
 
   Get.put(UserController());
-  Get.put(AuthController());
   Get.put(LoginController());
   Get.put(OrderController());
   Get.put(FormController());
   Get.put(LatLngDetailController());
   Get.put(NotificationController());
-  Get.put(VendorController());
+  Get.put(BusinessController());
   Get.put(TasksController());
   Get.put(WithdrawController());
   Get.put(DeliveryHistoryController());
@@ -53,14 +56,14 @@ void main() async {
   Get.put(PackageController());
   Get.put(PushNotificationController());
 
-  // if (!kIsWeb) {
-  //   await Firebase.initializeApp(
-  //     options: DefaultFirebaseOptions.currentPlatform,
-  //   );
-  //   await FirebaseMessaging.instance.setAutoInitEnabled(true);
-  //   await PushNotificationController.initializeNotification();
-  //   await FcmMessagingController.instance.handleFCM();
-  // }
+  if (!kIsWeb) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    await FirebaseMessaging.instance.setAutoInitEnabled(true);
+    await PushNotificationController.initializeNotification();
+    await FcmMessagingController.instance.handleFCM();
+  }
 
   runApp(const MyApp());
 }

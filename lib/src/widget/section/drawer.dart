@@ -1,11 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:benji_rider/app/auth/login.dart';
+import 'package:benji_rider/app/businesses/businesses.dart';
 import 'package:benji_rider/app/order/orders.dart';
 import 'package:benji_rider/app/package/packages.dart';
-import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/others/my_future_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
 
 import '../../../app/dashboard/dashboard.dart';
@@ -35,8 +36,6 @@ class _MyDrawerState extends State<MyDrawer> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
     return Drawer(
-      backgroundColor: kPrimaryColor,
-      elevation: 10.0,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topRight: Radius.circular(5.0),
@@ -121,7 +120,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'My Orders',
-              icon: Icons.map_outlined,
+              icon: FontAwesomeIcons.bicycle,
               nav: () {
                 Get.to(
                   () => const Delivery(),
@@ -137,7 +136,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'My Packages',
-              icon: Icons.delivery_dining_sharp,
+              icon: FontAwesomeIcons.boxesStacked,
               nav: () {
                 Get.to(
                   () => const Package(),
@@ -152,12 +151,12 @@ class _MyDrawerState extends State<MyDrawer> {
               },
             ),
             MyListTile(
-              text: 'Vendors',
-              icon: Icons.storefront,
+              text: 'Businesses',
+              icon: FontAwesomeIcons.store,
               nav: () {
                 Get.to(
-                  () => const Vendors(),
-                  routeName: 'Vendors',
+                  () => const Businesses(),
+                  routeName: 'Businesses',
                   duration: const Duration(milliseconds: 300),
                   fullscreenDialog: true,
                   curve: Curves.easeIn,
@@ -169,7 +168,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'Settings',
-              icon: Icons.settings,
+              icon: FontAwesomeIcons.gear,
               nav: () {
                 Get.to(
                   () => const SettingsPage(),
@@ -185,7 +184,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             MyListTile(
               text: 'Logout',
-              icon: Icons.logout,
+              icon: FontAwesomeIcons.arrowRightFromBracket,
               nav: () {
                 UserController.instance.deleteUser();
                 OrderController.instance.deleteCachedOrders();

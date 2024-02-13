@@ -50,7 +50,7 @@ class _EarningContainerState extends State<EarningContainer> {
 
 //======================================================= Navigation=================================================\\
   //To Select Account
-  void _toSelectAccountPage() => Get.to(
+  void toSelectAccount() => Get.to(
         () => const SelectAccountPage(),
         routeName: 'SelectAccountPage',
         duration: const Duration(milliseconds: 300),
@@ -207,14 +207,14 @@ class _EarningContainerState extends State<EarningContainer> {
             Row(
               children: [
                 IconButton(
-                  onPressed: _toSelectAccountPage,
+                  onPressed: toSelectAccount,
                   icon: FaIcon(
                     FontAwesomeIcons.solidCreditCard,
                     color: kAccentColor,
                   ),
                 ),
                 InkWell(
-                  onTap: _toSelectAccountPage,
+                  onTap: toSelectAccount,
                   child: const Text(
                     "Withdraw",
                     style: TextStyle(

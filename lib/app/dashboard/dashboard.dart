@@ -2,18 +2,18 @@
 
 import 'dart:async';
 
+import 'package:benji_rider/app/businesses/businesses.dart';
 import 'package:benji_rider/app/order/order_details.dart';
 import 'package:benji_rider/app/package/package_detail.dart';
-import 'package:benji_rider/app/vendors/vendors.dart';
 import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
+import '../../src/repo/controller/business_controller.dart';
 import '../../src/repo/controller/order_status_change.dart';
 import '../../src/repo/controller/package_controller.dart';
 import '../../src/repo/controller/tasks_controller.dart';
-import '../../src/repo/controller/vendor_controller.dart';
 import '../../src/repo/models/delivery_model.dart';
 import '../../src/repo/utils/map_stuff.dart';
 import '../../src/widget/card/dashboard_rider_vendor_container.dart';
@@ -72,7 +72,7 @@ class _DashboardState extends State<Dashboard>
     TasksController.instance.getCoordinatesSocket();
 
     //Get vnendors
-    VendorController.instance.getVendorList();
+    BusinessController.instance.getVendorList();
 
     super.initState();
   }
@@ -102,8 +102,8 @@ class _DashboardState extends State<Dashboard>
   // void _toSeeAllNewOrders() {}
 
   void toSeeAllVendors() => Get.to(
-        () => const Vendors(),
-        routeName: 'Vendors',
+        () => const Businesses(),
+        routeName: 'Businesses',
         duration: const Duration(milliseconds: 300),
         fullscreenDialog: true,
         curve: Curves.easeIn,
@@ -188,11 +188,11 @@ class _DashboardState extends State<Dashboard>
               children: [
                 const EarningContainer(),
                 kSizedBox,
-                GetBuilder<VendorController>(
+                GetBuilder<BusinessController>(
                   builder: (controller) => RiderVendorContainer(
                     onTap: toSeeAllVendors,
-                    number: controller.vendors.length.toString(),
-                    typeOf: "Vendors",
+                    number: controller.businesses.length.toString(),
+                    typeOf: "Businesses",
                   ),
                 ),
                 kSizedBox,

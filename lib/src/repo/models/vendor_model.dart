@@ -1,11 +1,11 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:http/http.dart' as http;
-
 import '../../providers/constants.dart';
-import '../controller/api_url.dart';
-import '../utils/helpers.dart';
+import 'country_model.dart';
+
+// final myvendorModel = myvendorModelFromJson(jsonString);
+
+// List<VendorModel> myVendorModelFromJson(String str) =>
+//     List<VendorModel>.from(
+//         json.decode(str).map((x) => VendorModel.fromJson(x)));
 
 class VendorModel {
   int id;
@@ -19,58 +19,58 @@ class VendorModel {
   String address;
   String longitude;
   String latitude;
-  String country;
+  CountryModel country;
   String state;
   String city;
   String lga;
   String profileLogo;
 
+  bool isOnline;
+
   VendorModel({
     required this.id,
     required this.email,
+    required this.country,
+    required this.state,
+    required this.city,
+    required this.lga,
     required this.phone,
     required this.username,
     required this.code,
     required this.firstName,
     required this.lastName,
     required this.gender,
+    required this.isOnline,
     required this.address,
+    required this.profileLogo,
     required this.longitude,
     required this.latitude,
-    required this.country,
-    required this.state,
-    required this.city,
-    required this.lga,
-    required this.profileLogo,
   });
 
   factory VendorModel.fromJson(Map<String, dynamic>? json) {
-    json ??= {};
-    log("JSON data: $json");
-    try {
-      return VendorModel(
-        id: json["id"] ?? 0,
-        email: json["email"] ?? notAvailable,
-        phone: json["phone"] ?? notAvailable,
-        username: json["username"] ?? notAvailable,
-        code: json["code"] ?? notAvailable,
-        firstName: json["first_name"] ?? notAvailable,
-        lastName: json["last_name"] ?? notAvailable,
-        gender: json["gender"] ?? notAvailable,
-        address: json["address"] ?? notAvailable,
-        longitude: json["longitude"] ?? notAvailable,
-        latitude: json["latitude"] ?? notAvailable,
-        country: json["country"] ?? notAvailable,
-        state: json["state"] ?? notAvailable,
-        city: json["city"] ?? notAvailable,
-        lga: json["lga"] ?? notAvailable,
-        profileLogo: json["profileLogo"] ?? '',
-      );
-    } catch (e) {
-      log("Error parsing average_rating: $e");
-      return VendorModel.fromJson(null);
-      //  return VendorModel.defaults();
-    }
+    json ??= {'vendor': {}};
+
+    return VendorModel(
+      id: json["id"] ?? 0,
+      username: json["username"] ?? notAvailable,
+      code: json["code"] ?? notAvailable,
+      firstName: json["first_name"] ?? notAvailable,
+      lastName: json["last_name"] ?? notAvailable,
+      gender: json["gender"] ?? notAvailable,
+      email: json["email"] ?? notAvailable,
+      phone: json["phone"] ?? notAvailable,
+      country: CountryModel.fromJson(json["country"]),
+      state: json["state"] ?? notAvailable,
+      city: json["city"] ?? notAvailable,
+      lga: json["lga"] ?? notAvailable,
+      address: json["address"] ?? notAvailable,
+      isOnline: json["is_online"] ?? false,
+      profileLogo: json["profileLogo"] == null || json["profileLogo"] == ""
+          ? 'https://img.freepik.com/free-psd/3d-icon-social-media-app_23-2150049569.jpg'
+          : json['profileLogo'],
+      longitude: json["longitude"] ?? '',
+      latitude: json["latitude"] ?? '',
+    );
   }
 
   Map<String, dynamic> toJson() => {
@@ -83,37 +83,11 @@ class VendorModel {
         "last_name": lastName,
         "gender": gender,
         "address": address,
-        "country": country,
+        "country": country.toJson(),
         "state": state,
         "city": city,
         "lga": lga,
         "profileLogo": profileLogo,
+        "is_online": isOnline,
       };
-}
-
-Future<VendorModel> getVendorById(id) async {
-  final response = await http.get(
-    Uri.parse('$baseURL/vendors/getVendor/$id'),
-    headers: authHeader(),
-  );
-
-  if (response.statusCode == 200) {
-    return VendorModel.fromJson(jsonDecode(response.body));
-  } else {
-    throw Exception('Failed to load vendor');
-  }
-}
-
-Future<List<VendorModel>> getVendors({start = 1, end = 10}) async {
-  final response = await http.get(
-    Uri.parse('${Api.baseUrl}/vendors/getAllVendor?start=$start&end=$end'),
-    headers: authHeader(),
-  );
-  if (response.statusCode == 200) {
-    return (jsonDecode(response.body)['items'] as List)
-        .map((item) => VendorModel.fromJson(item))
-        .toList();
-  } else {
-    throw Exception('Failed to load vendor');
-  }
 }

@@ -48,7 +48,7 @@ class _PackageState extends State<Package> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: MyAppBar(
-        title: "My Package Task",
+        title: "My Packages",
         elevation: 0.0,
         actions: const [],
         backgroundColor: kPrimaryColor,

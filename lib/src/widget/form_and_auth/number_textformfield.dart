@@ -13,26 +13,34 @@ class NumberTextFormField extends StatelessWidget {
   final FocusNode focusNode;
   final String hintText;
   final List<TextInputFormatter>? inputFormatters;
+  final dynamic maxlength;
+  final dynamic onChanged;
+  final bool? enabled;
 
   const NumberTextFormField({
     super.key,
     required this.controller,
     required this.validator,
     this.onSaved,
+    this.maxlength,
     required this.textInputAction,
     required this.focusNode,
     required this.hintText,
     this.inputFormatters,
+    this.onChanged,
+    this.enabled,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       // onTap: onTap,
+      enabled: enabled ?? true,
       focusNode: focusNode,
       controller: controller,
       validator: validator,
       onSaved: onSaved,
+      onChanged: onChanged,
       textInputAction: textInputAction,
       textAlign: TextAlign.start,
       cursorColor: kSecondaryColor,
@@ -40,6 +48,10 @@ class NumberTextFormField extends StatelessWidget {
       enableSuggestions: true,
       keyboardType: TextInputType.number,
       inputFormatters: inputFormatters,
+      maxLength: maxlength,
+      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      // mouseCursor: SystemMouseCursors.text,
       maxLines: 1,
       style: TextStyle(
         color: kSecondaryColor,

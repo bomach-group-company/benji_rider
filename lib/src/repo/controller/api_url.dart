@@ -23,6 +23,7 @@ class Api {
 //Vendor
   static const getSpecificRider = "/drivers/getRiderDetails/";
   static const vendorsOrderList = "/vendors/";
+  static const getAllVendors = "/vendors/getAllVendor";
 
   //order
   static const changeOrderStatus = "/orders/changeOrderStatus";
@@ -30,12 +31,13 @@ class Api {
   //BusinessTypes
   static const businessType = "/categories/list";
 
-  //Withdrawal
-  static const listBanks = "/payments/list_banks";
+  //Wallet
+  static const getBanks = "/payments/list_banks/";
   static const withdrawalHistory = "/wallet/withdrawalHistory/";
   static const listWithdrawalHistories =
       "/withdrawalhistory/listWithdrawalHistories/";
   static const validateBankNumber = "/payments/validateBankNumbers/";
+  static const saveBankDetails = "/payments/saveBankDetails";
 
   //Push Notification
   static const createPushNotification = "/notifier/create_push_notification";

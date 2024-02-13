@@ -48,7 +48,7 @@ class _DeliveryState extends State<Delivery> {
     return Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: MyAppBar(
-        title: "My Order Task",
+        title: "My Orders",
         elevation: 0.0,
         actions: const [],
         backgroundColor: kPrimaryColor,

@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import '../../src/providers/constants.dart';
 import '../../src/repo/controller/account_controller.dart';
 import '../../src/repo/controller/auth_controller.dart';
+import '../../src/repo/controller/business_controller.dart';
 import '../../src/repo/controller/order_controller.dart';
 import '../../src/repo/controller/user_controller.dart';
-import '../../src/repo/controller/vendor_controller.dart';
 import '../../src/repo/controller/withdraw_controller.dart';
 import '../../theme/colors.dart';
 
@@ -28,11 +28,11 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     super.initState();
     UserController.instance.ifUser().then((value) {
       if (value) {
-        VendorController.instance.getVendorList();
+        BusinessController.instance.getVendorList();
         OrderController.instance.getOrdersByStatus();
         WithdrawController.instance.withdrawalHistory();
         AccountController.instance.getAccounts();
-        WithdrawController.instance.listBanks();
+        WithdrawController.instance.getBanks();
       }
     });
   }
