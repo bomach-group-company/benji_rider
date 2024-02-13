@@ -192,10 +192,7 @@ class _BusinessesState extends State<Businesses>
                                             SizedBox(
                                               width: mediaWidth - 200,
                                               child: Text(
-                                                controller.businesses[index]
-                                                        .firstName +
-                                                    controller.businesses[index]
-                                                        .firstName,
+                                                "${controller.businesses[index].firstName} ${controller.businesses[index].lastName}",
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
                                                 style: const TextStyle(
