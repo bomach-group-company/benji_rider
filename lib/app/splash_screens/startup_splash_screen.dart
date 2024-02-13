@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '../../src/providers/constants.dart';
 import '../../src/repo/controller/account_controller.dart';
 import '../../src/repo/controller/auth_controller.dart';
-import '../../src/repo/controller/business_controller.dart';
 import '../../src/repo/controller/order_controller.dart';
 import '../../src/repo/controller/user_controller.dart';
 import '../../src/repo/controller/withdraw_controller.dart';
@@ -28,7 +27,6 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     super.initState();
     UserController.instance.ifUser().then((value) {
       if (value) {
-        BusinessController.instance.getVendorList();
         OrderController.instance.getOrdersByStatus();
         WithdrawController.instance.withdrawalHistory();
         AccountController.instance.getAccounts();
@@ -47,8 +45,7 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    double mediaHeight = MediaQuery.of(context).size.height;
-    double mediaWidth = MediaQuery.of(context).size.width;
+    var media = MediaQuery.of(context).size;
 
     return GetBuilder<AuthController>(
       initState: (state) => AuthController.instance.checkAuth(),
@@ -60,14 +57,14 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
             padding: const EdgeInsets.all(kDefaultPadding),
             children: [
               SizedBox(
-                height: mediaHeight,
-                width: mediaWidth,
+                height: media.height,
+                width: media.width,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      height: mediaHeight / 4,
-                      width: mediaWidth / 2,
+                      height: media.height / 4,
+                      width: media.width / 2,
                       decoration: const BoxDecoration(
                         image: DecorationImage(
                           image: AssetImage(

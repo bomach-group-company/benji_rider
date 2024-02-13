@@ -8,7 +8,6 @@ import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
 
 import '../../src/repo/controller/account_controller.dart';
-import '../../src/repo/controller/business_controller.dart';
 import '../../src/repo/controller/order_controller.dart';
 import '../../src/repo/controller/user_controller.dart';
 import '../../src/repo/controller/withdraw_controller.dart';
@@ -26,7 +25,6 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
   void initState() {
     super.initState();
     UserController.instance.setUserSync();
-    BusinessController.instance.getVendorList();
     OrderController.instance.getOrdersByStatus();
     WithdrawController.instance.withdrawalHistory();
 

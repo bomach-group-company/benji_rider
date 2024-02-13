@@ -20,10 +20,9 @@ class Api {
   static const notification = "/vendors/";
   static const createSupport = "/drivers/CreateSupport";
 
-//Vendor
+//Businesses
   static const getSpecificRider = "/drivers/getRiderDetails/";
-  static const vendorsOrderList = "/vendors/";
-  static const getAllVendors = "/vendors/getAllVendor";
+  static const getAllBusinesses = "/drivers/getAllBusinesses/";
 
   //order
   static const changeOrderStatus = "/orders/changeOrderStatus";

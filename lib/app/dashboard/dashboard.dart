@@ -73,7 +73,7 @@ class _DashboardState extends State<Dashboard>
     TasksController.instance.getCoordinatesSocket();
 
     //Get vnendors
-    BusinessController.instance.getVendorList();
+    BusinessController.instance.getAllBusinesses();
 
     super.initState();
   }
@@ -105,7 +105,7 @@ class _DashboardState extends State<Dashboard>
     TasksController.instance.getCoordinatesSocket();
 
     //Get vnendors
-    BusinessController.instance.getVendorList();
+    BusinessController.instance.getAllBusinesses();
   }
 
 //=================================== Navigation =====================================\\
@@ -138,8 +138,7 @@ class _DashboardState extends State<Dashboard>
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
     String formattedDateAndTime = formatDateAndTime(now);
-    double mediaWidth = MediaQuery.of(context).size.width;
-    double mediaHeight = MediaQuery.of(context).size.height;
+    var media = MediaQuery.of(context).size;
 
 //====================================================================================\\
 
