@@ -74,6 +74,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if (kIsWeb) {
+      return GetMaterialApp(
+        defaultTransition: Transition.rightToLeft,
+        navigatorKey: Get.key,
+        debugShowCheckedModeBanner: false,
+        title: "Benji Rider",
+        color: kPrimaryColor,
+        themeMode: ThemeMode.light,
+        darkTheme: AppTheme.darkTheme,
+        theme: AppTheme.lightTheme,
+        home: StartupSplashscreen(),
+      );
+    }
     if (Platform.isIOS) {
       return GetMaterialApp(
         defaultTransition: Transition.rightToLeft,
