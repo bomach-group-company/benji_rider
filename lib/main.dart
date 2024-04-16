@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -74,32 +72,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    if (Platform.isIOS) {
-      return GetMaterialApp(
-        defaultTransition: Transition.rightToLeft,
-        navigatorKey: Get.key,
-        debugShowCheckedModeBanner: false,
-        title: "Benji Rider",
-        color: kPrimaryColor,
-        themeMode: ThemeMode.light,
-        darkTheme: AppTheme.darkTheme,
-        theme: AppTheme.lightTheme,
-        home: StartupSplashscreen(),
-      );
-    }
-    if (Platform.isAndroid) {
-      return GetMaterialApp(
-        defaultTransition: Transition.rightToLeft,
-        navigatorKey: Get.key,
-        debugShowCheckedModeBanner: false,
-        title: "Benji Rider",
-        color: kPrimaryColor,
-        themeMode: ThemeMode.light,
-        darkTheme: AppTheme.darkTheme,
-        theme: AppTheme.lightTheme,
-        home: StartupSplashscreen(),
-      );
-    }
     return GetMaterialApp(
       defaultTransition: Transition.rightToLeft,
       navigatorKey: Get.key,
