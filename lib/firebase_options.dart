@@ -26,7 +26,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,19 +53,10 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDFliG30yK5Kni1TDp8R0aCSxN-7tDyqg8',
-    appId: '1:912983858748:android:96d1eeefbedfcc440bad39',
-    messagingSenderId: '912983858748',
-    projectId: 'keen-tokenizer-400311',
-    storageBucket: 'keen-tokenizer-400311.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCeBNy7o_fnEeG33lvV9vzfCi6TDKQDwZI',
-    appId: '1:912983858748:ios:8310d9f02e9200ae0bad39',
-    messagingSenderId: '912983858748',
-    projectId: 'keen-tokenizer-400311',
-    storageBucket: 'keen-tokenizer-400311.appspot.com',
-    iosBundleId: 'com.example.benjiRider',
+    apiKey: 'AIzaSyAZofdP5ESaJI360BW02unpEHj_BLm-3Nc',
+    appId: '1:412444903210:android:fde0991e344a702637c053',
+    messagingSenderId: '412444903210',
+    projectId: 'benji-rider',
+    storageBucket: 'benji-rider.appspot.com',
   );
 }
