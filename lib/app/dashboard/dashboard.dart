@@ -204,7 +204,7 @@ class _DashboardState extends State<Dashboard>
                     number:
                         controller.isLoad.value && controller.businesses.isEmpty
                             ? "..."
-                            : controller.businesses.length.toString(),
+                            : controller.businesses.length >= 10 ? '10+' :  controller.businesses.length.toString(),
                     typeOf: "Businesses",
                   ),
                 ),
