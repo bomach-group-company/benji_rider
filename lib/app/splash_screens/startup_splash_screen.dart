@@ -1,3 +1,4 @@
+import 'package:benji_rider/src/repo/controller/package_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -11,9 +12,7 @@ import '../../src/repo/controller/withdraw_controller.dart';
 import '../../theme/colors.dart';
 
 class StartupSplashscreen extends StatefulWidget {
-  StartupSplashscreen({super.key});
-
-  final auth = Get.put(AuthController());
+  const StartupSplashscreen({super.key});
 
   @override
   State<StartupSplashscreen> createState() => _StartupSplashscreenState();
@@ -28,7 +27,8 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
     UserController.instance.ifUser().then((value) {
       if (value) {
         OrderController.instance.getOrdersByStatus();
-        WithdrawController.instance.withdrawalHistory();
+        PackageController.instance.getOrdersByStatus();
+
         AccountController.instance.getAccounts();
         WithdrawController.instance.getBanks();
       }
@@ -49,7 +49,6 @@ class _StartupSplashscreenState extends State<StartupSplashscreen> {
 
     return GetBuilder<AuthController>(
       initState: (state) => AuthController.instance.checkAuth(),
-      init: AuthController(),
       builder: (controller) {
         return Scaffold(
           body: ListView(

@@ -1,3 +1,4 @@
+import 'package:benji_rider/src/repo/controller/auth_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -53,6 +54,8 @@ void main() async {
   Get.put(OrderStatusChangeController());
   Get.put(PackageController());
   Get.put(PushNotificationController());
+  Get.put(AuthController());
+
 
   if (!kIsWeb) {
     await Firebase.initializeApp(
@@ -81,7 +84,7 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.light,
       darkTheme: AppTheme.darkTheme,
       theme: AppTheme.lightTheme,
-      home: StartupSplashscreen(),
+      home: const StartupSplashscreen(),
     );
   }
 }

@@ -37,21 +37,6 @@ class UserController extends GetxController {
     return true;
   }
 
-  Future checkAuth() async {
-    if (await isAuthorized()) {
-      Get.offAll(
-        () => const Dashboard(),
-        fullscreenDialog: true,
-        curve: Curves.easeIn,
-        routeName: "Dashboard",
-        predicate: (route) => false,
-        popGesture: false,
-        transition: Transition.cupertinoDialog,
-      );
-    } else {
-      Get.offAll(() => const Login());
-    }
-  }
 
   Future<void> saveUser(String user, String token) async {
     Map data = jsonDecode(user);

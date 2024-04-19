@@ -12,11 +12,7 @@ class AuthController extends GetxController {
     return Get.find<AuthController>();
   }
 
-  @override
-  void onInit() {
-    checkAuth();
-    super.onInit();
-  }
+
 
   Future checkAuth() async {
     if (await isAuthorized()) {

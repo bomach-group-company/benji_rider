@@ -1,5 +1,8 @@
+import 'package:benji_rider/src/repo/models/bank_model.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
+import 'package:benji_rider/theme/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../../providers/constants.dart';
@@ -16,44 +19,48 @@ class SelectBankBody extends StatefulWidget {
 }
 
 class _SelectBankBodyState extends State<SelectBankBody> {
+    List<BankModel> listOfBanksSearch = WithdrawController.instance.listOfBanks;
+
   @override
   void initState() {
-    isTyping = false;
 
     super.initState();
   }
 
   @override
   void dispose() {
-    selectedBankName.dispose();
     super.dispose();
   }
 
   //==================  CONTROLLERS ==================\\
   final scrollController = ScrollController();
   final bankQueryEC = TextEditingController();
-
-  //================== ALL VARIABLES ==================\\
-  final selectedBankName = ValueNotifier<String?>(null);
-  final selectedBankCode = ValueNotifier<String?>(null);
-
-  //================== BOOL VALUES ==================\\
-  bool? isTyping;
-
+ 
   //================== FUNCTIONS ==================\\
 
-  onChanged(value) async {
-    selectedBankName.value = value;
-    isTyping = true;
-    WithdrawController.instance.searchBanks(value);
+  void onChanged(String search) {
+    List<BankModel> list = WithdrawController.instance.listOfBanks;
+
+    if (search.isEmpty) {
+      setState(() {
+        listOfBanksSearch = list;
+      });
+    } else {
+      listOfBanksSearch = list
+          .where((bank) {
+            return bank.name.toLowerCase().contains(search);
+            })
+          .toList();
+          setState(() {
+            
+          });
+    }
   }
 
-  selectBank(index) async {
-    final newBankName = WithdrawController.instance.listOfBanks[index].name;
-    final newBankCode = WithdrawController.instance.listOfBanks[index].code;
 
-    selectedBankName.value = newBankName;
-    selectedBankCode.value = newBankCode;
+  selectBank(index) async {
+    final newBankName = listOfBanksSearch[index].name;
+    final newBankCode = listOfBanksSearch[index].code;
 
     bankQueryEC.text = newBankName;
 
@@ -68,71 +75,49 @@ class _SelectBankBodyState extends State<SelectBankBody> {
       maintainBottomViewPadding: true,
       child: Column(
         children: [
-          // Padding(
-          //   padding: const EdgeInsets.all(10),
-          //   child: SearchBar(
-          //     controller: bankQueryEC,
-          //     hintText: "Search bank",
-          //     backgroundColor: MaterialStatePropertyAll(
-          //         Theme.of(context).scaffoldBackgroundColor),
-          //     elevation: const MaterialStatePropertyAll(0),
-          //     leading: FaIcon(
-          //       FontAwesomeIcons.magnifyingGlass,
-          //       color: kAccentColor,
-          //       size: 20,
-          //     ),
-          //     onChanged: onChanged,
-          //     padding: const MaterialStatePropertyAll(EdgeInsets.all(10)),
-          //     shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-          //       borderRadius: BorderRadius.circular(10),
-          //     )),
-          //     side:
-          //         MaterialStatePropertyAll(BorderSide(color: kLightGreyColor)),
-          //   ),
-          // ),
-          Expanded(
-            child: Scrollbar(
-              controller: scrollController,
-              child: GetBuilder<WithdrawController>(
-                  initState: (state) =>
-                      WithdrawController.instance.listOfBanks(),
-                  builder: (banks) {
-                    return banks.listOfBanks.isEmpty
-                        ? const EmptyCard(
-                            emptyCardMessage: "There are no banks",
-                          )
-                        // : banks.listOfBanks.isEmpty && banks.isLoad.value
-                        //     ? Center(
-                        //         child:
-                        //             CircularProgressIndicator(color: kAccentColor),
-                        //       )
-                        : ListView.separated(
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            padding: const EdgeInsets.all(10),
-                            itemCount: banks.listOfBanks.length,
-                            separatorBuilder: (context, index) => kSizedBox,
-                            itemBuilder: (context, index) {
-                              final bankName = banks.listOfBanks[index].name;
-                              // Check if the bankName contains the search query
-                              if (bankName
-                                  .toLowerCase()
-                                  .contains(bankQueryEC.text.toLowerCase())) {
-                                return BankListTile(
-                                  onTap: () => selectBank(index),
-                                  bank: bankName,
-                                );
-                              } else {
-                                // Return an empty container for banks that do not match the search
-                                return Container();
-                              }
-                              // BankListTile(
-                              //   onTap: () => selectBank(index),
-                              //   bank: banks.listOfBanks[index].name,
-                              // );
-                            });
-                  }),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: SearchBar(constraints: const BoxConstraints.tightFor(),
+              padding: const MaterialStatePropertyAll(EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
+              controller: bankQueryEC,
+              hintText: "Search bank",
+              backgroundColor: MaterialStatePropertyAll(
+                  Theme.of(context).scaffoldBackgroundColor),
+              elevation: const MaterialStatePropertyAll(0),
+              leading: FaIcon(
+                FontAwesomeIcons.magnifyingGlass,
+                color: kAccentColor,
+                size: 20,
+              ),
+              onChanged: onChanged,
+              shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              )),
+              side:
+                  MaterialStatePropertyAll(BorderSide(color: kLightGreyColor)),
             ),
+          ),
+          Expanded(
+            child: listOfBanksSearch.isEmpty
+                      ? const EmptyCard(
+                          emptyCardMessage: "There are no banks",
+                        )
+                      
+                      : ListView.separated(
+                        controller: scrollController,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                          padding: const EdgeInsets.all(10),
+                          itemCount: listOfBanksSearch.length,
+                          separatorBuilder: (context, index) => kSizedBox,
+                          itemBuilder: (context, index) {
+                            final bankName = listOfBanksSearch[index].name;
+                              return BankListTile(
+                                onTap: () => selectBank(index),
+                                bank: bankName,
+                              );
+                          },
+                        ),
           ),
         ],
       ),

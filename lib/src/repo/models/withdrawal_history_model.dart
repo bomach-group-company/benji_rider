@@ -24,7 +24,7 @@ class WithdrawalHistoryModel {
     return WithdrawalHistoryModel(
       id: json['id'] ?? notAvailable,
       user: json['user_id'] ?? 0,
-      amountWithdrawn: json['amount_withdrawed'] ?? 0,
+      amountWithdrawn: json['amount_withdrawn'] ?? 0,
       bankName: json['bank_name'] ?? notAvailable,
       bankHolder: json['bank_holder'] ?? notAvailable,
       bankAccountNumber: json['bank_account_number'] ?? notAvailable,

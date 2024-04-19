@@ -28,36 +28,34 @@ class WithdrawController extends GetxController {
 
   var userId = UserController.instance.user.value.id;
   var listOfBanks = <BankModel>[].obs;
-  var listOfBanksSearch = <BankModel>[].obs;
   var validateAccount = ValidateBankAccountModel.fromJson(null).obs;
   var noWithdrawalHistory = "".obs;
   var listOfWithdrawals = <WithdrawalHistoryModel>[].obs;
 
-  refreshBanksData() {
-    loadedAll.value = false;
-    loadNum.value = 10;
-    listOfBanks.value = [];
-    getBanks();
+
+  Future<void> scrollListener(scrollController) async {
+    if (loadedAll.value || isLoadMore.value) {
+      return;
+    }
+
+    if (scrollController.offset >= scrollController.position.maxScrollExtent &&
+        !scrollController.position.outOfRange) {
+      isLoadMore.value = true;
+      update();
+      await withdrawalHistory();
+    }
   }
 
-  searchBanks(String search) {
-    listOfBanksSearch = listOfBanks;
-    try {
-      if (search.isEmpty) {
-        return;
-      } else {
-        listOfBanksSearch.value = listOfBanksSearch
-            .where((str) => str.name.contains(search))
-            .toList();
-      }
-    } on SocketException {
-      ApiProcessorController.errorSnack("Please connect to the internet");
-    } catch (e) {
-      ApiProcessorController.errorSnack("An error occured, please try again");
-      log(e.toString());
-    }
-    update();
+
+  refreshWithdraaw() {
+    loadedAll.value = false;
+    loadNum.value = 10;
+    isLoadMore.value = false;
+    withdrawalHistory();
   }
+
+
+
 
   // makeWithdrawal(double amount) {
   //   final userId = UserController.instance.user.value.id;
@@ -76,10 +74,8 @@ class WithdrawController extends GetxController {
             .map((json) => BankModel.fromJson(json))
             .toList();
 
-        listOfBanksSearch = listOfBanks;
       } else {
         listOfBanks.value = [];
-        listOfBanksSearch.value = [];
       }
     } on SocketException {
       ApiProcessorController.errorSnack("Please connect to the internet");
@@ -96,6 +92,7 @@ class WithdrawController extends GetxController {
 
     var url =
         "${Api.baseUrl}${Api.withdrawalHistory}?user_id=$userId&start=${loadNum.value - 10}&end=${loadNum.value}";
+        loadNum.value += 10;
     isLoad.value = true;
     update();
 
@@ -104,13 +101,15 @@ class WithdrawController extends GetxController {
       final response = await http.get(Uri.parse(url), headers: authHeader());
       log(response.statusCode.toString());
       if (response.statusCode == 200) {
-        log("Withdrawal History: ${jsonDecode(response.body)['items'] as List}");
+        log("Withdrawal History: ${jsonDecode(response.body)as List}");
         try {
           List<WithdrawalHistoryModel> withdrawalHistoryList =
-              (jsonDecode(response.body)['items'] as List)
+              (jsonDecode(response.body) as List)
                   .map((item) => WithdrawalHistoryModel.fromJson(item))
                   .toList();
-          listOfWithdrawals.value = withdrawalHistoryList;
+          listOfWithdrawals.value += withdrawalHistoryList;
+         loadedAll.value = withdrawalHistoryList.isEmpty;
+
         } on SocketException {
           ApiProcessorController.errorSnack("Please connect to the internet");
         } catch (e) {
@@ -130,6 +129,7 @@ class WithdrawController extends GetxController {
     }
 
     isLoad.value = false;
+    isLoadMore.value = false;
     update();
 
     return;

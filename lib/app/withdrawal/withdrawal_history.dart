@@ -22,8 +22,10 @@ class _WithdrawalHistoryPageState extends State<WithdrawalHistoryPage> {
   @override
   void initState() {
     super.initState();
-    WithdrawController.instance.withdrawalHistory();
     scrollController.addListener(_scrollListener);
+    scrollController.addListener(() {
+      WithdrawController.instance.scrollListener(scrollController);
+    });
   }
 
 //===================================== ALL VARIABLES =========================================\\
@@ -39,7 +41,7 @@ class _WithdrawalHistoryPageState extends State<WithdrawalHistoryPage> {
 //===================== Handle refresh ==========================\\
 
   Future<void> handleRefresh() async {
-    await WithdrawController.instance.withdrawalHistory();
+    await WithdrawController.instance.refreshWithdraaw();
   }
 
   //===================== Scroll to Top ==========================\\
@@ -94,43 +96,77 @@ class _WithdrawalHistoryPageState extends State<WithdrawalHistoryPage> {
             )
           : const SizedBox(),
       body: SafeArea(
-        child: Scrollbar(
-          controller: scrollController,
-          child: GetBuilder<WithdrawController>(
-            initState: (state) =>
-                WithdrawController.instance.withdrawalHistory(),
-            builder: (controller) {
-              if (controller.listOfWithdrawals.isEmpty &&
-                  controller.isLoad.value) {
-                return Center(
-                  child: CircularProgressIndicator(
-                    color: kAccentColor,
-                  ),
-                );
-              }
-              if (controller.listOfWithdrawals.isEmpty) {
-                return const Center(
-                  child: EmptyCard(
-                    emptyCardMessage: "You haven't made any withdrawals",
-                  ),
-                );
-              }
-
-              return ListView.separated(
-                controller: scrollController,
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: controller.listOfWithdrawals.length,
-                padding: const EdgeInsets.all(30),
-                separatorBuilder: (context, index) => kSizedBox,
-                itemBuilder: (context, index) {
-                  return WithdrawalDetailCard(
-                    withdrawalDetail: controller.listOfWithdrawals[index],
+        child: ListView(
+          physics: const BouncingScrollPhysics(),
+        controller: scrollController,
+          shrinkWrap: true,
+          children: [
+            GetBuilder<WithdrawController>(
+              initState: (state) =>
+                  WithdrawController.instance.withdrawalHistory(),
+              builder: (controller) {
+                if (controller.listOfWithdrawals.isEmpty &&
+                    controller.isLoad.value) {
+                  return Center(
+                    child: Column(
+                      children: [
+                        CircularProgressIndicator(
+                          color: kAccentColor,
+                        ),
+                      ],
+                    ),
                   );
-                },
-              );
-            },
-          ),
+                }
+                if (controller.listOfWithdrawals.isEmpty) {
+                  return const Center(
+                    child: EmptyCard(
+                      emptyCardMessage: "You haven't made any withdrawals",
+                    ),
+                  );
+                }
+            
+                return ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: controller.listOfWithdrawals.length,
+                  padding: const EdgeInsets.all(30),
+                  separatorBuilder: (context, index) => kSizedBox,
+                  itemBuilder: (context, index) {
+                    return WithdrawalDetailCard(
+                      withdrawalDetail: controller.listOfWithdrawals[index],
+                    );
+                  },
+                );
+              },
+            ),
+                     GetBuilder<WithdrawController>(builder: (controller) {
+                       
+                       return   Column(
+                        children: [
+                           controller.loadedAll.value
+                            ? Container(
+                                margin: const EdgeInsets.only(top: 20),
+                                height: 10,
+                                width: 10,
+                                decoration: ShapeDecoration(
+                                    shape: const CircleBorder(),
+                                    color: kPageSkeletonColor),
+                              )
+                            : const SizedBox(),
+                        controller.isLoadMore.value
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  color: kAccentColor,
+                                ),
+                              )
+                            : const SizedBox()
+                        ],
+                       );
+                     },),
+            kSizedBox,
+
+        
+          ],
         ),
       ),
     );

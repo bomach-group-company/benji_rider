@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:benji_rider/app/dashboard/dashboard.dart';
+import 'package:benji_rider/src/repo/controller/package_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import 'package:lottie/lottie.dart';
@@ -26,7 +27,7 @@ class _LoginSplashScreenState extends State<LoginSplashScreen> {
     super.initState();
     UserController.instance.setUserSync();
     OrderController.instance.getOrdersByStatus();
-    WithdrawController.instance.withdrawalHistory();
+    PackageController.instance.getOrdersByStatus();
 
     AccountController.instance.getAccounts();
     WithdrawController.instance.getBanks();
