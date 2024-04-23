@@ -1,4 +1,5 @@
 import 'package:benji_rider/app/order/order_details.dart';
+import 'package:benji_rider/src/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/card/empty.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
@@ -32,7 +33,7 @@ class _DeliveryState extends State<Delivery> {
   void _toDetailPage(DeliveryModel deliveryObj) async {
     await OrderStatusChangeController.instance.setOrder(deliveryObj);
     Get.to(
-      () => OrderDetails(taskStatus: deliveryObj.deliveryStatus),
+      () => const OrderDetails(),
       routeName: 'OrderDetails',
       duration: const Duration(milliseconds: 300),
       fullscreenDialog: true,
@@ -84,7 +85,7 @@ class _DeliveryState extends State<Delivery> {
                                     .setStatus(StatusType.processing);
                               },
                         child: Text(
-                          'Processing',
+                          'Accepted',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color:
@@ -99,39 +100,39 @@ class _DeliveryState extends State<Delivery> {
                       const SizedBox(
                         width: 15,
                       ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              controller.status.value == StatusType.delivered
-                                  ? kAccentColor
-                                  : kDefaultCategoryBackgroundColor,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(16))),
-                        ),
-                        onPressed: controller.isLoad.value &&
-                                controller.status.value != StatusType.delivered
-                            ? null
-                            : () async {
-                                await controller
-                                    .setStatus(StatusType.delivered);
-                              },
-                        child: Text(
-                          'Completed',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color:
-                                controller.status.value == StatusType.delivered
-                                    ? kTextWhiteColor
-                                    : kGreyColor2,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
+                      // ElevatedButton(
+                      //   style: ElevatedButton.styleFrom(
+                      //     backgroundColor:
+                      //         controller.status.value == StatusType.delivered
+                      //             ? kAccentColor
+                      //             : kDefaultCategoryBackgroundColor,
+                      //     shape: const RoundedRectangleBorder(
+                      //         borderRadius:
+                      //             BorderRadius.all(Radius.circular(16))),
+                      //   ),
+                      //   onPressed: controller.isLoad.value &&
+                      //           controller.status.value != StatusType.delivered
+                      //       ? null
+                      //       : () async {
+                      //           await controller
+                      //               .setStatus(StatusType.delivered);
+                      //         },
+                      //   child: Text(
+                      //     'Completed',
+                      //     textAlign: TextAlign.center,
+                      //     style: TextStyle(
+                      //       color:
+                      //           controller.status.value == StatusType.delivered
+                      //               ? kTextWhiteColor
+                      //               : kGreyColor2,
+                      //       fontSize: 14,
+                      //       fontWeight: FontWeight.w400,
+                      //     ),
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   width: 15,
+                      // ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
@@ -152,7 +153,7 @@ class _DeliveryState extends State<Delivery> {
                                     .setStatus(StatusType.cancelled);
                               },
                         child: Text(
-                          'Cancelled',
+                          'Rejected',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color:
@@ -287,9 +288,13 @@ class _DeliveryState extends State<Delivery> {
                                                   ),
                                                 ),
                                                 child: Text(
-                                                  controller
-                                                      .vendorsOrderList[index]
-                                                      .deliveryStatus,
+                                                  statusConst[controller
+                                                          .vendorsOrderList[
+                                                              index]
+                                                          .order
+                                                          .deliveryStatus
+                                                          .toLowerCase()] ??
+                                                      'Not Specified',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     color: kAccentColor,
@@ -400,8 +405,16 @@ class _DeliveryState extends State<Delivery> {
                                               Expanded(
                                                 child: Text(
                                                   controller
-                                                      .vendorsOrderList[index]
-                                                      .deliveredDate,
+                                                              .vendorsOrderList[
+                                                                  index]
+                                                              .deliveredDate ==
+                                                          ''
+                                                      ? 'N/A'
+                                                      : formatDateAndTime(DateTime
+                                                          .parse(controller
+                                                              .vendorsOrderList[
+                                                                  index]
+                                                              .deliveredDate)),
                                                   style: const TextStyle(
                                                     color: Color(0xFF929292),
                                                     fontSize: 10,

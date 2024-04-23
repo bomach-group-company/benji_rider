@@ -2,11 +2,32 @@ import 'dart:convert';
 
 import 'package:benji_rider/main.dart';
 import 'package:benji_rider/src/repo/controller/error_controller.dart';
+import 'package:benji_rider/theme/colors.dart';
 import 'package:http/http.dart' as http;
 
 import '../controller/api_url.dart';
 import '../controller/order_controller.dart';
 import '../models/user_model.dart';
+
+final Map statusColorConst = {
+  'pend': kLoadingColor,
+  'comp': kSuccessColor,
+  'canc': kAccentColor.withOpacity(0.8),
+  'dispatched': kBlueLinkTextColor,
+  'received': kBlueLinkTextColor,
+  'delivered': kAccentColor,
+  'confirmed': kAccentColor,
+};
+
+final Map statusConst = {
+  'pend': 'PENDING',
+  'comp': 'COMPLETED',
+  'canc': 'CANCELLED',
+  'dispatched': 'DISPATCHED',
+  'received': 'INCOMING',
+  'delivered': 'DELIVERED',
+  'confirmed': 'CONFIRMED',
+};
 
 Future<void> saveUser(String user, String token) async {
   Map data = jsonDecode(user);
@@ -139,9 +160,9 @@ Future<bool> isAuthorized() async {
 }
 
 String statusTypeConverter(StatusType statusType) {
-  if (statusType == StatusType.delivered) {
-    return "completed";
-  }
+  // if (statusType == StatusType.delivered) {
+  //   return "completed";
+  // }
   if (statusType == StatusType.processing) {
     return "processing";
   }

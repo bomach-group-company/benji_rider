@@ -29,6 +29,7 @@ import 'theme/colors.dart';
 
 late SharedPreferences prefs;
 
+
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: kTransparentColor),

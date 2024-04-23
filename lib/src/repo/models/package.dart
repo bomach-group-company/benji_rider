@@ -27,8 +27,6 @@ class Package {
   final String? itemImage;
   final double prices;
   final String status;
-  final String riderReceiveStatus;
-  final String userStatus;
   final String dropOffAddressLatitude;
   final String dropOffAddressLongitude;
   final String pickUpAddressLatitude;
@@ -51,8 +49,6 @@ class Package {
     required this.itemImage,
     required this.prices,
     required this.status,
-    required this.riderReceiveStatus,
-    required this.userStatus,
     required this.dropOffAddressLatitude,
     required this.dropOffAddressLongitude,
     required this.pickUpAddressLatitude,
@@ -81,8 +77,6 @@ class Package {
       itemImage: json['itemImage'],
       prices: json['prices'] ?? 0.0,
       status: json['status'] ?? 'pending',
-      riderReceiveStatus: json['rider_receive_status'] ?? 'pending',
-      userStatus: json['user_status'] ?? 'pending',
       dropOffAddressLatitude: json['dropOffAddress_latitude'] ?? '',
       dropOffAddressLongitude: json['dropOffAddress_longitude'] ?? '',
       pickUpAddressLatitude: json['pickUpAddress_latitude'] ?? '',

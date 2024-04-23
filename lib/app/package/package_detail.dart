@@ -14,8 +14,7 @@ import '../../src/repo/utils/map_stuff.dart';
 import '../../theme/colors.dart';
 
 class PackageDetails extends StatefulWidget {
-  final String taskStatus;
-  const PackageDetails({super.key, this.taskStatus = 'processing'});
+  const PackageDetails({super.key});
 
   @override
   State<PackageDetails> createState() => _PackageDetailsState();
@@ -145,7 +144,7 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 ),
                               ),
                               Text(
-                                widget.taskStatus,
+                                controller.package.value.status,
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: kAccentColor,
@@ -489,21 +488,21 @@ class _PackageDetailsState extends State<PackageDetails> {
                   ),
                   kSizedBox,
                   Container(
-                    child: widget.taskStatus == 'cancelled'
+                    child: controller.package.value.status == 'cancelled'
                         ? MyElevatedButton(
                             disable: true,
                             title: "Cancelled",
                             onPressed: () {},
                             isLoading: false,
                           )
-                        : controller.package.value.riderReceiveStatus ==
-                                'pending'
+                        : controller.package.value.status == 'pending' ||
+                                controller.package.value.status == 'dispatched'
                             ? MyElevatedButton(
                                 title: "Received",
                                 onPressed: controller.orderDispatched,
                                 isLoading: controller.isLoad.value,
                               )
-                            : controller.package.value.userStatus != 'received'
+                            : controller.package.value.status != 'received'
                                 ? SizedBox(
                                     child: Column(
                                       children: [

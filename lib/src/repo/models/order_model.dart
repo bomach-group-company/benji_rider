@@ -19,10 +19,7 @@ class Order {
   String latitude;
   String longtitude;
   double deliveryFee;
-  String assignedStatus;
   String deliveryStatus;
-  String riderOutgoingDeliveryStatus;
-  String riderDeliveryStatus;
   Client client;
   List<OrderItem> orderitems;
   Address deliveryAddress;
@@ -35,10 +32,7 @@ class Order {
     required this.latitude,
     required this.longtitude,
     required this.deliveryFee,
-    required this.assignedStatus,
     required this.deliveryStatus,
-    required this.riderOutgoingDeliveryStatus,
-    required this.riderDeliveryStatus,
     required this.client,
     required this.orderitems,
     required this.created,
@@ -54,11 +48,7 @@ class Order {
       longtitude: json["longtitude"] ?? '',
       totalPrice: json["total_price"] ?? 0.0,
       deliveryFee: json["delivery_fee"] ?? 0.0,
-      assignedStatus: json["assigned_status"] ?? "PEND",
       deliveryStatus: json["delivery_status"] ?? "pending",
-      riderOutgoingDeliveryStatus:
-          json["rider_outgoing_delivery_status"] ?? "PEND",
-      riderDeliveryStatus: json["rider_delivery_status"] ?? "dispatched",
       client: Client.fromJson(json["client"]),
       orderitems: json["orderitems"] == null
           ? []
