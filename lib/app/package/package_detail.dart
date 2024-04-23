@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/src/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/form_and_auth/my%20textformfield.dart';
 import 'package:benji_rider/src/widget/maps/map_direction.dart';
@@ -144,7 +145,9 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 ),
                               ),
                               Text(
-                                controller.package.value.status,
+                                statusConst[controller.package.value.status
+                                        .toLowerCase()] ??
+                                    'Not Specified',
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: kAccentColor,

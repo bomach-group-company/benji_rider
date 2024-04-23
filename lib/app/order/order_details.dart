@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/src/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/image/my_image.dart';
 import 'package:benji_rider/src/widget/maps/map_direction.dart';
@@ -169,7 +170,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                             ),
                             Text(
-                              controller.order.value.deliveryStatus,
+                              statusConst[controller.order.value.deliveryStatus
+                                      .toLowerCase()] ??
+                                  'Not specified',
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: kAccentColor,
