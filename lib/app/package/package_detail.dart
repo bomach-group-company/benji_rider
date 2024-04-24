@@ -145,9 +145,10 @@ class _PackageDetailsState extends State<PackageDetails> {
                                 ),
                               ),
                               Text(
-                                statusConst[controller.package.value.status
+                                statusPackageConst[controller
+                                        .package.value.status
                                         .toLowerCase()] ??
-                                    'Not Specified',
+                                    'NOT SPECIFIED',
                                 textAlign: TextAlign.right,
                                 style: TextStyle(
                                   color: kAccentColor,
@@ -491,21 +492,21 @@ class _PackageDetailsState extends State<PackageDetails> {
                   ),
                   kSizedBox,
                   Container(
-                    child: controller.package.value.status == 'cancelled'
-                        ? MyElevatedButton(
+                    child: controller.package.value.status == 'CANC'
+                        ? const MyElevatedButton(
                             disable: true,
                             title: "Cancelled",
-                            onPressed: () {},
+                            onPressed: null,
                             isLoading: false,
                           )
                         : controller.package.value.status == 'pending' ||
                                 controller.package.value.status == 'dispatched'
                             ? MyElevatedButton(
-                                title: "Received",
+                                title: "Collected",
                                 onPressed: controller.orderDispatched,
                                 isLoading: controller.isLoad.value,
                               )
-                            : controller.package.value.status != 'received'
+                            : controller.package.value.status == 'received'
                                 ? SizedBox(
                                     child: Column(
                                       children: [
