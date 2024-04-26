@@ -9,23 +9,22 @@ import '../controller/api_url.dart';
 import '../controller/order_controller.dart';
 import '../models/user_model.dart';
 
-final Map statusColorConst = {
-  'pend': kLoadingColor,
-  'comp': kSuccessColor,
-  'canc': kAccentColor.withOpacity(0.8),
-  'dispatched': kBlueLinkTextColor,
-  'received': kBlueLinkTextColor,
-  'delivered': kAccentColor,
-  'confirmed': kAccentColor,
-};
-
 final Map statusConst = {
   'pend': 'PENDING',
   'comp': 'COMPLETED',
   'canc': 'CANCELLED',
   'dispatched': 'DISPATCHED',
-  'received': 'INCOMING',
+  'received': 'RECEIVED',
   'delivered': 'DELIVERED',
+  'confirmed': 'CONFIRMED',
+};
+
+final Map statusPackageConst = {
+  'pending': 'PENDING',
+  'completed': 'COMPLETED',
+  'canc': 'CANCELLED',
+  'dispatched': 'DISPATCHED',
+  'received': 'RECEIVED',
   'confirmed': 'CONFIRMED',
 };
 

@@ -289,13 +289,13 @@ class _PackageState extends State<Package> {
                                                   ),
                                                 ),
                                                 child: Text(
-                                                  statusConst[controller
+                                                  statusPackageConst[controller
                                                           .vendorsOrderList[
                                                               index]
                                                           .package
                                                           .status
                                                           .toLowerCase()] ??
-                                                      'Not Specified',
+                                                      'NOT SPECIFIED',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     color: kAccentColor,

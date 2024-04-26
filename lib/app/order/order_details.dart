@@ -78,7 +78,7 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
             bottomNavigationBar: Container(
               padding: const EdgeInsets.all(kDefaultPadding),
-              child: controller.order.value.deliveryStatus == 'cancelled'
+              child: controller.order.value.deliveryStatus == 'CANC'
                   ? MyElevatedButton(
                       disable: true,
                       title: "Cancelled",
@@ -92,7 +92,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           onPressed: controller.orderDispatched,
                           isLoading: controller.isLoad.value,
                         )
-                      : controller.order.value.deliveryStatus != 'delivered'
+                      : controller.order.value.deliveryStatus == 'received'
                           ? MyElevatedButton(
                               title: "Delivered",
                               onPressed: controller.orderDelivered,
@@ -101,7 +101,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           : MyElevatedButton(
                               disable: true,
                               title: "Completed",
-                              onPressed: controller.orderDelivered,
+                              onPressed: null,
                               isLoading: controller.isLoad.value,
                             ),
             ),
@@ -172,7 +172,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                             Text(
                               statusConst[controller.order.value.deliveryStatus
                                       .toLowerCase()] ??
-                                  'Not specified',
+                                  'NOT SPECIFIED',
                               textAlign: TextAlign.right,
                               style: TextStyle(
                                 color: kAccentColor,

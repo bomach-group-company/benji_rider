@@ -294,7 +294,7 @@ class _DeliveryState extends State<Delivery> {
                                                           .order
                                                           .deliveryStatus
                                                           .toLowerCase()] ??
-                                                      'Not Specified',
+                                                      'NOT SPECIFIED',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                     color: kAccentColor,
