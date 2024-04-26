@@ -29,7 +29,6 @@ import 'theme/colors.dart';
 
 late SharedPreferences prefs;
 
-
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(statusBarColor: kTransparentColor),
@@ -57,14 +56,12 @@ void main() async {
   Get.put(PushNotificationController());
   Get.put(AuthController());
 
-
   if (!kIsWeb) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
     await PushNotificationController.initializeNotification();
-    await FcmMessagingController.instance.handleFCM();
   }
 
   runApp(const MyApp());
