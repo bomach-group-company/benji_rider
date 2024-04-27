@@ -210,7 +210,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               RegExp passwordPattern = RegExp(
                                 r'^.{8,}$',
                               );
-                              if (value == null || value!.isEmpty) {
+                              if (value == null || value == '') {
                                 _userPasswordFN.requestFocus();
                                 return "Enter your password";
                               } else if (!passwordPattern.hasMatch(value)) {
@@ -279,7 +279,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                               RegExp passwordPattern = RegExp(
                                 r'^.{8,}$',
                               );
-                              if (value == null || value!.isEmpty) {
+                              if (value == null || value == '') {
                                 _confirmPasswordFN.requestFocus();
                                 return "Confirm your password";
                               }
