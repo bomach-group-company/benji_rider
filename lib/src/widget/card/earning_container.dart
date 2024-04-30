@@ -90,46 +90,45 @@ class _EarningContainerState extends State<EarningContainer> {
     );
   }
 
-  Column dashboardHead(data) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          "Hi ${data['user'].firstName} ${data['user'].lastName},",
-          overflow: TextOverflow.ellipsis,
-          style: const TextStyle(
-            color: kTextBlackColor,
-            fontSize: 15,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-        kHalfSizedBox,
-        Text(
-          data['user'].email,
-          softWrap: true,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            color: kTextGreyColor,
-            fontSize: 15,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        Row(
-          children: [
-            const Text(
-              'Available Balance',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: kTextBlackColor,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-              ),
+  GetBuilder<UserController> dashboardHead(data) {
+    return GetBuilder<UserController>(builder: (controller) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Hi ${data['user'].firstName} ${data['user'].lastName},",
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: kTextBlackColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w800,
             ),
-            kHalfWidthSizedBox,
-            GetBuilder<UserController>(
-              init: UserController(),
-              builder: (controller) => IconButton(
+          ),
+          kHalfSizedBox,
+          Text(
+            data['user'].email,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              color: kTextGreyColor,
+              fontSize: 15,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          Row(
+            children: [
+              const Text(
+                'Available Balance',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: kTextBlackColor,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              kHalfWidthSizedBox,
+              IconButton(
                 onPressed: toggleVisibleCash,
                 icon: FaIcon(
                   controller.user.value.isVisibleCash
@@ -138,17 +137,14 @@ class _EarningContainerState extends State<EarningContainer> {
                   color: data['status'] ? kAccentColor : kAccentColor,
                 ),
               ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                GetBuilder<UserController>(
-                  init: UserController(),
-                  builder: (controller) => controller.isLoading.value
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  controller.isLoadingUser.value
                       ? Text(
                           'Loading...',
                           style: TextStyle(
@@ -185,50 +181,50 @@ class _EarningContainerState extends State<EarningContainer> {
                             ],
                           ),
                         ),
-                ),
-                IconButton(
-                  icon: FaIcon(
-                    FontAwesomeIcons.arrowsRotate,
-                    color: kAccentColor,
+                  IconButton(
+                    icon: FaIcon(
+                      FontAwesomeIcons.arrowsRotate,
+                      color: kAccentColor,
+                    ),
+                    onPressed: () async {
+                      await controller.getUser();
+                    },
+                    color: kGreyColor,
+                    iconSize: 25.0,
+                    tooltip: 'Refresh',
+                    padding: const EdgeInsets.all(10.0),
+                    splashRadius: 20.0,
+                    splashColor: Colors.blue,
+                    highlightColor: Colors.transparent,
                   ),
-                  onPressed: () async {
-                    await UserController.instance.getUser();
-                  },
-                  color: kGreyColor,
-                  iconSize: 25.0,
-                  tooltip: 'Refresh',
-                  padding: const EdgeInsets.all(10.0),
-                  splashRadius: 20.0,
-                  splashColor: Colors.blue,
-                  highlightColor: Colors.transparent,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                IconButton(
-                  onPressed: toSelectAccount,
-                  icon: FaIcon(
-                    FontAwesomeIcons.solidCreditCard,
-                    color: kAccentColor,
-                  ),
-                ),
-                InkWell(
-                  onTap: toSelectAccount,
-                  child: const Text(
-                    "Withdraw",
-                    style: TextStyle(
-                      color: kTextBlackColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
+                ],
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: toSelectAccount,
+                    icon: FaIcon(
+                      FontAwesomeIcons.solidCreditCard,
+                      color: kAccentColor,
                     ),
                   ),
-                ),
-              ],
-            )
-          ],
-        ),
-      ],
-    );
+                  InkWell(
+                    onTap: toSelectAccount,
+                    child: const Text(
+                      "Withdraw",
+                      style: TextStyle(
+                        color: kTextBlackColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ],
+      );
+    });
   }
 }

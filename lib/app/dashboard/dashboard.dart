@@ -67,8 +67,6 @@ class _DashboardState extends State<Dashboard>
   @override
   void initState() {
     // tasks
-    UserController.instance.getUser();
-    UserController.instance.setUserSync();
     TasksController.instance.getTasksSocket();
 
     // coordinates

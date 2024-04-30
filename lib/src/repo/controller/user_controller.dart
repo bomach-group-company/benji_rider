@@ -21,6 +21,7 @@ class UserController extends GetxController {
   }
 
   var isLoadingOnline = false.obs;
+  var isLoadingUser = false.obs;
   var isLoading = false.obs;
   var user = User.fromJson(null).obs;
   var vendor = VendorModel.fromJson(null).obs;
@@ -64,18 +65,27 @@ class UserController extends GetxController {
     return await prefs.remove('user');
   }
 
-  Future getUser() async {
-    isLoading.value = true;
-    update();
-
-    final user = UserController.instance.user.value;
-    http.Response? responseUserData = await HandleData.getApi(
-        '${Api.baseUrl}${Api.getSpecificRider}${user.id}/', user.token);
-    if (responseUserData?.statusCode != 200) {
-      ApiProcessorController.errorSnack("Failed to refresh");
-      isLoading.value = false;
+  getUser() async {
+    try {
+      isLoadingUser.value = true;
       update();
-      return;
+
+      final user = UserController.instance.user.value;
+      http.Response? responseUserData = await HandleData.getApi(
+          '${Api.baseUrl}${Api.getSpecificRider}${user.id}/', user.token);
+      if (responseUserData?.statusCode != 200) {
+        ApiProcessorController.errorSnack("Failed to refresh");
+        isLoadingUser.value = false;
+        update();
+
+        return;
+      }
+      UserController.instance.saveUser(responseUserData!.body, user.token);
+      isLoadingUser.value = false;
+      update();
+    } catch (e) {
+      isLoadingUser.value = false;
+      update();
     }
   }
 

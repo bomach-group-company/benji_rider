@@ -58,25 +58,24 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
             ),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Available Balance',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: kPrimaryColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
+        child: GetBuilder<UserController>(builder: (controller) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Available Balance',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: kPrimaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-                GetBuilder<UserController>(
-                  init: UserController(),
-                  builder: (controller) => IconButton(
+                  IconButton(
                     onPressed: toggleVisibleCash,
                     icon: Icon(
                       controller.user.value.isVisibleCash
@@ -85,16 +84,13 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
                       color: kPrimaryColor,
                     ),
                   ),
-                ),
-              ],
-            ),
-            kSizedBox,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GetBuilder<UserController>(
-                  init: UserController(),
-                  builder: (controller) => controller.isLoading.value
+                ],
+              ),
+              kSizedBox,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  controller.isLoadingUser.value
                       ? Text(
                           'Loading...',
                           style: TextStyle(
@@ -130,67 +126,67 @@ class _ProfileFirstHalfState extends State<ProfileFirstHalf> {
                             ],
                           ),
                         ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () async {
-                    await UserController.instance.getUser();
-                  },
-                  color: kTextWhiteColor.withOpacity(0.8),
-                  iconSize: 25.0,
-                  tooltip: 'Refresh',
-                  padding: const EdgeInsets.all(10.0),
-                  splashRadius: 20.0,
-                  splashColor: Colors.blue,
-                  highlightColor: Colors.transparent,
-                ),
-              ],
-            ),
-            kSizedBox,
-            InkWell(
-              onTap: () {
-                Get.to(
-                  () => const SelectAccountPage(),
-                  routeName: 'SelectAccountPage',
-                  duration: const Duration(milliseconds: 300),
-                  fullscreenDialog: true,
-                  curve: Curves.easeIn,
-                  preventDuplicates: true,
-                  popGesture: true,
-                  transition: Transition.rightToLeft,
-                );
-              },
-              child: Container(
-                width: 100,
-                height: 37,
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                      width: 0.50,
-                      color: kPrimaryColor,
-                    ),
-                    borderRadius: BorderRadius.circular(
-                      10,
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: () async {
+                      await controller.getUser();
+                    },
+                    color: kTextWhiteColor.withOpacity(0.8),
+                    iconSize: 25.0,
+                    tooltip: 'Refresh',
+                    padding: const EdgeInsets.all(10.0),
+                    splashRadius: 20.0,
+                    splashColor: Colors.blue,
+                    highlightColor: Colors.transparent,
+                  ),
+                ],
+              ),
+              kSizedBox,
+              InkWell(
+                onTap: () {
+                  Get.to(
+                    () => const SelectAccountPage(),
+                    routeName: 'SelectAccountPage',
+                    duration: const Duration(milliseconds: 300),
+                    fullscreenDialog: true,
+                    curve: Curves.easeIn,
+                    preventDuplicates: true,
+                    popGesture: true,
+                    transition: Transition.rightToLeft,
+                  );
+                },
+                child: Container(
+                  width: 100,
+                  height: 37,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 0.50,
+                        color: kPrimaryColor,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        10,
+                      ),
                     ),
                   ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Withdraw',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: kPrimaryColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
+                  child: Center(
+                    child: Text(
+                      'Withdraw',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: kPrimaryColor,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: kDefaultPadding * 2,
-            ),
-          ],
-        ));
+              const SizedBox(
+                height: kDefaultPadding * 2,
+              ),
+            ],
+          );
+        }));
   }
 }
