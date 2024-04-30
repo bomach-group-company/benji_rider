@@ -64,7 +64,7 @@ class UserController extends GetxController {
     return await prefs.remove('user');
   }
 
-  getUser() async {
+  Future getUser() async {
     isLoading.value = true;
     update();
 
@@ -85,7 +85,7 @@ class UserController extends GetxController {
     try {
       final user = UserController.instance.user.value;
       http.Response? responseUserData = await HandleData.getApi(
-          '${Api.baseUrl}/setRiderOnlineStatus/360/?status=$status',
+          '${Api.baseUrl}/drivers/setRiderOnlineStatus/${user.id}/?status=$status',
           user.token);
       if (responseUserData?.statusCode != 200) {
         ApiProcessorController.errorSnack(jsonDecode(
