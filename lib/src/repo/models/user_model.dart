@@ -19,6 +19,7 @@ class User {
   final int tripCount;
   final String token;
   final bool isVisibleCash;
+  final bool isOnline;
 
   const User({
     required this.id,
@@ -37,6 +38,7 @@ class User {
     required this.tripCount,
     required this.token,
     required this.isVisibleCash,
+    required this.isOnline,
   });
 
   factory User.fromJson(Map<String, dynamic>? json) {
@@ -58,6 +60,7 @@ class User {
       tripCount: json['tripCount'] ?? 0,
       token: json['token'] ?? notAvailable,
       isVisibleCash: json['isVisibleCash'] ?? true,
+      isOnline: json['is_online'] ?? false,
     );
   }
 }

@@ -20,6 +20,7 @@ class UserController extends GetxController {
     return Get.find<UserController>();
   }
 
+  var isLoadingOnline = false.obs;
   var isLoading = false.obs;
   var user = User.fromJson(null).obs;
   var vendor = VendorModel.fromJson(null).obs;
@@ -36,7 +37,6 @@ class UserController extends GetxController {
     }
     return true;
   }
-
 
   Future<void> saveUser(String user, String token) async {
     Map data = jsonDecode(user);
@@ -77,9 +77,29 @@ class UserController extends GetxController {
       update();
       return;
     }
+  }
 
-    UserController.instance.saveUser(responseUserData!.body, user.token);
-    isLoading.value = false;
+  Future setUserStatus(bool status) async {
+    isLoadingOnline.value = true;
+    update();
+    try {
+      final user = UserController.instance.user.value;
+      http.Response? responseUserData = await HandleData.getApi(
+          '${Api.baseUrl}/setRiderOnlineStatus/360/?status=$status',
+          user.token);
+      if (responseUserData?.statusCode != 200) {
+        ApiProcessorController.errorSnack(jsonDecode(
+            responseUserData?.body ?? "{'message': 'failed'}")['message']);
+        isLoadingOnline.value = false;
+        update();
+        return;
+      }
+
+      UserController.instance.saveUser(responseUserData!.body, user.token);
+    } catch (e) {
+      ApiProcessorController.errorSnack('Update not successful');
+    }
+    isLoadingOnline.value = false;
     update();
   }
 }

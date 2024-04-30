@@ -150,6 +150,52 @@ class _DashboardState extends State<Dashboard>
           titleSpacing: -20,
           backgroundColor: kPrimaryColor,
           automaticallyImplyLeading: false,
+          actions: [
+            GetBuilder<UserController>(
+              builder: (controller) {
+                return Row(
+                  children: [
+                    controller.user.value.isOnline
+                        ? Text(
+                            'Online',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: controller.isLoadingOnline.value
+                                  ? kBlackColor.withOpacity(0.5)
+                                  : kBlackColor,
+                            ),
+                          )
+                        : Text(
+                            'Offline',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500,
+                              color: controller.isLoadingOnline.value
+                                  ? kBlackColor.withOpacity(0.5)
+                                  : kBlackColor,
+                            ),
+                          ),
+                    kHalfSizedBox,
+                    Transform.scale(
+                      scale: 0.8, // Adjust the scale factor as needed
+                      child: Switch(
+                        activeColor: Colors.green.withOpacity(0.8),
+                        value: controller.user.value.isOnline,
+                        onChanged: controller.isLoadingOnline.value
+                            ? null
+                            : (value) {
+                                controller.setUserStatus(
+                                    !controller.user.value.isOnline);
+                              },
+                      ),
+                    ),
+                    kWidthSizedBox,
+                  ],
+                );
+              },
+            )
+          ],
           title: Container(
             margin: const EdgeInsets.all(30),
             decoration: BoxDecoration(
@@ -204,7 +250,9 @@ class _DashboardState extends State<Dashboard>
                     number:
                         controller.isLoad.value && controller.businesses.isEmpty
                             ? "..."
-                            : controller.businesses.length >= 10 ? '10+' :  controller.businesses.length.toString(),
+                            : controller.businesses.length >= 10
+                                ? '10+'
+                                : controller.businesses.length.toString(),
                     typeOf: "Businesses",
                   ),
                 ),
