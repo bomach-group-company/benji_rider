@@ -499,14 +499,15 @@ class _PackageDetailsState extends State<PackageDetails> {
                             onPressed: null,
                             isLoading: false,
                           )
-                        : controller.package.value.status == 'pending' ||
-                                controller.package.value.status == 'dispatched'
+                        : controller.package.value.status == 'pending'
                             ? MyElevatedButton(
                                 title: "Collected",
                                 onPressed: controller.orderDispatched,
                                 isLoading: controller.isLoad.value,
                               )
-                            : controller.package.value.status == 'received'
+                            : controller.package.value.status == 'received' ||
+                                    controller.package.value.status ==
+                                        'dispatched'
                                 ? SizedBox(
                                     child: Column(
                                       children: [
@@ -541,12 +542,19 @@ class _PackageDetailsState extends State<PackageDetails> {
                                       ],
                                     ),
                                   )
-                                : MyElevatedButton(
-                                    disable: true,
-                                    title: "Completed",
-                                    onPressed: () {},
-                                    isLoading: false,
-                                  ),
+                                : controller.package.value.status == 'completed'
+                                    ? MyElevatedButton(
+                                        disable: true,
+                                        title: "Cashout",
+                                        onPressed: controller.packagePayment,
+                                        isLoading: controller.isLoad.value,
+                                      )
+                                    : MyElevatedButton(
+                                        disable: true,
+                                        title: "Completed",
+                                        onPressed: () {},
+                                        isLoading: false,
+                                      ),
                   ),
                   kSizedBox,
                 ],

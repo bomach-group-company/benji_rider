@@ -160,20 +160,21 @@ class PackageController extends GetxController {
     await refreshPackage();
   }
 
-  // orderDelivered() async {
-  //   isLoad.value = true;
-  //   final user = UserController.instance.user.value;
+  packagePayment() async {
+    isLoad.value = true;
+    final user = UserController.instance.user.value;
+    update();
 
-  //   update();
-  //   var url =
-  //       "${Api.baseUrl}/sendPackage/riderConfirmStatus/${package.value.id}";
+    var url =
+        "${Api.baseUrl}/drivers/completeMyPackageTask/${task.value.id}/${user.id}";
 
-  //   var url2 =
-  //       "${Api.baseUrl}/drivers/completeMyPackageTask/${task.value.id}/${user.id}";
+    await FormController.instance.getAuth(url, 'taskPayment');
 
-  //   await FormController.instance.getAuth(url, 'deliveredPackage');
-  //   await FormController.instance.getAuth(url2, 'deliveredPackage');
-  // print(FormController.instance.status);
-  //   if (FormController.instance.status.toString().startsWith('2')) {}
-  // }
+    if (FormController.instance.status.toString().startsWith('2')) {
+      ApiProcessorController.successSnack('Withdrawal successful');
+    } else {
+      ApiProcessorController.errorSnack(
+          'Either you have already withdrawn or an error occured');
+    }
+  }
 }

@@ -159,9 +159,9 @@ Future<bool> isAuthorized() async {
 }
 
 String statusTypeConverter(StatusType statusType) {
-  // if (statusType == StatusType.delivered) {
-  //   return "completed";
-  // }
+  if (statusType == StatusType.delivered) {
+    return "completed";
+  }
   if (statusType == StatusType.processing) {
     return "processing";
   }

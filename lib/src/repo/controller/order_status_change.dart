@@ -94,4 +94,22 @@ class OrderStatusChangeController extends GetxController {
     if (FormController.instance.status.toString().startsWith('2')) {}
     await refreshOrder();
   }
+
+  orderPayment() async {
+    isLoad.value = true;
+    final user = UserController.instance.user.value;
+
+    update();
+
+    var url =
+        "${Api.baseUrl}/drivers/completeMyTask/${task.value.id}/${user.id}";
+
+    await FormController.instance.getAuth(url, 'taskPayment');
+    if (FormController.instance.status.toString().startsWith('2')) {
+      ApiProcessorController.successSnack('Withdrawal successful');
+    } else {
+      ApiProcessorController.errorSnack(
+          'Either you have already withdrawn or an error occured');
+    }
+  }
 }
