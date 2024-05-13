@@ -4,12 +4,9 @@ import 'dart:convert';
 
 import 'package:benji_rider/main.dart';
 import 'package:benji_rider/src/repo/models/user_model.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../app/auth/login.dart';
-import '../../../app/dashboard/dashboard.dart';
 import '../models/vendor_model.dart';
 import '../utils/helpers.dart';
 import 'api_url.dart';
