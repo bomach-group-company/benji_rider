@@ -20,7 +20,6 @@ import 'src/repo/controller/notification_controller.dart';
 import 'src/repo/controller/order_controller.dart';
 import 'src/repo/controller/order_status_change.dart';
 import 'src/repo/controller/package_controller.dart';
-import 'src/repo/controller/push_notifications_controller.dart';
 import 'src/repo/controller/tasks_controller.dart';
 import 'src/repo/controller/user_controller.dart';
 import 'src/repo/controller/withdraw_controller.dart';
@@ -54,14 +53,11 @@ void main() async {
   Get.put(AuthController());
   Get.put(FcmMessagingController());
 
-  // Get.put(PushNotificationController());
-
   if (!kIsWeb) {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
     await FirebaseMessaging.instance.setAutoInitEnabled(true);
-    await PushNotificationController.initializeNotification();
   }
 
   runApp(const MyApp());
