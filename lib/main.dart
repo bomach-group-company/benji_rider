@@ -12,6 +12,7 @@ import 'firebase_options.dart';
 import 'src/repo/controller/account_controller.dart';
 import 'src/repo/controller/business_controller.dart';
 import 'src/repo/controller/delivery_history_controller.dart';
+import 'src/repo/controller/fcm_messaging_controller.dart';
 import 'src/repo/controller/form_controller.dart';
 import 'src/repo/controller/latlng_detail_controller.dart';
 import 'src/repo/controller/login_controller.dart';
@@ -51,9 +52,9 @@ void main() async {
   Get.put(OrderStatusChangeController());
   Get.put(PackageController());
   Get.put(AuthController());
+  Get.put(FcmMessagingController());
 
   // Get.put(PushNotificationController());
-  // Get.put(FcmMessagingController());
 
   if (!kIsWeb) {
     await Firebase.initializeApp(
