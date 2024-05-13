@@ -11,13 +11,13 @@ class MyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(
-      url == null
-          ? ''
-          : url!.startsWith("https")
-              ? url!
-              : baseImage + url!,
-    );
+    // print(
+    //   url == null
+    //       ? ''
+    //       : url!.startsWith("https")
+    //           ? url!
+    //           : baseImage + url!,
+    // );
     return CachedNetworkImage(
       imageUrl: url == null
           ? ''
