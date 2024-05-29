@@ -1,3 +1,4 @@
+import 'package:benji_rider/app/auth/change_password.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/route_manager.dart';
@@ -41,14 +42,24 @@ class _SettingsPageState extends State<SettingsPage> {
         transition: Transition.rightToLeft,
       );
 
+  void _toChangePassword() async {
+    await Get.to(
+      () => const ChangePassword(),
+      routeName: 'ChangePassword',
+      duration: const Duration(milliseconds: 300),
+      fullscreenDialog: true,
+      curve: Curves.easeIn,
+      preventDuplicates: true,
+      popGesture: true,
+      transition: Transition.rightToLeft,
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     // //===================== _changeCaseVisibility ================================\\
-    // Future<bool> _getCashVisibility() async {
-    //   SharedPreferences prefs = await SharedPreferences.getInstance();
-    //   bool? isVisibleCash = await prefs.getBool('isVisibleCash');
-    //   return isVisibleCash ?? true;
-    // }
+    var media = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(
@@ -151,6 +162,55 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ),
+            kHalfSizedBox,
+            Padding(
+              padding: const EdgeInsets.only(
+                left: kDefaultPadding,
+                right: kDefaultPadding,
+                bottom: kDefaultPadding / 1.5,
+              ),
+              child: Container(
+                width: 327,
+                height: 78,
+                padding: const EdgeInsets.all(
+                  kDefaultPadding / 2,
+                ),
+                decoration: ShapeDecoration(
+                  color: kPrimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  shadows: const [
+                    BoxShadow(
+                      color: Color(0x0F000000),
+                      blurRadius: 24,
+                      offset: Offset(0, 4),
+                      spreadRadius: 0,
+                    )
+                  ],
+                ),
+                child: ListTile(
+                  onTap: _toChangePassword,
+                  leading: FaIcon(
+                    FontAwesomeIcons.solidPenToSquare,
+                    color: kAccentColor,
+                  ),
+                  title: const Text(
+                    'Change Password',
+                    style: TextStyle(
+                      color: kTextBlackColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  trailing: const FaIcon(
+                    FontAwesomeIcons.chevronRight,
+                    size: 14,
+                  ),
+                ),
+              ),
+            ),
+            kHalfSizedBox,
             Padding(
               padding: const EdgeInsets.only(
                 left: kDefaultPadding,
