@@ -100,39 +100,39 @@ class _DeliveryState extends State<Delivery> {
                       const SizedBox(
                         width: 15,
                       ),
-                      // ElevatedButton(
-                      //   style: ElevatedButton.styleFrom(
-                      //     backgroundColor:
-                      //         controller.status.value == StatusType.delivered
-                      //             ? kAccentColor
-                      //             : kDefaultCategoryBackgroundColor,
-                      //     shape: const RoundedRectangleBorder(
-                      //         borderRadius:
-                      //             BorderRadius.all(Radius.circular(16))),
-                      //   ),
-                      //   onPressed: controller.isLoad.value &&
-                      //           controller.status.value != StatusType.delivered
-                      //       ? null
-                      //       : () async {
-                      //           await controller
-                      //               .setStatus(StatusType.delivered);
-                      //         },
-                      //   child: Text(
-                      //     'Completed',
-                      //     textAlign: TextAlign.center,
-                      //     style: TextStyle(
-                      //       color:
-                      //           controller.status.value == StatusType.delivered
-                      //               ? kTextWhiteColor
-                      //               : kGreyColor2,
-                      //       fontSize: 14,
-                      //       fontWeight: FontWeight.w400,
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   width: 15,
-                      // ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              controller.status.value == StatusType.delivered
+                                  ? kAccentColor
+                                  : kDefaultCategoryBackgroundColor,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(16))),
+                        ),
+                        onPressed: controller.isLoad.value &&
+                                controller.status.value != StatusType.delivered
+                            ? null
+                            : () async {
+                                await controller
+                                    .setStatus(StatusType.delivered);
+                              },
+                        child: Text(
+                          'Completed',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color:
+                                controller.status.value == StatusType.delivered
+                                    ? kTextWhiteColor
+                                    : kGreyColor2,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 15,
+                      ),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor:

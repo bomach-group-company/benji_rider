@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../app/splash_screens/startup_splash_screen.dart';
-
 import '../../../main.dart';
 import '../../../theme/colors.dart';
 import '../../providers/constants.dart';
@@ -17,7 +16,7 @@ class PushNotificationController extends GetxController {
 
   static Future<void> initializeNotification() async {
     await AwesomeNotifications().initialize(
-      "resource://drawable/notification_icon",
+      "",
       [
         NotificationChannel(
           channelKey: "basic_channel",
@@ -29,6 +28,7 @@ class PushNotificationController extends GetxController {
           ledColor: kAccentColor,
           enableVibration: true,
           enableLights: true,
+          groupSort: GroupSort.Desc,
           defaultRingtoneType: DefaultRingtoneType.Notification,
           vibrationPattern: lowVibrationPattern,
           importance: NotificationImportance.High,
@@ -75,7 +75,7 @@ class PushNotificationController extends GetxController {
       ReceivedAction receivedAction) async {
     Get.key.currentState?.push(
       MaterialPageRoute(
-        builder: (_) => StartupSplashscreen(),
+        builder: (_) => const StartupSplashscreen(),
       ),
     );
     debugPrint("onActionReceiveMethod");
@@ -83,7 +83,7 @@ class PushNotificationController extends GetxController {
     if (payload["navigate"] == "true") {
       Get.key.currentState?.push(
         MaterialPageRoute(
-          builder: (_) => StartupSplashscreen(),
+          builder: (_) => const StartupSplashscreen(),
         ),
       );
     }

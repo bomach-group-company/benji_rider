@@ -53,7 +53,7 @@ class User {
       lastName: json['last_name'] ?? notAvailable,
       gender: json['gender'] ?? notAvailable,
       address: json['address'] ?? notAvailable,
-      image: json['image'] ?? notAvailable,
+      image: json['image'] ?? '',
       balance: json['balance'] ?? 0.0,
       chassisNumber: json['chassis_number'] ?? notAvailable,
       plateNumber: json['plate_number'] ?? notAvailable,

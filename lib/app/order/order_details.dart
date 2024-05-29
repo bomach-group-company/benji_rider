@@ -85,25 +85,33 @@ class _OrderDetailsState extends State<OrderDetails> {
                       onPressed: null,
                       isLoading: controller.isLoad.value,
                     )
-                  : controller.order.value.deliveryStatus == "PEND" ||
-                          controller.order.value.deliveryStatus == 'dispatched'
+                  : controller.order.value.deliveryStatus == "PEND"
                       ? MyElevatedButton(
                           title: "Dispatched",
                           onPressed: controller.orderDispatched,
                           isLoading: controller.isLoad.value,
                         )
-                      : controller.order.value.deliveryStatus == 'received'
+                      : controller.order.value.deliveryStatus == 'received' ||
+                              controller.order.value.deliveryStatus ==
+                                  'dispatched'
                           ? MyElevatedButton(
                               title: "Delivered",
                               onPressed: controller.orderDelivered,
                               isLoading: controller.isLoad.value,
                             )
-                          : MyElevatedButton(
-                              disable: true,
-                              title: "Completed",
-                              onPressed: null,
-                              isLoading: controller.isLoad.value,
-                            ),
+                          : controller.order.value.deliveryStatus == 'COMP'
+                              ? MyElevatedButton(
+                                  disable: true,
+                                  title: "Cashout",
+                                  onPressed: controller.orderPayment,
+                                  isLoading: controller.isLoad.value,
+                                )
+                              : MyElevatedButton(
+                                  disable: true,
+                                  title: "Completed",
+                                  onPressed: null,
+                                  isLoading: controller.isLoad.value,
+                                ),
             ),
             body: ListView(
               physics: const BouncingScrollPhysics(),

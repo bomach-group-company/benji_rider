@@ -98,7 +98,6 @@ class _AddBankAccountPageState extends State<AddBankAccountPage> {
       'account_holder': data.responseBody.accountName,
       'account_number': data.responseBody.accountNumber,
     };
-    print(body);
 
     String url = Api.baseUrl + Api.saveBankDetails;
     await FormController.instance.postAuth(

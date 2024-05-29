@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:benji_rider/main.dart';
 import 'package:benji_rider/src/repo/controller/error_controller.dart';
-import 'package:benji_rider/theme/colors.dart';
 import 'package:http/http.dart' as http;
 
 import '../controller/api_url.dart';
@@ -159,9 +158,9 @@ Future<bool> isAuthorized() async {
 }
 
 String statusTypeConverter(StatusType statusType) {
-  // if (statusType == StatusType.delivered) {
-  //   return "completed";
-  // }
+  if (statusType == StatusType.delivered) {
+    return "completed";
+  }
   if (statusType == StatusType.processing) {
     return "processing";
   }

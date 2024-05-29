@@ -12,8 +12,6 @@ class AuthController extends GetxController {
     return Get.find<AuthController>();
   }
 
-
-
   Future checkAuth() async {
     if (await isAuthorized()) {
       Get.offAll(

@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/repo/controller/business_controller.dart';
+import '../../src/repo/controller/fcm_messaging_controller.dart';
 import '../../src/repo/controller/order_status_change.dart';
 import '../../src/repo/controller/package_controller.dart';
 import '../../src/repo/controller/tasks_controller.dart';
@@ -74,6 +75,8 @@ class _DashboardState extends State<Dashboard>
 
     //Get vnendors
     BusinessController.instance.getAllBusinesses();
+
+    FcmMessagingController.instance.handleFCM();
 
     super.initState();
   }
