@@ -59,7 +59,6 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     // //===================== _changeCaseVisibility ================================\\
-    var media = MediaQuery.of(context).size;
 
     return Scaffold(
       appBar: AppBar(

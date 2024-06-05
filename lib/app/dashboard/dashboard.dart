@@ -158,27 +158,16 @@ class _DashboardState extends State<Dashboard>
               builder: (controller) {
                 return Row(
                   children: [
-                    controller.user.value.isOnline
-                        ? Text(
-                            'Online',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: controller.isLoadingOnline.value
-                                  ? kBlackColor.withOpacity(0.5)
-                                  : kBlackColor,
-                            ),
-                          )
-                        : Text(
-                            'Offline',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color: controller.isLoadingOnline.value
-                                  ? kBlackColor.withOpacity(0.5)
-                                  : kBlackColor,
-                            ),
-                          ),
+                    Text(
+                      controller.user.value.isOnline ? 'Online' : 'Offline',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: controller.isLoadingOnline.value
+                            ? kBlackColor.withOpacity(0.5)
+                            : kBlackColor,
+                      ),
+                    ),
                     kHalfSizedBox,
                     Transform.scale(
                       scale: 0.8, // Adjust the scale factor as needed
