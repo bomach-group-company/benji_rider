@@ -297,9 +297,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 InkWell(
                                   onTap: () => toMapDirectionage(
                                       controller.order.value.orderitems.first
-                                          .product.vendorId.latitude,
+                                          .product.business.latitude,
                                       controller.order.value.orderitems.first
-                                          .product.vendorId.longitude),
+                                          .product.business.longitude),
                                   child: Row(
                                     children: [
                                       FaIcon(
@@ -340,7 +340,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      "${controller.order.value.orderitems.first.product.vendorId.firstName} ${controller.order.value.orderitems.first.product.vendorId.lastName}",
+                                      controller.order.value.orderitems.first
+                                          .product.business.shopName,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         color: kTextBlackColor,
@@ -351,7 +352,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     kHalfSizedBox,
                                     Text(
                                       controller.order.value.orderitems.first
-                                          .product.vendorId.phone,
+                                          .product.business.vendorOwner.phone,
                                       style: TextStyle(
                                         color: kTextGreyColor,
                                         fontSize: 12,
@@ -369,7 +370,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   .orderitems
                                                   .first
                                                   .product
-                                                  .vendorId
+                                                  .business
                                                   .latitude,
                                               controller
                                                   .order
@@ -377,7 +378,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   .orderitems
                                                   .first
                                                   .product
-                                                  .vendorId
+                                                  .business
                                                   .longitude),
                                           builder: (context, controller) {
                                             // '6.801965310155346', '7.092915443774477'

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import '../../providers/constants.dart';
 import 'agent_model.dart';
 import 'business_type_model.dart';
@@ -13,12 +11,20 @@ class BusinessModel {
   String state;
   String city;
   String lga;
-  String weekOpeningHours;
-  String weekClosingHours;
   String satOpeningHours;
   String satClosingHours;
   String sunWeekOpeningHours;
   String sunWeekClosingHours;
+  String monOpeningHours;
+  String monClosingHours;
+  String tueOpeningHours;
+  String tueClosingHours;
+  String wedOpeningHours;
+  String wedClosingHours;
+  String thursOpeningHours;
+  String thursClosingHours;
+  String friOpeningHours;
+  String friClosingHours;
   String address;
   String shopName;
   BusinessType shopType;
@@ -36,6 +42,7 @@ class BusinessModel {
   int numberOfClientsReactions;
   AgentModel agent;
   dynamic popularity;
+  bool isOnline;
 
   BusinessModel({
     required this.id,
@@ -51,8 +58,16 @@ class BusinessModel {
     required this.vendorOwner,
     required this.latitude,
     required this.longitude,
-    required this.weekOpeningHours,
-    required this.weekClosingHours,
+    required this.monOpeningHours,
+    required this.monClosingHours,
+    required this.tueOpeningHours,
+    required this.tueClosingHours,
+    required this.wedOpeningHours,
+    required this.wedClosingHours,
+    required this.thursOpeningHours,
+    required this.thursClosingHours,
+    required this.friOpeningHours,
+    required this.friClosingHours,
     required this.satOpeningHours,
     required this.satClosingHours,
     required this.sunWeekOpeningHours,
@@ -67,10 +82,11 @@ class BusinessModel {
     required this.numberOfClientsReactions,
     required this.agent,
     required this.popularity,
+    required this.isOnline,
   });
 
   factory BusinessModel.fromJson(Map<String, dynamic>? json) {
-    log("Business JSON: $json");
+    print("Business JSON: $json");
     json ??= {};
     return BusinessModel(
       id: json["id"] ?? '',
@@ -88,8 +104,16 @@ class BusinessModel {
           : json['coverImage'],
       shopType: BusinessType.fromJson(json["shop_type"] ?? {}),
       vendorOwner: VendorModel.fromJson(json['vendor_owner'] ?? {}),
-      weekOpeningHours: json["weekOpeningHours"] ?? notAvailable,
-      weekClosingHours: json["weekClosingHours"] ?? notAvailable,
+      monOpeningHours: json["monOpeningHours"] ?? notAvailable,
+      monClosingHours: json["monClosingHours"] ?? notAvailable,
+      tueOpeningHours: json["tueOpeningHours"] ?? notAvailable,
+      tueClosingHours: json["tueClosingHours"] ?? notAvailable,
+      wedOpeningHours: json["wedOpeningHours"] ?? notAvailable,
+      wedClosingHours: json["wedClosingHours"] ?? notAvailable,
+      thursOpeningHours: json["thursOpeningHours"] ?? notAvailable,
+      thursClosingHours: json["thursClosingHours"] ?? notAvailable,
+      friOpeningHours: json["friOpeningHours"] ?? notAvailable,
+      friClosingHours: json["friClosingHours"] ?? notAvailable,
       satOpeningHours: json["satOpeningHours"] ?? notAvailable,
       satClosingHours: json["satClosingHours"] ?? notAvailable,
       sunWeekOpeningHours: json["sunWeekOpeningHours"] ?? notAvailable,
@@ -106,6 +130,7 @@ class BusinessModel {
       numberOfClientsReactions: json["number_of_clients_reactions"] ?? 0,
       agent: AgentModel.fromJson(json['agent'] ?? {}),
       popularity: json['popularity'],
+      isOnline: json["is_online"] ?? false,
     );
   }
 
@@ -121,8 +146,16 @@ class BusinessModel {
         "coverImage": coverImage,
         "shop_type": shopType.toJson(),
         "vendor_owner": vendorOwner.toJson(),
-        "weekOpeningHours": weekOpeningHours,
-        "weekClosingHours": weekClosingHours,
+        "monOpeningHours": monOpeningHours,
+        "monClosingHours": monClosingHours,
+        "tueOpeningHours": tueOpeningHours,
+        "tueClosingHours": tueClosingHours,
+        "wedOpeningHours": wedOpeningHours,
+        "wedClosingHours": wedClosingHours,
+        "thursOpeningHours": thursOpeningHours,
+        "thursClosingHours": thursClosingHours,
+        "friOpeningHours": friOpeningHours,
+        "friClosingHours": friClosingHours,
         "satOpeningHours": satOpeningHours,
         "satClosingHours": satClosingHours,
         "sunWeekOpeningHours": sunWeekOpeningHours,
@@ -139,5 +172,6 @@ class BusinessModel {
         "number_of_clients_reactions": numberOfClientsReactions,
         "agent": agent.toJson(),
         "popularity": popularity,
+        "is_online": isOnline,
       };
 }
