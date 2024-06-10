@@ -96,7 +96,7 @@ class UserController extends GetxController {
           user.token);
       if (responseUserData?.statusCode != 200) {
         ApiProcessorController.errorSnack(jsonDecode(
-            responseUserData?.body ?? "{'message': 'failed'}")['message']);
+            responseUserData?.body ?? "{'detail': 'failed'}")['detail']);
         isLoadingOnline.value = false;
         update();
         return;

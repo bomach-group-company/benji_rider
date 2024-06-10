@@ -72,7 +72,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       final response = await http.post(
         url,
         body: body,
-        headers: await authHeader(),
+        headers: authHeader(),
       );
       if (kDebugMode) {
         print(response.body);
