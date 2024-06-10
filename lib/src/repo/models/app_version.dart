@@ -36,7 +36,7 @@ class AppVersion {
 
 Future<AppVersion> getAppLatestVersion() async {
   String os = "";
-  String app = "user";
+  String app = "rider";
   if (Platform.isAndroid) {
     os = "android";
   } else if (Platform.isIOS) {
