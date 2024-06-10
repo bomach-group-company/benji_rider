@@ -361,7 +361,7 @@ class _DashboardState extends State<Dashboard>
                                                 .orderitems
                                                 .first
                                                 .product
-                                                .vendorId
+                                                .business
                                                 .latitude,
                                             controller
                                                 .tasks[index]
@@ -369,7 +369,7 @@ class _DashboardState extends State<Dashboard>
                                                 .orderitems
                                                 .first
                                                 .product
-                                                .vendorId
+                                                .business
                                                 .longitude)
                                         : getAddressFromCoordinates(
                                             controller.tasks[index].package
