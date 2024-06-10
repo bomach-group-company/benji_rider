@@ -6,7 +6,10 @@ import 'package:benji_rider/app/businesses/businesses.dart';
 import 'package:benji_rider/app/order/order_details.dart';
 import 'package:benji_rider/app/package/package_detail.dart';
 import 'package:benji_rider/src/repo/controller/user_controller.dart';
+import 'package:benji_rider/src/repo/models/app_version.dart';
+import 'package:benji_rider/src/repo/utils/constants.dart';
 import 'package:benji_rider/src/widget/button/my_elevated_oval_button.dart';
+import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -77,7 +80,17 @@ class _DashboardState extends State<Dashboard>
     BusinessController.instance.getAllBusinesses();
 
     FcmMessagingController.instance.handleFCM();
-
+    Timer(
+      const Duration(seconds: 2),
+      () {
+        getAppLatestVersion().then((value) {
+          if (value.version == "0" || value.version == appVersion) {
+            return;
+          }
+          showAppUpdateDialog(context, value);
+        });
+      },
+    );
     super.initState();
   }
 
@@ -451,4 +464,46 @@ class _DashboardState extends State<Dashboard>
       ),
     );
   }
+}
+
+void showAppUpdateDialog(context, AppVersion appVersion) {
+  showDialog(
+    context: context,
+    useSafeArea: true,
+    barrierDismissible: false,
+    builder: (context) {
+      return PopScope(
+        canPop: false,
+        child: AlertDialog(
+          title: Text(
+            "UPDATE!".toUpperCase(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: kAccentColor,
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          content: const Text(
+            "Please update your app",
+            textAlign: TextAlign.center,
+            maxLines: 4,
+            style: TextStyle(
+              color: kTextBlackColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          actions: [
+            MyElevatedButton(
+              title: "Okay",
+              onPressed: () {
+                launchDownload(appVersion.link);
+              },
+            ),
+          ],
+        ),
+      );
+    },
+  );
 }
