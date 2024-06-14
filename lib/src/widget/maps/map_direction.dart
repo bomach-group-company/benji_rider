@@ -108,6 +108,7 @@ class _MapDirectionState extends State<MapDirection> {
           'Location permissions are denied, allow in settings');
       return;
     }
+    print('part 1');
     await _getUserCurrentLocation();
     await _loadCustomMarkers();
     getPolyPoints();
@@ -129,6 +130,7 @@ class _MapDirectionState extends State<MapDirection> {
     _newGoogleMapController?.animateCamera(
       CameraUpdate.newCameraPosition(cameraPosition),
     );
+    print('part 2');
 
     return userLocation;
   }
