@@ -55,7 +55,7 @@ class Order {
           : (json["orderitems"] as List)
               .map((item) => OrderItem.fromJson(item))
               .toList(),
-      created: json["created"] ?? notAvailable,
+      created: json["created"] ?? "",
       deliveryAddress: Address.fromJson(json["delivery_address"]),
     );
   }

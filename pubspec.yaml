@@ -42,12 +42,13 @@ dependencies:
   liquid_pull_to_refresh: ^3.0.1
   lottie:
   flutter_layout_grid:
-  flutter_polyline_points: ^2.0.0
+  flutter_polyline_points:
   fl_chart:
   share_plus: ^7.1.0
   screenshot: ^2.1.0
   path_provider: ^2.1.1
   pdf: ^3.10.4
+  url_launcher:
 
 dev_dependencies:
   flutter_test:

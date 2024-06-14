@@ -332,7 +332,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         BorderRadius.all(Radius.circular(20)),
                                   ),
                                   child: MyImage(
-                                    url: controller.order.value.client.image,
+                                    url: controller.order.value.orderitems.first
+                                        .product.business.shopImage,
                                   ),
                                 ),
                                 kWidthSizedBox,
