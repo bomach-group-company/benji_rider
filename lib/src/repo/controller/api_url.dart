@@ -7,13 +7,19 @@ import 'package:http/http.dart' as http;
 import '../controller/user_controller.dart';
 
 // API URLS AND HTTP CALL FUNCTIONS
-const baseURL = "https://resource.bgbot.app/api/v1";
-const baseImage = "https://resource.bgbot.app";
+const baseURL = "http://127.0.0.1:8000/api/v1";
+const baseImage = "http://127.0.0.1:8000";
+
+// const String websocketBaseUrl =
+//     "ws://wsbenji.bgbot.app/ws"; // the issue is that it is using ws on the backend instead of wss - "wss://wsbenji.bgbot.app/ws"
+
+const String websocketBaseUrl =
+    "ws://127.0.0.1:6388/ws"; // the issue is that it is using ws on the backend instead of wss - "wss://wsbenji.bgbot.app/ws"
 
 var vendorId = UserController.instance.user.value.id;
 
 class Api {
-  static const baseUrl = "https://resource.bgbot.app/api/v1";
+  static const baseUrl = "http://127.0.0.1:8000/api/v1";
   static const login = "/auth/token";
   static const user = "/auth/";
   static const changePassword = "/auth/changeNewPassword/";

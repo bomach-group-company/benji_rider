@@ -7,6 +7,7 @@ import 'package:benji_rider/src/widget/maps/map_direction.dart';
 import 'package:benji_rider/src/widget/section/my_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 
 import '../../src/providers/constants.dart';
 import '../../src/repo/controller/error_controller.dart';
@@ -69,7 +70,7 @@ class _PackageDetailsState extends State<PackageDetails> {
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
     return GetBuilder<PackageController>(
-        init: PackageController(),
+        initState: PackageController.instance.getTaskItemSocket(),
         builder: (controller) {
           return Scaffold(
             appBar: MyAppBar(
@@ -194,35 +195,6 @@ class _PackageDetailsState extends State<PackageDetails> {
                             letterSpacing: -0.32,
                           ),
                         ),
-                        // ListView.builder(
-                        //   itemCount: controller.package.value.orderitems.length,
-                        //   shrinkWrap: true,
-                        //   itemBuilder: (context, index) {
-                        //     var adjustedIndex = index + 1;
-                        //     var package =
-                        //         controller.package.value.orderitems[index];
-                        //     return ListTile(
-                        //       titleAlignment: ListTileTitleAlignment.center,
-                        //       horizontalTitleGap: 0,
-                        //       leading: Text(
-                        //         "$adjustedIndex.",
-                        //         style: const TextStyle(
-                        //           color: kTextBlackColor,
-                        //           fontSize: 15,
-                        //           fontWeight: FontWeight.normal,
-                        //         ),
-                        //       ),
-                        //       title: Text(
-                        //         '${package.product.name} x ${package.quantity.toString()}',
-                        //         style: const TextStyle(
-                        //           color: kTextBlackColor,
-                        //           fontSize: 15,
-                        //           fontWeight: FontWeight.normal,
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // )
                       ],
                     ),
                   ),
@@ -292,43 +264,31 @@ class _PackageDetailsState extends State<PackageDetails> {
                         kSizedBox,
                         Row(
                           children: [
-                            // Container(
-                            //   width: 60,
-                            //   height: 60,
-                            //   decoration: const BoxDecoration(
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(20)),
-                            //   ),
-                            //   child: CircleAvatar(
-                            //     radius:
-                            //         deviceType(media.width) >= 2 ? 60 : 30,
-                            //     child: ClipOval(
-                            //       child: MyImage(
-                            //           url: controller
-                            //               .package.value.client.image),
-                            //     ),
-                            //   ),
-                            // ),
-                            // kWidthSizedBox,
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  controller.package.value.senderName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: kTextBlackColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
+                                SizedBox(
+                                  width: media.width - 100,
+                                  child: Text(
+                                    controller.package.value.senderName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: kTextBlackColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                                 kHalfSizedBox,
-                                Text(
-                                  controller.package.value.senderPhoneNumber,
-                                  style: TextStyle(
-                                    color: kTextGreyColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
+                                SizedBox(
+                                  width: media.width - 100,
+                                  child: Text(
+                                    controller.package.value.senderPhoneNumber,
+                                    style: TextStyle(
+                                      color: kTextGreyColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                                 kHalfSizedBox,
@@ -425,41 +385,32 @@ class _PackageDetailsState extends State<PackageDetails> {
                         kSizedBox,
                         Row(
                           children: [
-                            // Container(
-                            //   width: 60,
-                            //   height: 60,
-                            //   decoration: const BoxDecoration(
-                            //     borderRadius:
-                            //         BorderRadius.all(Radius.circular(20)),
-                            //   ),
-                            //   child: CircleAvatar(
-                            //     radius: deviceType(media.width) >= 2 ? 60 : 30,
-                            //     child: ClipOval(
-                            //       child: MyImage(
-                            //           url: controller.package.value.client.image),
-                            //     ),
-                            //   ),
-                            // ),
-                            // kWidthSizedBox,
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  controller.package.value.receiverName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    color: kTextBlackColor,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w700,
+                                SizedBox(
+                                  width: media.width - 100,
+                                  child: Text(
+                                    controller.package.value.receiverName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: kTextBlackColor,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                                 kHalfSizedBox,
-                                Text(
-                                  controller.package.value.receiverPhoneNumber,
-                                  style: TextStyle(
-                                    color: kTextGreyColor,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w400,
+                                SizedBox(
+                                  width: media.width - 100,
+                                  child: Text(
+                                    controller
+                                        .package.value.receiverPhoneNumber,
+                                    style: TextStyle(
+                                      color: kTextGreyColor,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
                                 ),
                                 kHalfSizedBox,
@@ -491,71 +442,55 @@ class _PackageDetailsState extends State<PackageDetails> {
                     ),
                   ),
                   kSizedBox,
-                  Container(
-                    child: controller.package.value.status == 'CANC'
-                        ? const MyElevatedButton(
-                            disable: true,
-                            title: "Cancelled",
-                            onPressed: null,
-                            isLoading: false,
-                          )
-                        : controller.package.value.status == 'pending'
-                            ? MyElevatedButton(
-                                title: "Collected",
-                                onPressed: controller.orderDispatched,
-                                isLoading: controller.isLoad.value,
-                              )
-                            : controller.package.value.status == 'received' ||
-                                    controller.package.value.status ==
-                                        'dispatched'
-                                ? SizedBox(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          'Enter package delivery code and confirm',
-                                          style: TextStyle(color: kAccentColor),
-                                        ),
-                                        kSizedBox,
-                                        MyTextFormField(
-                                          controller: codeEC,
-                                          focusNode: codeFN,
-                                          hintText:
-                                              "Enter the code from the user",
-                                          textInputAction: TextInputAction.done,
-                                          textInputType: TextInputType.name,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value!.isEmpty) {
-                                              codeFN.requestFocus();
-                                              return "Enter the code from the user";
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                        kSizedBox,
-                                        MyElevatedButton(
-                                          title: "Delivered",
-                                          onPressed: () => controller
-                                              .orderDelivered(codeEC.text),
-                                          isLoading: controller.isLoad.value,
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                : controller.package.value.status == 'completed'
-                                    ? MyElevatedButton(
-                                        disable: true,
-                                        title: "Cashout",
-                                        onPressed: controller.packagePayment,
-                                        isLoading: controller.isLoad.value,
-                                      )
-                                    : MyElevatedButton(
-                                        disable: true,
-                                        title: "Completed",
-                                        onPressed: () {},
-                                        isLoading: false,
-                                      ),
-                  ),
+                  controller.taskItemStatusUpdate.value.query
+                      ? Column(
+                          children: [
+                            Text(
+                              'Enter package delivery code and confirm',
+                              style: TextStyle(color: kAccentColor),
+                            ),
+                            kSizedBox,
+                            MyTextFormField(
+                              controller: codeEC,
+                              focusNode: codeFN,
+                              hintText: "Enter the code from the user",
+                              textInputAction: TextInputAction.done,
+                              textInputType: TextInputType.name,
+                              validator: (value) {
+                                if (value == null || value!.isEmpty) {
+                                  codeFN.requestFocus();
+                                  return "Enter the code from the user";
+                                }
+                                return null;
+                              },
+                            ),
+                            kSizedBox,
+                            MyElevatedButton(
+                              disable:
+                                  !controller.taskItemStatusUpdate.value.action,
+                              title: controller.hasFetched.value
+                                  ? controller
+                                      .taskItemStatusUpdate.value.buttonText
+                                  : "Loading...",
+                              onPressed: controller.hasFetched.value
+                                  ? () => controller.updateTaskItemStatus(
+                                      query: codeEC.text)
+                                  : () {},
+                              isLoading: controller.isLoadUpdateStatus.value,
+                            )
+                          ],
+                        )
+                      : MyElevatedButton(
+                          disable:
+                              !controller.taskItemStatusUpdate.value.action,
+                          title: controller.hasFetched.value
+                              ? controller.taskItemStatusUpdate.value.buttonText
+                              : "Loading...",
+                          onPressed: controller.hasFetched.value
+                              ? controller.updateTaskItemStatus
+                              : () {},
+                          isLoading: controller.isLoadUpdateStatus.value,
+                        ),
                   kSizedBox,
                 ],
               ),

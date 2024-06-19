@@ -1,9 +1,14 @@
 // ignore_for_file: empty_catches
 
+import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:benji_rider/src/repo/models/task_item_status_update.dart';
+import 'package:benji_rider/src/repo/utils/helpers.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../models/delivery_model.dart';
 import '../models/order_model.dart';
@@ -17,6 +22,11 @@ class OrderStatusChangeController extends GetxController {
   static OrderStatusChangeController get instance {
     return Get.find<OrderStatusChangeController>();
   }
+
+  var isLoadUpdateStatus = false.obs;
+  var hasFetched = false.obs;
+  late WebSocketChannel channelTask;
+  var taskItemStatusUpdate = TaskItemStatusUpdate.fromJson(null).obs;
 
   var isLoad = false.obs;
 
@@ -111,5 +121,61 @@ class OrderStatusChangeController extends GetxController {
       ApiProcessorController.errorSnack(
           'Either you have already withdrawn or an error occured');
     }
+  }
+
+  getTaskItemSocket() {
+    final wsUrlTask = Uri.parse('$websocketBaseUrl/packageStatus/');
+    channelTask = WebSocketChannel.connect(wsUrlTask);
+    channelTask.sink.add(jsonEncode({
+      'user_id': UserController.instance.user.value.id,
+      'package_id': order.value.id,
+      'user_type': 'rider'
+    }));
+
+    Timer.periodic(const Duration(seconds: 10), (timer) {
+      channelTask.sink.add(jsonEncode({
+        'user_id': UserController.instance.user.value.id,
+        'package_id': order.value.id,
+        'user_type': 'rider'
+      }));
+    });
+
+    channelTask.stream.listen((message) {
+      log(message);
+      taskItemStatusUpdate.value =
+          TaskItemStatusUpdate.fromJson(jsonDecode(message));
+      if (hasFetched.value != true) {
+        hasFetched.value = true;
+      }
+      update();
+    });
+  }
+
+  updateTaskItemStatus({String query = ""}) async {
+    isLoadUpdateStatus.value = true;
+    update();
+
+    var url = "${Api.baseUrl}${taskItemStatusUpdate.value.url}$query";
+    print(url);
+    final response = await http.get(
+      Uri.parse(url),
+      headers: authHeader(),
+    );
+    print(response.body);
+    dynamic data = jsonDecode(response.body);
+
+    if (response.statusCode.toString().startsWith('2')) {
+      channelTask.sink.add(jsonEncode({
+        'user_id': UserController.instance.user.value.id,
+        'order_id': order.value.id,
+        'user_type': 'rider'
+      }));
+      order.value = Order.fromJson(data);
+      ApiProcessorController.successSnack("Updated successfully");
+    } else {
+      ApiProcessorController.errorSnack(data['detail']);
+    }
+    isLoadUpdateStatus.value = false;
+    update();
   }
 }
