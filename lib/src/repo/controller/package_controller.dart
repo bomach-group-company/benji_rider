@@ -136,6 +136,7 @@ class PackageController extends GetxController {
       log(message);
       taskItemStatusUpdate.value =
           TaskItemStatusUpdate.fromJson(jsonDecode(message));
+      refreshPackage();
       if (hasFetched.value != true) {
         hasFetched.value = true;
       }

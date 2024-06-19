@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:benji_rider/src/repo/models/task_item_status_update.dart';
 import 'package:benji_rider/src/repo/utils/helpers.dart';
@@ -74,68 +75,19 @@ class OrderStatusChangeController extends GetxController {
     update();
   }
 
-  orderDispatched() async {
-    isLoad.value = true;
-    update();
-
-    var url =
-        "${Api.baseUrl}/orders/RiderToVendorChangeStatus?order_id=${order.value.id}";
-    await FormController.instance.getAuth(url, 'dispatchOrder');
-    // print(FormController.instance.status);
-
-    if (FormController.instance.status.toString().startsWith('2')) {}
-    await refreshOrder();
-  }
-
-  orderDelivered() async {
-    isLoad.value = true;
-    // final user = UserController.instance.user.value;
-
-    update();
-    var url =
-        "${Api.baseUrl}/orders/RiderToUserChangeStatus?order_id=${order.value.id}";
-
-    // var url2 =
-    //     "${Api.baseUrl}/drivers/completeMyTask/${task.value.id}/${user.id}";
-
-    await FormController.instance.getAuth(url, 'deliveredOrder');
-    // await FormController.instance.getAuth(url2, 'deliveredOrder');
-    // print(FormController.instance.status);
-    if (FormController.instance.status.toString().startsWith('2')) {}
-    await refreshOrder();
-  }
-
-  orderPayment() async {
-    isLoad.value = true;
-    final user = UserController.instance.user.value;
-
-    update();
-
-    var url =
-        "${Api.baseUrl}/drivers/completeMyTask/${task.value.id}/${user.id}";
-
-    await FormController.instance.getAuth(url, 'taskPayment');
-    if (FormController.instance.status.toString().startsWith('2')) {
-      ApiProcessorController.successSnack('Withdrawal successful');
-    } else {
-      ApiProcessorController.errorSnack(
-          'Either you have already withdrawn or an error occured');
-    }
-  }
-
   getTaskItemSocket() {
-    final wsUrlTask = Uri.parse('$websocketBaseUrl/packageStatus/');
+    final wsUrlTask = Uri.parse('$websocketBaseUrl/orderStatus/');
     channelTask = WebSocketChannel.connect(wsUrlTask);
     channelTask.sink.add(jsonEncode({
       'user_id': UserController.instance.user.value.id,
-      'package_id': order.value.id,
+      'order_id': order.value.id,
       'user_type': 'rider'
     }));
 
     Timer.periodic(const Duration(seconds: 10), (timer) {
       channelTask.sink.add(jsonEncode({
         'user_id': UserController.instance.user.value.id,
-        'package_id': order.value.id,
+        'order_id': order.value.id,
         'user_type': 'rider'
       }));
     });
@@ -144,6 +96,7 @@ class OrderStatusChangeController extends GetxController {
       log(message);
       taskItemStatusUpdate.value =
           TaskItemStatusUpdate.fromJson(jsonDecode(message));
+      refreshOrder();
       if (hasFetched.value != true) {
         hasFetched.value = true;
       }
@@ -152,28 +105,32 @@ class OrderStatusChangeController extends GetxController {
   }
 
   updateTaskItemStatus({String query = ""}) async {
-    isLoadUpdateStatus.value = true;
-    update();
+    try {
+      isLoadUpdateStatus.value = true;
+      update();
 
-    var url = "${Api.baseUrl}${taskItemStatusUpdate.value.url}$query";
-    print(url);
-    final response = await http.get(
-      Uri.parse(url),
-      headers: authHeader(),
-    );
-    print(response.body);
-    dynamic data = jsonDecode(response.body);
+      var url = "${Api.baseUrl}${taskItemStatusUpdate.value.url}$query";
+      final response = await http.get(
+        Uri.parse(url),
+        headers: authHeader(),
+      );
 
-    if (response.statusCode.toString().startsWith('2')) {
-      channelTask.sink.add(jsonEncode({
-        'user_id': UserController.instance.user.value.id,
-        'order_id': order.value.id,
-        'user_type': 'rider'
-      }));
-      order.value = Order.fromJson(data);
-      ApiProcessorController.successSnack("Updated successfully");
-    } else {
-      ApiProcessorController.errorSnack(data['detail']);
+      dynamic data = jsonDecode(response.body);
+
+      if (response.statusCode.toString().startsWith('2')) {
+        channelTask.sink.add(jsonEncode({
+          'user_id': UserController.instance.user.value.id,
+          'order_id': order.value.id,
+          'user_type': 'rider'
+        }));
+        order.value = Order.fromJson(data);
+        ApiProcessorController.successSnack("Updated successfully");
+      } else {
+        ApiProcessorController.errorSnack(data['detail']);
+      }
+    } on SocketException {
+      ApiProcessorController.errorSnack(
+          "No internet connection. Please check your network settings.");
     }
     isLoadUpdateStatus.value = false;
     update();

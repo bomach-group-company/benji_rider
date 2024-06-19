@@ -67,7 +67,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
     return GetBuilder<OrderStatusChangeController>(
-        init: OrderStatusChangeController(),
+        initState: OrderStatusChangeController.instance.getTaskItemSocket(),
         builder: (controller) {
           return Scaffold(
             appBar: MyAppBar(
@@ -78,40 +78,16 @@ class _OrderDetailsState extends State<OrderDetails> {
             ),
             bottomNavigationBar: Container(
               padding: const EdgeInsets.all(kDefaultPadding),
-              child: controller.order.value.deliveryStatus == 'CANC'
-                  ? MyElevatedButton(
-                      disable: true,
-                      title: "Cancelled",
-                      onPressed: null,
-                      isLoading: controller.isLoad.value,
-                    )
-                  : controller.order.value.deliveryStatus == "PEND"
-                      ? MyElevatedButton(
-                          title: "Dispatched",
-                          onPressed: controller.orderDispatched,
-                          isLoading: controller.isLoad.value,
-                        )
-                      : controller.order.value.deliveryStatus == 'received' ||
-                              controller.order.value.deliveryStatus ==
-                                  'dispatched'
-                          ? MyElevatedButton(
-                              title: "Delivered",
-                              onPressed: controller.orderDelivered,
-                              isLoading: controller.isLoad.value,
-                            )
-                          : controller.order.value.deliveryStatus == 'COMP'
-                              ? MyElevatedButton(
-                                  disable: true,
-                                  title: "Cashout",
-                                  onPressed: controller.orderPayment,
-                                  isLoading: controller.isLoad.value,
-                                )
-                              : MyElevatedButton(
-                                  disable: true,
-                                  title: "Completed",
-                                  onPressed: null,
-                                  isLoading: controller.isLoad.value,
-                                ),
+              child: MyElevatedButton(
+                disable: !controller.taskItemStatusUpdate.value.action,
+                title: controller.hasFetched.value
+                    ? controller.taskItemStatusUpdate.value.buttonText
+                    : "Loading...",
+                onPressed: controller.hasFetched.value
+                    ? controller.updateTaskItemStatus
+                    : () {},
+                isLoading: controller.isLoadUpdateStatus.value,
+              ),
             ),
             body: ListView(
               physics: const BouncingScrollPhysics(),
