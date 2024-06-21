@@ -15,7 +15,6 @@ import '../models/delivery_model.dart';
 import '../models/order_model.dart';
 import 'api_url.dart';
 import 'error_controller.dart';
-import 'form_controller.dart';
 import 'order_controller.dart';
 import 'user_controller.dart';
 
@@ -134,5 +133,9 @@ class OrderStatusChangeController extends GetxController {
     }
     isLoadUpdateStatus.value = false;
     update();
+  }
+
+  closeTaskSocket() {
+    channelTask.sink.close(1000);
   }
 }

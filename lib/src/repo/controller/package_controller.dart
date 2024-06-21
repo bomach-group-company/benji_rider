@@ -171,4 +171,8 @@ class PackageController extends GetxController {
     isLoadUpdateStatus.value = false;
     update();
   }
+
+  closeTaskSocket() {
+    channelTask.sink.close(1000);
+  }
 }

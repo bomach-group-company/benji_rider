@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:benji_rider/src/repo/models/package.dart';
 import 'package:benji_rider/src/repo/utils/helpers.dart';
 import 'package:benji_rider/src/widget/button/my_elevatedbutton.dart';
 import 'package:benji_rider/src/widget/form_and_auth/my%20textformfield.dart';
@@ -26,6 +27,12 @@ class _PackageDetailsState extends State<PackageDetails> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    PackageController.instance.closeTaskSocket();
+    super.dispose();
   }
 
   toMapDirectionage([String latitudeStr = '', String longitudeStr = '']) {

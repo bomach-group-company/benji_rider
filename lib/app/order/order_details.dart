@@ -28,6 +28,12 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    OrderStatusChangeController.instance.closeTaskSocket();
+    super.dispose();
+  }
+
   toMapDirectionage([String latitudeStr = '', String longitudeStr = '']) {
     double latitude;
     double longitude;

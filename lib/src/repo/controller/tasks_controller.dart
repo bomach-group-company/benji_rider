@@ -151,9 +151,6 @@ class TasksController extends GetxController {
   closeTaskSocket() {
     channel.sink.close(1000);
     channelTask.sink.close(1000);
-
-    // channel.sink.close(status.goingAway);
-    // channelTask.sink.close(status.goingAway);
   }
 
   bool isAccepted(DeliveryModel val) {
