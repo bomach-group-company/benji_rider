@@ -181,47 +181,110 @@ class _MapDirectionState extends State<MapDirection> {
 
   //============================================== Adding polypoints ==================================================\\
   void getPolyPoints() async {
-    final List<MarkerId> markerId = <MarkerId>[
-      const MarkerId("Location"),
-      const MarkerId("Destination"),
-    ];
-    List<String> markerTitle = <String>["Location", "Destination"];
+    print('getPolyPoints 1');
 
-    final List<LatLng> locations = <LatLng>[
-      riderLocation!,
-      destinationLocation
-    ];
-    final List<BitmapDescriptor> markers = <BitmapDescriptor>[
-      BitmapDescriptor.defaultMarker,
-      BitmapDescriptor.defaultMarkerWithHue(8),
-    ];
-
-    for (var i = 0; i < markerId.length; i++) {
-      _markers.add(
-        Marker(
-          markerId: markerId[i],
-          position: locations[i],
-          icon: markers[i],
-          visible: true,
-          infoWindow: InfoWindow(title: markerTitle[i]),
-        ),
-      );
+    // Ensure that riderLocation and destinationLocation are not null
+    if (riderLocation == null) {
+      print('Error: riderLocation is null');
+      return;
     }
 
-    PolylinePoints polyLinePoints = PolylinePoints();
-    PolylineResult result = await polyLinePoints.getRouteBetweenCoordinates(
-      googleMapsApiKey,
-      PointLatLng(riderLocation!.latitude, riderLocation!.longitude),
-      PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
-    );
+    try {
+      final List<MarkerId> markerId = <MarkerId>[
+        const MarkerId("Location"),
+        const MarkerId("Destination"),
+      ];
+      List<String> markerTitle = <String>["Location", "Destination"];
 
-    if (result.points.isNotEmpty) {
-      for (var point in result.points) {
-        _polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      final List<LatLng> locations = <LatLng>[
+        riderLocation!,
+        destinationLocation
+      ];
+      final List<BitmapDescriptor> markers = <BitmapDescriptor>[
+        BitmapDescriptor.defaultMarker,
+        BitmapDescriptor.defaultMarkerWithHue(8),
+      ];
+
+      for (var i = 0; i < markerId.length; i++) {
+        _markers.add(
+          Marker(
+            markerId: markerId[i],
+            position: locations[i],
+            icon: markers[i],
+            visible: true,
+            infoWindow: InfoWindow(title: markerTitle[i]),
+          ),
+        );
       }
-      setState(() {});
+
+      PolylinePoints polyLinePoints = PolylinePoints();
+      PolylineResult result = await polyLinePoints.getRouteBetweenCoordinates(
+        googleMapsApiKey,
+        PointLatLng(riderLocation!.latitude, riderLocation!.longitude),
+        PointLatLng(
+            destinationLocation.latitude, destinationLocation.longitude),
+      );
+
+      if (result.points.isNotEmpty) {
+        for (var point in result.points) {
+          _polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+        }
+        setState(() {});
+      } else {
+        print('Error: No points in PolylineResult');
+      }
+    } catch (e, stacktrace) {
+      print('Error: $e');
+      print('Stacktrace: $stacktrace');
     }
+
+    print('getPolyPoints 2');
   }
+
+  // void getPolyPoints() async {
+  //   print('getPolyPoints 1');
+  //   final List<MarkerId> markerId = <MarkerId>[
+  //     const MarkerId("Location"),
+  //     const MarkerId("Destination"),
+  //   ];
+  //   List<String> markerTitle = <String>["Location", "Destination"];
+
+  //   final List<LatLng> locations = <LatLng>[
+  //     riderLocation!,
+  //     destinationLocation
+  //   ];
+  //   final List<BitmapDescriptor> markers = <BitmapDescriptor>[
+  //     BitmapDescriptor.defaultMarker,
+  //     BitmapDescriptor.defaultMarkerWithHue(8),
+  //   ];
+
+  //   for (var i = 0; i < markerId.length; i++) {
+  //     _markers.add(
+  //       Marker(
+  //         markerId: markerId[i],
+  //         position: locations[i],
+  //         icon: markers[i],
+  //         visible: true,
+  //         infoWindow: InfoWindow(title: markerTitle[i]),
+  //       ),
+  //     );
+  //   }
+
+  //   PolylinePoints polyLinePoints = PolylinePoints();
+  //   PolylineResult result = await polyLinePoints.getRouteBetweenCoordinates(
+  //     googleMapsApiKey,
+  //     PointLatLng(riderLocation!.latitude, riderLocation!.longitude),
+  //     PointLatLng(destinationLocation.latitude, destinationLocation.longitude),
+  //   );
+
+  //   if (result.points.isNotEmpty) {
+  //     for (var point in result.points) {
+  //       _polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+  //     }
+  //     setState(() {});
+  //   }
+  //   print('getPolyPoints 2');
+  // }
 
 //============================================== Create Google Maps ==================================================\\
 
